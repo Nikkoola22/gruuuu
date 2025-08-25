@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState, useRef, useEffect, type ChangeEvent, type KeyboardEvent } from "react";
+import { useState, useRef, useEffect, type KeyboardEvent } from "react";
 import {
   Clock,
   GraduationCap,
@@ -7,7 +7,6 @@ import {
   Phone,
   Mail,
   MapPin,
-  ArrowRight,
   Sparkles,
   Send,
   ArrowLeft,
@@ -24,170 +23,6 @@ import { teletravailData } from "./data/teletravail.ts";
 import { infoItems } from "./data/info-data.ts";
 import { podcastEpisodes, type PodcastEpisode } from "./data/podcasts/mp3.ts";
 
-// Variable pour activer/désactiver le diagnostic
-const DEBUG_IMAGES = false;
-
-// Composant de diagnostic intégré directement
-const ImageTroubleshooter = () => {
-  const [images, setImages] = useState([
-    { name: "unnamed.jpg", path: "./unnamed.jpg", loaded: false, error: false },
-    { name: "logo-cfdt.jpg", path: "./logo-cfdt.jpg", loaded: false, error: false }
-  ]);
-
-  const [publicUrl, setPublicUrl] = useState("");
-  const [baseUrl, setBaseUrl] = useState("");
-
-  useEffect(() => {
-    setBaseUrl(window.location.origin);
-    setPublicUrl(`${window.location.origin}/public`);
-    testAllImages();
-  }, []);
-
-  const testImage = (index: number) => {
-    const img = new Image();
-    const image = images[index];
-    
-    img.onload = () => {
-      const updatedImages = [...images];
-      updatedImages[index] = { ...image, loaded: true, error: false };
-      setImages(updatedImages);
-    };
-    
-    img.onerror = () => {
-      const updatedImages = [...images];
-      updatedImages[index] = { ...image, loaded: false, error: true };
-      setImages(updatedImages);
-    };
-    
-    img.src = image.path;
-  };
-
-  const testAllImages = () => {
-    images.forEach((_, index) => testImage(index));
-  };
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
-        <h1 className="text-3xl font-bold text-blue-800 mb-6">Diagnostic d'affichage des images</h1>
-        
-        <div className="mb-8 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-          <h2 className="text-xl font-semibold text-yellow-800 mb-2">Informations sur l'environnement</h2>
-          <p className="mb-1"><strong>URL de base:</strong> {baseUrl}</p>
-          <p className="mb-1"><strong>Chemin public:</strong> {publicUrl}</p>
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-blue-800 mb-4">Test des images</h2>
-          <button 
-            onClick={testAllImages}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mb-4"
-          >
-            Tester à nouveau toutes les images
-          </button>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {images.map((image, index) => (
-              <div key={index} className="border rounded-lg p-4 bg-gray-50">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-medium">{image.name}</h3>
-                  <button 
-                    onClick={() => testImage(index)}
-                    className="text-sm bg-gray-200 hover:bg-gray-300 py-1 px-2 rounded"
-                  >
-                    Tester
-                  </button>
-                </div>
-                
-                <div className="h-48 bg-white border flex items-center justify-center mb-2">
-                  {image.loaded ? (
-                    <img 
-                      src={image.path} 
-                      alt={image.name} 
-                      className="max-h-full max-w-full"
-                    />
-                  ) : image.error ? (
-                    <div className="text-red-600 text-center">
-                      <div className="text-4xl mb-2">❌</div>
-                      <p>Erreur de chargement</p>
-                    </div>
-                  ) : (
-                    <div className="text-gray-500">Test en cours...</div>
-                  )}
-                </div>
-                
-                <div className="text-sm">
-                  <p><strong>Chemin:</strong> {image.path}</p>
-                  <p><strong>Statut:</strong> 
-                    {image.loaded ? 
-                      <span className="text-green-600"> Chargée avec succès</span> : 
-                      image.error ? 
-                      <span className="text-red-600"> Erreur de chargement</span> : 
-                      <span className="text-gray-600"> En cours de test</span>
-                    }
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-blue-800 mb-4">Solutions possibles</h2>
-          <div className="space-y-4">
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <h3 className="font-medium text-blue-800 mb-2">1. Vérifiez l'emplacement des fichiers</h3>
-              <p>Assurez-vous que les images sont bien dans le dossier <code>public</code> à la racine de votre projet.</p>
-              <pre className="bg-gray-800 text-white p-2 rounded mt-2 overflow-x-auto">
-{`public/
-  ├── unnamed.jpg
-  └── logo-cfdt.jpg`}
-              </pre>
-            </div>
-
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <h3 className="font-medium text-blue-800 mb-2">2. Utilisez le chemin absolu</h3>
-              <p>Dans votre code, utilisez le chemin absolu depuis la racine :</p>
-              <pre className="bg-gray-800 text-white p-2 rounded mt-2 overflow-x-auto">
-{`// Pour l'image de fond
-style={{ backgroundImage: "url('./unnamed.jpg')" }}
-
-// Pour l'image logo
-<img src="./logo-cfdt.jpg" alt="Logo CFDT" />`}
-              </pre>
-            </div>
-
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <h3 className="font-medium text-blue-800 mb-2">3. Vérifiez la casse des noms de fichiers</h3>
-              <p>Sur certains serveurs, la casse (majuscules/minuscules) est importante. Vérifiez que la casse correspond exactement.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-          <h2 className="text-xl font-semibold text-green-800 mb-2">Code corrigé pour les images</h2>
-          <p>Voici comment votre code devrait être structuré :</p>
-          <pre className="bg-gray-800 text-white p-2 rounded mt-2 overflow-x-auto">
-{`// Image de fond
-<div 
-  className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0" 
-  style={{ backgroundImage: "url('./unnamed.jpg')" }} 
-/>
-
-// Logo
-<img 
-  src="./logo-cfdt.jpg" 
-  alt="Logo CFDT" 
-  className="w-full h-full object-contain"
-  style={{ maxWidth: "100%", maxHeight: "100%" }}
-/>`}
-          </pre>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Le reste de votre code original...
 interface ChatMessage {
   type: "user" | "assistant";
   content: string;
@@ -205,8 +40,10 @@ interface ChatbotState {
   isProcessing: boolean;
 }
 
-const API_KEY = "VOTRE_CLE_API_PERPLEXITY"; // Remplacez par votre clé
+// ✅ Nouveau
+const API_KEY = import.meta.env.VITE_API_KEY;
 const API_URL = "https://api.perplexity.ai/chat/completions";
+
 
 const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
 const proxyUrl = "https://corsproxy.io/?";
@@ -232,9 +69,15 @@ const nettoyerChaine = (chaine: unknown): string => {
     .trim();
 };
 
+// =======================
+//  NewsTicker avec <a>
+// =======================
 const NewsTicker: React.FC = () => {
   const [actualites, setActualites] = useState(actualitesSecours);
   const [loading, setLoading] = useState(true);
+
+  // Fonction pour générer un lien via le proxy
+  const proxyLink = (url: string) => `https://corsproxy.io/?${encodeURIComponent(url)}`;
 
   useEffect(() => {
     const chargerFlux = async () => {
@@ -243,12 +86,21 @@ const NewsTicker: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch RSS feed");
         const xml = await res.text();
         const doc = new DOMParser().parseFromString(xml, "text/xml");
-        const items = Array.from(doc.querySelectorAll("item")).slice(0, 10).map((item, i) => ({
-          title: item.querySelector("title")?.textContent || `Actualité ${i + 1}`,
-          link: item.querySelector("link")?.textContent || "#",
-          pubDate: item.querySelector("pubDate")?.textContent || new Date().toISOString(),
-          guid: item.querySelector("guid")?.textContent || `${i}`,
-        }));
+
+        const items = Array.from(doc.querySelectorAll("item"))
+          .slice(0, 10)
+          .map((item, i) => {
+            const rawLink = item.querySelector("link")?.textContent || "";
+            const link = rawLink.replace(/\s+/g, " ").trim();
+
+            return {
+              title: (item.querySelector("title")?.textContent || `Actualité ${i + 1}`).trim(),
+              link,
+              pubDate: (item.querySelector("pubDate")?.textContent || new Date().toISOString()).trim(),
+              guid: (item.querySelector("guid")?.textContent || `${i}`).trim(),
+            };
+          });
+
         if (items.length) setActualites(items);
       } catch {
         console.error("Failed to load RSS feed, using fallback data.");
@@ -263,7 +115,7 @@ const NewsTicker: React.FC = () => {
     return (
       <div className="flex items-center justify-center p-4 bg-blue-900/80 rounded-lg">
         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-        <span className="ml-2 text-white text-sm">Chargement des actualités...</span>
+        <span className="ml-2 text-white text-base font-medium">Chargement des actualités...</span>
       </div>
     );
   }
@@ -275,18 +127,19 @@ const NewsTicker: React.FC = () => {
           {[...actualites, ...actualites].map((item, idx) => (
             <a
               key={`${item.guid}-${idx}`}
-              href={item.link}
+              href={proxyLink(item.link)}
               target="_blank"
-              rel="noreferrer"
-              className="flex items-center mx-6 text-white hover:text-blue-200 transition-colors no-underline"
+              rel="noopener noreferrer"
+              className="flex items-center mx-8 text-white hover:text-blue-200 transition-colors no-underline"
             >
-              <span className="mr-2 text-yellow-300">📰</span>
-              <span className="font-medium text-sm sm:text-base">{item.title}</span>
-              <span className="mx-4 text-blue-300">•</span>
+              <span className="mr-2 text-yellow-300 text-xl">📰</span>
+              <span className="font-semibold text-lg sm:text-xl">{item.title}</span>
+              <span className="mx-6 text-blue-300 text-xl">•</span>
             </a>
           ))}
         </div>
       </div>
+
       <style jsx>{`
         @keyframes ticker {
           0% { transform: translateX(0); }
@@ -299,6 +152,9 @@ const NewsTicker: React.FC = () => {
   );
 };
 
+// =======================
+//  Trouver contexte
+// =======================
 const trouverContextePertinent = (question: string): string => {
   const qNet = nettoyerChaine(question);
   const mots = qNet.split(/\s+/).filter(Boolean);
@@ -331,6 +187,9 @@ const trouverContextePertinent = (question: string): string => {
   return top.join("\n\n---\n\n");
 };
 
+// =======================
+// Podcast Player
+// =======================
 const PodcastPlayer: React.FC = () => {
   const [currentEpisode, setCurrentEpisode] = useState<PodcastEpisode | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -414,7 +273,7 @@ const PodcastPlayer: React.FC = () => {
   const selectEpisode = (episode: PodcastEpisode) => {
     if (currentEpisode?.id !== episode.id) {
       setCurrentEpisode(episode);
-      setIsPlaying(false); // Let useEffect handle loading and playing
+      setIsPlaying(false);
     }
   };
 
@@ -428,35 +287,69 @@ const PodcastPlayer: React.FC = () => {
   return (
     <div className={`fixed right-4 bottom-4 z-50 transition-all duration-300 ${isMinimized ? "w-60 h-14" : "w-80 h-auto"}`}>
       <div className="flex flex-col bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-xl shadow-lg border border-purple-500/30 overflow-hidden p-2">
+        
+        {/* --- Barre haute (minimisée ou étendue) --- */}
         <div className="flex items-center justify-between gap-2">
-          <button onClick={() => setIsMinimized(!isMinimized)} className="text-white p-1.5 hover:bg-white/10 rounded-full">
-            {isMinimized ? "🔼" : "🔽"}
-          </button>
+          <div className="flex items-center gap-2 min-w-0">
+            <button
+              onClick={() => setIsMinimized(!isMinimized)}
+              className="text-white p-1.5 hover:bg-white/10 rounded-full"
+            >
+              {isMinimized ? "🔼" : "🔽"}
+            </button>
+            {/* vignette + titre toujours visibles */}
+            <img
+              src="./podcast.jpg"
+              alt="Podcast"
+              className="w-8 h-8 rounded-full shadow border border-white/20"
+            />
+            <div className="text-white text-xs font-medium truncate max-w-[7.5rem]">
+              {currentEpisode?.title ?? "Podcast CFDT"}
+            </div>
+          </div>
+
+          {/* bouton play/pause */}
           {currentEpisode && (
-            <button onClick={playPause} className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-2">
+            <button
+              onClick={playPause}
+              className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-2 shrink-0"
+            >
               {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
             </button>
           )}
-          <div className="flex-grow flex items-center gap-2">
-            <Volume2 className="w-5 h-5 text-gray-300" />
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={e => setVolume(parseFloat(e.target.value))}
-              className="w-full h-1 bg-purple-300 rounded slider appearance-none"
-            />
-          </div>
+
+          {/* volume uniquement en mode étendu */}
+          {!isMinimized && (
+            <div className="flex-grow flex items-center gap-2">
+              <Volume2 className="w-5 h-5 text-gray-300" />
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={volume}
+                onChange={e => setVolume(parseFloat(e.target.value))}
+                className="w-full h-1 bg-purple-300 rounded slider appearance-none"
+              />
+            </div>
+          )}
         </div>
-        <audio ref={audioRef} src={currentEpisode?.url} preload="metadata" style={{ display: "none" }} crossOrigin="anonymous" />
+
+        {/* lecteur audio */}
+        <audio
+          ref={audioRef}
+          src={currentEpisode?.url}
+          preload="metadata"
+          style={{ display: "none" }}
+          crossOrigin="anonymous"
+        />
+
+        {/* contenu détaillé quand étendu */}
         {!isMinimized && (
           <div className="mt-4">
-            {/* Affichage de la vignette du podcast */}
             <div className="flex flex-col items-center mb-4">
               <img 
-                src="./podcast.jpg"  // <- Chemin identique, image dans 'public'
+                src="./podcast.jpg"
                 alt="Illustration Podcast"
                 className="w-32 h-32 object-cover rounded-full shadow-md border-2 border-purple-400"
               />
@@ -493,11 +386,10 @@ const PodcastPlayer: React.FC = () => {
 };
 
 
+// =======================
+// App principale
+// =======================
 export default function App() {
-  if (DEBUG_IMAGES) {
-    return <ImageTroubleshooter />;
-  }
-  
   const [chatState, setChatState] = useState<ChatbotState>({
     currentView: "menu",
     selectedDomain: null,
@@ -546,11 +438,11 @@ export default function App() {
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "llama-3-sonar-large-32k-online", messages }),
+      body: JSON.stringify({ model: "sonar-pro", messages }),
     });
     if (!response.ok) {
       const err = await response.text();
-      console.error("Détail de l'erreur API:", err);
+      console.error("Erreur API:", err);
       throw new Error(`Erreur API (${response.status})`);
     }
     const json = await response.json();
@@ -565,14 +457,14 @@ export default function App() {
 
     const systemPrompt = `
 Tu es un collègue syndical spécialiste pour la mairie de Gennevilliers.
-Ta mission est de répondre aux questions des agents en te basant EXCLUSIVEMENT sur la documentation fournie ci-dessous.
-NE JAMAIS utiliser tes connaissances générales.
-Si la réponse ne se trouve pas dans la documentation, réponds : "Je ne trouve pas l'information dans les documents à ma disposition. Veuillez contacter le 64 64 pour plus de détails."
-Sois précis, utilise un ton AMICAL et cite le titre du chapitre si possible.
---- DEBUT DE LA DOCUMENTATION PERTINENTE ---
+Réponds uniquement en utilisant la documentation ci-dessous.
+Si la réponse n'est pas présente, dis : "Je ne trouve pas l'information. Contactez le 64 64."
+Réponds comme si tu parlais a un collegue que tu connais, et propose lui a la fin de contacter la CFDT au 01 40 85 64 64.
+--- DOCUMENTATION ---
 ${contexte}
---- FIN DE LA DOCUMENTATION PERTINENTE ---
+--- FIN DOCUMENTATION ---
     `;
+
     const history = chatState.messages.slice(1).map((msg) => ({
       role: msg.type === "user" ? "user" : "assistant",
       content: msg.content,
@@ -592,16 +484,15 @@ ${contexte}
       const reply = await traiterQuestion(q);
       const assistantMsg: ChatMessage = { type: "assistant", content: reply, timestamp: new Date() };
       setChatState((p) => ({ ...p, messages: [...p.messages, assistantMsg], isProcessing: false }));
-    } catch (e) {
-      console.error(e);
+    } catch {
       const errMsg: ChatMessage = {
         type: "assistant",
-        content: "Désolé, une erreur est survenue. Veuillez réessayer ou contacter un représentant si le problème persiste.",
+        content: "Erreur lors du traitement. Veuillez réessayer.",
         timestamp: new Date(),
       };
       setChatState((p) => ({ ...p, messages: [...p.messages, errMsg], isProcessing: false }));
     } finally {
-        setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
   };
 
@@ -614,52 +505,59 @@ ${contexte}
 
   return (
     <div className="min-h-screen relative font-sans">
+      {/* Background */}
       <div className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0" style={{ backgroundImage: "url('./unnamed.jpg')" }} />
       <div className="fixed inset-0 bg-black/10 z-0" />
+
+      {/* Podcast Player */}
       <PodcastPlayer />
 
-      <header className="relative bg-white/90 backdrop-blur-sm shadow-lg border-b-4 border-orange-500 z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-center gap-6 flex-grow">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-orange-400 via-red-400 to-orange-500 rounded-full blur-lg opacity-70 animate-pulse" />
-              <div className="relative p-6 bg-gradient-to-br from-white to-orange-50 rounded-full shadow-2xl">
-                <Users className="w-20 h-20 text-orange-500" />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-orange-700 bg-clip-text text-transparent drop-shadow-sm">
-                Atlas: Chatbot CFDT
-              </h1>
-              <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                Mairie de GENNEVILLIERS
-              </h2>
-              <p className="mt-4 flex justify-center sm:justify-start items-center gap-2 text-lg text-gray-700">
-                <Users className="text-orange-500 w-5 h-5 animate-pulse" />
-                Assistant syndical CFDT pour les agents municipaux
-              </p>
-            </div>
-          </div>
-          <div className="relative shrink-0">
-            <div className="absolute -inset-8 bg-gradient-to-r from-orange-400 via-orange-500 to-red-400 rounded-full blur-2xl opacity-90 animate-pulse"></div>
-            <div className="relative bg-white rounded-full w-40 h-40 sm:w-48 sm:h-48 shadow-lg flex items-center justify-center p-2">
-              <img
-                src="./logo-cfdt.jpg" // CORRECTION APPLIQUÉE ICI
-                alt="Logo CFDT"
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
+{/* Header */}
+<header className="relative bg-white/90 backdrop-blur-sm shadow-lg border-b-4 border-orange-500 z-10">
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-6">
+    <div className="flex flex-col sm:flex-row items-center gap-6 flex-grow">
+      <div className="relative">
+        <div className="absolute -inset-4 bg-gradient-to-r from-orange-400 via-red-400 to-orange-500 rounded-full blur-lg opacity-70 animate-pulse" />
+        <div className="relative p-6 bg-gradient-to-br from-white to-orange-50 rounded-full shadow-2xl">
+          <Users className="w-20 h-20 text-orange-500" />
         </div>
-      </header>
-
+      </div>
+      <div>
+        <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-orange-700 bg-clip-text text-transparent drop-shadow-sm">
+          Atlas: Chatbot CFDT
+        </h1>
+        <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+          Mairie de GENNEVILLIERS
+        </h2>
+        <p className="mt-4 flex justify-center sm:justify-start items-center gap-2 text-lg text-gray-700">
+          <Users className="text-orange-500 w-5 h-5 animate-pulse" />
+          Assistant syndical CFDT pour les agents municipaux
+        </p>
+      </div>
+    </div>
+    <div className="relative shrink-0 w-40 h-40 sm:w-48 sm:h-48">
+      {/* Halo orange autour du cercle */}
+      <div className="absolute inset-0 rounded-full shadow-[0_0_40px_rgba(255,165,0,0.9)] animate-pulse"></div>
+      {/* Cercle blanc de fond */}
+      <div className="absolute inset-0 bg-white rounded-full"></div>
+      {/* Logo CFDT rempli dans le cercle */}
+      <img
+        src="./logo-cfdt.jpg"
+        alt="Logo CFDT"
+        className="relative w-full h-full object-cover rounded-full"
+      />
+    </div>
+  </div>
+</header>
+      {/* Main */}
       <main className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 z-10">
         {chatState.currentView === "menu" ? (
           <>
+            {/* Bandeau défilant custom (NEWS FTP:) */}
             <section className="relative bg-orange-300 text-black overflow-hidden mx-auto max-w-5xl rounded-2xl shadow-lg z-10">
               <div className="relative h-20 flex items-center overflow-hidden">
                 <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-orange-400 z-20 shadow-md">
-                  <span className="text-2xl font-bold">NEWS FTP:</span>
+                  <span className="text-2xl font-bold">NEWS FPT:</span>
                 </div>
                 <div className="animate-marquee whitespace-nowrap flex items-center pl-44" style={{ animation: "marquee 30s linear infinite" }}>
                   {[...infoItems, ...infoItems].map((info, idx) => (
@@ -681,6 +579,7 @@ ${contexte}
               `}</style>
             </section>
 
+            {/* Détail info */}
             {selectedInfo && (
               <section className="info-detail bg-white/95 backdrop-blur-sm p-6 rounded-lg shadow-md mt-8 max-w-4xl mx-auto">
                 <h3 className="text-xl font-bold mb-4">{selectedInfo.title}</h3>
@@ -691,12 +590,13 @@ ${contexte}
               </section>
             )}
 
+            {/* Choix domaine */}
             <section className="text-center my-12">
-              <h3 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-purple-700 bg-clip-text text-transparent mb-4">
-                Choisissez votre domaine d'assistance
-              </h3>
+            <h3 className="text-white text-xl sm:text-2xl font-bold mb-4 text-center">
+  Choisissez votre domaine d'assistance
+</h3>
               <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-                Sélectionnez le service qui correspond à vos besoins. Nos assistants IA spécialisés vous aideront.
+                Nos assistants IA spécialisés vous aideront.
               </p>
             </section>
 
@@ -741,19 +641,21 @@ ${contexte}
               </button>
             </div>
             
-             <div className="bg-white/95 border-2 border-blue-200 rounded-3xl p-8">
-                <div className="flex flex-col items-center gap-6">
-                    <div className="relative p-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl shadow-xl">
-                      <Sparkles className="w-12 h-12 text-white" />
-                    </div>
-                  <h4 className="text-2xl font-bold text-gray-800 text-blue-700">Actualités Nationales</h4>
-                  <div className="w-full">
-                    <NewsTicker />
-                  </div>
+            {/* Bloc actus (RSS) */}
+            <div className="bg-white/95 border-2 border-blue-200 rounded-3xl p-8">
+              <div className="flex flex-col items-center gap-6">
+                <div className="relative p-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl shadow-xl">
+                  <Sparkles className="w-12 h-12 text-white" />
+                </div>
+                <h4 className="text-2xl font-bold text-gray-800 text-blue-700">Actualités Nationales</h4>
+                <div className="w-full">
+                  <NewsTicker />
                 </div>
               </div>
+            </div>
           </>
         ) : (
+          // Vue Chat
           <div ref={chatContainerRef} className="bg-white/95 rounded-3xl shadow-2xl border border-gray-200 overflow-hidden backdrop-blur-sm">
             <div className="bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 p-4 flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -829,55 +731,63 @@ ${contexte}
         )}
       </main>
 
-      <footer className="relative bg-gray-900 text-white py-12 z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="text-center md:text-left">
-              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
-                Contact CFDT
-              </h4>
-              <div className="space-y-3">
-                <div className="flex items-center justify-center md:justify-start gap-3">
-                  <Phone className="w-5 h-5 text-orange-400" />
-                  <span>01 40 85 64 64</span>
-                </div>
-                <div className="flex items-center justify-center md:justify-start gap-3">
-                  <Mail className="w-5 h-5 text-orange-400" />
-                  <span>cfdt-interco@ville-gennevilliers.fr</span>
-                </div>
-                <div className="flex items-center justify-center md:justify-start gap-3">
-                  <MapPin className="w-5 h-5 text-orange-400" />
-                  <span>Mairie de Gennevilliers</span>
-                </div>
-              </div>
-            </div>
-            <div className="text-center">
-              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                Services
-              </h4>
-              <ul className="space-y-2 text-gray-300">
-                <li>Santé</li>
-                <li>Retraite</li>
-                <li>Juridique</li>
-                <li>Accompagnement syndical</li>
-              </ul>
-            </div>
-            <div className="text-center md:text-right">
-              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
-                Horaires
-              </h4>
-              <div className="space-y-2 text-gray-300">
-                <div>Lundi - Vendredi</div>
-                <div className="font-semibold text-white">9h00 - 17h00</div>
-                <div className="text-sm">Permanences sur RDV</div>
-              </div>
-            </div>
+{/* Footer */}
+<footer className="relative bg-gray-900 text-white py-12 z-10">
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="text-center md:text-left">
+        <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+          Contact CFDT
+        </h4>
+        <div className="space-y-3">
+          <div className="flex items-center justify-center md:justify-start gap-3">
+            <Phone className="w-5 h-5 text-orange-400" />
+            <span>01 40 85 64 64</span>
           </div>
-          <div className="border-t border-gray-700 mt-10 pt-6 text-center">
-            <p className="text-gray-400">© 2025 CFDT Gennevilliers - Assistant IA pour les agents municipaux</p>
+          <div className="flex items-center justify-center md:justify-start gap-3">
+            <Mail className="w-5 h-5 text-orange-400" />
+            <a
+              href="mailto:cfdt-interco@ville-gennevilliers.fr"
+              className="text-white hover:underline"
+            >
+              cfdt-interco@ville-gennevilliers.fr
+            </a>
+          </div>
+          <div className="flex items-center justify-center md:justify-start gap-3">
+            <MapPin className="w-5 h-5 text-orange-400" />
+            <span>Mairie de Gennevilliers</span>
           </div>
         </div>
-      </footer>
+      </div>
+      <div className="text-center">
+        <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          Services
+        </h4>
+        <ul className="space-y-2 text-gray-300">
+          <li>Santé</li>
+          <li>Retraite</li>
+          <li>Juridique</li>
+          <li>Accompagnement syndical</li>
+        </ul>
+      </div>
+      <div className="text-center md:text-right">
+        <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
+          Horaires
+        </h4>
+        <div className="space-y-2 text-gray-300">
+          <div>Lundi - Vendredi</div>
+          <div className="font-semibold text-white">9h00 - 17h00</div>
+          <div className="text-sm">Permanences sur RDV</div>
+        </div>
+      </div>
+    </div>
+    <div className="border-t border-gray-700 mt-10 pt-6 text-center">
+      <p className="text-gray-400">
+        © 2025 CFDT Gennevilliers - Assistant IA pour les agents municipaux
+      </p>
+    </div>
+  </div>
+</footer>
     </div>
   );
 }

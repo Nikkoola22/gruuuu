@@ -24,6 +24,170 @@ import { teletravailData } from "./data/teletravail.ts";
 import { infoItems } from "./data/info-data.ts";
 import { podcastEpisodes, type PodcastEpisode } from "./data/podcasts/mp3.ts";
 
+// Variable pour activer/désactiver le diagnostic
+const DEBUG_IMAGES = false;
+
+// Composant de diagnostic intégré directement
+const ImageTroubleshooter = () => {
+  const [images, setImages] = useState([
+    { name: "unnamed.jpg", path: "./unnamed.jpg", loaded: false, error: false },
+    { name: "logo-cfdt.jpg", path: "./logo-cfdt.jpg", loaded: false, error: false }
+  ]);
+
+  const [publicUrl, setPublicUrl] = useState("");
+  const [baseUrl, setBaseUrl] = useState("");
+
+  useEffect(() => {
+    setBaseUrl(window.location.origin);
+    setPublicUrl(`${window.location.origin}/public`);
+    testAllImages();
+  }, []);
+
+  const testImage = (index: number) => {
+    const img = new Image();
+    const image = images[index];
+    
+    img.onload = () => {
+      const updatedImages = [...images];
+      updatedImages[index] = { ...image, loaded: true, error: false };
+      setImages(updatedImages);
+    };
+    
+    img.onerror = () => {
+      const updatedImages = [...images];
+      updatedImages[index] = { ...image, loaded: false, error: true };
+      setImages(updatedImages);
+    };
+    
+    img.src = image.path;
+  };
+
+  const testAllImages = () => {
+    images.forEach((_, index) => testImage(index));
+  };
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
+        <h1 className="text-3xl font-bold text-blue-800 mb-6">Diagnostic d'affichage des images</h1>
+        
+        <div className="mb-8 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+          <h2 className="text-xl font-semibold text-yellow-800 mb-2">Informations sur l'environnement</h2>
+          <p className="mb-1"><strong>URL de base:</strong> {baseUrl}</p>
+          <p className="mb-1"><strong>Chemin public:</strong> {publicUrl}</p>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-blue-800 mb-4">Test des images</h2>
+          <button 
+            onClick={testAllImages}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mb-4"
+          >
+            Tester à nouveau toutes les images
+          </button>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {images.map((image, index) => (
+              <div key={index} className="border rounded-lg p-4 bg-gray-50">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-medium">{image.name}</h3>
+                  <button 
+                    onClick={() => testImage(index)}
+                    className="text-sm bg-gray-200 hover:bg-gray-300 py-1 px-2 rounded"
+                  >
+                    Tester
+                  </button>
+                </div>
+                
+                <div className="h-48 bg-white border flex items-center justify-center mb-2">
+                  {image.loaded ? (
+                    <img 
+                      src={image.path} 
+                      alt={image.name} 
+                      className="max-h-full max-w-full"
+                    />
+                  ) : image.error ? (
+                    <div className="text-red-600 text-center">
+                      <div className="text-4xl mb-2">❌</div>
+                      <p>Erreur de chargement</p>
+                    </div>
+                  ) : (
+                    <div className="text-gray-500">Test en cours...</div>
+                  )}
+                </div>
+                
+                <div className="text-sm">
+                  <p><strong>Chemin:</strong> {image.path}</p>
+                  <p><strong>Statut:</strong> 
+                    {image.loaded ? 
+                      <span className="text-green-600"> Chargée avec succès</span> : 
+                      image.error ? 
+                      <span className="text-red-600"> Erreur de chargement</span> : 
+                      <span className="text-gray-600"> En cours de test</span>
+                    }
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-blue-800 mb-4">Solutions possibles</h2>
+          <div className="space-y-4">
+            <div className="p-4 bg-blue-50 rounded-lg">
+              <h3 className="font-medium text-blue-800 mb-2">1. Vérifiez l'emplacement des fichiers</h3>
+              <p>Assurez-vous que les images sont bien dans le dossier <code>public</code> à la racine de votre projet.</p>
+              <pre className="bg-gray-800 text-white p-2 rounded mt-2 overflow-x-auto">
+{`public/
+  ├── unnamed.jpg
+  └── logo-cfdt.jpg`}
+              </pre>
+            </div>
+
+            <div className="p-4 bg-blue-50 rounded-lg">
+              <h3 className="font-medium text-blue-800 mb-2">2. Utilisez le chemin absolu</h3>
+              <p>Dans votre code, utilisez le chemin absolu depuis la racine :</p>
+              <pre className="bg-gray-800 text-white p-2 rounded mt-2 overflow-x-auto">
+{`// Pour l'image de fond
+style={{ backgroundImage: "url('./unnamed.jpg')" }}
+
+// Pour l'image logo
+<img src="./logo-cfdt.jpg" alt="Logo CFDT" />`}
+              </pre>
+            </div>
+
+            <div className="p-4 bg-blue-50 rounded-lg">
+              <h3 className="font-medium text-blue-800 mb-2">3. Vérifiez la casse des noms de fichiers</h3>
+              <p>Sur certains serveurs, la casse (majuscules/minuscules) est importante. Vérifiez que la casse correspond exactement.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+          <h2 className="text-xl font-semibold text-green-800 mb-2">Code corrigé pour les images</h2>
+          <p>Voici comment votre code devrait être structuré :</p>
+          <pre className="bg-gray-800 text-white p-2 rounded mt-2 overflow-x-auto">
+{`// Image de fond
+<div 
+  className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0" 
+  style={{ backgroundImage: "url('./unnamed.jpg')" }} 
+/>
+
+// Logo
+<img 
+  src="./logo-cfdt.jpg" 
+  alt="Logo CFDT" 
+  className="w-full h-full object-contain"
+  style={{ maxWidth: "100%", maxHeight: "100%" }}
+/>`}
+          </pre>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Le reste de votre code original...
 interface ChatMessage {
   type: "user" | "assistant";
   content: string;
@@ -41,7 +205,7 @@ interface ChatbotState {
   isProcessing: boolean;
 }
 
-const API_KEY = "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";
+const API_KEY = "VOTRE_CLE_API_PERPLEXITY"; // Remplacez par votre clé
 const API_URL = "https://api.perplexity.ai/chat/completions";
 
 const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
@@ -76,7 +240,7 @@ const NewsTicker: React.FC = () => {
     const chargerFlux = async () => {
       try {
         const res = await fetch(FLUX_ACTUALITES_URL);
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error("Failed to fetch RSS feed");
         const xml = await res.text();
         const doc = new DOMParser().parseFromString(xml, "text/xml");
         const items = Array.from(doc.querySelectorAll("item")).slice(0, 10).map((item, i) => ({
@@ -87,7 +251,7 @@ const NewsTicker: React.FC = () => {
         }));
         if (items.length) setActualites(items);
       } catch {
-        console.log("Utilisation des données de secours pour les actualités");
+        console.error("Failed to load RSS feed, using fallback data.");
       } finally {
         setLoading(false);
       }
@@ -191,20 +355,25 @@ const PodcastPlayer: React.FC = () => {
     const updateDuration = () => {
       if (audio.duration && isFinite(audio.duration)) setDuration(audio.duration);
     };
-    const handlers = {
+    const handleEnded = () => {
+      setIsPlaying(false);
+      const currentIndex = podcastEpisodes.findIndex((e) => e.id === currentEpisode?.id);
+      if (currentIndex !== -1 && currentIndex < podcastEpisodes.length - 1) {
+        setCurrentEpisode(podcastEpisodes[currentIndex + 1]);
+      }
+    };
+    const handleError = () => {
+      setIsLoading(false);
+      setIsPlaying(false);
+      setError("Impossible de charger ce podcast. Vérifiez votre connexion.");
+    };
+
+    const handlers: { [key: string]: EventListener } = {
       timeupdate: updateTime,
       loadedmetadata: updateDuration,
       canplay: () => setIsLoading(false),
-      ended: () => {
-        setIsPlaying(false);
-        const idx = podcastEpisodes.findIndex((e) => e.id === currentEpisode?.id);
-        if (idx < podcastEpisodes.length - 1) setCurrentEpisode(podcastEpisodes[idx + 1]);
-      },
-      error: () => {
-        setIsLoading(false);
-        setIsPlaying(false);
-        setError("Impossible de charger ce podcast. Vérifiez votre connexion.");
-      },
+      ended: handleEnded,
+      error: handleError,
       loadstart: () => setIsLoading(true),
       waiting: () => setIsLoading(true),
       playing: () => {
@@ -213,12 +382,13 @@ const PodcastPlayer: React.FC = () => {
       },
       pause: () => setIsPlaying(false),
     };
-    Object.entries(handlers).forEach(([evt, fn]) => audio.addEventListener(evt, fn as any));
+
+    Object.entries(handlers).forEach(([evt, fn]) => audio.addEventListener(evt, fn));
     audio.volume = volume;
     if (currentEpisode) audio.load();
 
     return () => {
-      Object.entries(handlers).forEach(([evt, fn]) => audio.removeEventListener(evt, fn as any));
+      Object.entries(handlers).forEach(([evt, fn]) => audio.removeEventListener(evt, fn));
     };
   }, [currentEpisode, volume]);
 
@@ -228,25 +398,13 @@ const PodcastPlayer: React.FC = () => {
     try {
       if (isPlaying) {
         audio.pause();
-        setIsPlaying(false);
       } else {
         setIsLoading(true);
         setError(null);
-        if (audio.readyState < HTMLMediaElement.HAVE_ENOUGH_DATA) {
-          audio.load();
-          await new Promise<void>((resolve, reject) => {
-            const timeout = setTimeout(() => reject(new Error("Timeout")), 10000);
-            const onCan = () => { clearTimeout(timeout); resolve(); };
-            const onErr = () => { clearTimeout(timeout); reject(); };
-            audio.addEventListener("canplay", onCan);
-            audio.addEventListener("error", onErr);
-          });
-        }
-        const promise = audio.play();
-        if (promise !== undefined) await promise;
-        setIsPlaying(true);
+        await audio.play();
       }
-    } catch {
+    } catch (err) {
+      console.error("Error playing audio:", err);
       setError("Impossible de lire ce podcast.");
       setIsLoading(false);
       setIsPlaying(false);
@@ -254,54 +412,63 @@ const PodcastPlayer: React.FC = () => {
   };
 
   const selectEpisode = (episode: PodcastEpisode) => {
-    setCurrentEpisode(episode);
-    setIsPlaying(false);
-    setCurrentTime(0);
-    setDuration(0);
-    setError(null);
-    setIsLoading(false);
+    if (currentEpisode?.id !== episode.id) {
+      setCurrentEpisode(episode);
+      setIsPlaying(false); // Let useEffect handle loading and playing
+    }
   };
 
-  const formatTime = (t: number) => {
-    if (!t || isNaN(t)) return "0:00";
-    const m = Math.floor(t / 60);
-    const s = Math.floor(t % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
+  const formatTime = (timeInSeconds: number) => {
+    if (!timeInSeconds || isNaN(timeInSeconds)) return "0:00";
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60).toString().padStart(2, "0");
+    return `${minutes}:${seconds}`;
   };
 
   return (
-    <div className={`fixed right-4 bottom-4 z-50 transition-all duration-300 ${isMinimized ? "w-48 h-12" : "w-80 h-auto"}`}>
-      <div className="flex flex-col bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-xl shadow-lg border border-purple-500/30 overflow-hidden px-2 py-2">
-        <div className="flex items-center justify-between">
-          <button onClick={() => setIsMinimized(!isMinimized)} className="text-white p-1.5">
-            {isMinimized ? "⬜" : "➖"}
+    <div className={`fixed right-4 bottom-4 z-50 transition-all duration-300 ${isMinimized ? "w-60 h-14" : "w-80 h-auto"}`}>
+      <div className="flex flex-col bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-xl shadow-lg border border-purple-500/30 overflow-hidden p-2">
+        <div className="flex items-center justify-between gap-2">
+          <button onClick={() => setIsMinimized(!isMinimized)} className="text-white p-1.5 hover:bg-white/10 rounded-full">
+            {isMinimized ? "🔼" : "🔽"}
           </button>
           {currentEpisode && (
-            <button onClick={playPause} className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-1.5">
-              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            <button onClick={playPause} className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-2">
+              {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
             </button>
           )}
-          <Volume2 className="w-4 h-4 text-gray-300" />
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={volume * 100}
-            onChange={e => setVolume(parseFloat(e.target.value) / 100)}
-            className="w-24 h-1 bg-purple-300 rounded slider"
-          />
+          <div className="flex-grow flex items-center gap-2">
+            <Volume2 className="w-5 h-5 text-gray-300" />
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={e => setVolume(parseFloat(e.target.value))}
+              className="w-full h-1 bg-purple-300 rounded slider appearance-none"
+            />
+          </div>
         </div>
         <audio ref={audioRef} src={currentEpisode?.url} preload="metadata" style={{ display: "none" }} crossOrigin="anonymous" />
         {!isMinimized && (
           <div className="mt-4">
-            <h4 className="text-white font-bold text-center mb-2">Épisodes disponibles</h4>
-            <ul>
+            {/* Affichage de la vignette du podcast */}
+            <div className="flex flex-col items-center mb-4">
+              <img 
+                src="./podcast.jpg"  // <- Chemin identique, image dans 'public'
+                alt="Illustration Podcast"
+                className="w-32 h-32 object-cover rounded-full shadow-md border-2 border-purple-400"
+              />
+              <h4 className="text-white font-bold text-center mt-2">Épisodes disponibles</h4>
+            </div>
+            <ul className="max-h-48 overflow-y-auto">
               {podcastEpisodes.map(episode => (
                 <li key={episode.id}>
                   <button
                     onClick={() => selectEpisode(episode)}
-                    className={`block w-full text-left px-4 py-2 rounded hover:bg-purple-700 text-white mb-1 ${
-                      currentEpisode?.id === episode.id ? "bg-purple-700 font-semibold" : "bg-purple-600"
+                    className={`block w-full text-left px-3 py-2 rounded-md text-sm text-white mb-1 transition-colors ${
+                      currentEpisode?.id === episode.id ? "bg-purple-700 font-semibold" : "bg-purple-800/60 hover:bg-purple-700/80"
                     }`}
                   >
                     {episode.title}
@@ -310,12 +477,12 @@ const PodcastPlayer: React.FC = () => {
               ))}
             </ul>
             {currentEpisode && (
-              <div className="mt-2 px-4 text-sm text-purple-200">
-                <span>Lecture : {currentEpisode.title}</span>
+              <div className="mt-2 px-2 text-xs text-purple-200">
+                <p className="truncate">Lecture : {currentEpisode.title}</p>
                 <div>
-                  {formatTime(currentTime)} / {formatTime(duration)}
+                  <span>{formatTime(currentTime)} / {formatTime(duration)}</span>
                 </div>
-                {error && <div className="text-red-300">{error}</div>}
+                {error && <div className="text-red-300 mt-1">{error}</div>}
               </div>
             )}
           </div>
@@ -325,7 +492,12 @@ const PodcastPlayer: React.FC = () => {
   );
 };
 
+
 export default function App() {
+  if (DEBUG_IMAGES) {
+    return <ImageTroubleshooter />;
+  }
+  
   const [chatState, setChatState] = useState<ChatbotState>({
     currentView: "menu",
     selectedDomain: null,
@@ -338,12 +510,13 @@ export default function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatState.messages]);
+
   const scrollToChat = () => {
     setTimeout(() => {
-      if (chatContainerRef.current) {
-        const target = chatContainerRef.current.offsetTop - 150;
-        window.scrollTo({ top: target < 0 ? 0 : target, behavior: "smooth" });
-      }
+      chatContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
   };
 
@@ -373,7 +546,7 @@ export default function App() {
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "sonar-pro", messages }),
+      body: JSON.stringify({ model: "llama-3-sonar-large-32k-online", messages }),
     });
     if (!response.ok) {
       const err = await response.text();
@@ -414,11 +587,11 @@ ${contexte}
     const userMsg: ChatMessage = { type: "user", content: q, timestamp: new Date() };
     setChatState((p) => ({ ...p, messages: [...p.messages, userMsg], isProcessing: true }));
     setInputValue("");
-    scrollToChat();
+    
     try {
       const reply = await traiterQuestion(q);
       const assistantMsg: ChatMessage = { type: "assistant", content: reply, timestamp: new Date() };
-      setChatState((p) => ({ ...p, messages: [...p.messages, assistantMsg] }));
+      setChatState((p) => ({ ...p, messages: [...p.messages, assistantMsg], isProcessing: false }));
     } catch (e) {
       console.error(e);
       const errMsg: ChatMessage = {
@@ -426,11 +599,9 @@ ${contexte}
         content: "Désolé, une erreur est survenue. Veuillez réessayer ou contacter un représentant si le problème persiste.",
         timestamp: new Date(),
       };
-      setChatState((p) => ({ ...p, messages: [...p.messages, errMsg] }));
+      setChatState((p) => ({ ...p, messages: [...p.messages, errMsg], isProcessing: false }));
     } finally {
-      setChatState((p) => ({ ...p, isProcessing: false }));
-      scrollToChat();
-      setTimeout(() => inputRef.current?.focus(), 100);
+        setTimeout(() => inputRef.current?.focus(), 100);
     }
   };
 
@@ -442,12 +613,12 @@ ${contexte}
   };
 
   return (
-    <div className="min-h-screen relative">
-      <div className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0" style={{ backgroundImage: `url('/unnamed.png')` }} />
+    <div className="min-h-screen relative font-sans">
+      <div className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0" style={{ backgroundImage: "url('./unnamed.jpg')" }} />
       <div className="fixed inset-0 bg-black/10 z-0" />
       <PodcastPlayer />
 
-      <header className="relative bg-gradient-to-r from-white/95 via-orange-50/95 to-white/95 shadow-2xl border-b-4 border-orange-500 z-10">
+      <header className="relative bg-white/90 backdrop-blur-sm shadow-lg border-b-4 border-orange-500 z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col sm:flex-row items-center gap-6 flex-grow">
             <div className="relative">
@@ -469,16 +640,13 @@ ${contexte}
               </p>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative shrink-0">
             <div className="absolute -inset-8 bg-gradient-to-r from-orange-400 via-orange-500 to-red-400 rounded-full blur-2xl opacity-90 animate-pulse"></div>
-            <div className="absolute -inset-6 bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 rounded-full blur-xl opacity-70"></div>
-            <div className="absolute -inset-4 bg-gradient-to-r from-orange-200 via-orange-300 to-orange-400 rounded-full blur-lg opacity-50"></div>
-            <div className="relative bg-white rounded-full w-48 h-48 shadow-lg flex items-center justify-center p-0">
+            <div className="relative bg-white rounded-full w-40 h-40 sm:w-48 sm:h-48 shadow-lg flex items-center justify-center p-2">
               <img
-                src="/logo-cfdt.png"
+                src="./logo-cfdt.jpg" // CORRECTION APPLIQUÉE ICI
                 alt="Logo CFDT"
                 className="w-full h-full object-contain"
-                style={{ maxWidth: "100%", maxHeight: "100%" }}
               />
             </div>
           </div>
@@ -488,13 +656,13 @@ ${contexte}
       <main className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 z-10">
         {chatState.currentView === "menu" ? (
           <>
-            <section className="relative bg-orange-300 text-black overflow-hidden mx-4 rounded-2xl shadow-lg z-10">
+            <section className="relative bg-orange-300 text-black overflow-hidden mx-auto max-w-5xl rounded-2xl shadow-lg z-10">
               <div className="relative h-20 flex items-center overflow-hidden">
                 <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-orange-400 z-20 shadow-md">
                   <span className="text-2xl font-bold">NEWS FTP:</span>
                 </div>
                 <div className="animate-marquee whitespace-nowrap flex items-center pl-44" style={{ animation: "marquee 30s linear infinite" }}>
-                  {[...infoItems, ...infoItems, ...infoItems].map((info, idx) => (
+                  {[...infoItems, ...infoItems].map((info, idx) => (
                     <button
                       key={`${info.id}-${idx}`}
                       onClick={() => setSelectedInfo(info)}
@@ -508,118 +676,88 @@ ${contexte}
               <style jsx>{`
                 @keyframes marquee {
                   0% { transform: translateX(0%); }
-                  100% { transform: translateX(-33.33%); }
+                  100% { transform: translateX(-50%); }
                 }
               `}</style>
             </section>
 
             {selectedInfo && (
-              <section className="info-detail bg-white p-6 rounded-lg shadow-md mt-8 max-w-4xl mx-auto">
+              <section className="info-detail bg-white/95 backdrop-blur-sm p-6 rounded-lg shadow-md mt-8 max-w-4xl mx-auto">
                 <h3 className="text-xl font-bold mb-4">{selectedInfo.title}</h3>
-                <p>{selectedInfo.content}</p>
+                <p className="whitespace-pre-wrap">{selectedInfo.content}</p>
                 <button onClick={() => setSelectedInfo(null)} className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
                   Fermer
                 </button>
               </section>
             )}
 
-            <section className="text-center my-8">
+            <section className="text-center my-12">
               <h3 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-purple-700 bg-clip-text text-transparent mb-4">
-                Choisissez votre domaine d’assistance
+                Choisissez votre domaine d'assistance
               </h3>
               <p className="text-xl text-gray-700 max-w-3xl mx-auto">
                 Sélectionnez le service qui correspond à vos besoins. Nos assistants IA spécialisés vous aideront.
               </p>
             </section>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               <button
                 onClick={() => handleDomainSelection(0)}
-                className="group relative overflow-hidden bg-white/95 border-2 border-orange-200 rounded-3xl p-10 transition-all duration-500 hover:border-orange-400 hover:shadow-2xl hover:-translate-y-2"
+                className="group relative overflow-hidden bg-white/95 border-2 border-orange-200 rounded-3xl p-8 transition-all duration-500 hover:border-orange-400 hover:shadow-2xl hover:-translate-y-2"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-red-50 to-orange-100 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative z-10 flex flex-col items-center gap-6">
-                  <div className="relative">
-                    <span className="absolute -inset-3 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl opacity-20 blur-lg group-hover:scale-110 transition"></span>
-                    <div className="relative p-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl shadow-2xl group-hover:rotate-3 group-hover:scale-110 transition-all">
-                      <Clock className="w-12 h-12 text-white" />
-                    </div>
+                  <div className="relative p-6 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl shadow-xl group-hover:rotate-3 group-hover:scale-110 transition-transform">
+                    <Clock className="w-12 h-12 text-white" />
                   </div>
-                  <h4 className="text-2xl font-bold text-gray-800 group-hover:text-orange-700">Règlement du Temps de Travail</h4>
-                  <p className="text-center text-gray-600">Horaires, congés, ARTT, temps partiel, heures sup, absences…</p>
-                  <div className="flex items-center gap-2 text-orange-500 opacity-0 group-hover:opacity-100 transition">
-                    <span className="font-semibold">Accéder à l’assistant</span>
-                    <ArrowRight className="w-4 h-4 animate-pulse" />
-                  </div>
+                  <h4 className="text-2xl font-bold text-gray-800 group-hover:text-orange-700">Temps de Travail</h4>
+                  <p className="text-center text-gray-600">Horaires, congés, ARTT, temps partiel, absences…</p>
                 </div>
               </button>
 
               <button
                 onClick={() => handleDomainSelection(1)}
-                className="group relative overflow-hidden bg-white/95 border-2 border-purple-200 rounded-3xl p-10 transition-all duration-500 hover:border-purple-400 hover:shadow-2xl hover:-translate-y-2"
+                className="group relative overflow-hidden bg-white/95 border-2 border-purple-200 rounded-3xl p-8 transition-all duration-500 hover:border-purple-400 hover:shadow-2xl hover:-translate-y-2"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-blue-50 to-purple-100 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative z-10 flex flex-col items-center gap-6">
-                  <div className="relative">
-                    <span className="absolute -inset-3 bg-gradient-to-br from-purple-500 to-blue-600 rounded-3xl opacity-20 blur-lg group-hover:scale-110 transition"></span>
-                    <div className="relative p-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-3xl shadow-2xl group-hover:rotate-3 group-hover:scale-110 transition-all">
-                      <GraduationCap className="w-12 h-12 text-white" />
-                    </div>
+                  <div className="relative p-6 bg-gradient-to-br from-purple-500 to-blue-600 rounded-3xl shadow-xl group-hover:rotate-3 group-hover:scale-110 transition-transform">
+                    <GraduationCap className="w-12 h-12 text-white" />
                   </div>
-                  <h4 className="text-2xl font-bold text-gray-800 group-hover:text-purple-700">Formation Professionnelle</h4>
-                  <p className="text-center text-gray-600">CPF, congés formation, VAE, concours, bilans de compétences…</p>
-                  <div className="flex items-center gap-2 text-purple-500 opacity-0 group-hover:opacity-100 transition">
-                    <span className="font-semibold">Accéder à l’assistant</span>
-                    <ArrowRight className="w-4 h-4 animate-pulse" />
-                  </div>
+                  <h4 className="text-2xl font-bold text-gray-800 group-hover:text-purple-700">Formation</h4>
+                  <p className="text-center text-gray-600">CPF, VAE, concours, bilans de compétences…</p>
                 </div>
               </button>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              
               <button
                 onClick={() => handleDomainSelection(2)}
-                className="group relative overflow-hidden bg-white/95 border-2 border-green-200 rounded-3xl p-10 transition-all duration-500 hover:border-green-400 hover:shadow-2xl hover:-translate-y-2"
+                className="group relative overflow-hidden bg-white/95 border-2 border-green-200 rounded-3xl p-8 transition-all duration-500 hover:border-green-400 hover:shadow-2xl hover:-translate-y-2 md:col-span-2 lg:col-span-1"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-teal-50 to-green-100 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative z-10 flex flex-col items-center gap-6">
-                  <div className="relative">
-                    <span className="absolute -inset-3 bg-gradient-to-br from-green-500 to-teal-600 rounded-3xl opacity-20 blur-lg group-hover:scale-110 transition"></span>
-                    <div className="relative p-8 bg-gradient-to-br from-green-500 to-teal-600 rounded-3xl shadow-2xl group-hover:rotate-3 group-hover:scale-110 transition-all">
-                      <Home className="w-12 h-12 text-white" />
-                    </div>
+                  <div className="relative p-6 bg-gradient-to-br from-green-500 to-teal-600 rounded-3xl shadow-xl group-hover:rotate-3 group-hover:scale-110 transition-transform">
+                    <Home className="w-12 h-12 text-white" />
                   </div>
                   <h4 className="text-2xl font-bold text-gray-800 group-hover:text-green-700">Télétravail</h4>
                   <p className="text-center text-gray-600">Charte, jours autorisés, indemnités, modalités…</p>
-                  <div className="flex items-center gap-2 text-green-500 opacity-0 group-hover:opacity-100 transition">
-                    <span className="font-semibold">Accéder à l’assistant</span>
-                    <ArrowRight className="w-4 h-4 animate-pulse" />
-                  </div>
                 </div>
               </button>
-
-              <div className="group relative overflow-hidden bg-white/95 border-2 border-blue-200 rounded-3xl p-10 transition-all duration-500 hover:border-blue-400 hover:shadow-2xl hover:-translate-y-2">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="relative z-10 flex flex-col items-center gap-6">
-                  <div className="relative">
-                    <span className="absolute -inset-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl opacity-20 blur-lg group-hover:scale-110 transition"></span>
-                    <div className="relative p-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl shadow-2xl group-hover:rotate-3 group-hover:scale-110 transition-all">
+            </div>
+            
+             <div className="bg-white/95 border-2 border-blue-200 rounded-3xl p-8">
+                <div className="flex flex-col items-center gap-6">
+                    <div className="relative p-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl shadow-xl">
                       <Sparkles className="w-12 h-12 text-white" />
                     </div>
-                  </div>
-                  <h4 className="text-2xl font-bold text-gray-800 group-hover:text-blue-700">Actualités Politiques</h4>
+                  <h4 className="text-2xl font-bold text-gray-800 text-blue-700">Actualités Nationales</h4>
                   <div className="w-full">
                     <NewsTicker />
                   </div>
                 </div>
               </div>
-            </div>
           </>
         ) : (
-          <div ref={chatContainerRef} className="bg-white/95 rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 p-6 flex items-center justify-between">
+          <div ref={chatContainerRef} className="bg-white/95 rounded-3xl shadow-2xl border border-gray-200 overflow-hidden backdrop-blur-sm">
+            <div className="bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 p-4 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <button onClick={returnToMenu} className="text-white hover:text-orange-200">
+                <button onClick={returnToMenu} className="text-white hover:text-orange-200 p-2 rounded-full hover:bg-white/10">
                   <ArrowLeft className="w-6 h-6" />
                 </button>
                 <div>
@@ -634,28 +772,30 @@ ${contexte}
               <Users className="w-8 h-8 text-white" />
             </div>
 
-            <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-50 to-white">
+            <div className="h-[60vh] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-50 to-white">
               {chatState.messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}>
+                <div key={i} className={`flex items-end gap-2 ${msg.type === "user" ? "justify-end" : "justify-start"}`}>
+                   {msg.type === 'assistant' && <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center shrink-0">CFDT</div>}
                   <div
-                    className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-lg ${
+                    className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-md ${
                       msg.type === "user"
-                        ? "bg-gradient-to-r from-orange-500 to-red-500 text-white"
-                        : "bg-white border border-gray-200 text-gray-800"
+                        ? "bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-br-none"
+                        : "bg-white border border-gray-200 text-gray-800 rounded-bl-none"
                     }`}
                   >
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
-                    <p className="text-xs mt-2 opacity-70">{msg.timestamp.toLocaleTimeString()}</p>
+                    <p className="text-xs mt-2 opacity-70 text-right">{msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                   </div>
                 </div>
               ))}
 
               {chatState.isProcessing && (
-                <div className="flex justify-start">
-                  <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-lg">
+                <div className="flex items-end gap-2 justify-start">
+                  <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center shrink-0">CFDT</div>
+                  <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-md rounded-bl-none">
                     <div className="flex items-center space-x-2">
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500"></div>
-                      <span className="text-sm text-gray-600">L’assistant réfléchit...</span>
+                      <span className="text-sm text-gray-600">L'assistant réfléchit...</span>
                     </div>
                   </div>
                 </div>
@@ -664,8 +804,8 @@ ${contexte}
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-6 bg-gray-50 border-t border-gray-200">
-              <div className="flex items-center space-x-4">
+            <div className="p-4 bg-gray-50/80 border-t border-gray-200 backdrop-blur-sm">
+              <div className="flex items-center space-x-2">
                 <input
                   ref={inputRef}
                   type="text"
@@ -673,16 +813,15 @@ ${contexte}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Tapez votre question ici..."
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   disabled={chatState.isProcessing}
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || chatState.isProcessing}
-                  className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-2xl hover:from-orange-600 hover:to-red-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg"
+                  className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-3 rounded-full hover:from-orange-600 hover:to-red-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
                 >
-                  <Send className="w-4 h-4" />
-                  <span className="hidden sm:inline">Envoyer</span>
+                  <Send className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -690,14 +829,14 @@ ${contexte}
         )}
       </main>
 
-      <footer className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16 z-10">
+      <footer className="relative bg-gray-900 text-white py-12 z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="text-center md:text-left">
-              <h4 className="text-2xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
                 Contact CFDT
               </h4>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="flex items-center justify-center md:justify-start gap-3">
                   <Phone className="w-5 h-5 text-orange-400" />
                   <span>01 40 85 64 64</span>
@@ -713,28 +852,28 @@ ${contexte}
               </div>
             </div>
             <div className="text-center">
-              <h4 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
                 Services
               </h4>
-              <ul className="space-y-3 text-gray-300">
-                <li>Sante</li>
+              <ul className="space-y-2 text-gray-300">
+                <li>Santé</li>
                 <li>Retraite</li>
                 <li>Juridique</li>
                 <li>Accompagnement syndical</li>
               </ul>
             </div>
             <div className="text-center md:text-right">
-              <h4 className="text-2xl font-bold mb-6 bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
+              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
                 Horaires
               </h4>
-              <div className="space-y-3 text-gray-300">
+              <div className="space-y-2 text-gray-300">
                 <div>Lundi - Vendredi</div>
                 <div className="font-semibold text-white">9h00 - 17h00</div>
                 <div className="text-sm">Permanences sur RDV</div>
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-700 mt-12 pt-8 text-center">
+          <div className="border-t border-gray-700 mt-10 pt-6 text-center">
             <p className="text-gray-400">© 2025 CFDT Gennevilliers - Assistant IA pour les agents municipaux</p>
           </div>
         </div>

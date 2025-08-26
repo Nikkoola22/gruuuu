@@ -73,9 +73,10 @@ const NewsTicker: React.FC = () => {
       const estEnProduction = import.meta.env.PROD;
 
       // Utilisation de l'API serverless Vercel
-      const FLUX_ACTUALITES_URL = estEnProduction
-        ? `/api/rss?feedUrl=${encodeURIComponent(fluxOriginal)}`
-        : `/proxy/politique.rss`;
+const FLUX_ACTUALITES_URL = estEnProduction
+  ? `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`
+  : `/proxy/politique.rss`;
+
 
       console.log("NewsTicker - Mode:", estEnProduction ? "Production" : "Développement");
       console.log("NewsTicker - URL utilisée:", FLUX_ACTUALITES_URL);

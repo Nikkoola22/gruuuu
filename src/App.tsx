@@ -59,14 +59,10 @@ const NewsTicker: React.FC = () => {
   useEffect(() => {
     const chargerFlux = async () => {
       const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
-      const estEnProduction = import.meta.env.PROD;
 
-      // 🔹 URL du proxy
-      const FLUX_ACTUALITES_URL = estEnProduction
-        ? `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`
-        : `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`; // local aussi via proxy
+      // 🔹 URL du flux via le proxy (dev et prod)
+      const FLUX_ACTUALITES_URL = `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`;
 
-      console.log("NewsTicker - Mode:", estEnProduction ? "Production" : "Développement");
       console.log("NewsTicker - URL utilisée:", FLUX_ACTUALITES_URL);
 
       try {

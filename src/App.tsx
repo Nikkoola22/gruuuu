@@ -42,7 +42,9 @@ interface ChatbotState {
 }
 
 // Constantes API et données
-const API_KEY = import.meta.env.VITE_API_KEY;
+console.log(process.env.API_KEY); // côté serveur uniquement
+console.log(process.env.NEXT_PUBLIC_API_URL); // utilisable côté client
+
 const API_URL = "https://api.perplexity.ai/chat/completions";
 
 // --- DÉBUT DE VOTRE BLOC DE CODE INTÉGRÉ ---

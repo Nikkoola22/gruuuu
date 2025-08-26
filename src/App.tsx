@@ -41,8 +41,8 @@ interface ChatbotState {
   isProcessing: boolean;
 }
 // Constantes API et données
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY!;
 
 // --- DÉBUT DE VOTRE BLOC DE CODE INTÉGRÉ ---
 const actualitesSecours = [
@@ -291,20 +291,26 @@ export default function App() {
     setSelectedInfo(null);
   };
 
-  const appelPerplexity = async (messages: any[]): Promise<string> => {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "sonar-pro", messages }),
-    });
-    if (!response.ok) {
-      const err = await response.text();
-      console.error("Erreur API:", err);
-      throw new Error(`Erreur API (${response.status})`);
-    }
-    const json = await response.json();
-    return json.choices[0].message.content;
-  };
+const appelPerplexity = async (messages: any[]) => {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ model: "sonar-pro", messages })
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    console.error("Erreur API:", err);
+    throw new Error(`Erreur API (${response.status})`);
+  }
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+};
+
 
   const traiterQuestion = async (question: string): Promise<string> => {
     let contexte = "";

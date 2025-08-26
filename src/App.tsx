@@ -71,8 +71,10 @@ const NewsTicker: React.FC = () => {
     const chargerFlux = async () => {
       const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
       const estEnProduction = import.meta.env.PROD;
+
+      // Utilisation de l'API serverless Vercel
       const FLUX_ACTUALITES_URL = estEnProduction
-        ? `https://gruuuu.vercel.app/api/fresh-rss/proxy?url=${encodeURIComponent(fluxOriginal )}`
+        ? `/api/rss?feedUrl=${encodeURIComponent(fluxOriginal)}`
         : `/proxy/politique.rss`;
 
       console.log("NewsTicker - Mode:", estEnProduction ? "Production" : "Développement");
@@ -81,10 +83,10 @@ const NewsTicker: React.FC = () => {
       try {
         const res = await fetch(FLUX_ACTUALITES_URL);
         if (!res.ok) throw new Error(`Échec de la récupération du flux RSS, statut: ${res.status}`);
-        
+
         const xml = await res.text();
         const doc = new DOMParser().parseFromString(xml, "text/xml");
-        
+
         const parserError = doc.querySelector("parsererror");
         if (parserError) {
           console.error("Erreur de parsing XML:", parserError.textContent);
@@ -109,7 +111,7 @@ const NewsTicker: React.FC = () => {
         setLoading(false);
       }
     };
-    
+
     chargerFlux();
   }, []);
 
@@ -149,7 +151,6 @@ const NewsTicker: React.FC = () => {
     </div>
   );
 };
-
 // =======================
 //  Composant TrouverContexte
 // =======================

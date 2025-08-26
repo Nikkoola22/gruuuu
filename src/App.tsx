@@ -42,7 +42,7 @@ interface ChatbotState {
 }
 // Constantes API et données
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 // --- DÉBUT DE VOTRE BLOC DE CODE INTÉGRÉ ---
 const actualitesSecours = [

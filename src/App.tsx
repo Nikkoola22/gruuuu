@@ -40,12 +40,9 @@ interface ChatbotState {
   messages: ChatMessage[];
   isProcessing: boolean;
 }
-
 // Constantes API et données
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.API_KEY;
-
-const API_URL = "https://api.perplexity.ai/chat/completions";
 
 // --- DÉBUT DE VOTRE BLOC DE CODE INTÉGRÉ ---
 const actualitesSecours = [

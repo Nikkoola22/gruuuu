@@ -285,7 +285,7 @@ const PodcastPlayer: React.FC = () => {
   };
 
   return (
-    <div className={`fixed right-4 bottom-4 z-50 transition-all duration-300 ${isMinimized ? "w-60 h-14" : "w-80 h-auto"}`}>
+    <div className={`fixed right-4 bottom-4 z-50 transition-all duration-300 ${isMinimized ? "w-48 h-14" : "w-80 h-auto"}`}>
       <div className="flex flex-col bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-xl shadow-lg border border-purple-500/30 overflow-hidden p-2">
         
         {/* --- Barre haute (minimisée ou étendue) --- */}

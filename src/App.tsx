@@ -23,6 +23,7 @@ import { teletravailData } from "./data/teletravail.ts";
 import { infoItems } from "./data/info-data.ts";
 import { podcastEpisodes, type PodcastEpisode } from "./data/podcasts/mp3.ts";
 
+// Interfaces
 interface ChatMessage {
   type: "user" | "assistant";
   content: string;
@@ -40,74 +41,74 @@ interface ChatbotState {
   isProcessing: boolean;
 }
 
-// ✅ Nouveau
+// Constantes API et données
 const API_KEY = import.meta.env.VITE_API_KEY;
 const API_URL = "https://api.perplexity.ai/chat/completions";
 
-
-const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
-const proxyUrl = "https://corsproxy.io/?";
-const FLUX_ACTUALITES_URL = proxyUrl + encodeURIComponent(fluxOriginal);
-
 const actualitesSecours = [
-  { title: "Réforme des retraites : nouvelles négociations prévues", link: "#", pubDate: new Date().toISOString(), guid: "1" },
+  { title: "Réforme des retraites : nouvelles négociations prévues", link: "#", pubDate: new Date( ).toISOString(), guid: "1" },
   { title: "Budget 2024 : les principales mesures votées", link: "#", pubDate: new Date().toISOString(), guid: "2" },
   { title: "Fonction publique : accord sur les salaires", link: "#", pubDate: new Date().toISOString(), guid: "3" },
-  { title: "Télétravail : nouvelles directives gouvernementales", link: "#", pubDate: new Date().toISOString(), guid: "4" },
-  { title: "Dialogue social : rencontre avec les syndicats", link: "#", pubDate: new Date().toISOString(), guid: "5" },
 ];
 
 const sommaireData = JSON.parse(sommaire);
 
+// Fonctions utilitaires
 const nettoyerChaine = (chaine: unknown): string => {
   if (typeof chaine !== "string") return "";
-  return chaine
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^\w\s]/gi, "")
-    .trim();
+  return chaine.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s]/gi, "").trim();
 };
 
 // =======================
-//  NewsTicker avec <a>
+//  Composant NewsTicker
 // =======================
 const NewsTicker: React.FC = () => {
   const [actualites, setActualites] = useState(actualitesSecours);
   const [loading, setLoading] = useState(true);
 
-  // Fonction pour générer un lien via le proxy
-  const proxyLink = (url: string) => `https://corsproxy.io/?${encodeURIComponent(url)}`;
-
   useEffect(() => {
     const chargerFlux = async () => {
+      const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
+      const estEnProduction = import.meta.env.PROD;
+      const FLUX_ACTUALITES_URL = estEnProduction
+        ? `https://gruuuu.vercel.app/api/proxy?url=${encodeURIComponent(fluxOriginal )}`
+        : `/proxy/politique.rss`;
+
+      console.log("NewsTicker - Mode:", estEnProduction ? "Production" : "Développement");
+      console.log("NewsTicker - URL utilisée:", FLUX_ACTUALITES_URL);
+
       try {
         const res = await fetch(FLUX_ACTUALITES_URL);
-        if (!res.ok) throw new Error("Failed to fetch RSS feed");
+        if (!res.ok) throw new Error(`Échec de la récupération du flux RSS, statut: ${res.status}`);
+        
         const xml = await res.text();
         const doc = new DOMParser().parseFromString(xml, "text/xml");
+        
+        const parserError = doc.querySelector("parsererror");
+        if (parserError) {
+          console.error("Erreur de parsing XML:", parserError.textContent);
+          throw new Error("Le document RSS reçu est invalide.");
+        }
 
-        const items = Array.from(doc.querySelectorAll("item"))
-          .slice(0, 10)
-          .map((item, i) => {
-            const rawLink = item.querySelector("link")?.textContent || "";
-            const link = rawLink.replace(/\s+/g, " ").trim();
+        const items = Array.from(doc.querySelectorAll("item")).slice(0, 10).map((item, i) => ({
+          title: (item.querySelector("title")?.textContent || `Actualité ${i + 1}`).trim(),
+          link: (item.querySelector("link")?.textContent || "#").trim(),
+          pubDate: (item.querySelector("pubDate")?.textContent || new Date().toISOString()).trim(),
+          guid: (item.querySelector("guid")?.textContent || `${Date.now()}-${i}`).trim(),
+        }));
 
-            return {
-              title: (item.querySelector("title")?.textContent || `Actualité ${i + 1}`).trim(),
-              link,
-              pubDate: (item.querySelector("pubDate")?.textContent || new Date().toISOString()).trim(),
-              guid: (item.querySelector("guid")?.textContent || `${i}`).trim(),
-            };
-          });
-
-        if (items.length) setActualites(items);
-      } catch {
-        console.error("Failed to load RSS feed, using fallback data.");
+        if (items.length > 0) {
+          setActualites(items);
+        } else {
+          throw new Error("Le flux RSS est vide.");
+        }
+      } catch (error) {
+        console.error("Impossible de charger le flux RSS, utilisation des données de secours.", error);
       } finally {
         setLoading(false);
       }
     };
+    
     chargerFlux();
   }, []);
 
@@ -127,7 +128,7 @@ const NewsTicker: React.FC = () => {
           {[...actualites, ...actualites].map((item, idx) => (
             <a
               key={`${item.guid}-${idx}`}
-              href={proxyLink(item.link)}
+              href={item.link}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center mx-8 text-white hover:text-blue-200 transition-colors no-underline"
@@ -139,12 +140,8 @@ const NewsTicker: React.FC = () => {
           ))}
         </div>
       </div>
-
       <style jsx>{`
-        @keyframes ticker {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .ticker-container { overflow: hidden; white-space: nowrap; }
         .animate-ticker { display: inline-flex; animation: ticker 40s linear infinite; }
       `}</style>
@@ -153,7 +150,7 @@ const NewsTicker: React.FC = () => {
 };
 
 // =======================
-//  Trouver contexte
+//  Composant TrouverContexte
 // =======================
 const trouverContextePertinent = (question: string): string => {
   const qNet = nettoyerChaine(question);
@@ -175,20 +172,17 @@ const trouverContextePertinent = (question: string): string => {
     return "Aucun chapitre spécifique trouvé. Thèmes : " + sommaireData.chapitres.map((c: any) => c.titre).join(", ");
   }
 
-  const top = Array.from(scores.entries())
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 3)
-    .map(([id]) => {
-      const titre = sommaireData.chapitres[id - 1].titre;
-      const contenu = (chapitres as Record<number, string>)[id] || "";
-      return `Source: ${titre}\nContenu: ${contenu}`;
-    });
+  const top = Array.from(scores.entries()).sort(([, a], [, b]) => b - a).slice(0, 3).map(([id]) => {
+    const titre = sommaireData.chapitres[id - 1].titre;
+    const contenu = (chapitres as Record<number, string>)[id] || "";
+    return `Source: ${titre}\nContenu: ${contenu}`;
+  });
 
   return top.join("\n\n---\n\n");
 };
 
 // =======================
-// Podcast Player
+//  Composant PodcastPlayer
 // =======================
 const PodcastPlayer: React.FC = () => {
   const [currentEpisode, setCurrentEpisode] = useState<PodcastEpisode | null>(null);
@@ -197,195 +191,79 @@ const PodcastPlayer: React.FC = () => {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isMinimized, setIsMinimized] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    setIsPlaying(false);
-    setCurrentTime(0);
-    setDuration(0);
-    setError(null);
-    setIsLoading(false);
 
-    const updateTime = () => setCurrentTime(audio.currentTime || 0);
-    const updateDuration = () => {
-      if (audio.duration && isFinite(audio.duration)) setDuration(audio.duration);
-    };
-    const handleEnded = () => {
-      setIsPlaying(false);
-      const currentIndex = podcastEpisodes.findIndex((e) => e.id === currentEpisode?.id);
-      if (currentIndex !== -1 && currentIndex < podcastEpisodes.length - 1) {
-        setCurrentEpisode(podcastEpisodes[currentIndex + 1]);
-      }
-    };
-    const handleError = () => {
-      setIsLoading(false);
-      setIsPlaying(false);
-      setError("Impossible de charger ce podcast. Vérifiez votre connexion.");
-    };
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateDuration = () => setDuration(audio.duration);
+    const handleEnded = () => setIsPlaying(false);
 
-    const handlers: { [key: string]: EventListener } = {
-      timeupdate: updateTime,
-      loadedmetadata: updateDuration,
-      canplay: () => setIsLoading(false),
-      ended: handleEnded,
-      error: handleError,
-      loadstart: () => setIsLoading(true),
-      waiting: () => setIsLoading(true),
-      playing: () => {
-        setIsLoading(false);
-        setIsPlaying(true);
-      },
-      pause: () => setIsPlaying(false),
-    };
-
-    Object.entries(handlers).forEach(([evt, fn]) => audio.addEventListener(evt, fn));
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("loadedmetadata", updateDuration);
+    audio.addEventListener("ended", handleEnded);
     audio.volume = volume;
-    if (currentEpisode) audio.load();
 
     return () => {
-      Object.entries(handlers).forEach(([evt, fn]) => audio.removeEventListener(evt, fn));
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("loadedmetadata", updateDuration);
+      audio.removeEventListener("ended", handleEnded);
     };
-  }, [currentEpisode, volume]);
+  }, [volume]);
 
-  const playPause = async () => {
-    const audio = audioRef.current;
-    if (!audio || !currentEpisode) return;
-    try {
-      if (isPlaying) {
-        audio.pause();
-      } else {
-        setIsLoading(true);
-        setError(null);
-        await audio.play();
-      }
-    } catch (err) {
-      console.error("Error playing audio:", err);
-      setError("Impossible de lire ce podcast.");
-      setIsLoading(false);
-      setIsPlaying(false);
+  useEffect(() => {
+    if (currentEpisode) {
+      audioRef.current?.load();
+      playPause();
     }
+  }, [currentEpisode]);
+
+  const playPause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play().catch(e => console.error("Erreur de lecture audio:", e));
+    }
+    setIsPlaying(!isPlaying);
   };
 
   const selectEpisode = (episode: PodcastEpisode) => {
     if (currentEpisode?.id !== episode.id) {
       setCurrentEpisode(episode);
-      setIsPlaying(false);
+      setIsPlaying(false); // La lecture commencera via le useEffect
+    } else {
+      playPause();
     }
   };
 
-  const formatTime = (timeInSeconds: number) => {
-    if (!timeInSeconds || isNaN(timeInSeconds)) return "0:00";
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = Math.floor(timeInSeconds % 60).toString().padStart(2, "0");
-    return `${minutes}:${seconds}`;
-  };
+  const formatTime = (time: number) => new Date(time * 1000).toISOString().substr(14, 5);
 
   return (
-    <div className={`fixed right-4 bottom-4 z-50 transition-all duration-300 ${isMinimized ? "w-48 h-14" : "w-80 h-auto"}`}>
-      <div className="flex flex-col bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-xl shadow-lg border border-purple-500/30 overflow-hidden p-2">
-        
-        {/* --- Barre haute (minimisée ou étendue) --- */}
+    <div className={`fixed right-4 bottom-4 z-50 transition-all duration-300 ${isMinimized ? "w-48 h-14" : "w-80"}`}>
+      <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-xl shadow-lg p-2">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <button
-              onClick={() => setIsMinimized(!isMinimized)}
-              className="text-white p-1.5 hover:bg-white/10 rounded-full"
-            >
-              {isMinimized ? "🔼" : "🔽"}
-            </button>
-            {/* vignette + titre toujours visibles */}
-            <img
-              src="./podcast.jpg"
-              alt="Podcast"
-              className="w-8 h-8 rounded-full shadow border border-white/20"
-            />
-            <div className="text-white text-xs font-medium truncate max-w-[7.5rem]">
-              {currentEpisode?.title ?? "Podcast CFDT"}
-            </div>
-          </div>
-
-          {/* bouton play/pause */}
-          {currentEpisode && (
-            <button
-              onClick={playPause}
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-2 shrink-0"
-            >
-              {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-            </button>
-          )}
-
-          {/* volume uniquement en mode étendu */}
-          {!isMinimized && (
-            <div className="flex-grow flex items-center gap-2">
-              <Volume2 className="w-5 h-5 text-gray-300" />
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={volume}
-                onChange={e => setVolume(parseFloat(e.target.value))}
-                className="w-full h-1 bg-purple-300 rounded slider appearance-none"
-              />
-            </div>
-          )}
+          <button onClick={() => setIsMinimized(!isMinimized)} className="text-white p-1.5 hover:bg-white/10 rounded-full">{isMinimized ? "🔼" : "🔽"}</button>
+          <img src="./podcast.jpg" alt="Podcast" className="w-8 h-8 rounded-full border border-white/20" />
+          <div className="text-white text-xs font-medium truncate max-w-[7.5rem]">{currentEpisode?.title ?? "Podcast CFDT"}</div>
+          {currentEpisode && <button onClick={playPause} className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-2">{isPlaying ? <Pause size={20} /> : <Play size={20} />}</button>}
         </div>
-
-        {/* lecteur audio */}
-        <audio
-          ref={audioRef}
-          src={currentEpisode?.url}
-          preload="metadata"
-          style={{ display: "none" }}
-          crossOrigin="anonymous"
-        />
-
-        {/* contenu détaillé quand étendu */}
+        <audio ref={audioRef} src={currentEpisode?.url} preload="metadata" style={{ display: "none" }} />
         {!isMinimized && (
           <div className="mt-4">
-            <div className="flex flex-col items-center mb-4">
-              <img 
-                src="./podcast.jpg"
-                alt="Illustration Podcast"
-                className="w-32 h-32 object-cover rounded-full shadow-md border-2 border-purple-400"
-              />
-              <h4 className="text-white font-bold text-center mt-2">Épisodes disponibles</h4>
-            </div>
             <ul className="max-h-48 overflow-y-auto">
-              {podcastEpisodes.map(episode => (
-                <li key={episode.id}>
-                  <button
-                    onClick={() => selectEpisode(episode)}
-                    className={`block w-full text-left px-3 py-2 rounded-md text-sm text-white mb-1 transition-colors ${
-                      currentEpisode?.id === episode.id ? "bg-purple-700 font-semibold" : "bg-purple-800/60 hover:bg-purple-700/80"
-                    }`}
-                  >
-                    {episode.title}
-                  </button>
-                </li>
-              ))}
+              {podcastEpisodes.map(ep => <li key={ep.id}><button onClick={() => selectEpisode(ep)} className={`w-full text-left p-2 rounded text-sm text-white ${currentEpisode?.id === ep.id ? "bg-purple-700" : "hover:bg-purple-700/80"}`}>{ep.title}</button></li>)}
             </ul>
-            {currentEpisode && (
-              <div className="mt-2 px-2 text-xs text-purple-200">
-                <p className="truncate">Lecture : {currentEpisode.title}</p>
-                <div>
-                  <span>{formatTime(currentTime)} / {formatTime(duration)}</span>
-                </div>
-                {error && <div className="text-red-300 mt-1">{error}</div>}
-              </div>
-            )}
+            {currentEpisode && <div className="mt-2 px-2 text-xs text-purple-200">{formatTime(currentTime)} / {formatTime(duration)}</div>}
           </div>
         )}
       </div>
     </div>
   );
 };
-
-
 // =======================
 // App principale
 // =======================

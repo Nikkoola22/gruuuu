@@ -4,31 +4,31 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-
-  // Important pour Vercel : chemins relatifs
+  plugins: [react( )],
   base: './',
-
-  // Alias pour simplifier les imports
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
   },
-
-  // Optimisation des dépendances
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-
-  // Configuration du serveur local pour le développement
   server: {
     proxy: {
       '/proxy': {
         target: 'https://www.franceinfo.fr',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/proxy/, ''),
+        rewrite: (path ) => path.replace(/^\/proxy/, ''),
       },
+    },
+    // AJOUTEZ CETTE SECTION
+    watch: {
+      usePolling: true,
+    },
+    hmr: {
+      // Assurez-vous que Vite écoute sur localhost
+      host: 'localhost',
     },
   },
 });

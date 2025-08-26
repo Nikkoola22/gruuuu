@@ -45,6 +45,7 @@ interface ChatbotState {
 const API_KEY = import.meta.env.VITE_API_KEY;
 const API_URL = "https://api.perplexity.ai/chat/completions";
 
+// --- DÉBUT DE VOTRE BLOC DE CODE INTÉGRÉ ---
 const actualitesSecours = [
   { title: "Réforme des retraites : nouvelles négociations prévues", link: "#", pubDate: new Date( ).toISOString(), guid: "1" },
   { title: "Budget 2024 : les principales mesures votées", link: "#", pubDate: new Date().toISOString(), guid: "2" },
@@ -58,10 +59,6 @@ const nettoyerChaine = (chaine: unknown): string => {
   if (typeof chaine !== "string") return "";
   return chaine.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s]/gi, "").trim();
 };
-
-// =======================
-//  Composant NewsTicker
-// =======================
 
 // =======================
 //  Composant NewsTicker

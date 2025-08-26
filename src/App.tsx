@@ -72,7 +72,7 @@ const NewsTicker: React.FC = () => {
       const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
       const estEnProduction = import.meta.env.PROD;
       const FLUX_ACTUALITES_URL = estEnProduction
-        ? `https://gruuuu.vercel.app/api/proxy?url=${encodeURIComponent(fluxOriginal )}`
+        ? `https://gruuuu.vercel.app/api/fresh-rss/proxy?url=${encodeURIComponent(fluxOriginal )}`
         : `/proxy/politique.rss`;
 
       console.log("NewsTicker - Mode:", estEnProduction ? "Production" : "Développement");

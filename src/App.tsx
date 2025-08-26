@@ -61,7 +61,7 @@ const NewsTicker: React.FC = () => {
       const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
 
       // 🔹 URL du flux via le proxy (dev et prod)
-      const FLUX_ACTUALITES_URL = `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`;
+    const FLUX_ACTUALITES_URL = `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`;
 
       console.log("NewsTicker - URL utilisée:", FLUX_ACTUALITES_URL);
 

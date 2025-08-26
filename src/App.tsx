@@ -47,22 +47,11 @@ const API_URL = "https://api.perplexity.ai/chat/completions";
 
 // --- DÉBUT DE VOTRE BLOC DE CODE INTÉGRÉ ---
 const actualitesSecours = [
-  { title: "Réforme des retraites : nouvelles négociations prévues", link: "#", pubDate: new Date( ).toISOString(), guid: "1" },
+  { title: "Réforme des retraites : nouvelles négociations prévues", link: "#", pubDate: new Date().toISOString(), guid: "1" },
   { title: "Budget 2024 : les principales mesures votées", link: "#", pubDate: new Date().toISOString(), guid: "2" },
   { title: "Fonction publique : accord sur les salaires", link: "#", pubDate: new Date().toISOString(), guid: "3" },
 ];
 
-const sommaireData = JSON.parse(sommaire);
-
-// Fonctions utilitaires
-const nettoyerChaine = (chaine: unknown): string => {
-  if (typeof chaine !== "string") return "";
-  return chaine.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s]/gi, "").trim();
-};
-
-// =======================
-//  Composant NewsTicker
-// =======================
 const NewsTicker: React.FC = () => {
   const [actualites, setActualites] = useState(actualitesSecours);
   const [loading, setLoading] = useState(true);
@@ -72,27 +61,23 @@ const NewsTicker: React.FC = () => {
       const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
       const estEnProduction = import.meta.env.PROD;
 
-      // Utilisation de l'API serverless Vercel
-const FLUX_ACTUALITES_URL = estEnProduction
-  ? `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`
-  : `/proxy/politique.rss`;
-
+      // 🔹 URL du proxy
+      const FLUX_ACTUALITES_URL = estEnProduction
+        ? `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`
+        : `/api/proxy?feedUrl=${encodeURIComponent(fluxOriginal)}`; // local aussi via proxy
 
       console.log("NewsTicker - Mode:", estEnProduction ? "Production" : "Développement");
       console.log("NewsTicker - URL utilisée:", FLUX_ACTUALITES_URL);
 
       try {
         const res = await fetch(FLUX_ACTUALITES_URL);
-        if (!res.ok) throw new Error(`Échec de la récupération du flux RSS, statut: ${res.status}`);
+        if (!res.ok) throw new Error(`Erreur récupération flux RSS: ${res.status}`);
 
         const xml = await res.text();
         const doc = new DOMParser().parseFromString(xml, "text/xml");
 
         const parserError = doc.querySelector("parsererror");
-        if (parserError) {
-          console.error("Erreur de parsing XML:", parserError.textContent);
-          throw new Error("Le document RSS reçu est invalide.");
-        }
+        if (parserError) throw new Error("Le flux RSS reçu est invalide.");
 
         const items = Array.from(doc.querySelectorAll("item")).slice(0, 10).map((item, i) => ({
           title: (item.querySelector("title")?.textContent || `Actualité ${i + 1}`).trim(),
@@ -101,11 +86,7 @@ const FLUX_ACTUALITES_URL = estEnProduction
           guid: (item.querySelector("guid")?.textContent || `${Date.now()}-${i}`).trim(),
         }));
 
-        if (items.length > 0) {
-          setActualites(items);
-        } else {
-          throw new Error("Le flux RSS est vide.");
-        }
+        if (items.length > 0) setActualites(items);
       } catch (error) {
         console.error("Impossible de charger le flux RSS, utilisation des données de secours.", error);
       } finally {

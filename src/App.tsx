@@ -62,6 +62,10 @@ const nettoyerChaine = (chaine: unknown): string => {
 // =======================
 //  Composant NewsTicker
 // =======================
+
+// =======================
+//  Composant NewsTicker
+// =======================
 const NewsTicker: React.FC = () => {
   const [actualites, setActualites] = useState(actualitesSecours);
   const [loading, setLoading] = useState(true);

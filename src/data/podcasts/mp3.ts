@@ -12,11 +12,11 @@ export interface PodcastEpisode {
 export const podcastEpisodes: PodcastEpisode[] = [
   { 
     id: 1, 
-    title: "Les informés de franceinfo - 20/08/2025", 
-    url: "https://media.radiofrance-podcast.net/podcast09/14088-20.08.2025-ITEMA_24220608-2025I23024S0232-NET_MFO_F973B7FE-2CFA-4684-B4EF-5C811DBE1EF8-21.mp3?podcast=podcast09/14088-20.08.2025-ITEMA_24220608-2025I23024S0232-NET_MFO_F973B7FE-2CFA-4684-B4EF-5C811DBE1EF8-21.mp3&geoipcountry=FR&geoipzip=75018&provider=public&cu=14088&itemMasterMid=2025I23024S0232&pubDate=1755716260&br=23024&title=Les+informés+de+franceinfo&stationname=France+Info", 
-    duration: "50:25", 
-    description: "L'actualité politique et sociale du jour",
-    date: "20/08/2025"
+    title: "Les informés de franceinfo - 10/09/2025", 
+    url: "https://media.radiofrance-podcast.net/podcast09/11548-06.09.2025-ITEMA_24237901-2025F18386S0249-NET_MFI_3E105361-19F3-4A2A-BF6D-1CAB7D05CA24-27.m4a",
+    duration: "02:25", 
+    description: "La retraite progressive",
+    date: "10/09/2025"
   },
   { 
        id: 2, 

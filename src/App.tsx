@@ -15,7 +15,6 @@ import {
   Phone,
   Mail,
   MapPin,
-  Sparkles,
   Send,
   ArrowLeft,
   Home,
@@ -131,41 +130,42 @@ const NewsTicker: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-4 bg-blue-900/80 rounded-lg">
-        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-        <span className="ml-2 text-white text-sm">Chargement des actualités...</span>
-      </div>
+      <section className="relative bg-blue-900/80 text-white overflow-hidden w-full shadow-lg z-10">
+        <div className="relative h-20 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+          <span className="ml-2 text-white text-sm">Chargement des actualités...</span>
+        </div>
+      </section>
     );
   }
 
   return (
-    <div className="w-full bg-blue-900/80 rounded-lg overflow-hidden border border-blue-500/30 shadow-inner">
-      <div className="flex items-center whitespace-nowrap py-3 ticker-container">
-        <div className="flex animate-ticker hover:[animation-play-state:paused]">
+    <section className="relative bg-blue-900/80 text-white overflow-hidden w-full shadow-lg z-10">
+      <div className="relative h-20 flex items-center overflow-hidden">
+        <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-blue-700 z-20 shadow-md">
+          <span className="text-2xl font-bold text-white">ACTU:</span>
+        </div>
+        <div className="animate-marquee-rss whitespace-nowrap flex items-center pl-44" style={{ animation: "marqueeRss 60s linear infinite" }}>
           {[...actualites, ...actualites].map((item, idx) => (
             <a
               key={`${item.guid}-${idx}`}
               href={item.link}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center mx-6 text-white hover:text-blue-200 transition-colors no-underline"
+              className="text-2xl font-medium mx-8 text-white hover:text-blue-200 transition-colors underline decoration-dotted cursor-pointer"
             >
-              <span className="mr-2 text-yellow-300">📰</span>
-              <span className="font-medium text-xl sm:text-2xl">{item.title}</span>
-              <span className="mx-4 text-blue-300">•</span>
+              {item.title}
             </a>
           ))}
         </div>
       </div>
       <style>{`
-        @keyframes ticker {
-          0% { transform: translateX(0); }
+        @keyframes marqueeRss {
+          0% { transform: translateX(0%); }
           100% { transform: translateX(-50%); }
         }
-        .ticker-container { overflow: hidden; white-space: nowrap; }
-        .animate-ticker { display: inline-flex; animation: ticker 60s linear infinite; }
       `}</style>
-    </div>
+    </section>
   );
 };
 
@@ -681,66 +681,67 @@ ${contexte}
         </div>
       </header>
 
-      <main className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 z-10">
+      <section className="relative bg-orange-300 text-black overflow-hidden w-full shadow-lg z-10">
+        <div className="relative h-20 flex items-center overflow-hidden">
+          <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-orange-400 z-20 shadow-md">
+            <span className="text-2xl font-bold">NEWS FPT:</span>
+          </div>
+          <div className="animate-marquee whitespace-nowrap flex items-center pl-44" style={{ animation: "marquee 45s linear infinite" }}>
+            {[...infoItems, ...infoItems].map((info, idx) => (
+              <button
+                key={`${info.id}-${idx}`}
+                onClick={() => setSelectedInfo(info)}
+                className="text-2xl font-medium mx-8 hover:text-blue-200 transition-colors underline decoration-dotted cursor-pointer"
+              >
+                #{info.id}: {info.title}
+              </button>
+            ))}
+          </div>
+        </div>
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+          @keyframes blink {
+            0%, 50% { color: black; }
+            51%, 100% { color: red; }
+          }
+          .animate-blink {
+            animation: blink 2s infinite;
+          }
+          @keyframes slide-in-left {
+            0% { 
+              transform: translateX(-100%); 
+              opacity: 0; 
+            }
+            100% { 
+              transform: translateX(0); 
+              opacity: 1; 
+            }
+          }
+          @keyframes slide-in-right {
+            0% { 
+              transform: translateX(100%); 
+              opacity: 0; 
+            }
+            100% { 
+              transform: translateX(0); 
+              opacity: 1; 
+            }
+          }
+          .animate-slide-in-left {
+            animation: slide-in-left 0.3s ease-out;
+          }
+          .animate-slide-in-right {
+            animation: slide-in-right 0.3s ease-out;
+          }
+        `}</style>
+      </section>
+
+      <main className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 z-10">
         {chatState.currentView === "menu" ? (
           <>
-            <section className="relative bg-orange-300 text-black overflow-hidden mx-auto max-w-5xl rounded-2xl shadow-lg z-10">
-              <div className="relative h-20 flex items-center overflow-hidden">
-                <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-orange-400 z-20 shadow-md">
-                  <span className="text-2xl font-bold">NEWS FPT:</span>
-                </div>
-                <div className="animate-marquee whitespace-nowrap flex items-center pl-44" style={{ animation: "marquee 45s linear infinite" }}>
-                  {[...infoItems, ...infoItems].map((info, idx) => (
-                    <button
-                      key={`${info.id}-${idx}`}
-                      onClick={() => setSelectedInfo(info)}
-                      className="text-2xl font-medium mx-8 hover:text-blue-200 transition-colors underline decoration-dotted cursor-pointer"
-                    >
-                      #{info.id}: {info.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <style>{`
-                @keyframes marquee {
-                  0% { transform: translateX(0%); }
-                  100% { transform: translateX(-50%); }
-                }
-                @keyframes blink {
-                  0%, 50% { color: black; }
-                  51%, 100% { color: red; }
-                }
-                .animate-blink {
-                  animation: blink 2s infinite;
-                }
-                @keyframes slide-in-left {
-                  0% { 
-                    transform: translateX(-100%); 
-                    opacity: 0; 
-                  }
-                  100% { 
-                    transform: translateX(0); 
-                    opacity: 1; 
-                  }
-                }
-                @keyframes slide-in-right {
-                  0% { 
-                    transform: translateX(100%); 
-                    opacity: 0; 
-                  }
-                  100% { 
-                    transform: translateX(0); 
-                    opacity: 1; 
-                  }
-                }
-                .animate-slide-in-left {
-                  animation: slide-in-left 0.3s ease-out;
-                }
-                .animate-slide-in-right {
-                  animation: slide-in-right 0.3s ease-out;
-                }
-              `}</style>
-            </section>
 
             {selectedInfo && (
               <section className="info-detail bg-white/95 backdrop-blur-sm p-6 rounded-lg shadow-md mt-8 max-w-4xl mx-auto">
@@ -752,12 +753,12 @@ ${contexte}
               </section>
             )}
 
-            <section className="text-center my-12">
-              <h3 className="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-blue-600/60 via-purple-600/60 to-indigo-600/60 p-4 rounded-2xl shadow-lg">
+            <section className="text-center mt-4 mb-12">
+              <h3 className="text-2xl font-bold text-white mb-4 bg-gradient-to-r from-blue-600/60 via-purple-600/60 to-indigo-600/60 px-4 py-2 rounded-2xl shadow-lg max-w-2xl mx-auto">
                 Choisissez votre domaine d'assistance
               </h3>
               <p className="text-xl bg-white/90 px-4 py-2 rounded-lg max-w-fit mx-auto shadow-md backdrop-blur-sm">
-                <span className="animate-blink">Exclusivement a partir des documents de la mairie.</span>
+                <span className="animate-blink">Exclusivement à partir des documents de la mairie.</span>
               </p>
             </section>
 
@@ -800,19 +801,6 @@ ${contexte}
                   <p className="text-center text-gray-600">Charte, jours autorisés, indemnités, modalités…</p>
                 </div>
               </button>
-            </div>
-            
-            <div className="relative z-10 bg-white/10 p-4 rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-cover bg-center opacity-50" style={{ backgroundImage: "url('/unnamed.jpg')", backgroundPosition: "center", backgroundSize: "cover" }}></div>
-              <div className="flex flex-col items-center gap-6 relative z-20">
-                <div className="relative p-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl shadow-xl">
-                  <Sparkles className="w-12 h-12 text-white" />
-                </div>
-                <h4 className="text-2xl font-bold text-gray-800 text-blue-700">Actualités Nationales</h4>
-                <div className="w-full">
-                  <NewsTicker />
-                </div>
-              </div>
             </div>
           </>
         ) : (
@@ -930,6 +918,8 @@ ${contexte}
           </div>
         )}
       </main>
+
+      <NewsTicker />
 
       <footer className="relative bg-gray-900 text-white py-6 z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -72,6 +72,30 @@ export default function Calculateurs({ onBack }: CalculateursProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Grilles Indiciaires - EN PREMIER */}
+        <button
+          onClick={() => openCalculator('metiers')}
+          disabled={!calculatorsStatus.grilles}
+          className={`group relative overflow-hidden rounded-3xl p-8 transition-all duration-500 ${
+            calculatorsStatus.grilles
+              ? 'bg-gradient-to-br from-amber-100/70 to-orange-100/70 border-2 border-amber-200 hover:bg-gradient-to-br hover:from-amber-100 hover:to-orange-100 hover:border-amber-400 hover:shadow-2xl hover:-translate-y-2 cursor-pointer'
+              : 'bg-gradient-to-br from-amber-100/50 to-orange-100/50 border-2 border-amber-200/50 opacity-60 cursor-not-allowed'
+          }`}
+        >
+          <div className="relative z-10 flex flex-col items-center gap-6">
+            <div className={`relative p-6 rounded-3xl shadow-xl ${calculatorsStatus.grilles ? 'bg-gradient-to-br from-amber-500 to-orange-600 group-hover:rotate-3 group-hover:scale-110 transition-transform' : 'bg-gradient-to-br from-amber-400 to-orange-500'}`}>
+              <BookOpen className="w-12 h-12 text-white" />
+            </div>
+            <div>
+              <h3 className={`text-2xl font-bold ${calculatorsStatus.grilles ? 'text-gray-800 group-hover:text-amber-700' : 'text-amber-700/70'}`}>Grilles Indiciaires</h3>
+              <p className={`text-center mt-2 ${calculatorsStatus.grilles ? 'text-gray-600' : 'text-amber-600/70'}`}>Filières et métiers<br /><span className="text-sm">{calculatorsStatus.grilles ? 'Consulter les grilles' : 'Actuellement indisponible'}</span></p>
+            </div>
+            <div className={`mt-4 px-4 py-2 rounded-lg text-sm font-semibold ${calculatorsStatus.grilles ? 'bg-amber-500/20 text-amber-700' : 'bg-amber-400/20 text-amber-600/70'}`}>
+              {calculatorsStatus.grilles ? 'Cliquez pour ouvrir' : 'Désactivé'}
+            </div>
+          </div>
+        </button>
+
         {/* Calculateur PRIMES */}
         <button
           onClick={() => openCalculator('primes')}
@@ -79,18 +103,18 @@ export default function Calculateurs({ onBack }: CalculateursProps) {
           className={`group relative overflow-hidden rounded-3xl p-8 transition-all duration-500 ${
             calculatorsStatus.primes
               ? 'bg-gradient-to-br from-cyan-100/70 to-blue-100/70 border-2 border-cyan-200 hover:bg-gradient-to-br hover:from-cyan-100 hover:to-blue-100 hover:border-cyan-400 hover:shadow-2xl hover:-translate-y-2 cursor-pointer'
-              : 'bg-gradient-to-br from-slate-200/70 to-slate-300/70 border-2 border-slate-300 opacity-50 cursor-not-allowed'
+              : 'bg-gradient-to-br from-cyan-100/50 to-blue-100/50 border-2 border-cyan-200/50 opacity-60 cursor-not-allowed'
           }`}
         >
           <div className="relative z-10 flex flex-col items-center gap-6">
-            <div className={`relative p-6 rounded-3xl shadow-xl ${calculatorsStatus.primes ? 'bg-gradient-to-br from-cyan-500 to-blue-600 group-hover:rotate-3 group-hover:scale-110 transition-transform' : 'bg-gradient-to-br from-slate-500 to-slate-600'}`}>
+            <div className={`relative p-6 rounded-3xl shadow-xl ${calculatorsStatus.primes ? 'bg-gradient-to-br from-cyan-500 to-blue-600 group-hover:rotate-3 group-hover:scale-110 transition-transform' : 'bg-gradient-to-br from-cyan-400 to-blue-500'}`}>
               <TrendingUp className="w-12 h-12 text-white" />
             </div>
             <div className="text-center">
-              <h3 className={`text-2xl font-bold ${calculatorsStatus.primes ? 'text-gray-800 group-hover:text-cyan-700' : 'text-gray-600'}`}>PRIMES</h3>
-              <p className={`text-center mt-2 ${calculatorsStatus.primes ? 'text-gray-600' : 'text-gray-500'}`}>Prime de base et sujétion<br /><span className="text-sm">{calculatorsStatus.primes ? 'Calculer vos primes' : 'Actuellement indisponible'}</span></p>
+              <h3 className={`text-2xl font-bold ${calculatorsStatus.primes ? 'text-gray-800 group-hover:text-cyan-700' : 'text-cyan-700/70'}`}>PRIMES</h3>
+              <p className={`text-center mt-2 ${calculatorsStatus.primes ? 'text-gray-600' : 'text-cyan-600/70'}`}>Prime de base et sujétion<br /><span className="text-sm">{calculatorsStatus.primes ? 'Calculer vos primes' : 'Actuellement indisponible'}</span></p>
             </div>
-            <div className={`mt-4 px-4 py-2 rounded-lg text-sm font-semibold ${calculatorsStatus.primes ? 'bg-cyan-500/20 text-cyan-700' : 'bg-slate-400/20 text-slate-600'}`}>
+            <div className={`mt-4 px-4 py-2 rounded-lg text-sm font-semibold ${calculatorsStatus.primes ? 'bg-cyan-500/20 text-cyan-700' : 'bg-cyan-400/20 text-cyan-600/70'}`}>
               {calculatorsStatus.primes ? 'Cliquez pour ouvrir' : 'Désactivé'}
             </div>
           </div>
@@ -103,18 +127,18 @@ export default function Calculateurs({ onBack }: CalculateursProps) {
           className={`group relative overflow-hidden rounded-3xl p-8 transition-all duration-500 ${
             calculatorsStatus.cia
               ? 'bg-gradient-to-br from-purple-100/70 to-pink-100/70 border-2 border-purple-200 hover:bg-gradient-to-br hover:from-purple-100 hover:to-pink-100 hover:border-purple-400 hover:shadow-2xl hover:-translate-y-2 cursor-pointer'
-              : 'bg-gradient-to-br from-slate-200/70 to-slate-300/70 border-2 border-slate-300 opacity-50 cursor-not-allowed'
+              : 'bg-gradient-to-br from-purple-100/50 to-pink-100/50 border-2 border-purple-200/50 opacity-60 cursor-not-allowed'
           }`}
         >
           <div className="relative z-10 flex flex-col items-center gap-6">
-            <div className={`relative p-6 rounded-3xl shadow-xl ${calculatorsStatus.cia ? 'bg-gradient-to-br from-purple-500 to-pink-600 group-hover:rotate-3 group-hover:scale-110 transition-transform' : 'bg-gradient-to-br from-slate-500 to-slate-600'}`}>
+            <div className={`relative p-6 rounded-3xl shadow-xl ${calculatorsStatus.cia ? 'bg-gradient-to-br from-purple-500 to-pink-600 group-hover:rotate-3 group-hover:scale-110 transition-transform' : 'bg-gradient-to-br from-purple-400 to-pink-500'}`}>
               <Calculator className="w-12 h-12 text-white" />
             </div>
             <div className="text-center">
-              <h3 className={`text-2xl font-bold ${calculatorsStatus.cia ? 'text-gray-800 group-hover:text-purple-700' : 'text-gray-600'}`}>Calculateur CIA</h3>
-              <p className={`text-center mt-2 ${calculatorsStatus.cia ? 'text-gray-600' : 'text-gray-500'}`}>Complément individuel d'activité<br /><span className="text-sm">{calculatorsStatus.cia ? 'Calculer votre CIA' : 'Actuellement indisponible'}</span></p>
+              <h3 className={`text-2xl font-bold ${calculatorsStatus.cia ? 'text-gray-800 group-hover:text-purple-700' : 'text-purple-700/70'}`}>Calculateur CIA</h3>
+              <p className={`text-center mt-2 ${calculatorsStatus.cia ? 'text-gray-600' : 'text-purple-600/70'}`}>Complément individuel d'activité<br /><span className="text-sm">{calculatorsStatus.cia ? 'Calculer votre CIA' : 'Actuellement indisponible'}</span></p>
             </div>
-            <div className={`mt-4 px-4 py-2 rounded-lg text-sm font-semibold ${calculatorsStatus.cia ? 'bg-purple-500/20 text-purple-700' : 'bg-slate-400/20 text-slate-600'}`}>
+            <div className={`mt-4 px-4 py-2 rounded-lg text-sm font-semibold ${calculatorsStatus.cia ? 'bg-purple-500/20 text-purple-700' : 'bg-purple-400/20 text-purple-600/70'}`}>
               {calculatorsStatus.cia ? 'Cliquez pour ouvrir' : 'Désactivé'}
             </div>
           </div>
@@ -127,43 +151,19 @@ export default function Calculateurs({ onBack }: CalculateursProps) {
           className={`group relative overflow-hidden rounded-3xl p-8 transition-all duration-500 ${
             calculatorsStatus.treizeme
               ? 'bg-gradient-to-br from-green-100/70 to-emerald-100/70 border-2 border-green-200 hover:bg-gradient-to-br hover:from-green-100 hover:to-emerald-100 hover:border-green-400 hover:shadow-2xl hover:-translate-y-2 cursor-pointer'
-              : 'bg-gradient-to-br from-slate-200/70 to-slate-300/70 border-2 border-slate-300 opacity-50 cursor-not-allowed'
+              : 'bg-gradient-to-br from-green-100/50 to-emerald-100/50 border-2 border-green-200/50 opacity-60 cursor-not-allowed'
           }`}
         >
           <div className="relative z-10 flex flex-col items-center gap-6">
-            <div className={`relative p-6 rounded-3xl shadow-xl ${calculatorsStatus.treizeme ? 'bg-gradient-to-br from-green-500 to-emerald-600 group-hover:rotate-3 group-hover:scale-110 transition-transform' : 'bg-gradient-to-br from-slate-500 to-slate-600'}`}>
+            <div className={`relative p-6 rounded-3xl shadow-xl ${calculatorsStatus.treizeme ? 'bg-gradient-to-br from-green-500 to-emerald-600 group-hover:rotate-3 group-hover:scale-110 transition-transform' : 'bg-gradient-to-br from-green-400 to-emerald-500'}`}>
               <DollarSign className="w-12 h-12 text-white" />
             </div>
             <div className="text-center">
-              <h3 className={`text-2xl font-bold ${calculatorsStatus.treizeme ? 'text-gray-800 group-hover:text-green-700' : 'text-gray-600'}`}>13ème Mois</h3>
-              <p className={`text-center mt-2 ${calculatorsStatus.treizeme ? 'text-gray-600' : 'text-gray-500'}`}>Prime de 13ème mois<br /><span className="text-sm">{calculatorsStatus.treizeme ? 'Calculer votre 13ème mois' : 'Actuellement indisponible'}</span></p>
+              <h3 className={`text-2xl font-bold ${calculatorsStatus.treizeme ? 'text-gray-800 group-hover:text-green-700' : 'text-green-700/70'}`}>13ème Mois</h3>
+              <p className={`text-center mt-2 ${calculatorsStatus.treizeme ? 'text-gray-600' : 'text-green-600/70'}`}>Prime de 13ème mois<br /><span className="text-sm">{calculatorsStatus.treizeme ? 'Calculer votre 13ème mois' : 'Actuellement indisponible'}</span></p>
             </div>
-            <div className={`mt-4 px-4 py-2 rounded-lg text-sm font-semibold ${calculatorsStatus.treizeme ? 'bg-green-500/20 text-green-700' : 'bg-slate-400/20 text-slate-600'}`}>
+            <div className={`mt-4 px-4 py-2 rounded-lg text-sm font-semibold ${calculatorsStatus.treizeme ? 'bg-green-500/20 text-green-700' : 'bg-green-400/20 text-green-600/70'}`}>
               {calculatorsStatus.treizeme ? 'Cliquez pour ouvrir' : 'Désactivé'}
-            </div>
-          </div>
-        </button>
-
-        {/* Grilles Indiciaires */}
-        <button
-          onClick={() => openCalculator('metiers')}
-          disabled={!calculatorsStatus.grilles}
-          className={`group relative overflow-hidden rounded-3xl p-8 transition-all duration-500 ${
-            calculatorsStatus.grilles
-              ? 'bg-gradient-to-br from-amber-100/70 to-orange-100/70 border-2 border-amber-200 hover:bg-gradient-to-br hover:from-amber-100 hover:to-orange-100 hover:border-amber-400 hover:shadow-2xl hover:-translate-y-2 cursor-pointer'
-              : 'bg-gradient-to-br from-slate-200/70 to-slate-300/70 border-2 border-slate-300 opacity-50 cursor-not-allowed'
-          }`}
-        >
-          <div className="relative z-10 flex flex-col items-center gap-6">
-            <div className={`relative p-6 rounded-3xl shadow-xl ${calculatorsStatus.grilles ? 'bg-gradient-to-br from-amber-500 to-orange-600 group-hover:rotate-3 group-hover:scale-110 transition-transform' : 'bg-gradient-to-br from-slate-500 to-slate-600'}`}>
-              <BookOpen className="w-12 h-12 text-white" />
-            </div>
-            <div>
-              <h3 className={`text-2xl font-bold ${calculatorsStatus.grilles ? 'text-gray-800 group-hover:text-amber-700' : 'text-gray-600'}`}>Grilles Indiciaires</h3>
-              <p className={`text-center mt-2 ${calculatorsStatus.grilles ? 'text-gray-600' : 'text-gray-500'}`}>Filières et métiers<br /><span className="text-sm">{calculatorsStatus.grilles ? 'Consulter les grilles' : 'Actuellement indisponible'}</span></p>
-            </div>
-            <div className={`mt-4 px-4 py-2 rounded-lg text-sm font-semibold ${calculatorsStatus.grilles ? 'bg-amber-500/20 text-amber-700' : 'bg-slate-400/20 text-slate-600'}`}>
-              {calculatorsStatus.grilles ? 'Cliquez pour ouvrir' : 'Désactivé'}
             </div>
           </div>
         </button>

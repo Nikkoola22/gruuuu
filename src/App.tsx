@@ -15,6 +15,7 @@ import {
   Phone,
   Mail,
   MapPin,
+  Sparkles,
   Send,
   ArrowLeft,
   Home,
@@ -24,6 +25,10 @@ import {
   ChevronDown,
   Mic,
   MicOff,
+  TrendingUp,
+  Shield,
+  CheckCircle,
+  Zap,
 } from "lucide-react";
 
 import { sommaire } from "./data/sommaire.ts";
@@ -33,6 +38,10 @@ import { teletravailData } from "./data/teletravail.ts";
 import { infoItems as defaultInfoItems } from "./data/info-data.ts";
 import { podcastEpisodes, type PodcastEpisode } from "./data/podcasts/mp3.ts";
 import LoginModal from "./components/LoginModal";
+import FAQ from "./pages/FAQ";
+import Quiz from "./pages/Quiz";
+import Calculateurs from "./pages/Calculateurs";
+import Snow from "./components/Snow";
 
 interface ChatMessage {
   type: "user" | "assistant";
@@ -47,7 +56,7 @@ interface InfoItem {
 }
 
 interface ChatbotState {
-  currentView: "menu" | "chat" | "public";
+  currentView: "menu" | "chat" | "public" | "quiz";
   selectedDomain: number | null;
   messages: ChatMessage[];
   isProcessing: boolean;
@@ -55,9 +64,6 @@ interface ChatbotState {
 
 const API_KEY = import.meta.env.VITE_APP_PERPLEXITY_KEY;
 const API_URL = "https://api.perplexity.ai/chat/completions";
-
-const fluxOriginal = "https://www.franceinfo.fr/politique.rss";
-const proxyUrl = "https://api.allorigins.win/get?url=";
 
 // Fonction pour nettoyer les chaînes de caractères
 const nettoyerChaine = (chaine: string): string => {
@@ -72,22 +78,6 @@ const nettoyerChaine = (chaine: string): string => {
 
 // Parser les données du sommaire
 const sommaireData = JSON.parse(sommaire);
-
-// Fonction pour obtenir l'URL du flux RSS
-const getRssUrl = (): string => {
-  try {
-    const savedConfig = localStorage.getItem('rssConfig');
-    if (savedConfig) {
-      const config = JSON.parse(savedConfig);
-      if (config.enabled && config.url) {
-        return proxyUrl + encodeURIComponent(config.url);
-      }
-    }
-  } catch (err) {
-    console.warn('Erreur lors du chargement de la configuration RSS:', err);
-  }
-  return proxyUrl + encodeURIComponent(fluxOriginal);
-};
 
 const actualitesSecours = [
   { title: "Réforme des retraites : nouvelles négociations prévues", link: "#", pubDate: new Date().toISOString(), guid: "1" },
@@ -104,18 +94,49 @@ const NewsTicker: React.FC = () => {
   useEffect(() => {
     const chargerFlux = async () => {
       try {
-        const res = await fetch(getRssUrl());
+        // Utilise le proxy CORS corsproxy.io qui fonctionne en production
+        const feedUrl = 'https://www.franceinfo.fr/politique.rss';
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(feedUrl)}`;
+        
+        const res = await fetch(proxyUrl);
         if (!res.ok) throw new Error("Échec de la récupération du flux RSS");
 
-        const data = await res.json();
-        const xml = data.contents;
-        const doc = new DOMParser().parseFromString(xml, "text/xml");
-        const items = Array.from(doc.querySelectorAll("item")).slice(0, 10).map((item, i) => ({
-          title: item.querySelector("title")?.textContent || `Actualité ${i + 1}`,
-          link: item.querySelector("link")?.textContent || "#",
-          pubDate: item.querySelector("pubDate")?.textContent || new Date().toISOString(),
-          guid: item.querySelector("guid")?.textContent || `${i}`,
-        }));
+        const xmlText = await res.text();
+        
+        // Parse XML
+        const items: { title: string; link: string; pubDate: string; guid: string }[] = [];
+        const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+        let match, count = 0;
+
+        while ((match = itemRegex.exec(xmlText)) !== null && count < 10) {
+          const itemXml = match[1];
+          
+          // Fonction pour décoder les entités HTML
+          const decodeHTML = (html: string) => {
+            const txt = document.createElement('textarea');
+            txt.innerHTML = html;
+            return txt.value;
+          };
+          
+          const getTag = (tag: string) => {
+            const regex = new RegExp(`<${tag}[^>]*>(.*?)<\\/${tag}>`, 's');
+            const m = regex.exec(itemXml);
+            return m && m[1] ? decodeHTML(m[1].replace(/<[^>]*>/g, '')).trim() : '';
+          };
+
+          const title = getTag('title');
+          const link = getTag('link');
+
+          if (title && link) {
+            items.push({ 
+              title, 
+              link,
+              pubDate: getTag('pubDate'),
+              guid: getTag('guid') || link
+            });
+            count++;
+          }
+        }
 
         if (items.length) setActualites(items);
       } catch (err) {
@@ -130,42 +151,38 @@ const NewsTicker: React.FC = () => {
 
   if (loading) {
     return (
-      <section className="relative bg-blue-900/80 text-white overflow-hidden w-full shadow-lg z-10">
-        <div className="relative h-20 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-          <span className="ml-2 text-white text-sm">Chargement des actualités...</span>
-        </div>
-      </section>
+        <span className="ml-2 text-white text-sm">Chargement du flux RSS...</span>
     );
   }
 
   return (
-    <section className="relative bg-blue-900/80 text-white overflow-hidden w-full shadow-lg z-10">
-      <div className="relative h-20 flex items-center overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-blue-700 z-20 shadow-md">
-          <span className="text-2xl font-bold text-white">ACTU:</span>
-        </div>
-        <div className="animate-marquee-rss whitespace-nowrap flex items-center pl-44" style={{ animation: "marqueeRss 60s linear infinite" }}>
+    <div className="w-full bg-transparent rounded-none overflow-hidden">
+      <div className="flex items-center whitespace-nowrap py-3 ticker-container">
+        <div className="flex animate-ticker hover:[animation-play-state:paused]">
           {[...actualites, ...actualites].map((item, idx) => (
             <a
               key={`${item.guid}-${idx}`}
               href={item.link}
               target="_blank"
               rel="noreferrer"
-              className="text-2xl font-medium mx-8 text-white hover:text-blue-200 transition-colors underline decoration-dotted cursor-pointer"
+              className="flex items-center mx-4 sm:mx-6 text-white hover:text-blue-200 transition-colors no-underline"
             >
-              {item.title}
+              <span className="mr-2 text-yellow-300">📰</span>
+              <span className="font-medium text-lg sm:text-xl md:text-2xl">{item.title}</span>
+              <span className="mx-4 text-blue-300">•</span>
             </a>
           ))}
         </div>
       </div>
       <style>{`
-        @keyframes marqueeRss {
-          0% { transform: translateX(0%); }
+        @keyframes ticker {
+          0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
+        .ticker-container { overflow: hidden; white-space: nowrap; }
+        .animate-ticker { display: inline-flex; animation: ticker 60s linear infinite; }
       `}</style>
-    </section>
+    </div>
   );
 };
 
@@ -257,6 +274,21 @@ const PodcastPlayer: React.FC = () => {
     };
   }, [currentEpisode]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.play().catch((err) => {
+        console.error("Error playing audio:", err);
+        setError("Impossible de lire ce podcast.");
+        setIsPlaying(false);
+      });
+    } else {
+      audio.pause();
+    }
+  }, [isPlaying]);
+
   const playPause = async () => {
     const audio = audioRef.current;
     if (!audio || !currentEpisode) return;
@@ -277,7 +309,9 @@ const PodcastPlayer: React.FC = () => {
   const selectEpisode = (episode: PodcastEpisode) => {
     if (currentEpisode?.id !== episode.id) {
       setCurrentEpisode(episode);
-      setIsPlaying(false);
+      setIsPlaying(true); // Démarre automatiquement la lecture
+    } else if (!isPlaying) {
+      setIsPlaying(true); // Si le même épisode est cliqué, reprend la lecture
     }
   };
 
@@ -352,8 +386,20 @@ const PodcastPlayer: React.FC = () => {
 
 export default function App() {
   const [infoItems, setInfoItems] = useState<InfoItem[]>(() => {
+    // Charger d'abord depuis le fichier source (info-data.ts = source de vérité)
+    // Le localStorage n'est utilisé que si l'utilisateur a fait des modifications en admin
     const savedInfo = localStorage.getItem('cfdt-info-items');
-    return savedInfo ? JSON.parse(savedInfo) : defaultInfoItems;
+    if (savedInfo) {
+      const parsed = JSON.parse(savedInfo);
+      // Vérifier que le localStorage est à jour en comparant les IDs
+      // Si les IDs ne correspondent pas (ancien format), ignorer et recharger depuis la source
+      if (parsed.length === defaultInfoItems.length && 
+          parsed[parsed.length - 1]?.id === defaultInfoItems[defaultInfoItems.length - 1]?.id) {
+        return parsed;
+      }
+    }
+    // Utiliser la source de vérité
+    return defaultInfoItems;
   });
   
   const [chatState, setChatState] = useState<ChatbotState>({
@@ -367,11 +413,26 @@ export default function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isVoiceSupported, setIsVoiceSupported] = useState(false);
+  const [showCalculator, setShowCalculator] = useState(false);
+  const [isPrimesBlocked, setIsPrimesBlockedState] = useState(() => {
+    const saved = localStorage.getItem('primes-blocked');
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  useEffect(() => {
+    const handlePrimesBlockedChanged = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setIsPrimesBlockedState(customEvent.detail);
+    };
+    window.addEventListener('primes-blocked-changed', handlePrimesBlockedChanged);
+    return () => window.removeEventListener('primes-blocked-changed', handlePrimesBlockedChanged);
+  }, []);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
-  const silenceTimeoutRef = useRef<number | null>(null);
+  const silenceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -388,17 +449,28 @@ export default function App() {
       const savedInfo = localStorage.getItem('cfdt-info-items');
       if (savedInfo) {
         setInfoItems(JSON.parse(savedInfo));
+      } else {
+        // Si pas de modification locale, recharger depuis info-data.ts
+        setInfoItems(defaultInfoItems);
       }
     };
 
+    // Écoute l'événement custom depuis AdminInfo
+    const handleInfoItemsUpdate = (e: any) => {
+      setInfoItems(e.detail);
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener('info-items-updated', handleInfoItemsUpdate);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('info-items-updated', handleInfoItemsUpdate);
+    };
   }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      console.log('SpeechRecognition disponible:', !!SpeechRecognition);
       
       if (SpeechRecognition) {
         setIsVoiceSupported(true);
@@ -408,12 +480,10 @@ export default function App() {
         recognition.lang = 'fr-FR';
         
         recognition.onstart = () => {
-          console.log('Reconnaissance vocale démarrée');
           setIsListening(true);
         };
         
         recognition.onresult = (event: any) => {
-          console.log('Résultat de reconnaissance:', event);
           let finalTranscript = '';
           let interimTranscript = '';
           
@@ -427,11 +497,9 @@ export default function App() {
           }
           
           if (finalTranscript) {
-            console.log('Texte final:', finalTranscript);
             setInputValue(finalTranscript);
             setTimeout(() => {
               if (finalTranscript && finalTranscript.trim()) {
-                console.log('🎤 ENVOI AUTOMATIQUE TEXTE FINAL:', finalTranscript);
                 setInputValue(finalTranscript);
                 handleSendMessage();
               }
@@ -441,7 +509,6 @@ export default function App() {
               recognitionRef.current.stop();
             }
           } else if (interimTranscript) {
-            console.log('Texte intermédiaire:', interimTranscript);
             setInputValue(interimTranscript);
             
             if (silenceTimeoutRef.current) {
@@ -450,7 +517,6 @@ export default function App() {
             
             silenceTimeoutRef.current = setTimeout(() => {
               if (interimTranscript && interimTranscript.trim()) {
-                console.log('🎤 ENVOI AUTOMATIQUE APRÈS SILENCE:', interimTranscript);
                 setInputValue(interimTranscript);
                 handleSendMessage();
                 setIsListening(false);
@@ -469,7 +535,6 @@ export default function App() {
         };
         
         recognition.onend = () => {
-          console.log('Reconnaissance vocale terminée');
           setIsListening(false);
           if (silenceTimeoutRef.current) {
             clearTimeout(silenceTimeoutRef.current);
@@ -479,7 +544,6 @@ export default function App() {
         
         recognitionRef.current = recognition;
       } else {
-        console.log('Reconnaissance vocale non supportée');
         setIsVoiceSupported(false);
       }
     }
@@ -513,7 +577,6 @@ export default function App() {
 
   const startListening = () => {
     if (recognitionRef.current && !isListening) {
-      console.log('🎤 Démarrage de la reconnaissance vocale');
       setInputValue("");
       recognitionRef.current.start();
     }
@@ -521,7 +584,6 @@ export default function App() {
 
   const stopListening = () => {
     if (recognitionRef.current && isListening) {
-      console.log('🎤 Arrêt de la reconnaissance vocale');
       recognitionRef.current.stop();
       setIsListening(false);
     }
@@ -633,18 +695,20 @@ ${contexte}
 
   return (
     <div className="min-h-screen relative font-sans">
-      <div className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0" style={{ backgroundImage: "url('./mairie.jpeg')" }} />
-      <div className="fixed inset-0 bg-black/10 z-0" />
+      <Snow />
+  <div className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0 filter blur-md" style={{ backgroundImage: "url('./mairie.jpeg')" }} />
+  <div className="fixed inset-0 bg-black/20 z-0" />
       <PodcastPlayer />
 
       <header className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700 z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col sm:flex-row items-center gap-8 flex-grow">
-            <div className="relative">
-              <div className="absolute -inset-3 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 rounded-2xl blur-xl opacity-30" />
-              <div className="relative p-5 bg-gradient-to-br from-slate-100 to-white rounded-2xl shadow-2xl border border-slate-200">
-                <Users className="w-16 h-16 text-slate-700" />
-              </div>
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg shadow-lg border-2 border-slate-200">
+              <img
+                src="./deco.jpg"
+                alt="Décoration"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="text-center sm:text-left">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 tracking-tight">
@@ -681,12 +745,13 @@ ${contexte}
         </div>
       </header>
 
-      <section className="relative bg-orange-300 text-black overflow-hidden w-full shadow-lg z-10">
+      {/* Bandeau News FPT déplacé sous le header et en full width */}
+      <section className="relative bg-orange-300 text-black overflow-hidden w-full rounded-none shadow-lg z-10">
         <div className="relative h-20 flex items-center overflow-hidden">
-          <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-orange-400 z-20 shadow-md">
+            <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-orange-400 z-20 shadow-md">
             <span className="text-2xl font-bold">NEWS FPT:</span>
           </div>
-          <div className="animate-marquee whitespace-nowrap flex items-center pl-44" style={{ animation: "marquee 45s linear infinite" }}>
+              <div className="animate-marquee whitespace-nowrap flex items-center pl-44" style={{ animation: "marquee 45s linear infinite" }}>
             {[...infoItems, ...infoItems].map((info, idx) => (
               <button
                 key={`${info.id}-${idx}`}
@@ -738,29 +803,192 @@ ${contexte}
           }
         `}</style>
       </section>
-
-      <main className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 z-10">
-        {chatState.currentView === "menu" ? (
+  <main className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 z-10">
+        {selectedInfo && (
+          <section className="info-detail bg-white/95 backdrop-blur-sm p-6 rounded-lg shadow-md mb-8 max-w-4xl mx-auto">
+            <h3 className="text-xl font-bold mb-4">{selectedInfo.title}</h3>
+            <p className="whitespace-pre-wrap">{selectedInfo.content}</p>
+            <button onClick={() => setSelectedInfo(null)} className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+              Fermer
+            </button>
+          </section>
+        )}
+        {chatState.currentView === 'quiz' ? (
+          <Quiz onBack={() => setChatState({ currentView: 'menu', selectedDomain: null, messages: [], isProcessing: false })} />
+        ) : chatState.currentView === 'public' ? (
+          <FAQ onBack={() => setChatState({ currentView: 'menu', selectedDomain: null, messages: [], isProcessing: false })} />
+        ) : showCalculator ? (
+          <Calculateurs onBack={() => setShowCalculator(false)} />
+        ) : chatState.currentView === "menu" ? (
           <>
 
-            {selectedInfo && (
-              <section className="info-detail bg-white/95 backdrop-blur-sm p-6 rounded-lg shadow-md mt-8 max-w-4xl mx-auto">
-                <h3 className="text-xl font-bold mb-4">{selectedInfo.title}</h3>
-                <p className="whitespace-pre-wrap">{selectedInfo.content}</p>
-                <button onClick={() => setSelectedInfo(null)} className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                  Fermer
-                </button>
-              </section>
-            )}
-
-            <section className="text-center mt-4 mb-12">
-              <h3 className="text-2xl font-bold text-white mb-4 bg-gradient-to-r from-blue-600/60 via-purple-600/60 to-indigo-600/60 px-4 py-2 rounded-2xl shadow-lg max-w-2xl mx-auto">
-                Choisissez votre domaine d'assistance
-              </h3>
-              <p className="text-xl bg-white/90 px-4 py-2 rounded-lg max-w-fit mx-auto shadow-md backdrop-blur-sm">
-                <span className="animate-blink">Exclusivement à partir des documents de la mairie.</span>
-              </p>
+            <section className="text-center -mt-6 mb-8 max-w-2xl mx-auto px-4">
+              <div className="group relative overflow-hidden rounded-3xl p-1">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl animate-gradient-x opacity-80" />
+                <div className="relative bg-slate-900/95 backdrop-blur-xl rounded-[22px] px-8 py-6">
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                    <h3 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
+                      Choisissez votre domaine d'assistance
+                    </h3>
+                    <div className="w-2 h-2 rounded-full bg-pink-400 animate-pulse" />
+                  </div>
+                  <p className="text-sm text-white/70 max-w-md mx-auto">
+                    <span className="animate-blink">✨ Exclusivement à partir des documents de la mairie</span>
+                  </p>
+                </div>
+              </div>
             </section>
+
+            <div className="relative w-full flex items-center justify-center mb-12">
+                            {/* Mobile layout: vertical stacking */}
+              <div className="md:hidden w-full flex flex-col items-center gap-6">
+                {/* PRIMES button - Modern Glass Design */}
+                <button 
+                  onClick={() => { if (!isPrimesBlocked) setShowCalculator(true); }}
+                  disabled={isPrimesBlocked}
+                  className={`group relative overflow-hidden rounded-3xl p-1 transition-all duration-500 ${isPrimesBlocked ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 hover:shadow-2xl'}`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-3xl animate-gradient-x" />
+                  <div className="relative bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 flex flex-col items-center gap-4">
+                    <div className={`relative p-4 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl shadow-xl transition-transform duration-300 ${!isPrimesBlocked ? 'group-hover:rotate-6 group-hover:scale-110' : ''}`}>
+                      <TrendingUp className="w-8 h-8 text-white" />
+                      <div className="absolute inset-0 bg-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <span className="text-lg font-bold text-white tracking-wide">PRIMES</span>
+                    <span className="text-xs text-cyan-300/80">Calculateurs & Grilles</span>
+                  </div>
+                </button>
+
+                {/* QUIZZ button */}
+                <button onClick={() => setChatState(p => ({ ...p, currentView: 'quiz' }))} aria-label="Ouvrir QUIZZ" className="focus:outline-none">
+                  <div className="w-32 h-32">
+                    <svg viewBox="0 0 100 100" className="w-full h-full star-anim cursor-pointer" aria-hidden="true">
+                      <defs>
+                        <linearGradient id="gStar" x1="0%" x2="100%">
+                          <stop offset="0%" stopColor="#FFD54A" />
+                          <stop offset="50%" stopColor="#F59E0B" />
+                          <stop offset="100%" stopColor="#D97706" />
+                        </linearGradient>
+                      </defs>
+                      <polygon points="50,3 61,36 98,36 67,57 78,91 50,70 22,91 33,57 2,36 39,36" fill="url(#gStar)" />
+                      <text x="50%" y="56%" textAnchor="middle" dominantBaseline="middle" fontSize="26" fontWeight="700" fill="#3B2F00" stroke="#3B2F00" strokeWidth="1.0" paintOrder="stroke fill" letterSpacing="-0.45">QUIZZ</text>
+                    </svg>
+                  </div>
+                </button>
+
+                {/* Questions fréquentes button - Modern Glass Design */}
+                <button 
+                  onClick={() => setChatState(p => ({ ...p, currentView: 'public' }))}
+                  className="group relative overflow-hidden rounded-3xl p-1 transition-all duration-500 hover:scale-105 hover:shadow-2xl"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 rounded-3xl animate-gradient-x" />
+                  <div className="relative bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 flex flex-col items-center gap-4">
+                    <div className="relative p-4 bg-gradient-to-br from-orange-400 to-pink-600 rounded-2xl shadow-xl transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+                      <Sparkles className="w-8 h-8 text-white" />
+                      <div className="absolute inset-0 bg-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <span className="text-lg font-bold text-white tracking-wide">FAQ</span>
+                    <span className="text-xs text-orange-300/80">Questions fréquentes</span>
+                  </div>
+                </button>
+              </div>
+
+              {/* Styles for both mobile and desktop animations */}
+              <style>{`
+                @keyframes quizz-pulse {
+                  0% { transform: scale(1); }
+                  50% { transform: scale(1.16); }
+                  100% { transform: scale(1); }
+                }
+                @keyframes quizz-blink {
+                  0% { opacity: 1; }
+                  50% { opacity: 0.35; }
+                  100% { opacity: 1; }
+                }
+                @keyframes gradient-x {
+                  0%, 100% { background-position: 0% 50%; }
+                  50% { background-position: 100% 50%; }
+                }
+                .animate-gradient-x {
+                  background-size: 200% 200%;
+                  animation: gradient-x 3s ease infinite;
+                }
+                .star-anim {
+                  transform-origin: 50% 50%;
+                  animation: quizz-pulse 1.1s ease-in-out infinite, quizz-blink 1.3s linear infinite;
+                  filter: drop-shadow(0 10px 30px rgba(217,119,6,0.45));
+                }
+              `}</style>
+
+              {/* Desktop layout: absolute positioning */}
+              <div className="hidden md:block relative w-full min-h-[350px] h-[350px]">
+                {/* fixed white circle behind the star (non-interactive) */}
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20">
+                  <div className="w-44 h-44 rounded-full bg-white shadow-lg" />
+                </div>
+
+                {/* PRIMES Window on the left - Modern Glass Design */}
+                <div className="absolute left-24 top-1/2 transform -translate-y-1/2 z-30">
+                  <button 
+                    onClick={() => { if (!isPrimesBlocked) setShowCalculator(true); }}
+                    disabled={isPrimesBlocked}
+                    className={`group relative overflow-hidden rounded-3xl p-1 transition-all duration-500 ${isPrimesBlocked ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110 hover:shadow-2xl'}`}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-3xl animate-gradient-x" />
+                    <div className="relative bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 flex flex-col items-center gap-4 min-w-[140px]">
+                      <div className={`relative p-4 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl shadow-xl transition-transform duration-300 ${!isPrimesBlocked ? 'group-hover:rotate-6 group-hover:scale-110' : ''}`}>
+                        <TrendingUp className="w-10 h-10 text-white" />
+                        <div className="absolute inset-0 bg-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </div>
+                      <span className="text-xl font-bold text-white tracking-wide">PRIMES</span>
+                      <span className="text-xs text-cyan-300/80">Calculateurs & Grilles</span>
+                    </div>
+                  </button>
+                </div>
+
+                {/* Center the QUIZZ star */}
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30">
+                  <button onClick={() => setChatState(p => ({ ...p, currentView: 'quiz' }))} aria-label="Ouvrir QUIZZ" className="focus:outline-none">
+                    <div className="w-40 h-40">
+                      <svg viewBox="0 0 100 100" className="w-full h-full star-anim cursor-pointer" aria-hidden="true">
+                        <defs>
+                          <linearGradient id="gStar" x1="0%" x2="100%">
+                            <stop offset="0%" stopColor="#FFD54A" />
+                            <stop offset="50%" stopColor="#F59E0B" />
+                            <stop offset="100%" stopColor="#D97706" />
+                          </linearGradient>
+                        </defs>
+                        <polygon points="50,3 61,36 98,36 67,57 78,91 50,70 22,91 33,57 2,36 39,36" fill="url(#gStar)" />
+                        <text x="50%" y="56%" textAnchor="middle" dominantBaseline="middle" fontSize="26" fontWeight="700" fill="#3B2F00" stroke="#3B2F00" strokeWidth="1.0" paintOrder="stroke fill" letterSpacing="-0.45">QUIZZ</text>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+
+                {/* Questions fréquentes on the right - Modern Glass Design */}
+                <div className="absolute right-24 top-1/2 transform -translate-y-1/2 z-30">
+                  <button 
+                    onClick={() => setChatState(p => ({ ...p, currentView: 'public' }))}
+                    className="group relative overflow-hidden rounded-3xl p-1 transition-all duration-500 hover:scale-110 hover:shadow-2xl"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 rounded-3xl animate-gradient-x" />
+                    <div className="relative bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 flex flex-col items-center gap-4 min-w-[140px]">
+                      <div className="relative p-4 bg-gradient-to-br from-orange-400 to-pink-600 rounded-2xl shadow-xl transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+                        <Sparkles className="w-10 h-10 text-white" />
+                        <div className="absolute inset-0 bg-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </div>
+                      <span className="text-xl font-bold text-white tracking-wide">FAQ</span>
+                      <span className="text-xs text-orange-300/80">Questions fréquentes</span>
+                    </div>
+                  </button>
+                </div>
+
+                {/* Spacer for layout */}
+                <div className="h-64" />
+              </div>
+            </div>
+
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               <button
@@ -819,7 +1047,10 @@ ${contexte}
                   <p className="text-orange-100 text-xs sm:text-sm hidden sm:block">Posez vos questions, je suis là pour vous aider</p>
                 </div>
               </div>
-              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-white flex-shrink-0" />
+              <div className="flex items-center gap-2 sm:gap-4">
+                <Users className="w-6 h-6 sm:w-8 sm:h-8 text-white flex-shrink-0" />
+                <button onClick={returnToMenu} className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold text-base">Retour</button>
+              </div>
             </div>
             
             <div className="flex flex-col sm:flex-row items-center py-4 bg-gray-50/50 px-4 sm:px-6 gap-4">
@@ -919,67 +1150,146 @@ ${contexte}
         )}
       </main>
 
-      <NewsTicker />
+      {/* Bandeau Flux RSS — full width, collé au-dessus du footer (fond bleu) */}
+  <section className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white z-10">
+        <div className="w-full px-0">
+          <div className="relative bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white overflow-hidden w-full rounded-none shadow-none z-10">
+            <div className="relative h-20 flex items-center overflow-hidden">
+              <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-blue-800 z-20 shadow-md">
+                <span className="text-2xl font-bold text-white">FLUX RSS:</span>
+              </div>
+              <div className="w-full pl-44">
+                <NewsTicker />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <footer className="relative bg-gray-900 text-white py-6 z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer className="relative backdrop-blur-xl bg-slate-900/80 border-t border-slate-800 py-6 z-10">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900" />
+        
+        <div className="relative max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Contact CFDT */}
             <div className="text-center md:text-left">
-              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="text-xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
                 Contact CFDT
               </h4>
-              <div className="space-y-3">
-                <div className="flex items-center justify-center md:justify-start gap-3">
-                  <Phone className="w-5 h-5 text-orange-400" />
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-center md:justify-start gap-3 text-white/80 hover:text-white transition-colors">
+                  <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+                    <Phone className="w-4 h-4 text-orange-400" />
+                  </div>
                   <span>01 40 85 64 64</span>
                 </div>
-                <div className="flex items-center justify-center md:justify-start gap-3">
-                  <Mail className="w-5 h-5 text-orange-400" />
-                  <a 
+                <div className="flex items-center justify-center md:justify-start gap-3 text-white/80 hover:text-white transition-colors">
+                  <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+                    <Mail className="w-4 h-4 text-orange-400" />
+                  </div>
+                  <a
                     href="mailto:cfdt-interco@ville-gennevilliers.fr"
-                    className="text-white hover:text-orange-300 transition-colors"
+                    className="hover:text-orange-300 transition-colors"
                   >
                     cfdt-interco@ville-gennevilliers.fr
                   </a>
                 </div>
-                <div className="flex items-center justify-center md:justify-start gap-3">
-                  <MapPin className="w-5 h-5 text-orange-400" />
+                <div className="flex items-center justify-center md:justify-start gap-3 text-white/80">
+                  <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+                    <MapPin className="w-4 h-4 text-orange-400" />
+                  </div>
                   <span>Mairie de Gennevilliers</span>
                 </div>
               </div>
             </div>
+            
+            {/* Services */}
             <div className="text-center">
-              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
                 Services
               </h4>
-              <ul className="space-y-2 text-gray-300">
-                <li>Santé</li>
-                <li>Retraite</li>
-                <li>Juridique</li>
-                <li>Accompagnement syndical</li>
+              </div>
+              <ul className="space-y-3 text-white/80 flex flex-col items-center justify-center">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                  <span>Accompagnement syndical</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                  <span>Santé</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                  <span>Retraite</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                  <span>Juridique</span>
+                </li>
               </ul>
             </div>
+            
+            {/* Horaires */}
             <div className="text-center md:text-right">
-              <h4 className="text-xl font-bold mb-4 bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
+              <div className="flex items-center justify-center md:justify-end gap-3 mb-6">
+                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="text-xl font-bold bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
                 Horaires
               </h4>
-              <div className="space-y-2 text-gray-300">
-                <div>Lundi - Vendredi</div>
-                <div className="font-semibold text-white">9h00/12h00 - 13h30/17h00</div>
-                <div className="text-sm">Permanences sur RDV</div>
+              </div>
+              <div className="space-y-3 text-white/80">
+                <div className="text-lg font-medium text-white">Lundi - Vendredi</div>
+                <div className="text-xl font-bold text-white bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
+                  9h00-12h00 / 13h30-17h00
+            </div>
+                <div className="text-sm text-white/60">Permanences sur RDV</div>
+                <div className="flex items-center justify-center md:justify-end gap-2 mt-4">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span className="text-sm text-green-300">Ouvert maintenant</span>
+              </div>
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-700 mt-6 pt-4 text-center">
-            <p className="text-gray-400">© 2025 CFDT Gennevilliers - Assistant IA pour les agents municipaux</p>
-            <div className="mt-4">
-              <button
-                onClick={() => setShowLoginModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-md"
-                title="Administrer les actualités et informations"
-              >
-                ⚙️ Admin
-              </button>
+          
+          <div className="border-t border-white/20 mt-6 pt-4">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="text-white/80">
+                  © 2025 CFDT Gennevilliers
+                </div>
+                <div className="w-1 h-1 bg-white/40 rounded-full" />
+                <div className="text-white/60">
+                  Assistant IA pour les agents municipaux
+                </div>
+              </div>
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2 text-white/70">
+                  <Zap className="w-4 h-4 text-orange-400" />
+                  <span className="text-sm">Powered by AI</span>
+                </div>
+                <div className="flex items-center gap-2 text-white/70">
+                  <Shield className="w-4 h-4 text-green-400" />
+                  <span className="text-sm">Sécurisé</span>
+                </div>
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-md"
+                  title="Administrer les actualités et informations"
+                >
+                  ⚙️ Admin
+                </button>
+              </div>
             </div>
           </div>
         </div>

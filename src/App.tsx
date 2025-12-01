@@ -860,22 +860,28 @@ ${contexte}
                   </div>
                 </button>
 
-                {/* QUIZZ button */}
-                <button onClick={() => setChatState(p => ({ ...p, currentView: 'quiz' }))} aria-label="Ouvrir QUIZZ" className="focus:outline-none">
-                  <div className="w-32 h-32">
-                    <svg viewBox="0 0 100 100" className="w-full h-full star-anim cursor-pointer" aria-hidden="true">
-                      <defs>
-                        <linearGradient id="gStar" x1="0%" x2="100%">
-                          <stop offset="0%" stopColor="#FFD54A" />
-                          <stop offset="50%" stopColor="#F59E0B" />
-                          <stop offset="100%" stopColor="#D97706" />
-                        </linearGradient>
-                      </defs>
-                      <polygon points="50,3 61,36 98,36 67,57 78,91 50,70 22,91 33,57 2,36 39,36" fill="url(#gStar)" />
-                      <text x="50%" y="56%" textAnchor="middle" dominantBaseline="middle" fontSize="26" fontWeight="700" fill="#3B2F00" stroke="#3B2F00" strokeWidth="1.0" paintOrder="stroke fill" letterSpacing="-0.45">QUIZZ</text>
-                    </svg>
+                {/* QUIZZ button with white circle background */}
+                <div className="relative">
+                  {/* White circle behind the star */}
+                  <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                    <div className="w-36 h-36 rounded-full bg-white shadow-lg" />
                   </div>
-                </button>
+                  <button onClick={() => setChatState(p => ({ ...p, currentView: 'quiz' }))} aria-label="Ouvrir QUIZZ" className="focus:outline-none relative z-10">
+                    <div className="w-32 h-32">
+                      <svg viewBox="0 0 100 100" className="w-full h-full star-anim cursor-pointer" aria-hidden="true">
+                        <defs>
+                          <linearGradient id="gStarMobile" x1="0%" x2="100%">
+                            <stop offset="0%" stopColor="#FFD54A" />
+                            <stop offset="50%" stopColor="#F59E0B" />
+                            <stop offset="100%" stopColor="#D97706" />
+                          </linearGradient>
+                        </defs>
+                        <polygon points="50,3 61,36 98,36 67,57 78,91 50,70 22,91 33,57 2,36 39,36" fill="url(#gStarMobile)" />
+                        <text x="50%" y="56%" textAnchor="middle" dominantBaseline="middle" fontSize="26" fontWeight="700" fill="#3B2F00" stroke="#3B2F00" strokeWidth="1.0" paintOrder="stroke fill" letterSpacing="-0.45">QUIZZ</text>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
 
                 {/* Questions fréquentes button - Modern Glass Design */}
                 <button 

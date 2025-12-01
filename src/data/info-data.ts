@@ -32,7 +32,7 @@ export const infoItems: InfoItem[] = [
   },
   {
     id: 6,
-    title: "dois je donner mom mot de passe pendant mon arrêt maladie?",
+    title: "dois je donner mon mot de passe pendant mon arrêt maladie?",
     content: "La circonstance qu'un agent placé en congé de maladie ait expressément refusé, à deux reprises, de communiquer à ses supérieurs hiérarchiques le mot de passe permettant d'accéder à son ordinateur professionnel, alors que ce dernier était le seul à contenir les informations nécessaires à la poursuite de l'activité du service, est constitutive d'un fait de désobéissance hiérarchique, de nature à justifier la sanction disciplinaire de l'avertissement.TA Marseille 2210505 du 30.06.2025"
   },
   {

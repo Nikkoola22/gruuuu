@@ -62,8 +62,8 @@ interface ChatbotState {
   isProcessing: boolean;
 }
 
-const API_KEY = import.meta.env.VITE_APP_PERPLEXITY_KEY;
-const API_URL = "/api/perplexity"; // Utiliser l'API route Vercel
+const API_KEY = import.meta.env.VITE_API_KEY;
+const API_URL = "https://api.perplexity.ai/chat/completions";
 
 // Fonction pour nettoyer les chaînes de caractères
 const nettoyerChaine = (chaine: string): string => {

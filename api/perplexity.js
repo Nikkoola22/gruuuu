@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-// CORS headers
 function corsHeaders() {
   return {
     'Access-Control-Allow-Origin': '*',
@@ -11,7 +10,6 @@ function corsHeaders() {
   };
 }
 
-// OPTIONS pour CORS preflight
 export async function OPTIONS() {
   return new Response(null, {
     status: 204,
@@ -22,16 +20,26 @@ export async function OPTIONS() {
 export async function POST(request) {
   try {
     const { messages } = await request.json();
-    const API_KEY = process.env.VITE_APP_PERPLEXITY_KEY;
+    
+    // Essayer plusieurs noms de variable d'env
+    const API_KEY = process.env.VITE_APP_PERPLEXITY_KEY || 
+                    process.env.PERPLEXITY_API_KEY || 
+                    process.env.PERPLEXITY_KEY;
+
+    console.log('[Perplexity API] Checking API key...');
+    console.log('[Perplexity API] VITE_APP_PERPLEXITY_KEY exists:', !!process.env.VITE_APP_PERPLEXITY_KEY);
+    console.log('[Perplexity API] PERPLEXITY_API_KEY exists:', !!process.env.PERPLEXITY_API_KEY);
 
     if (!API_KEY) {
-      console.error('Clé API Perplexity manquante');
+      console.error('[Perplexity API] No API key found in environment variables');
       return NextResponse.json(
-        { error: 'API key not configured' },
+        { error: 'Clé API Perplexity non configurée' },
         { status: 500, headers: corsHeaders() }
       );
     }
 
+    console.log('[Perplexity API] Calling Perplexity API...');
+    
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -44,21 +52,24 @@ export async function POST(request) {
       })
     });
 
+    console.log('[Perplexity API] Response status:', response.status);
+
     if (!response.ok) {
       const error = await response.text();
-      console.error(`Perplexity API error: ${response.status}`, error);
+      console.error(`[Perplexity API] Error ${response.status}:`, error);
       return NextResponse.json(
-        { error: `API returned ${response.status}` },
+        { error: `Perplexity API error: ${response.status}` },
         { status: response.status, headers: corsHeaders() }
       );
     }
 
     const data = await response.json();
+    console.log('[Perplexity API] Success');
     return NextResponse.json(data, { headers: corsHeaders() });
   } catch (error) {
-    console.error('Erreur lors de l\'appel Perplexity:', error);
+    console.error('[Perplexity API] Exception:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: `Erreur serveur: ${error.message}` },
       { status: 500, headers: corsHeaders() }
     );
   }

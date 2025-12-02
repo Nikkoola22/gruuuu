@@ -15,7 +15,7 @@ export const faqData: FAQItem[] = [
   {
     id: 27,
     question: "Je peux mettre combien de jours dans mon CET ?",
-    answer: "Tu peux mettre au maximum **5 jours de congés annuels** et **2 jours de fractionnement** ainsi que 50 % des jours de **A.R.T.T** dans ton CET chaque année, à condition d’avoir pris au moins 20 jours de congés annuels dans l’année en cours. La demande d’ouverture ou d’alimentation du CET se fait avec les formulaires disponibles sur l’intranet.\n\nSeuls les agents employés de manière continue depuis au moins 1 an peuvent alimenter un CET, et les fonctionnaires stagiaires ne sont pas concernés pendant la période de stage.",
+    answer: "Tu peux mettre au maximum **5 jours de congés annuels** et **2 jours de fractionnement** ainsi que 50 % des jours de **A.R.T.T** dans ton CET chaque année, à condition d'avoir pris au moins 20 jours de congés annuels dans l'année en cours. La demande d'ouverture ou d'alimentation du CET se fait avec les formulaires disponibles sur l'intranet.\n\nSeuls les agents employés de manière continue depuis au moins 1 an peuvent alimenter un CET, et les fonctionnaires stagiaires ne sont pas concernés pendant la période de stage.",
     category: 'conges'
   },
   {
@@ -27,7 +27,29 @@ export const faqData: FAQItem[] = [
   {
     id: 2,
     question: "Comment fonctionnent les plages fixes et les plages de souplesse ?",
-    answer: "Les plages fixes sont des périodes où la présence est obligatoire pour tous les agents. Les plages de souplesse permettent une certaine flexibilité dans les horaires d'arrivée et de départ, dans le respect de l'amplitude journalière et de la pause méridienne.",
+    answer: \`Les **plages fixes** et les **plages de souplesse** permettent d'organiser le temps de travail avec une certaine flexibilité tout en garantissant la présence des agents pendant les périodes essentielles.
+
+- **Plages fixes (présence obligatoire)** :
+  Ce sont les périodes pendant lesquelles tous les agents doivent impérativement être présents. À Gennevilliers, les plages fixes sont généralement :
+  - Le matin : de **9h30 à 11h30**
+  - L'après-midi : de **14h00 à 16h00**
+
+- **Plages de souplesse (flexibilité)** :
+  Ces plages permettent aux agents de choisir leurs heures d'arrivée et de départ, dans le respect du temps de travail quotidien. Elles se situent :
+  - Le matin : de **7h30 à 9h30** (arrivée)
+  - Le midi : de **11h30 à 14h00** (pause méridienne)
+  - Le soir : de **16h00 à 19h00** (départ)
+
+- **Pause méridienne** :
+  Une pause déjeuner d'au moins **45 minutes** est obligatoire. Cette pause doit être prise entre 11h30 et 14h00.
+
+- **Amplitude journalière** :
+  La durée maximale de travail quotidien ne peut pas dépasser **10 heures**. L'amplitude horaire (entre l'arrivée et le départ) ne peut pas excéder **12 heures**.
+
+- **À savoir** :
+  - Les horaires peuvent varier selon les services et les cycles de travail.
+  - Le badgeage permet de contrôler le respect des plages fixes.
+  - En cas de nécessité de service, le chef de service peut demander une présence en dehors des plages fixes habituelles.\`,
     category: 'temps-travail'
   },
   {
@@ -39,7 +61,7 @@ export const faqData: FAQItem[] = [
   {
     id: 4,
     question: "Comment sont rémunérées les heures supplémentaires ?",
-    answer: `Les heures supplémentaires sont rémunérées uniquement si elles sont effectuées à la demande de la hiérarchie, concernent les agents titulaires et non titulaires de catégorie B et C, et dépassent le temps de travail normal de l’agent.
+    answer: \`Les heures supplémentaires sont rémunérées uniquement si elles sont effectuées à la demande de la hiérarchie, concernent les agents titulaires et non titulaires de catégorie B et C, et dépassent le temps de travail normal de l'agent.
 
 - **Elles donnent prioritairement droit à une récupération majorée**, à effectuer dans un délai de deux mois.
 - **Majoration de récupération** :
@@ -54,9 +76,9 @@ export const faqData: FAQItem[] = [
   - 1 heure de nuit donne droit à 2h30 (pour les 14 premières) ou 2h34 (de la 15ème à la 25ème).
   - 1 heure le dimanche donne droit à 2h05 (pour les 14 premières) ou 2h07 (de la 15ème à la 25ème).
 
-- **Indemnisation à titre exceptionnel** : si la récupération n’a pas été possible, elles peuvent être indemnisées sur demande du chef de service et selon les mêmes taux de majoration.
+- **Indemnisation à titre exceptionnel** : si la récupération n'a pas été possible, elles peuvent être indemnisées sur demande du chef de service et selon les mêmes taux de majoration.
 
-- **Limite** : pas plus de 25 heures supplémentaires par mois. Elles doivent être formalisées et validées par le chef de service.`,
+- **Limite** : pas plus de 25 heures supplémentaires par mois. Elles doivent être formalisées et validées par le chef de service.\`,
     category: 'temps-travail'
   },
   {
@@ -74,32 +96,32 @@ export const faqData: FAQItem[] = [
   {
     id: 7,
     question: "Comment fonctionnent les jours d'ARTT ?",
-    answer: `Les **jours d'ARTT** (Aménagement et Réduction du Temps de Travail) sont des journées de repos attribuées pour compenser le fait de travailler plus de 35 heures par semaine. Ils permettent de ne pas dépasser le plafond annuel de 1607 heures de travail.
+    answer: \`Les **jours d'ARTT** (Aménagement et Réduction du Temps de Travail) sont des journées de repos attribuées pour compenser le fait de travailler plus de 35 heures par semaine. Ils permettent de ne pas dépasser le plafond annuel de 1607 heures de travail.
 
 - **Qui y a droit ?**  
-Tu peux bénéficier des ARTT si tu travailles à temps complet avec une durée hebdomadaire supérieure à 35h (par exemple : 37h, 37,5h, 38h ou 39h selon les cycles en vigueur à Gennevilliers), ou à temps partiel (le nombre de jours d’ARTT est alors au prorata de ton temps de travail).
+Tu peux bénéficier des ARTT si tu travailles à temps complet avec une durée hebdomadaire supérieure à 35h (par exemple : 37h, 37,5h, 38h ou 39h selon les cycles en vigueur à Gennevilliers), ou à temps partiel (le nombre de jours d'ARTT est alors au prorata de ton temps de travail).
 
-- **Combien de jours d’ARTT ?**  
-Le nombre de jours dépend de ton temps de travail hebdomadaire. Par exemple :  
-  - 37h : 12 jours d’ARTT par an  
+- **Combien de jours d'ARTT ?**  
+Le nombre de jours dépend de ton temps de travail hebdomadaire. Par exemple :  
+  - 37h : 12 jours d'ARTT par an  
   - 37,5h : 15 jours  
   - 38h : 18 jours  
   - 39h : 23 jours  
 Ce nombre est réduit proportionnellement si tu as des absences pour maladie dans l'année.
 
-- **Comment poser ses ARTT ?**  
-Ils se posent en journée ou demi-journée, comme les congés annuels. Les règles et délais de demande sont les mêmes que pour les congés annuels :  
-  - Hors période estivale, 1 mois à l’avance pour 5 à 10 jours, 15 jours avant pour moins de 5 jours, et 5 jours ouvrés avant pour une journée.  
-  - 50 % des jours d’ARTT doivent être pris avant le 15 septembre.
+- **Comment poser ses ARTT ?**  
+Ils se posent en journée ou demi-journée, comme les congés annuels. Les règles et délais de demande sont les mêmes que pour les congés annuels :  
+  - Hors période estivale, 1 mois à l'avance pour 5 à 10 jours, 15 jours avant pour moins de 5 jours, et 5 jours ouvrés avant pour une journée.  
+  - 50 % des jours d'ARTT doivent être pris avant le 15 septembre.
 
-- **ARTT non pris :**  
-À la fin de l’année, les jours d’ARTT non pris peuvent être versés sur ton compte épargne-temps (CET) selon les règles définies, sinon ils sont perdus.
+- **ARTT non pris :**  
+À la fin de l'année, les jours d'ARTT non pris peuvent être versés sur ton compte épargne-temps (CET) selon les règles définies, sinon ils sont perdus.
 
-- **Attention :**
-  - Les absences pour raisons de santé diminuent le nombre de jours d’ARTT acquis : un système de « quotient de réduction » fait qu’après un certain nombre d’absences, une journée d’ARTT est retirée.
+- **Attention :**
+  - Les absences pour raisons de santé diminuent le nombre de jours d'ARTT acquis : un système de « quotient de réduction » fait qu'après un certain nombre d'absences, une journée d'ARTT est retirée.
   - Les agents sur emplois saisonniers ou aux contrats courts doivent impérativement poser leurs ARTT avant la fin de contrat.
 
-N’oublie pas que les jours non travaillés automatiquement (JNT) ne sont pas des ARTT et qu’ils sont planifiés directement par le service, contrairement aux ARTT qui sont à ta main sous réserve des nécessités de service.`,
+N'oublie pas que les jours non travaillés automatiquement (JNT) ne sont pas des ARTT et qu'ils sont planifiés directement par le service, contrairement aux ARTT qui sont à ta main sous réserve des nécessités de service.\`,
     category: 'conges'
   },
   {
@@ -118,24 +140,24 @@ N’oublie pas que les jours non travaillés automatiquement (JNT) ne sont pas d
   {
     id: 11,
     question: "Puis-je m'absenter pour garde d'enfant malade ?",
-    answer: `Oui, tu peux t’absenter pour garde d’enfant malade, sous certaines conditions.
+    answer: \`Oui, tu peux t'absenter pour garde d'enfant malade, sous certaines conditions.
 
-Voici les règles principales concernant l’absence pour garde d’enfant :
-- **L’autorisation d’absence est prévue si tu dois soigner un enfant malade ou assurer momentanément sa garde à cause d’une situation imprévue**, par exemple si l’enfant ou sa nourrice est malade, ou si la crèche ou l’école est fermée.
-- **La garde d’enfant est acceptée aussi en cas de mouvement de grève** entraînant des problèmes de garde.
-- **L’autorisation n’est pas accordée pour accompagner un enfant à une consultation médicale prévue** (sauf maladie grave ou handicap).
-- **L’autorisation est accordée jusqu’aux 16 ans de l’enfant** (sans limite d’âge si l’enfant est handicapé), peu importe le nombre d’enfants.
+Voici les règles principales concernant l'absence pour garde d'enfant :
+- **L'autorisation d'absence est prévue si tu dois soigner un enfant malade ou assurer momentanément sa garde à cause d'une situation imprévue**, par exemple si l'enfant ou sa nourrice est malade, ou si la crèche ou l'école est fermée.
+- **La garde d'enfant est acceptée aussi en cas de mouvement de grève** entraînant des problèmes de garde.
+- **L'autorisation n'est pas accordée pour accompagner un enfant à une consultation médicale prévue** (sauf maladie grave ou handicap).
+- **L'autorisation est accordée jusqu'aux 16 ans de l'enfant** (sans limite d'âge si l'enfant est handicapé), peu importe le nombre d'enfants.
 - Pour les agents à temps complet : **6 jours par an** maximum.
 - Pour les agents à temps partiel : le nombre de jours est calculé au prorata (exemple, pour un agent à 60 % : 4 jours).
 - Ces jours peuvent être pris **en fractionné ou en continu**, selon le besoin.
-- **La durée peut être doublée** si tu assumes seul la charge de l’enfant ou si ton conjoint recherche un emploi ou n’a pas d’autorisation d’absence rémunérée, sur justificatif.
-- Si ton conjoint bénéficie d’un nombre d’autorisations moins élevé que le tien, tu peux obtenir la différence en supplément.
-- Pour la première demande, il faut fournir une attestation de l’employeur du conjoint précisant ses droits à autorisation.
-- La demande se fait auprès du responsable de service, puis transmise à la RH (Service GCR), avec le formulaire disponible sur l’intranet.
+- **La durée peut être doublée** si tu assumes seul la charge de l'enfant ou si ton conjoint recherche un emploi ou n'a pas d'autorisation d'absence rémunérée, sur justificatif.
+- Si ton conjoint bénéficie d'un nombre d'autorisations moins élevé que le tien, tu peux obtenir la différence en supplément.
+- Pour la première demande, il faut fournir une attestation de l'employeur du conjoint précisant ses droits à autorisation.
+- La demande se fait auprès du responsable de service, puis transmise à la RH (Service GCR), avec le formulaire disponible sur l'intranet.
 
-N’oublie pas de prévenir ton responsable hiérarchique dès que possible et de présenter les justificatifs nécessaires. 
+N'oublie pas de prévenir ton responsable hiérarchique dès que possible et de présenter les justificatifs nécessaires. 
 
-Tu ne peux pas venir travailler avec ton enfant en cas de difficulté de garde. Les jours non utilisés ne sont pas reportés sur l’année suivante.`,
+Tu ne peux pas venir travailler avec ton enfant en cas de difficulté de garde. Les jours non utilisés ne sont pas reportés sur l'année suivante.\`,
     category: 'absences'
   },
   {
@@ -147,7 +169,24 @@ Tu ne peux pas venir travailler avec ton enfant en cas de difficulté de garde. 
   {
     id: 13,
     question: "Combien de jours en cas de décès familial ?",
-    answer: "Le nombre de jours d'autorisation varie selon le lien de parenté : conjoint, enfant, parents donnent droit à plus de jours que frères, sœurs, oncles, tantes. Ces autorisations sont accordées sur présentation de justificatifs.",
+    answer: \`Des **autorisations spéciales d'absence** sont accordées en cas de décès d'un proche. Le nombre de jours varie selon le lien de parenté :
+
+- **Décès du conjoint, partenaire de PACS ou concubin** : **5 jours ouvrables**
+- **Décès d'un enfant** : **5 jours ouvrables** (+ 8 jours supplémentaires si l'enfant avait moins de 25 ans ou était lui-même parent)
+- **Décès du père ou de la mère** : **3 jours ouvrables**
+- **Décès d'un beau-parent (parent du conjoint)** : **3 jours ouvrables**
+- **Décès d'un frère ou d'une sœur** : **3 jours ouvrables**
+- **Décès des grands-parents** : **1 jour ouvrable**
+- **Décès des beaux-frères, belles-sœurs** : **1 jour ouvrable**
+- **Décès des oncles, tantes, neveux, nièces** : **1 jour ouvrable**
+
+**Conditions et modalités** :
+- Ces jours doivent être pris dans un délai raisonnable autour de la date du décès (généralement dans les 15 jours).
+- Un **justificatif** (acte de décès, certificat de décès) est obligatoire.
+- Un **délai de route** peut être accordé en supplément si les obsèques ont lieu à plus de 300 km (1 jour) ou à plus de 600 km (2 jours).
+- Ces jours sont rémunérés et n'impactent pas les congés annuels.
+
+En cas de circonstances particulières, un congé exceptionnel supplémentaire peut être demandé au chef de service.\`,
     category: 'absences'
   },
   {
@@ -171,7 +210,42 @@ Tu ne peux pas venir travailler avec ton enfant en cas de difficulté de garde. 
   {
     id: 17,
     question: "Comment utiliser mon Compte Personnel de Formation (CPF) ?",
-    answer: "Le CPF est alimenté de 25h par an (plafond 150h). Il permet de financer des formations diplômantes, certifiantes ou de préparation aux concours. L'accord de l'employeur est nécessaire sur la nature, le calendrier et le financement.",
+    answer: \`Le **Compte Personnel de Formation (CPF)** te permet de cumuler des heures de formation tout au long de ta carrière et de les utiliser pour te former.
+
+**Alimentation du CPF** :
+- **25 heures par an** pour un agent à temps complet
+- Proratisé pour les agents à temps partiel
+- **Plafond : 150 heures** maximum (les heures au-delà du plafond ne sont pas perdues mais reportées)
+- Les agents de catégorie C sans diplôme bénéficient de **50 heures par an** (plafond 400h)
+
+**Types de formations éligibles** :
+- Formations **diplômantes** ou **certifiantes** (inscrites au RNCP)
+- Préparation aux **concours** et examens professionnels de la fonction publique
+- Formations au **socle de connaissances de base** (Cléa) : français, calcul, numérique...
+- Bilans de compétences
+- Validation des Acquis de l'Expérience (VAE)
+
+**Comment faire une demande ?** :
+1. Consulter ton solde d'heures CPF auprès de la DRH ou sur ton espace personnel
+2. Identifier la formation souhaitée
+3. Remplir le formulaire de demande CPF (disponible sur l'intranet)
+4. Transmettre la demande à ton responsable et à la DRH **au moins 2 mois avant** le début de la formation
+5. Attendre la validation de l'employeur
+
+**Accord de l'employeur** :
+L'employeur doit donner son accord sur :
+- La **nature** de la formation
+- Le **calendrier** (dates et durée)
+- Le **financement** (prise en charge des frais)
+
+**En cas de refus** :
+- L'employeur doit motiver sa décision
+- Après **2 refus successifs** pour la même formation, le 3ème refus ne peut être prononcé qu'après avis de la commission paritaire
+- Pour les formations du socle de base, l'employeur peut uniquement reporter d'**1 an maximum**
+
+**Bon à savoir** :
+- Le CPF est portable : tu conserves tes heures même en cas de changement d'employeur public
+- Les heures non utilisées ne sont jamais perdues\`,
     category: 'formation'
   },
   {
@@ -207,7 +281,42 @@ Tu ne peux pas venir travailler avec ton enfant en cas de difficulté de garde. 
   {
     id: 23,
     question: "Puis-je cumuler plusieurs emplois ?",
-    answer: "Le cumul d'emplois est soumis à autorisation préalable. Certaines activités sont autorisées de droit (enseignement, formation), d'autres nécessitent une demande motivée. Les règles varient selon que vous soyez à temps complet ou partiel.",
+    answer: \`En tant qu'agent public, tu es soumis à une **obligation d'exclusivité** : tu dois consacrer l'intégralité de ton activité professionnelle à ton emploi public. Cependant, certaines **dérogations** existent.
+
+**Activités librement autorisées (sans demande préalable)** :
+- Gestion de ton **patrimoine personnel ou familial**
+- Production d'**œuvres de l'esprit** (livres, créations artistiques...) dans le respect du devoir de réserve
+- Exercice d'une **profession libérale** découlant de la nature de tes fonctions (pour certains agents)
+- Activités **bénévoles** au profit de personnes publiques ou privées à but non lucratif
+- **Aide à domicile** à un ascendant, descendant, conjoint ou partenaire
+- Activités d'**enseignement** ou de **formation** en lien avec ta profession
+
+**Activités soumises à déclaration préalable** :
+- Création ou reprise d'une **entreprise** ou d'une **auto-entreprise**
+- Poursuite d'une activité au sein d'une entreprise existante
+- Activité de **conjoint collaborateur** dans une entreprise artisanale, commerciale ou libérale
+
+**Activités soumises à autorisation** :
+- Exercer une **activité accessoire** rémunérée (expertise, conseil, enseignement hors fonction publique...)
+- La demande doit être adressée à l'autorité hiérarchique qui dispose de **1 mois** pour répondre
+
+**Conditions à respecter** :
+- L'activité ne doit pas porter atteinte au **fonctionnement normal** du service
+- Elle ne doit pas mettre en cause ton **indépendance** ou ta **neutralité**
+- Elle ne doit pas nuire à la **dignité** de tes fonctions
+- Le cumul ne doit pas dépasser les **durées maximales de travail** autorisées
+
+**Agents à temps partiel** :
+Les agents à temps partiel peuvent plus facilement exercer une activité privée lucrative, sous réserve d'en informer l'administration.
+
+**Sanctions en cas de non-respect** :
+- Rappel à l'ordre
+- Obligation de cesser l'activité
+- Reversement des sommes indûment perçues
+- Poursuites disciplinaires
+
+**Comment faire ?**
+Adresse ta demande écrite à la DRH en précisant la nature de l'activité, sa durée, et les conditions d'exercice. Un formulaire est disponible sur l'intranet.\`,
     category: 'general'
   },
   {
@@ -225,23 +334,23 @@ Tu ne peux pas venir travailler avec ton enfant en cas de difficulté de garde. 
   {
     id: 28,
     question: "Combien de fois peut-on me refuser ma formation ?",
-    answer: `On ne peut pas te refuser plus de deux fois la même formation sans avis de la commission paritaire compétente. Après deux refus successifs, l'avis de cette commission devient obligatoire et, dans certains cas (comme pour la lutte contre l'illettrisme, le perfectionnement ou certaines formations du CNFPT), tu bénéficies même d'une priorité d'accès à la formation demandée si l'employeur n'a pas accordé l'autorisation deux années de suite. 
+    answer: \`On ne peut pas te refuser plus de deux fois la même formation sans avis de la commission paritaire compétente. Après deux refus successifs, l'avis de cette commission devient obligatoire et, dans certains cas (comme pour la lutte contre l'illettrisme, le perfectionnement ou certaines formations du CNFPT), tu bénéficies même d'une priorité d'accès à la formation demandée si l'employeur n'a pas accordé l'autorisation deux années de suite. 
 
-Pour le CPF, le troisième rejet d'une formation de même nature ne peut être prononcé qu'après avis de l'instance paritaire compétente. Pour les formations relevant du socle de connaissances de base (ex : communication en français, calcul…), l'employeur ne peut pas s'y opposer durablement, seulement demander un report d'un an maximum en raison des nécessités de service. `,
+Pour le CPF, le troisième rejet d'une formation de même nature ne peut être prononcé qu'après avis de l'instance paritaire compétente. Pour les formations relevant du socle de connaissances de base (ex : communication en français, calcul…), l'employeur ne peut pas s'y opposer durablement, seulement demander un report d'un an maximum en raison des nécessités de service. \`,
     category: 'formation'
   }
 ];
 
-// (les questions ajoutées ont été intégrées directement dans `faqData` pour apparaître en premier)
+// (les questions ajoutées ont été intégrées directement dans \`faqData\` pour apparaître en premier)
 
 export const getFAQByCategory = (category: string): FAQItem[] => {
   return faqData.filter(item => item.category === category);
 };
 
 export const searchFAQ = (query: string): FAQItem[] => {
-  const searchTerm = query.toLowerCase();
+  const q = query.toLowerCase();
   return faqData.filter(item => 
-    item.question.toLowerCase().includes(searchTerm) || 
-    item.answer.toLowerCase().includes(searchTerm)
+    item.question.toLowerCase().includes(q) || 
+    item.answer.toLowerCase().includes(q)
   );
 };

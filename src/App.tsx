@@ -643,27 +643,25 @@ export default function App() {
   };
 
   const traiterQuestion = async (question: string): Promise<string> => {
-    let contexte = "";
-    if (chatState.selectedDomain === 0) contexte = trouverContextePertinent(question);
-    else if (chatState.selectedDomain === 1) contexte = JSON.stringify(formation, null, 2);
-    else if (chatState.selectedDomain === 2) contexte = teletravailData;
+    try {
+      let contexte = "";
+      if (chatState.selectedDomain === 0) contexte = trouverContextePertinent(question);
+      else if (chatState.selectedDomain === 1) contexte = JSON.stringify(formation, null, 2);
+      else if (chatState.selectedDomain === 2) contexte = teletravailData;
 
-    const systemPrompt = `
-Tu es un collègue syndical spécialiste pour la mairie de Gennevilliers.
-Ta mission est de répondre aux questions des agents en te basant EXCLUSIVEMENT sur la documentation fournie dans le dossier /data.
-NE JAMAIS utiliser tes connaissances générales.
-Si la réponse ne se trouve pas dans la documentation, réponds : "Je ne trouve pas l'information dans les documents à ma disposition. Veuillez contacter la CFDT au 64 64 pour plus de détails."
-Sois précis mais concis , utilise un ton AMICAL et ne cite pas le titre du chapitre ni l"article .
---- DEBUT DE LA DOCUMENTATION PERTINENTE ---
-${contexte}
---- FIN DE LA DOCUMENTATION PERTINENTE ---
-    `;
-    const history = chatState.messages.slice(1).map((msg) => ({
-      role: msg.type === "user" ? "user" : "assistant",
-      content: msg.content,
-    }));
-    const apiMessages = [{ role: "system", content: systemPrompt }, ...history, { role: "user", content: question }];
-    return await appelPerplexity(apiMessages);
+      const systemPrompt = `Tu es un collègue syndical spécialiste pour la mairie de Gennevilliers. Ta mission est de répondre aux questions des agents en te basant EXCLUSIVEMENT sur la documentation fournie. --- DEBUT DE LA DOCUMENTATION --- ${contexte} --- FIN DE LA DOCUMENTATION ---`;
+      
+      const history = chatState.messages.slice(1).map((msg) => ({
+        role: msg.type === "user" ? "user" : "assistant",
+        content: msg.content,
+      }));
+      
+      const apiMessages = [{ role: "system", content: systemPrompt }, ...history, { role: "user", content: question }];
+      return await appelPerplexity(apiMessages);
+    } catch (error) {
+      console.error("Erreur traiterQuestion:", error);
+      return "Erreur lors du traitement. Veuillez réessayer.";
+    }
   };
 
   const handleSendMessage = async (): Promise<void> => {

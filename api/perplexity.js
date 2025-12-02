@@ -21,24 +21,20 @@ export async function POST(request) {
   try {
     const { messages } = await request.json();
     
-    // Essayer plusieurs noms de variable d'env
-    const API_KEY = process.env.VITE_APP_PERPLEXITY_KEY || 
-                    process.env.PERPLEXITY_API_KEY || 
-                    process.env.PERPLEXITY_KEY;
+    // Utiliser VITE_API_KEY qui est déjà configuré dans Vercel
+    const API_KEY = process.env.VITE_API_KEY;
 
-    console.log('[Perplexity API] Checking API key...');
-    console.log('[Perplexity API] VITE_APP_PERPLEXITY_KEY exists:', !!process.env.VITE_APP_PERPLEXITY_KEY);
-    console.log('[Perplexity API] PERPLEXITY_API_KEY exists:', !!process.env.PERPLEXITY_API_KEY);
+    console.log('[Perplexity API] API_KEY configured:', !!API_KEY);
 
     if (!API_KEY) {
-      console.error('[Perplexity API] No API key found in environment variables');
+      console.error('[Perplexity API] API_KEY not found');
       return NextResponse.json(
-        { error: 'Clé API Perplexity non configurée' },
+        { error: 'Clé API non configurée' },
         { status: 500, headers: corsHeaders() }
       );
     }
 
-    console.log('[Perplexity API] Calling Perplexity API...');
+    console.log('[Perplexity API] Calling API...');
     
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -58,7 +54,7 @@ export async function POST(request) {
       const error = await response.text();
       console.error(`[Perplexity API] Error ${response.status}:`, error);
       return NextResponse.json(
-        { error: `Perplexity API error: ${response.status}` },
+        { error: `API error: ${response.status}` },
         { status: response.status, headers: corsHeaders() }
       );
     }
@@ -69,7 +65,7 @@ export async function POST(request) {
   } catch (error) {
     console.error('[Perplexity API] Exception:', error);
     return NextResponse.json(
-      { error: `Erreur serveur: ${error.message}` },
+      { error: `Erreur: ${error.message}` },
       { status: 500, headers: corsHeaders() }
     );
   }

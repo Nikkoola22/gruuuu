@@ -612,18 +612,34 @@ export default function App() {
   };
 
   const appelPerplexity = async (messages: any[]): Promise<string> => {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "sonar-pro", messages }),
-    });
-    if (!response.ok) {
-      const err = await response.text();
-      console.error("Détail de l'erreur API:", err);
-      throw new Error(`Erreur API (${response.status})`);
+    // Vérifier que la clé API est valide
+    if (!API_KEY || API_KEY === 'undefined') {
+      console.warn("Clé API Perplexity non configurée");
+      return "Désolé, le service IA n'est pas actuellement disponible. Veuillez contacter l'administrateur.";
     }
-    const json = await response.json();
-    return json.choices[0].message.content;
+    
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ model: "sonar-pro", messages }),
+      });
+      
+      if (!response.ok) {
+        const err = await response.text();
+        console.error("Détail de l'erreur API:", err);
+        if (response.status === 401) {
+          return "Clé API Perplexity invalide. Veuillez vérifier votre configuration.";
+        }
+        throw new Error(`Erreur API (${response.status})`);
+      }
+      
+      const json = await response.json();
+      return json.choices[0].message.content;
+    } catch (error) {
+      console.error("Erreur lors de l'appel Perplexity:", error);
+      return `Erreur: ${error instanceof Error ? error.message : 'Erreur inconnue'}. Le service IA n'est pas disponible.`;
+    }
   };
 
   const traiterQuestion = async (question: string): Promise<string> => {

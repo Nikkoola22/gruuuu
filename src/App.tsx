@@ -62,8 +62,8 @@ interface ChatbotState {
   isProcessing: boolean;
 }
 
-const API_KEY = import.meta.env.VITE_API_KEY;
-const API_URL = "https://api.perplexity.ai/chat/completions";
+const API_KEY = import.meta.env.VITE_APP_PERPLEXITY_KEY;
+const API_URL = "/api/perplexity"; // Utiliser l'API route Vercel (pas d'appel direct à Perplexity)
 
 // Fonction pour nettoyer les chaînes de caractères
 const nettoyerChaine = (chaine: string): string => {
@@ -645,41 +645,42 @@ export default function App() {
   };
 
   const appelPerplexity = async (messages: any[]): Promise<string> => {
-    // Vérifier que la clé API est valide
-    if (!API_KEY || API_KEY === 'undefined') {
-      console.warn("Clé API Perplexity non configurée");
-      return "Désolé, le service IA n'est pas actuellement disponible. Veuillez contacter l'administrateur.";
-    }
-    
+    // Note: La clé API est gérée côté serveur via l'API route
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+      
       const response = await fetch(API_URL, {
         method: "POST",
-        headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          model: "sonar-pro", 
-          messages,
-          temperature: 0.1,
-          max_tokens: 1500
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages }),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
       
       if (!response.ok) {
         const err = await response.text();
-        console.error("Détail de l'erreur API:", err);
-        if (response.status === 401) {
-          return "Clé API Perplexity invalide. Veuillez vérifier votre configuration.";
+        console.error("Erreur API:", response.status, err);
+        if (response.status === 500) {
+          return "Clé API non configurée sur le serveur.";
         }
-        throw new Error(`Erreur API (${response.status})`);
+        throw new Error(`API retourne ${response.status}`);
       }
       
       const json = await response.json();
-      return json.choices[0].message.content;
+      if (json.choices?.[0]?.message?.content) {
+        return json.choices[0].message.content;
+      }
+      throw new Error("Réponse API invalide");
     } catch (error) {
-      console.error("Erreur lors de l'appel Perplexity:", error);
-      return `Erreur: ${error instanceof Error ? error.message : 'Erreur inconnue'}. Le service IA n'est pas disponible.`;
+      console.error("Erreur appel API:", error);
+      if (error instanceof Error && error.name === "AbortError") {
+        return "Timeout. Le service met trop de temps à répondre.";
+      }
+      return "Impossible de contacter le service IA.";
     }
   };
-
   const traiterQuestion = async (question: string): Promise<string> => {
     try {
       let contexte = "";

@@ -80,7 +80,7 @@ RÈGLES ABSOLUES:
         ],
         temperature: 0,
         max_tokens: 400,
-        search_recency_filter: 'none'
+        
       })
     });
 

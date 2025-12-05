@@ -76,7 +76,40 @@ const nettoyerChaine = (chaine: string): string => {
     .trim();
 };
 
-// Parser les données du sommaire
+
+// Fonction pour rechercher dans un texte long et extraire les parties pertinentes
+const rechercherDansTexte = (texte: string, question: string): string => {
+  const qNet = nettoyerChaine(question);
+  const mots = qNet.split(/\s+/).filter(m => m.length > 3);
+  
+  // Découper le texte en paragraphes/sections
+  const sections = texte.split(/\n{2,}|ARTICLE \d+/i).filter(s => s.trim().length > 50);
+  
+  // Scorer chaque section
+  const scored = sections.map(section => {
+    const sectionNet = nettoyerChaine(section);
+    let score = 0;
+    mots.forEach(mot => {
+      if (sectionNet.includes(mot)) score += 10;
+    });
+    // Bonus si le mot exact est trouvé
+    if (sectionNet.includes(qNet)) score += 50;
+    return { section: section.trim(), score };
+  }).filter(s => s.score > 0);
+  
+  // Trier par score et prendre les 3 meilleures sections
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.slice(0, 3).map(s => s.section);
+  
+  if (top.length === 0) {
+    return texte.slice(0, 3000); // Fallback: premiers 3000 caractères
+  }
+  
+  return top.join("\n\n---\n\n");
+};
+
+
+// Fonction pour rechercher dans un texte long et extraire les parties pertinentes
 const sommaireData = JSON.parse(sommaire);
 
 const actualitesSecours = [
@@ -651,29 +684,16 @@ export default function App() {
     try {
       let contexte = "";
       if (chatState.selectedDomain === 0) contexte = trouverContextePertinent(question);
-      else if (chatState.selectedDomain === 1) contexte = JSON.stringify(formation, null, 2);
-      else if (chatState.selectedDomain === 2) contexte = teletravailData;
+      else if (chatState.selectedDomain === 1) contexte = rechercherDansTexte(JSON.stringify(formation, null, 2), question);
+      else if (chatState.selectedDomain === 2) contexte = rechercherDansTexte(teletravailData, question);
 
-      const systemPrompt = `RÔLE : Assistant syndical CFDT - Mairie de Gennevilliers
+      const systemPrompt = `Tu es un assistant syndical CFDT pour la mairie de Gennevilliers.
+Réponds UNIQUEMENT en français, de façon concise et amicale.
+Base-toi EXCLUSIVEMENT sur cette documentation officielle :
 
-⛔ INTERDICTIONS ABSOLUES :
-- NE JAMAIS chercher sur Internet
-- NE JAMAIS utiliser tes connaissances générales
-- NE JAMAIS citer de sources [1], [2], etc.
-- NE JAMAIS inventer d'informations
-
-✅ TU DOIS :
-- Répondre UNIQUEMENT en français
-- Te baser EXCLUSIVEMENT sur le texte ci-dessous
-- Chercher la réponse DANS le texte fourni
-- Si tu trouves l'info dans le texte, la citer
-- Si l'info n'est PAS dans le texte : "Je ne trouve pas cette information. Contactez la CFDT au 64 64."
-
-📄 DOCUMENT OFFICIEL MAIRIE GENNEVILLIERS :
 ${contexte}
-📄 FIN DU DOCUMENT
 
-Réponds de façon concise et amicale. La réponse doit venir du document ci-dessus.`;
+Si l'information n'est pas dans le texte ci-dessus, réponds : "Je ne trouve pas cette information. Contactez la CFDT au 64 64."`;
       
       const history = chatState.messages.slice(1).map((msg) => ({
         role: msg.type === "user" ? "user" : "assistant",

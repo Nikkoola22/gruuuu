@@ -623,9 +623,9 @@ export default function App() {
         method: "POST",
         headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          model: "llama-3.1-sonar-large-128k-chat", 
+          model: "sonar-pro", 
           messages,
-          temperature: 0.2,
+          temperature: 0.1,
           max_tokens: 1500
         }),
       });

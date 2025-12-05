@@ -1,6 +1,5 @@
-// API route pour le chatbot CFDT - Recherche locale + IA pour rédaction
-// Étape 1: Recherche dans les documents internes (sans web)
-// Étape 2: Rédaction avec IA basée UNIQUEMENT sur les extraits trouvés
+// API route pour le chatbot CFDT - Recherche locale uniquement
+// Modèle CHAT (pas search) pour éviter toute recherche web
 
 export default async function handler(req, res) {
   // CORS headers
@@ -8,7 +7,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
-  
+
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
@@ -20,7 +19,6 @@ export default async function handler(req, res) {
 
   const { messages } = req.body;
   
-  // Essayer les différents noms de variable d'environnement possibles
   const API_KEY = process.env.VITE_APP_PERPLEXITY_KEY || process.env.PERPLEXITY_API_KEY || process.env.VITE_API_KEY;
 
   if (!API_KEY) {
@@ -29,7 +27,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Extraire le contexte du system prompt
     const systemMessage = messages.find(m => m.role === 'system');
     const userMessage = messages.find(m => m.role === 'user');
     
@@ -42,17 +39,17 @@ export default async function handler(req, res) {
     const documentInterne = docMatch ? docMatch[1] : '';
     
     console.log('[API] Document interne trouvé:', documentInterne.length, 'caractères');
-
-    // ÉTAPE 1: Utiliser un modèle CHAT (pas search) pour répondre
-    // Le modèle "llama-3.1-sonar-small-128k-chat" ne fait PAS de recherche web
+    
+    // Prompt ultra-strict pour éviter toute recherche externe
     const chatPrompt = `Tu es un assistant syndical CFDT pour la mairie de Gennevilliers.
 
-RÈGLES ABSOLUES:
-1. Tu dois répondre UNIQUEMENT avec les informations du document ci-dessous.
-2. Ne fais AUCUNE recherche externe.
-3. N'utilise AUCUNE connaissance générale.
-4. Cite les chiffres et règles EXACTEMENT comme dans le document.
-5. Si l'info n'est pas dans le document, dis: "Cette information n'est pas dans le protocole Gennevilliers. Contactez la CFDT au 64 64."
+CONSIGNES ABSOLUES ET NON NÉGOCIABLES:
+- Réponds UNIQUEMENT avec les informations ci-dessous.
+- N'ajoute JAMAIS de comparaison avec d'autres entreprises ou la fonction publique en général.
+- N'ajoute JAMAIS d'informations que tu ne trouves pas dans le document.
+- Cite les chiffres EXACTEMENT comme dans le document.
+- Reste factuel et concis.
+- Si l'info n'est pas dans le document, dis: "Cette information n'est pas dans le protocole Gennevilliers. Contactez la CFDT au 64 64."
 
 DOCUMENT OFFICIEL MAIRIE DE GENNEVILLIERS:
 """
@@ -61,8 +58,9 @@ ${documentInterne}
 
 Question de l'agent: ${userMessage.content}
 
-Réponds de façon concise et amicale en français, en citant les informations du document ci-dessus.`;
+Réponds de façon concise et amicale, UNIQUEMENT avec les infos du document ci-dessus.`;
 
+    // Utiliser le modèle CHAT (pas search) - ne fait pas de recherche web
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -70,20 +68,19 @@ Réponds de façon concise et amicale en français, en citant les informations d
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        // Utiliser le modèle CHAT qui ne fait pas de recherche web
         model: 'llama-3.1-sonar-small-128k-chat',
         messages: [
           { 
             role: 'system', 
-            content: 'Tu es un assistant qui répond UNIQUEMENT à partir du document fourni. Ne fais jamais de recherche web. Ne cite jamais de sources externes [1][2]. Réponds en français.'
+            content: 'Tu es un assistant CFDT qui répond UNIQUEMENT avec le document fourni. Ne fais jamais de recherche externe. Ne compare jamais avec la fonction publique en général.'
           },
           { 
             role: 'user', 
             content: chatPrompt 
           }
         ],
-        temperature: 0.1, // Température basse pour des réponses factuelles
-        max_tokens: 1000
+        temperature: 0, // Température 0 pour des réponses strictement factuelles
+        max_tokens: 800
       })
     });
 
@@ -93,9 +90,9 @@ Réponds de façon concise et amicale en français, en citant les informations d
       const error = await response.text();
       console.error('[API] Error:', response.status, error);
       
-      // Si le modèle chat n'est pas disponible, fallback vers sonar avec température 0
+      // Fallback vers sonar
       if (response.status === 400 || response.status === 404) {
-        console.log('[API] Fallback vers sonar avec température minimale');
+        console.log('[API] Fallback vers sonar');
         
         const fallbackResponse = await fetch('https://api.perplexity.ai/chat/completions', {
           method: 'POST',
@@ -108,16 +105,16 @@ Réponds de façon concise et amicale en français, en citant les informations d
             messages: [
               { 
                 role: 'system', 
-                content: `IMPORTANT: Ne fais AUCUNE recherche web. Réponds UNIQUEMENT avec ce document:
+                content: `IMPORTANT: Réponds UNIQUEMENT avec ce document. N'ajoute rien d'externe:
 
 ${documentInterne}
 
-Si tu ne trouves pas l'info dans ce texte, dis "Information non trouvée dans le protocole Gennevilliers".`
+Si tu ne trouves pas l'info, dis "Information non trouvée dans le protocole Gennevilliers. Contactez la CFDT au 64 64."`
               },
               { role: 'user', content: userMessage.content }
             ],
             temperature: 0,
-            max_tokens: 800
+            max_tokens: 600
           })
         });
         
@@ -125,9 +122,11 @@ Si tu ne trouves pas l'info dans ce texte, dis "Information non trouvée dans le
           const fallbackData = await fallbackResponse.json();
           let content = fallbackData.choices?.[0]?.message?.content || '';
           
-          // Nettoyer les références web [1], [2], etc.
+          // Nettoyer les références web
           content = content.replace(/\[\d+\]/g, '');
           content = content.replace(/\[Source[^\]]*\]/gi, '');
+          content = content.replace(/Dans la fonction publique[^.]*\./gi, '');
+          content = content.replace(/En général[^.]*\./gi, '');
           
           return res.status(200).json({
             choices: [{ message: { content } }]
@@ -141,14 +140,19 @@ Si tu ne trouves pas l'info dans ce texte, dis "Information non trouvée dans le
     const data = await response.json();
     let content = data.choices?.[0]?.message?.content || '';
     
-    // Nettoyer les références web [1], [2], etc. au cas où
+    // Nettoyer les références web et les comparaisons générales
     content = content.replace(/\[\d+\]/g, '');
     content = content.replace(/\[Source[^\]]*\]/gi, '');
+    content = content.replace(/\[PROTOCOLE[^\]]*\]/gi, '');
+    content = content.replace(/Dans la fonction publique[^.]*\./gi, '');
+    content = content.replace(/En général[^.]*\./gi, '');
+    content = content.replace(/Cette règle est spécifique[^.]*\./gi, '');
+    content = content.replace(/peut différer[^.]*\./gi, '');
     
     console.log('[API] Réponse nettoyée:', content.substring(0, 100) + '...');
     
     return res.status(200).json({
-      choices: [{ message: { content } }]
+      choices: [{ message: { content: content.trim() } }]
     });
     
   } catch (error) {

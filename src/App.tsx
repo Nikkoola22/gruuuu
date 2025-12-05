@@ -622,7 +622,18 @@ export default function App() {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "sonar-pro", messages }),
+        body: JSON.stringify({ 
+          model: "sonar-pro", 
+          messages,
+          // Désactiver la recherche web
+          search_domain_filter: [],
+          search_recency_filter: null,
+          return_related_questions: false,
+          return_images: false,
+          // Limiter au contexte fourni
+          temperature: 0.1,  // Réponses plus déterministes
+          top_p: 0.9,
+        }),
       });
       
       if (!response.ok) {
@@ -649,7 +660,22 @@ export default function App() {
       else if (chatState.selectedDomain === 1) contexte = JSON.stringify(formation, null, 2);
       else if (chatState.selectedDomain === 2) contexte = teletravailData;
 
-      const systemPrompt = `Tu es un collègue syndical spécialiste pour la mairie de Gennevilliers. Ta mission est de répondre aux questions des agents en te basant EXCLUSIVEMENT sur la documentation fournie. --- DEBUT DE LA DOCUMENTATION --- ${contexte} --- FIN DE LA DOCUMENTATION ---`;
+      const systemPrompt = `Tu es un assistant syndical CFDT exclusivement dédié aux agents de la mairie de Gennevilliers.
+
+⚠️ RÈGLES ABSOLUES - À RESPECTER IMPÉRATIVEMENT :
+
+1. INTERDICTION TOTALE de rechercher ou d'utiliser des informations provenant d'internet ou du web.
+2. Tu dois répondre UNIQUEMENT à partir du contexte documentaire fourni ci-dessous.
+3. Si l'information demandée n'est PAS présente dans le contexte fourni, tu DOIS répondre : "Je n'ai pas trouvé cette information dans les documents de la mairie. Je vous invite à contacter directement un représentant CFDT pour obtenir une réponse précise."
+4. N'invente JAMAIS d'informations. Ne complète JAMAIS avec des connaissances générales.
+5. Cite toujours la source du document quand tu donnes une information.
+
+📚 CONTEXTE DOCUMENTAIRE (seule source autorisée) :
+${contexte}
+
+---
+
+Tu es un collègue bienveillant qui aide les agents. Réponds de manière claire, précise et uniquement basée sur les documents ci-dessus.`;
       
       const history = chatState.messages.slice(1).map((msg) => ({
         role: msg.type === "user" ? "user" : "assistant",

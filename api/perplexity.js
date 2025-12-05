@@ -1,45 +1,44 @@
-import { NextResponse } from 'next/server';
+// API route pour appeler Perplexity depuis le serveur Vercel (évite les problèmes CORS)
 
-export const dynamic = 'force-dynamic';
+export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+  
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
 
-function corsHeaders() {
-  return {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
-}
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-export async function OPTIONS() {
-  return new Response(null, {
-    status: 204,
-    headers: corsHeaders(),
+  const { messages } = req.body;
+  
+  // Essayer les différents noms de variable d'environnement possibles
+  const API_KEY = process.env.VITE_APP_PERPLEXITY_KEY || process.env.PERPLEXITY_API_KEY || process.env.VITE_API_KEY;
+
+  console.log('[Perplexity API] Keys available:', {
+    VITE_APP_PERPLEXITY_KEY: !!process.env.VITE_APP_PERPLEXITY_KEY,
+    PERPLEXITY_API_KEY: !!process.env.PERPLEXITY_API_KEY,
+    VITE_API_KEY: !!process.env.VITE_API_KEY
   });
-}
 
-export async function POST(request) {
+  if (!API_KEY) {
+    console.error('[Perplexity API] Clé API Perplexity manquante');
+    return res.status(500).json({ error: 'API key not configured. Please set VITE_APP_PERPLEXITY_KEY in Vercel environment variables.' });
+  }
+
   try {
-    const { messages } = await request.json();
-    
-    // Utiliser VITE_API_KEY qui est déjà configuré dans Vercel
-    const API_KEY = process.env.VITE_API_KEY;
-
-    console.log('[Perplexity API] API_KEY configured:', !!API_KEY);
-
-    if (!API_KEY) {
-      console.error('[Perplexity API] API_KEY not found');
-      return NextResponse.json(
-        { error: 'Clé API non configurée' },
-        { status: 500, headers: corsHeaders() }
-      );
-    }
-
-    console.log('[Perplexity API] Calling API...');
+    console.log('[Perplexity API] Calling Perplexity with', messages.length, 'messages');
     
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': 'Bearer ' + API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -52,21 +51,15 @@ export async function POST(request) {
 
     if (!response.ok) {
       const error = await response.text();
-      console.error(`[Perplexity API] Error ${response.status}:`, error);
-      return NextResponse.json(
-        { error: `API error: ${response.status}` },
-        { status: response.status, headers: corsHeaders() }
-      );
+      console.error('[Perplexity API] Error ' + response.status + ':', error);
+      return res.status(response.status).json({ error: 'Perplexity API returned ' + response.status + ': ' + error });
     }
 
     const data = await response.json();
-    console.log('[Perplexity API] Success');
-    return NextResponse.json(data, { headers: corsHeaders() });
+    console.log('[Perplexity API] Success, got response');
+    return res.status(200).json(data);
   } catch (error) {
     console.error('[Perplexity API] Exception:', error);
-    return NextResponse.json(
-      { error: `Erreur: ${error.message}` },
-      { status: 500, headers: corsHeaders() }
-    );
+    return res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 }

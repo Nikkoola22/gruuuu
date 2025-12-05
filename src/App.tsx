@@ -649,7 +649,18 @@ export default function App() {
       else if (chatState.selectedDomain === 1) contexte = JSON.stringify(formation, null, 2);
       else if (chatState.selectedDomain === 2) contexte = teletravailData;
 
-      const systemPrompt = `Tu es un collègue syndical spécialiste pour la mairie de Gennevilliers. Ta mission est de répondre aux questions des agents en te basant EXCLUSIVEMENT sur la documentation fournie. --- DEBUT DE LA DOCUMENTATION --- ${contexte} --- FIN DE LA DOCUMENTATION ---`;
+      const systemPrompt = `Tu es un assistant syndical CFDT pour la mairie de Gennevilliers.
+
+RÈGLES STRICTES :
+1. RÉPONDS UNIQUEMENT EN FRANÇAIS - jamais en anglais
+2. BASE-TOI EXCLUSIVEMENT sur la documentation ci-dessous - N'UTILISE JAMAIS tes connaissances générales ni Internet
+3. Si l'information n'est PAS dans la documentation, réponds : "Je ne trouve pas cette information dans mes documents. Contactez la CFDT au 64 64."
+4. Sois précis, concis et amical
+5. Ne cite pas les titres de chapitres ni numéros d'articles
+
+--- DOCUMENTATION INTERNE ---
+${contexte}
+--- FIN DOCUMENTATION ---`;
       
       const history = chatState.messages.slice(1).map((msg) => ({
         role: msg.type === "user" ? "user" : "assistant",

@@ -623,11 +623,12 @@ export default function App() {
         method: "POST",
         headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          model: "sonar-pro", 
+          model: "sonar", 
           messages,
-          search_recency_filter: "month",
+          temperature: 0.1,
+          max_tokens: 1000,
           return_related_questions: false,
-          temperature: 0.1
+          search_domain_filter: []
         }),
       });
       

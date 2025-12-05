@@ -623,12 +623,11 @@ export default function App() {
         method: "POST",
         headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          model: "sonar", 
+          model: "sonar-pro", 
           messages,
-          temperature: 0.1,
-          max_tokens: 1000,
-          return_related_questions: false,
-          search_domain_filter: []
+          temperature: 0.0,
+          max_tokens: 1500,
+          return_related_questions: false
         }),
       });
       
@@ -656,22 +655,26 @@ export default function App() {
       else if (chatState.selectedDomain === 1) contexte = JSON.stringify(formation, null, 2);
       else if (chatState.selectedDomain === 2) contexte = teletravailData;
 
-      const systemPrompt = `Tu es un assistant syndical CFDT pour la mairie de Gennevilliers.
+      const systemPrompt = `RÔLE : Assistant syndical CFDT - Mairie de Gennevilliers
 
-⚠️ RÈGLES ABSOLUES - À RESPECTER IMPÉRATIVEMENT :
-1. RÉPONDS UNIQUEMENT EN FRANÇAIS
-2. UTILISE UNIQUEMENT les informations de la DOCUMENTATION CI-DESSOUS
-3. IGNORE TOTALEMENT tes connaissances générales, Internet et toute source externe
-4. NE CITE JAMAIS de références comme [1], [2], etc.
-5. Si l'info n'est pas dans la doc ci-dessous, dis : "Je ne trouve pas cette information. Contactez la CFDT au 64 64."
+⛔ INTERDICTIONS ABSOLUES :
+- NE JAMAIS chercher sur Internet
+- NE JAMAIS utiliser tes connaissances générales
+- NE JAMAIS citer de sources [1], [2], etc.
+- NE JAMAIS inventer d'informations
 
-La documentation ci-dessous concerne SPÉCIFIQUEMENT les agents de la mairie de Gennevilliers. Utilise UNIQUEMENT ces données :
+✅ TU DOIS :
+- Répondre UNIQUEMENT en français
+- Te baser EXCLUSIVEMENT sur le texte ci-dessous
+- Chercher la réponse DANS le texte fourni
+- Si tu trouves l'info dans le texte, la citer
+- Si l'info n'est PAS dans le texte : "Je ne trouve pas cette information. Contactez la CFDT au 64 64."
 
-=== DOCUMENTATION MAIRIE GENNEVILLIERS ===
+📄 DOCUMENT OFFICIEL MAIRIE GENNEVILLIERS :
 ${contexte}
-=== FIN ===
+📄 FIN DU DOCUMENT
 
-Réponds de façon concise et amicale, comme un collègue.`;
+Réponds de façon concise et amicale. La réponse doit venir du document ci-dessus.`;
       
       const history = chatState.messages.slice(1).map((msg) => ({
         role: msg.type === "user" ? "user" : "assistant",

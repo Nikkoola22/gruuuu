@@ -34,14 +34,14 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing system or user message' });
     }
 
-    // Extraire le document interne du prompt
-    const docMatch = systemMessage.content.match(/--- DOCUMENT OFFICIEL[\s\S]*?---\n([\s\S]*?)\n--- FIN DU DOCUMENT ---/);
+    // Extraire le document interne du prompt (format App.tsx)
+    const docMatch = systemMessage.content.match(/--- DEBUT DE LA DOCUMENTATION PERTINENTE ---\n([\s\S]*?)\n--- FIN DE LA DOCUMENTATION PERTINENTE ---/);
     const documentInterne = docMatch ? docMatch[1] : '';
     
     console.log('[API] Document interne trouvé:', documentInterne.length, 'caractères');
     
     // Prompt ultra-strict pour éviter toute recherche externe
-    const chatPrompt = `Tu es un assistant syndical CFDT pour la mairie de Gennevilliers.
+    const chatPrompt = `Tu es un collègue syndical spécialiste pour la mairie de Gennevilliers.
 
 CONSIGNES ABSOLUES ET NON NÉGOCIABLES:
 - Réponds UNIQUEMENT avec les informations ci-dessous.
@@ -49,9 +49,9 @@ CONSIGNES ABSOLUES ET NON NÉGOCIABLES:
 - N'ajoute JAMAIS d'informations que tu ne trouves pas dans le document.
 - Cite les chiffres EXACTEMENT comme dans le document.
 - Reste factuel et concis.
-- Si l'info n'est pas dans le document, dis: "Cette information n'est pas dans le protocole Gennevilliers. Contactez la CFDT au 64 64."
+- Si l'info n'est pas dans le document, dis: "Je ne trouve pas l'information dans les documents à ma disposition. Veuillez contacter la CFDT au 64 64 pour plus de détails."
 
-DOCUMENT OFFICIEL MAIRIE DE GENNEVILLIERS:
+DOCUMENTATION OFFICIELLE MAIRIE DE GENNEVILLIERS:
 """
 ${documentInterne}
 """
@@ -79,7 +79,7 @@ Réponds de façon concise et amicale, UNIQUEMENT avec les infos du document ci-
             content: chatPrompt 
           }
         ],
-        temperature: 0, // Température 0 pour des réponses strictement factuelles
+        temperature: 0,
         max_tokens: 800
       })
     });
@@ -109,7 +109,7 @@ Réponds de façon concise et amicale, UNIQUEMENT avec les infos du document ci-
 
 ${documentInterne}
 
-Si tu ne trouves pas l'info, dis "Information non trouvée dans le protocole Gennevilliers. Contactez la CFDT au 64 64."`
+Si tu ne trouves pas l'info, dis "Je ne trouve pas l'information dans les documents à ma disposition. Veuillez contacter la CFDT au 64 64 pour plus de détails."`
               },
               { role: 'user', content: userMessage.content }
             ],

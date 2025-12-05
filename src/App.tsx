@@ -622,7 +622,13 @@ export default function App() {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "sonar-pro", messages }),
+        body: JSON.stringify({ 
+          model: "sonar-pro", 
+          messages,
+          search_recency_filter: "month",
+          return_related_questions: false,
+          temperature: 0.1
+        }),
       });
       
       if (!response.ok) {
@@ -651,16 +657,20 @@ export default function App() {
 
       const systemPrompt = `Tu es un assistant syndical CFDT pour la mairie de Gennevilliers.
 
-RÈGLES STRICTES :
-1. RÉPONDS UNIQUEMENT EN FRANÇAIS - jamais en anglais
-2. BASE-TOI EXCLUSIVEMENT sur la documentation ci-dessous - N'UTILISE JAMAIS tes connaissances générales ni Internet
-3. Si l'information n'est PAS dans la documentation, réponds : "Je ne trouve pas cette information dans mes documents. Contactez la CFDT au 64 64."
-4. Sois précis, concis et amical
-5. Ne cite pas les titres de chapitres ni numéros d'articles
+⚠️ RÈGLES ABSOLUES - À RESPECTER IMPÉRATIVEMENT :
+1. RÉPONDS UNIQUEMENT EN FRANÇAIS
+2. UTILISE UNIQUEMENT les informations de la DOCUMENTATION CI-DESSOUS
+3. IGNORE TOTALEMENT tes connaissances générales, Internet et toute source externe
+4. NE CITE JAMAIS de références comme [1], [2], etc.
+5. Si l'info n'est pas dans la doc ci-dessous, dis : "Je ne trouve pas cette information. Contactez la CFDT au 64 64."
 
---- DOCUMENTATION INTERNE ---
+La documentation ci-dessous concerne SPÉCIFIQUEMENT les agents de la mairie de Gennevilliers. Utilise UNIQUEMENT ces données :
+
+=== DOCUMENTATION MAIRIE GENNEVILLIERS ===
 ${contexte}
---- FIN DOCUMENTATION ---`;
+=== FIN ===
+
+Réponds de façon concise et amicale, comme un collègue.`;
       
       const history = chatState.messages.slice(1).map((msg) => ({
         role: msg.type === "user" ? "user" : "assistant",

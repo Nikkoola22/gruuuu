@@ -63,7 +63,7 @@ interface ChatbotState {
 }
 
 const API_KEY = import.meta.env.VITE_API_KEY;
-const API_URL = "https://api.openai.com/v1/chat/completions";
+const API_URL = "https://api.perplexity.ai/chat/completions";
 
 // Fonction pour nettoyer les chaînes de caractères
 const nettoyerChaine = (chaine: string): string => {
@@ -644,10 +644,10 @@ export default function App() {
     setSelectedInfo(null);
   };
 
-  const appelOpenAI = async (messages: any[]): Promise<string> => {
+  const appelPerplexity = async (messages: any[]): Promise<string> => {
     // Vérifier que la clé API est valide
     if (!API_KEY || API_KEY === 'undefined') {
-      console.warn("Clé API OpenAI non configurée");
+      console.warn("Clé API Perplexity non configurée");
       return "Désolé, le service IA n'est pas actuellement disponible. Veuillez contacter l'administrateur.";
     }
     
@@ -656,7 +656,7 @@ export default function App() {
         method: "POST",
         headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          model: "gpt-4o-mini", 
+          model: "sonar-pro", 
           messages,
           temperature: 0.1,
           max_tokens: 1500
@@ -667,7 +667,7 @@ export default function App() {
         const err = await response.text();
         console.error("Détail de l'erreur API:", err);
         if (response.status === 401) {
-          return "Clé API OpenAI invalide. Veuillez vérifier votre configuration.";
+          return "Clé API Perplexity invalide. Veuillez vérifier votre configuration.";
         }
         throw new Error(`Erreur API (${response.status})`);
       }
@@ -675,7 +675,7 @@ export default function App() {
       const json = await response.json();
       return json.choices[0].message.content;
     } catch (error) {
-      console.error("Erreur lors de l'appel OpenAI:", error);
+      console.error("Erreur lors de l'appel Perplexity:", error);
       return `Erreur: ${error instanceof Error ? error.message : 'Erreur inconnue'}. Le service IA n'est pas disponible.`;
     }
   };
@@ -701,7 +701,7 @@ Si l'information n'est pas dans le texte ci-dessus, réponds : "Je ne trouve pas
       }));
       
       const apiMessages = [{ role: "system", content: systemPrompt }, ...history, { role: "user", content: question }];
-      return await appelOpenAI(apiMessages);
+      return await appelPerplexity(apiMessages);
     } catch (error) {
       console.error("Erreur traiterQuestion:", error);
       return "Erreur lors du traitement. Veuillez réessayer.";

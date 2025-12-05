@@ -684,17 +684,32 @@ export default function App() {
   const traiterQuestion = async (question: string): Promise<string> => {
     try {
       let contexte = "";
-      if (chatState.selectedDomain === 0) contexte = trouverContextePertinent(question);
-      else if (chatState.selectedDomain === 1) contexte = rechercherDansTexte(JSON.stringify(formation, null, 2), question);
-      else if (chatState.selectedDomain === 2) contexte = rechercherDansTexte(teletravailData, question);
+      let domaineName = "";
+      
+      if (chatState.selectedDomain === 0) {
+        contexte = trouverContextePertinent(question);
+        domaineName = "temps de travail";
+      } else if (chatState.selectedDomain === 1) {
+        contexte = JSON.stringify(formation, null, 2);
+        domaineName = "formation";
+      } else if (chatState.selectedDomain === 2) {
+        contexte = teletravailData;
+        domaineName = "télétravail";
+      }
 
-      const systemPrompt = `Tu es un assistant syndical CFDT pour la mairie de Gennevilliers.
-Réponds UNIQUEMENT en français, de façon concise et amicale.
-Base-toi EXCLUSIVEMENT sur cette documentation officielle :
+      const systemPrompt = `Tu es un assistant syndical CFDT spécialiste du ${domaineName} pour la mairie de Gennevilliers.
 
+RÈGLES STRICTES À RESPECTER :
+1. Réponds UNIQUEMENT avec les informations du document ci-dessous.
+2. NE FAIS JAMAIS de recherche web ou externe.
+3. N'utilise JAMAIS tes connaissances générales.
+4. Si l'information n'est pas dans le document, dis : "Je ne trouve pas cette information dans le protocole ${domaineName}. Contactez la CFDT au 64 64."
+
+Sois concis et amical. Réponds en français.
+
+--- DOCUMENT OFFICIEL ${domaineName.toUpperCase()} MAIRIE DE GENNEVILLIERS ---
 ${contexte}
-
-Si l'information n'est pas dans le texte ci-dessus, réponds : "Je ne trouve pas cette information. Contactez la CFDT au 64 64."`;
+--- FIN DU DOCUMENT ---`;
       
       const history = chatState.messages.slice(1).map((msg) => ({
         role: msg.type === "user" ? "user" : "assistant",

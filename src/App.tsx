@@ -625,7 +625,9 @@ export default function App() {
         body: JSON.stringify({ 
           model: "sonar-pro", 
           messages,
-          // Désactiver la recherche web
+          // Note: Perplexity API n'a pas de paramètre officiel pour désactiver complètement la recherche web.
+          // La défense principale contre la recherche web est le systemPrompt strict ci-dessous.
+          // Ces paramètres visent à minimiser l'utilisation de la recherche web :
           search_domain_filter: [],
           search_recency_filter: null,
           return_related_questions: false,

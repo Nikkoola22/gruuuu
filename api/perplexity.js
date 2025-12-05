@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     }
 
     // Extraire le document interne du prompt (format App.tsx)
-    const docMatch = systemMessage.content.match(/--- DEBUT DE LA DOCUMENTATION PERTINENTE ---\n([\s\S]*?)\n--- FIN DE LA DOCUMENTATION PERTINENTE ---/);
+    const docMatch = systemMessage.content.match(/--- DOCUMENT OFFICIEL [^-]+ ---\n([\s\S]*?)\n--- FIN DU DOCUMENT ---/);
     const documentInterne = docMatch ? docMatch[1] : '';
     
     console.log('[API] Document interne trouvé:', documentInterne.length, 'caractères');

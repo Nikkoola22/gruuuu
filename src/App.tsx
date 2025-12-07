@@ -31,7 +31,7 @@ import {
   Zap,
 } from "lucide-react";
 
-import { sommaire } from "./data/sommaire.ts";
+import { sommaireUnifie, rechercherDansSommaire, type SectionIndex } from "./data/sommaire.ts";
 import { chapitres } from "./data/temps.ts";
 import { formation } from "./data/formation.ts";
 import { teletravailData } from "./data/teletravail.ts";
@@ -110,7 +110,6 @@ const rechercherDansTexte = (texte: string, question: string): string => {
 
 
 // Fonction pour rechercher dans un texte long et extraire les parties pertinentes
-const sommaireData = JSON.parse(sommaire);
 
 const actualitesSecours = [
   { title: "Réforme des retraites : nouvelles négociations prévues", link: "#", pubDate: new Date().toISOString(), guid: "1" },
@@ -219,36 +218,59 @@ const NewsTicker: React.FC = () => {
   );
 };
 
-const trouverContextePertinent = (question: string): string => {
-  const qNet = nettoyerChaine(question);
-  const mots = qNet.split(/\s+/).filter(Boolean);
-  const scores = new Map<number, number>();
-
-  sommaireData.chapitres.forEach((chap: any, i: number) => {
-    let score = 0;
-    const keys = [...(chap.mots_cles || []), ...(chap.articles?.flatMap((a: any) => a.mots_cles) || [])];
-    keys.forEach((mc: string) => {
-      const m = nettoyerChaine(mc);
-      if (mots.includes(m)) score += 10;
-      else if (qNet.includes(m)) score += 5;
-    });
-    if (score) scores.set(i + 1, (scores.get(i + 1) || 0) + score);
-  });
-
-  if (!scores.size) {
-    return "Aucun chapitre spécifique trouvé. Thèmes : " + sommaireData.chapitres.map((c: any) => c.titre).join(", ");
+/**
+ * RECHERCHE EN 2 ÉTAPES - Économie ~90% de tokens
+ * 1. Recherche dans le sommaire unifié (léger) pour identifier les sections pertinentes
+ * 2. Charge uniquement le contenu des sections identifiées
+ */
+const chargerContenuSection = (section: SectionIndex): string => {
+  if (section.source === 'temps' && section.chapitre) {
+    // Pour temps.ts, on charge le chapitre complet
+    const contenu = (chapitres as Record<number, string>)[section.chapitre] || "";
+    return `[${section.titre}]\n${contenu}`;
+  } else if (section.source === 'formation') {
+    // Pour formation.ts, on retourne le JSON complet (structure importante)
+    return `[${section.titre}]\n${JSON.stringify(formation, null, 2)}`;
+  } else if (section.source === 'teletravail') {
+    // Pour télétravail, on retourne le document complet
+    return `[${section.titre}]\n${teletravailData}`;
   }
+  return "";
+};
 
-  const top = Array.from(scores.entries())
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 3)
-    .map(([id]) => {
-      const titre = sommaireData.chapitres[id - 1].titre;
-      const contenu = (chapitres as Record<number, string>)[id] || "";
-      return `Source: ${titre}\nContenu: ${contenu}`;
-    });
+const trouverContexteOptimise = (question: string, domaine?: 'temps' | 'formation' | 'teletravail'): string => {
+  // Étape 1: Rechercher dans le sommaire unifié
+  const sectionsRelevantes = rechercherDansSommaire(question, 3);
+  
+  if (sectionsRelevantes.length === 0) {
+    // Fallback: retourner un résumé des thèmes disponibles
+    const themes = sommaireUnifie
+      .filter(s => !domaine || s.source === domaine)
+      .map(s => s.titre)
+      .slice(0, 10);
+    return `Thèmes disponibles: ${themes.join(', ')}. Reformulez votre question pour plus de précision.`;
+  }
+  
+  // Filtrer par domaine si spécifié
+  const sectionsFiltrees = domaine 
+    ? sectionsRelevantes.filter(s => s.source === domaine)
+    : sectionsRelevantes;
+  
+  // Si aucune section ne correspond au domaine, prendre les sections générales
+  const sectionsFinales = sectionsFiltrees.length > 0 ? sectionsFiltrees : sectionsRelevantes;
+  
+  // Étape 2: Charger uniquement le contenu des sections identifiées
+  const contextes = sectionsFinales.map(section => {
+    const contenu = chargerContenuSection(section);
+    return `📄 Source: ${section.titre}\n${section.resume || ''}\n\n${contenu}`;
+  });
+  
+  return contextes.join('\n\n---\n\n');
+};
 
-  return top.join("\n\n---\n\n");
+// Fonction de compatibilité (utilisée pour temps de travail)
+const trouverContextePertinent = (question: string): string => {
+  return trouverContexteOptimise(question, 'temps');
 };
 
 const PodcastPlayer: React.FC = () => {
@@ -685,16 +707,21 @@ export default function App() {
     try {
       let contexte = "";
       let domaineName = "";
+      let domaineSource: 'temps' | 'formation' | 'teletravail' | undefined;
       
+      // Recherche en 2 étapes : utiliser le sommaire unifié pour trouver le contexte pertinent
       if (chatState.selectedDomain === 0) {
-        contexte = trouverContextePertinent(question);
+        domaineSource = 'temps';
         domaineName = "temps de travail";
+        contexte = trouverContexteOptimise(question, domaineSource);
       } else if (chatState.selectedDomain === 1) {
-        contexte = JSON.stringify(formation, null, 2);
+        domaineSource = 'formation';
         domaineName = "formation";
+        contexte = trouverContexteOptimise(question, domaineSource);
       } else if (chatState.selectedDomain === 2) {
-        contexte = teletravailData;
+        domaineSource = 'teletravail';
         domaineName = "télétravail";
+        contexte = trouverContexteOptimise(question, domaineSource);
       }
 
       const systemPrompt = `Tu es un assistant syndical CFDT spécialiste du ${domaineName} pour la mairie de Gennevilliers.

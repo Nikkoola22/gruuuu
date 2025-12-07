@@ -73,7 +73,7 @@ RÈGLES ABSOLUES:
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'mixtral-8x7b-instruct',
+        model: 'pplx-70b-chat',
         messages: [
           { role: 'system', content: strictSystemPrompt },
           { role: 'user', content: userMessage.content }

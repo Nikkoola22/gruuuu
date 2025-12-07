@@ -73,7 +73,7 @@ RÈGLES ABSOLUES:
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3-70b-chat',
+        model: 'llama-3.1-70b-instruct',
         messages: [
           { role: 'system', content: strictSystemPrompt },
           { role: 'user', content: userMessage.content }

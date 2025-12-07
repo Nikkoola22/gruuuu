@@ -73,7 +73,7 @@ RÈGLES ABSOLUES:
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'pplx-70b-chat',
+        model: 'sonar-pro',
         messages: [
           { role: 'system', content: strictSystemPrompt },
           { role: 'user', content: userMessage.content }

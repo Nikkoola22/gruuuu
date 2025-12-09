@@ -866,11 +866,11 @@ export default function Quiz({ onBack }: QuizProps) {
     }));
   };
 
-  // On mount, regenerate answers starting from question 4 (index 3)
-  useEffect(() => {
-    regenerateFrom(3);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // On mount, no need to regenerate since questions are already properly built
+  // useEffect(() => {
+  //   regenerateFrom(3);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const selectOption = (opt: number) => {
     setAnswers((a) => {

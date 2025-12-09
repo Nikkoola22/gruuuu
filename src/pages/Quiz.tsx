@@ -701,23 +701,18 @@ const INITIAL_QUESTIONS: Question[] = faqData.slice(0, 10).map((f, idx) => {
   }
 ]);
 
-// Fonction pour sélectionner aléatoirement 10 questions parmi 40 sans doublons (Fisher-Yates)
+// Fonction pour sélectionner aléatoirement 10 questions parmi toutes les questions disponibles sans doublons
 function getRandomQuestions(): Question[] {
-  const questions = [...INITIAL_QUESTIONS];
+  const allQuestions = [...INITIAL_QUESTIONS];
+  const selected: Question[] = [];
+  const usedIndices = new Set<number>();
   
-  // Fisher-Yates shuffle
-  for (let i = questions.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [questions[i], questions[j]] = [questions[j], questions[i]];
-  }
-  
-  const selected = questions.slice(0, 10);
-  
-  // Vérifier qu'il n'y a pas de doublons (par id)
-  const ids = new Set(selected.map(q => q.id));
-  if (ids.size !== selected.length) {
-    // En cas de doublon (très théorique avec Fisher-Yates), relancer récursivement
-    return getRandomQuestions();
+  while (selected.length < 10 && usedIndices.size < allQuestions.length) {
+    const randomIndex = Math.floor(Math.random() * allQuestions.length);
+    if (!usedIndices.has(randomIndex)) {
+      usedIndices.add(randomIndex);
+      selected.push(allQuestions[randomIndex]);
+    }
   }
   
   return selected;

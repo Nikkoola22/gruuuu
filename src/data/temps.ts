@@ -391,7 +391,7 @@ Les Fonctionnaires Stagiaires
 Si avant d'être nommé stagiaire, un agent avait un CET, en tant que fonctionnaire titulaire ou contractuel, il ne peut pas utiliser les jours épargnés, ni en accumuler de nouveaux, pendant son stage.
 À la titularisation, il pourra de nouveau utiliser les jours épargnés sur son CET et en épargner de nouveaux.
 OUVERTURE ET ALIMENTATION
-Demande d'ouverture ou d'alimentation du CET doit être faite par le biais des formulaires prévus à cet effet (à télécharger sur l'intranet).
+Demande d'ouverture ou d'alimentation du CET doit être faite par le biais des formulaires prévus à cet effet avant le 28 fevrier de l'année N+1(à télécharger sur l'intranet).
 Alimentation (Nombre de jours maxi) :
        Jours de congés annuels* :5 J
        Jours de fractionnement : 2 J

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { faqData, FAQItem } from '../data/FAQdata';
+import FAQQuiz from './FAQQuiz';
 import { Search, ChevronDown, ChevronUp, Tag, ArrowLeft } from 'lucide-react';
 
 interface Props {
@@ -167,6 +168,9 @@ const FAQ: React.FC<Props> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
+        {/* Quiz */}
+        <FAQQuiz />
+
         {/* Header */}
         <div className="mb-8 animate-fade-in">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">

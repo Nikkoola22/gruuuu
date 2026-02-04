@@ -444,7 +444,7 @@ export const sommaireUnifie: SectionIndex[] = [
     motsCles: ['rémunération', 'plein traitement', 'demi-traitement', 'CLM', 'CLD', 'grave maladie', 'CNRACL', 'IRCANTEC'],
     source: 'temps',
     chapitre: 4,
-    resume: 'Maladie ordinaire: 3 mois plein + 9 mois demi, CLM/CLD: 1-3 ans plein'
+    resume: 'Maladie ordinaire: 3 mois à 90% + 9 mois demi, CLM/CLD: 1-3 ans plein'
   },
 
   // ============================================

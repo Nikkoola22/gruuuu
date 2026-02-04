@@ -41,12 +41,13 @@ const updateMarqueeDuration = (el: HTMLDivElement | null) => {
   if (!width || Number.isNaN(width)) return
   const duration = Math.min(120, Math.max(20, width / MARQUEE_SPEED))
   el.style.setProperty("--marquee-duration", `${duration}s`)
+  el.style.animation = "none"
+  void el.offsetHeight
+  el.style.animation = ""
 }
 
 // --- COMPOSANT RSS BANDEAU (mémorisé pour éviter les re-renders) ---
-const RssBandeau = React.memo(({ rssItems, rssLoading }: { rssItems: RssItem[], rssLoading: boolean }) => {
-  const rssMarqueeRef = useRef<HTMLDivElement>(null)
-
+const RssBandeau = React.memo(({ rssItems, rssLoading, marqueeRef }: { rssItems: RssItem[], rssLoading: boolean, marqueeRef: React.RefObject<HTMLDivElement> }) => {
   // Générer le contenu des items
   const renderItems = (keyPrefix: string) => {
     if (rssItems.length === 0) {
@@ -69,13 +70,6 @@ const RssBandeau = React.memo(({ rssItems, rssLoading }: { rssItems: RssItem[], 
     ))
   }
 
-  useEffect(() => {
-    updateMarqueeDuration(rssMarqueeRef.current)
-    const handleResize = () => updateMarqueeDuration(rssMarqueeRef.current)
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [rssItems.length, rssLoading])
-
   return (
     <section className="relative bg-gradient-to-r from-blue-600/60 via-indigo-600/60 to-blue-600/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-blue-500/30 z-50 glass-banner">
       <div className="relative h-16 flex items-center overflow-hidden">
@@ -87,7 +81,7 @@ const RssBandeau = React.memo(({ rssItems, rssLoading }: { rssItems: RssItem[], 
           </div>
         </div>
         {/* Container du défilement - 2 copies pour boucle infinie */}
-        <div ref={rssMarqueeRef} className="marquee-track animate-marquee ml-44">
+        <div ref={marqueeRef} className="marquee-track animate-marquee ml-44">
           <div className="marquee-group">
             {renderItems('a')}
           </div>
@@ -145,6 +139,7 @@ function App() {
   const inputRef = useRef<HTMLInputElement>(null)
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const newsMarqueeRef = useRef<HTMLDivElement>(null)
+  const rssMarqueeRef = useRef<HTMLDivElement>(null)
 
   // --- EFFETS ---
   useEffect(() => {
@@ -154,11 +149,19 @@ function App() {
   }, [chatState.messages, chatState.currentView])
 
   useEffect(() => {
-    updateMarqueeDuration(newsMarqueeRef.current)
-    const handleResize = () => updateMarqueeDuration(newsMarqueeRef.current)
+    const sync = () => {
+      updateMarqueeDuration(newsMarqueeRef.current)
+      updateMarqueeDuration(rssMarqueeRef.current)
+    }
+    const raf = requestAnimationFrame(sync)
+    const handleResize = () => sync()
     window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [rssItems.length, rssLoading])
+
 
   // --- CHARGER LES ARTICLES RSS ---
   useEffect(() => {
@@ -967,7 +970,7 @@ ${contenuCible}
       </main>
 
       {/* --- BANDEAU RSS DÉFILANT --- */}
-      <RssBandeau rssItems={rssItems} rssLoading={rssLoading} />
+      <RssBandeau rssItems={rssItems} rssLoading={rssLoading} marqueeRef={rssMarqueeRef} />
 
       <footer 
         className="relative text-slate-400 text-center py-4 mt-0 z-10 border-t border-purple-500/20 glass-banner footer-glass"

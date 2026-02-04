@@ -201,7 +201,20 @@ Tu ne peux pas venir travailler avec ton enfant en cas de difficulté de garde. 
   {
     id: 21,
     question: "Que faire en cas d'arrêt maladie ?",
-    answer: "L'arrêt maladie doit être transmis rapidement au service RH. La rémunération est maintenue selon des modalités précises. Un certificat médical est obligatoire. Les agents en arrêt ne peuvent pas participer aux formations sauf cas particuliers de reconversion.",
+    answer: `L'arrêt maladie doit être transmis rapidement au service RH. Un certificat médical est obligatoire.
+
+**Rémunération en cas de maladie ordinaire (d'après le tableau du chapitre 4) :**
+- **Titulaires affiliés CNRACL** : **3 mois à 90%**, puis **9 mois en demi-traitement** (dans la limite d’1 an).
+- **Titulaires affiliés IRCANTEC** : **3 mois à 90%**, puis **9 mois en demi-traitement** (dans la limite d’1 an).
+- **Contractuels (régime général)** :
+  - **< 4 mois d’ancienneté** : pas de maintien.
+  - **> 4 mois < 2 ans** : 1 mois plein + 1 mois demi-traitement.
+  - **2 à 3 ans** : 2 mois plein + 2 mois demi-traitement.
+  - **> 3 ans** : 3 mois plein + 3 mois demi-traitement.
+
+⚠️ **Journée de carence** : une retenue s’applique sauf exceptions (prolongation d’arrêt, accident de service, grossesse déclarée, etc.).
+
+Les agents en arrêt ne peuvent pas participer aux formations sauf cas particuliers de reconversion.`,
     category: 'absences'
   },
   {

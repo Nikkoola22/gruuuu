@@ -395,7 +395,7 @@ Demande d'ouverture ou d'alimentation du CET doit être faite par le biais des f
 Alimentation (Nombre de jours maxi) :
        Jours de congés annuels* :5 J
        Jours de fractionnement : 2 J
-       Jour de A.R.T.T
+       Jour de A.R.T.T : max 50% acquis annuellement
 *L'agent doit obligatoirement avoir pris au minimum 20 jours de congés annuels dans l'année en cours
 ARTICLE 6 - LES CONGES LIES AUX NAISSANCES
 CONGE MATERNITE
@@ -630,7 +630,7 @@ POUR LES AGENTS TITULAIRES AFFILIES A LA CNRACL
 
 Nature de l'arrêt                            Durée              Plein traitement (salaire             Demi-traitement (demi-
                                             maximum                     complet)                             salaire)
-Maladie ordinaire                               1 an                        3 mois                               9 mois
+Maladie ordinaire                               1 an                        3 mois  a 90%                             9 mois
 Longue maladie                                 3 ans                          1 an                               2 ans
 Longue durée                                   5 ans                         3 ans                               2 ans
 Accident de service et de trajet                       Plein traitement jusqu'à la reprise de son activité
@@ -638,7 +638,7 @@ POUR LES AGENTS TITULAIRES AFFILIES A L'IRCANTEC
 
 Nature de l'arrêt                            Durée              Plein traitement (salaire             Demi-traitement (demi-
                                             maximum                     complet)                             salaire)
-Maladie ordinaire                               1 an                        3 mois                               9 mois
+Maladie ordinaire                               1 an                        3 mois a 90%                            9 mois
 Grave maladie                                  3 ans                          1 an                               2 ans
 Accident de service et de trajet             Tant que                        3 ans                   Pas de demi-traitement,
                                            l'agent est                                                  la CPAM versera

@@ -16,6 +16,7 @@ import CalculateurPrimesV2 from "./components/CalculateurPrimesV2.tsx"
 import Calculateur13emeV2 from "./components/Calculateur13emeV2.tsx"
 import Metiers from "./components/Metiers.tsx"
 import FAQ from "./components/FAQ.tsx"
+import LandingPage from "./components/LandingPage.tsx"
 
 
 // --- CONFIGURATION BASE URL POUR GITHUB PAGES ---
@@ -58,23 +59,25 @@ const RssBandeau = React.memo(({ rssItems, rssLoading, marqueeRef }: { rssItems:
       )
     }
     return rssItems.map((item, index) => (
-      <a
-        key={`${keyPrefix}-${index}`}
-        href={item.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-lg font-light mx-8 hover:text-cyan-300 cursor-pointer text-white transition-colors duration-100 inline-block"
-      >
-        • {item.title}
-      </a>
+      <React.Fragment key={`${keyPrefix}-${index}`}>
+        <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
+        <a
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-lg font-light mx-6 hover:text-cyan-300 cursor-pointer text-white transition-colors duration-100 inline-block"
+        >
+          {item.title}
+        </a>
+      </React.Fragment>
     ))
   }
 
   return (
-    <section className="relative bg-gradient-to-r from-blue-600/60 via-indigo-600/60 to-blue-600/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-blue-500/30 z-50 glass-banner">
+    <section className="relative bg-gradient-to-r from-blue-600/60 via-indigo-600/60 to-blue-600/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-blue-500/30 z-50 glass-banner marquee-pausable">
       <div className="relative h-16 flex items-center overflow-hidden">
         {/* Label ACTU fixe à gauche */}
-        <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-gradient-to-r from-indigo-700 to-blue-700 backdrop-blur z-20 shadow-lg glass-pill">
+        <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-gradient-to-r from-indigo-700 to-blue-700 backdrop-blur z-20 shadow-lg glass-pill actu-pill-glow">
           <div className="flex items-center gap-2">
             <Rss className="w-4 h-4 text-cyan-300 animate-pulse" />
             <span className="text-base font-light tracking-wide text-white">ACTU:</span>
@@ -114,6 +117,9 @@ interface ChatbotState {
 }
 
 function App() {
+  // --- LANDING PAGE ---
+  const [showLanding, setShowLanding] = useState(true)
+
   // --- ÉTATS & REFS ---
   const [chatState, setChatState] = useState<ChatbotState>({
     currentView: "menu",
@@ -481,7 +487,6 @@ RÈGLES STRICTES :
 3. Sois précis sur les chiffres et délais mentionnés dans les documents
 4. Réponds comme un collègue syndical bienveillant
 5. Ne mentionne JAMAIS [CHAPITRE X - ARTICLE Y] dans ta réponse. Réponds naturellement.
-6. Si un tableau indique "3 mois à 90%", ne reformule pas en "plein traitement".
 
 ⚠️ RÈGLE CRITIQUE - SI TU TROUVES L'INFO :
 - Donne directement la réponse, sans dire "Je ne trouve pas"
@@ -571,6 +576,18 @@ ${contenuCible}
   }
 
   // --- RENDU DU COMPOSANT ---
+  if (showLanding) {
+    return (
+      <LandingPage
+        onEnter={() => setShowLanding(false)}
+        onQuizz={() => {
+          setShowLanding(false)
+          setChatState(s => ({ ...s, currentView: 'faq' }))
+        }}
+      />
+    )
+  }
+
   return (
     <div className="min-h-screen relative">
       {/* Background image with transparency */}
@@ -582,14 +599,30 @@ ${contenuCible}
       {/* Subtle overlay for better text readability */}
       <div className="fixed inset-0 bg-black/20 z-0"></div>
 
+      {/* Couches de fond supplémentaires */}
+      <div className="bg-blob-3" aria-hidden="true" />
+      <div className="bg-noise"  aria-hidden="true" />
+      <div className="bg-aurora" aria-hidden="true" />
+
       {/* HEADER PROFESSIONNEL */}
-      <header className="relative bg-gradient-to-r from-slate-900/70 via-purple-900/70 to-slate-900/70 backdrop-blur-md shadow-lg border-b border-purple-500/20 z-10 bg-cover bg-center glass-banner" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
+      <header className="relative bg-gradient-to-r from-slate-900/70 via-purple-900/70 to-slate-900/70 backdrop-blur-md shadow-lg z-10 bg-cover bg-center glass-banner header-bottom-glow" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-purple-900/80 to-slate-900/80 z-0"></div>
+        {/* Scan line traversant le header */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+          <div
+            className="absolute top-0 left-0 h-full w-20"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(168,85,247,0.07), transparent)',
+              animation: 'header-scan 12s ease-in-out 3s infinite',
+              willChange: 'transform',
+            }}
+          />
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 relative z-10">
           <div className="flex items-center justify-between gap-8">
             {/* Logo et texte à gauche */}
             <div className="flex items-center gap-5 group">
-              <div className="relative">
+              <div className="relative logo-glow-ambient">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <img
                   src={`${BASE_URL}logo-cfdt.jpg`}
@@ -598,7 +631,7 @@ ${contenuCible}
                 />
               </div>
               <div className="space-y-1">
-                <h1 className="text-5xl font-light tracking-tight text-white">Atlas</h1>
+                <h1 className="text-5xl font-light tracking-tight text-shimmer">Atlas</h1>
                 <p className="text-base text-slate-300 font-light">Assistant syndical CFDT</p>
               </div>
             </div>
@@ -617,32 +650,36 @@ ${contenuCible}
       </header>
 
       {/* Bandeau NEWS FPT - Pleine largeur sous le header */}
-      <section className="relative bg-gradient-to-r from-orange-500/60 via-red-500/60 to-pink-500/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-orange-400/30 z-10 glass-banner">
+      <section className="relative bg-gradient-to-r from-orange-500/60 via-red-500/60 to-pink-500/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-orange-400/30 z-10 glass-banner marquee-pausable banner-top-streak">
       <div className="relative h-16 flex items-center overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-32 flex items-center justify-center bg-gradient-to-r from-orange-600 to-red-600 backdrop-blur z-20 shadow-lg glass-pill">
+        <div className="absolute left-0 top-0 h-full w-32 flex items-center justify-center bg-gradient-to-r from-orange-600 to-red-600 backdrop-blur z-20 shadow-lg glass-pill news-pill-glow">
           <span className="text-base font-light tracking-wide text-white">NEWS:</span>
         </div>
         <div ref={newsMarqueeRef} className="marquee-track animate-marquee pl-36">
           <div className="marquee-group">
             {infoItems.map((info, index) => (
-              <button
-                key={`news-a-${info.id}-${index}`}
-                onClick={() => handleInfoClick(info)}
-                className="text-lg font-light mx-6 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
-              >
-                #{info.id}: {info.title}
-              </button>
+              <React.Fragment key={`news-a-${info.id}-${index}`}>
+                <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
+                <button
+                  onClick={() => handleInfoClick(info)}
+                  className="text-lg font-light mx-4 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
+                >
+                  {info.title}
+                </button>
+              </React.Fragment>
             ))}
           </div>
           <div className="marquee-group">
             {infoItems.map((info, index) => (
-              <button
-                key={`news-b-${info.id}-${index}`}
-                onClick={() => handleInfoClick(info)}
-                className="text-lg font-light mx-6 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
-              >
-                #{info.id}: {info.title}
-              </button>
+              <React.Fragment key={`news-b-${info.id}-${index}`}>
+                <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
+                <button
+                  onClick={() => handleInfoClick(info)}
+                  className="text-lg font-light mx-4 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
+                >
+                  {info.title}
+                </button>
+              </React.Fragment>
             ))}
           </div>
         </div>
@@ -671,17 +708,17 @@ ${contenuCible}
                 <div className="flex justify-center mb-1 gap-8">
                   <button
                     onClick={() => handleDomainSelection(0)}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-purple-900/70 to-slate-800/70 backdrop-blur-md border border-purple-500/30 rounded-2xl p-10 hover:border-pink-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card"
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-purple-900/70 to-slate-800/70 backdrop-blur-md border border-purple-500/30 rounded-2xl p-10 hover:border-pink-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-1 card-border-sweep btn-ripple"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
                         <span className="absolute -inset-3 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-6 bg-gradient-to-br from-purple-500/80 to-pink-500/80 backdrop-blur rounded-2xl shadow-2xl group-hover:rotate-2 group-hover:scale-110 transition-transform duration-150">
+                        <div className="relative p-6 bg-gradient-to-br from-purple-500/80 to-pink-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
                           <Search className="w-16 h-16 text-white" />
                         </div>
                       </div>
-                      <h4 className="text-2xl font-light tracking-tight text-white group-hover:text-pink-200">
+                      <h4 className="text-2xl font-light tracking-tight text-white card-title-purple">
                         Recherche Unifiée
                       </h4>
                       <p className="text-center text-slate-300 font-light text-sm">
@@ -696,17 +733,17 @@ ${contenuCible}
 
                   <button
                     onClick={() => setChatState({ ...chatState, currentView: 'calculators' })}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card"
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep card-border-sweep-blue btn-ripple"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-transparent to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
                         <span className="absolute -inset-3 bg-gradient-to-br from-blue-400/30 to-cyan-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl group-hover:rotate-2 group-hover:scale-110 transition-transform duration-150">
+                        <div className="relative p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
                           <Calculator className="w-16 h-16 text-white" />
                         </div>
                       </div>
-                      <h4 className="text-2xl font-light tracking-tight text-white group-hover:text-cyan-200">
+                      <h4 className="text-2xl font-light tracking-tight text-white card-title-blue">
                         Calculateurs
                       </h4>
                       <p className="text-center text-slate-300 font-light text-sm">
@@ -722,17 +759,17 @@ ${contenuCible}
                   {/* Carte Grilles Indiciaires */}
                   <button
                     onClick={() => setChatState({ ...chatState, currentView: 'metiers' })}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-emerald-900/70 to-slate-800/70 backdrop-blur-md border border-emerald-500/30 rounded-2xl p-10 hover:border-green-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card"
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-emerald-900/70 to-slate-800/70 backdrop-blur-md border border-emerald-500/30 rounded-2xl p-10 hover:border-green-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-3 card-border-sweep card-border-sweep-green btn-ripple"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
                         <span className="absolute -inset-3 bg-gradient-to-br from-emerald-400/30 to-green-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-6 bg-gradient-to-br from-emerald-500/80 to-green-500/80 backdrop-blur rounded-2xl shadow-2xl group-hover:rotate-2 group-hover:scale-110 transition-transform duration-150">
+                        <div className="relative p-6 bg-gradient-to-br from-emerald-500/80 to-green-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
                           <LayoutGrid className="w-16 h-16 text-white" />
                         </div>
                       </div>
-                      <h4 className="text-2xl font-light tracking-tight text-white group-hover:text-green-200">
+                      <h4 className="text-2xl font-light tracking-tight text-white card-title-green">
                         Grilles Indiciaires
                       </h4>
                       <p className="text-center text-slate-300 font-light text-sm">
@@ -750,7 +787,7 @@ ${contenuCible}
                 <div className="flex justify-center mt-8">
                   <button
                     onClick={() => setChatState({ ...chatState, currentView: 'faq' })}
-                    className="group flex items-center gap-3 bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-600 text-slate-900 font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-150 hover:scale-105 btn-cta"
+                    className="group flex items-center gap-3 bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-600 text-slate-900 font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-150 hover:scale-105 btn-cta animate-cta-enter btn-shine"
                   >
                     <HelpCircle className="w-6 h-6" />
                     <span className="text-lg">Questions Fréquentes</span>
@@ -800,7 +837,7 @@ ${contenuCible}
 
         {/* Page d'accueil avec les 3 icônes */}
         {!activeCalculator && (
-          <div className="max-w-6xl mx-auto px-4 py-12">
+          <div className="max-w-6xl mx-auto px-4 py-12 calc-landing-enter">
             <div className="text-center mb-12">
               <h3 className="text-3xl font-light text-white mb-4">Choisissez un calculateur</h3>
               <p className="text-slate-400 font-light">Cliquez sur une icône pour accéder au calculateur</p>
@@ -856,13 +893,13 @@ ${contenuCible}
 
         {/* Contenu du calculateur sélectionné */}
         {activeCalculator === 'primes' && (
-          <CalculateurPrimesV2 onClose={() => setActiveCalculator(null)} />
+          <div className="calc-tool-enter"><CalculateurPrimesV2 onClose={() => setActiveCalculator(null)} /></div>
         )}
         {activeCalculator === 'cia' && (
-          <CalculateurCIAV2 onClose={() => setActiveCalculator(null)} />
+          <div className="calc-tool-enter"><CalculateurCIAV2 onClose={() => setActiveCalculator(null)} /></div>
         )}
         {activeCalculator === '13eme' && (
-          <Calculateur13emeV2 onClose={() => setActiveCalculator(null)} />
+          <div className="calc-tool-enter"><Calculateur13emeV2 onClose={() => setActiveCalculator(null)} /></div>
         )}
       </section>
       )}
@@ -871,7 +908,7 @@ ${contenuCible}
         {chatState.currentView === "chat" && (
           <div
             ref={chatContainerRef}
-            className="bg-gradient-to-br from-slate-800/80 via-purple-900/80 to-slate-800/80 backdrop-blur-md border border-purple-500/30 rounded-2xl shadow-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 glass-card"
+            className="bg-gradient-to-br from-slate-800/80 via-purple-900/80 to-slate-800/80 backdrop-blur-md border border-purple-500/30 rounded-2xl shadow-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 glass-card animate-chat-enter"
           >
             <div className="bg-gradient-to-r from-purple-600/70 via-pink-600/70 to-purple-600/70 backdrop-blur text-white p-6 glass-banner">
               <div className="flex items-center justify-between">
@@ -910,15 +947,9 @@ ${contenuCible}
                 <div className="flex justify-start">
                   <div className="bg-slate-700/70 backdrop-blur-sm border border-purple-500/30 px-4 py-3 rounded-xl glass-card">
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-                      <div
-                        className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.1s" }}
-                      ></div>
-                      <div
-                        className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.2s" }}
-                      ></div>
+                      <div className="w-2 h-2 bg-purple-400 rounded-full typing-dot-1"></div>
+                      <div className="w-2 h-2 bg-purple-400 rounded-full typing-dot-2"></div>
+                      <div className="w-2 h-2 bg-purple-400 rounded-full typing-dot-3"></div>
                       <span className="text-slate-200 ml-2 text-sm font-light">L&apos;assistant réfléchit...</span>
                     </div>
                   </div>
@@ -958,7 +989,7 @@ ${contenuCible}
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || chatState.isProcessing}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-600/70 to-pink-600/70 backdrop-blur-sm text-white rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl font-light"
+                  className={`px-6 py-3 bg-gradient-to-r from-purple-600/70 to-pink-600/70 backdrop-blur-sm text-white rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl font-light${inputValue.trim() && !chatState.isProcessing ? ' send-btn-pulse' : ''}`}
                 >
                   <Send className="w-4 h-4" />
                   <span className="hidden sm:inline text-sm">Envoyer</span>

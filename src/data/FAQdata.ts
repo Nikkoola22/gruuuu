@@ -203,7 +203,7 @@ Tu ne peux pas venir travailler avec ton enfant en cas de difficulté de garde. 
     question: "Que faire en cas d'arrêt maladie ?",
     answer: `L'arrêt maladie doit être transmis rapidement au service RH. Un certificat médical est obligatoire.
 
-**Rémunération en cas de maladie ordinaire (d'après le tableau du chapitre 4) :**
+**Rémunération en cas de maladie ordinaire (d’après le tableau du chapitre 4) :**
 - **Titulaires affiliés CNRACL** : **3 mois à 90%**, puis **9 mois en demi-traitement** (dans la limite d’1 an).
 - **Titulaires affiliés IRCANTEC** : **3 mois à 90%**, puis **9 mois en demi-traitement** (dans la limite d’1 an).
 - **Contractuels (régime général)** :

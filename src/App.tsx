@@ -825,7 +825,7 @@ ${contenuCible}
                     setChatState({ ...chatState, currentView: 'menu' })
                   }
                 }}
-                className="flex items-center gap-2 bg-slate-700/50 hover:bg-slate-700/70 text-slate-300 hover:text-white px-4 py-2 rounded-lg transition-colors duration-100 font-light"
+                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-100 font-light"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>{activeCalculator ? 'Retour aux calculateurs' : 'Retour au menu'}</span>
@@ -923,7 +923,7 @@ ${contenuCible}
                 </div>
                 <button
                   onClick={returnToMenu}
-                  className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200 backdrop-blur-sm font-light glass-pill"
+                  className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-all duration-200 backdrop-blur-sm font-light glass-pill"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span className="hidden sm:inline text-sm">Retour</span>
@@ -966,7 +966,7 @@ ${contenuCible}
                   </button>
                   <button
                     onClick={handleDeclineSearch}
-                    className="px-8 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-xl hover:from-slate-700 hover:to-slate-800 transition-all duration-200 shadow-lg hover:shadow-xl font-medium flex items-center gap-2 glass-pill"
+                    className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl font-medium flex items-center gap-2 glass-pill"
                   >
                     <span>❌ Non, retour à l'accueil</span>
                   </button>

@@ -732,27 +732,29 @@ ${contenuCible}
                   </button>
 
                   <button
-                    onClick={() => setChatState({ ...chatState, currentView: 'calculators' })}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep card-border-sweep-blue btn-ripple"
+                    onClick={(e) => e.preventDefault()}
+                    disabled
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-10 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-2 opacity-50 cursor-not-allowed pointer-events-none"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-transparent to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
+                    <div className="absolute inset-0 bg-black/20"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-blue-400/30 to-cyan-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <Calculator className="w-16 h-16 text-white" />
+                        <div className="relative p-6 bg-gradient-to-br from-blue-500/50 to-cyan-500/50 backdrop-blur rounded-2xl shadow-2xl">
+                          <Calculator className="w-16 h-16 text-white/70" />
                         </div>
                       </div>
-                      <h4 className="text-2xl font-light tracking-tight text-white card-title-blue">
+                      <h4 className="text-2xl font-light tracking-tight text-white/70 card-title-blue">
                         Calculateurs
                       </h4>
-                      <p className="text-center text-slate-300 font-light text-sm">
+                      <p className="text-center text-slate-300/60 font-light text-sm">
                         Primes IFSE - Calcul CIA - Outils de simulation
                       </p>
-                      <div className="flex items-center gap-2 text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <span className="font-light text-sm">Accéder aux calculateurs</span>
-                        <ArrowRight className="w-4 h-4" />
+                      <div className="flex items-center gap-2 text-cyan-400/60">
+                        <span className="font-light text-sm">Bientôt disponible</span>
                       </div>
+                    </div>
+                    <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold shadow-lg z-20">
+                      BIENTÔT DISPONIBLE
                     </div>
                   </button>
 

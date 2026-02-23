@@ -210,7 +210,7 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
         </div>
 
         <ul style={{ display: 'flex', alignItems: 'center', gap: 26, listStyle: 'none', margin: 0, padding: 0 }}>
-          {['Home', 'Tokenomics & Revenue model'].map(link => (
+          {['Home', 'Token free grace aux Adherents CFDT'].map(link => (
             <li key={link}>
               <a href="#" className="lp-nav-link" style={{ fontSize: 12.5, fontWeight: 400, color: 'rgba(242,234,246,0.48)', textDecoration: 'none', letterSpacing: '0.012em', transition: 'color 0.18s' }}>
                 {link}
@@ -266,7 +266,7 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
         </div>
         <div style={{ width: 30, height: 1, background: 'rgba(255,28,116,0.4)', margin: '12px 0' }} />
         <div style={{ fontSize: 11, fontWeight: 400, color: 'rgba(242,234,246,0.48)', lineHeight: 1.5, maxWidth: 175, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-          Assets backed by the vault at launch
+          REGLEMENT DU TEMPS DE TRAVAIL, FORMATION, TELETRAVAIL
         </div>
       </div>
 

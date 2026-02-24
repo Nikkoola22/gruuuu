@@ -654,14 +654,14 @@ const INITIAL_QUESTIONS: Question[] = faqData.slice(0, 10).map((f, idx) => {
   },
   {
     id: 36,
-    question: 'Combien de jours de congés annuels a-t-on droit à Gennevilliers sur 5 jours de travail par semaine ?',
+    question: 'Qu\'est-ce qu\'une journée de grève et quels sont les droits de l\'agent ?',
     options: [
-      '20 jours ouvrés',
-      '22 jours ouvrés',
-      '25 jours ouvrés',
-      '30 jours ouvrés'
+      'La journée de grève est payée intégralement comme un jour normal dès qu\'on arrête le travail 1 minute',
+      'En cas de grève, l\'agent ne doit justifier son absence que s\'il est absent toute la journée',
+      'L\'agent doit être présent au moins 4 heures pour être payé',
+      'La journée de grève coûte toujours un jour de congé à l\'agent'
     ],
-    correctIndex: 2
+    correctIndex: 1
   },
   {
     id: 37,

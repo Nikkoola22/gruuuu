@@ -491,12 +491,12 @@ const INITIAL_QUESTIONS: Question[] = faqData.slice(0, 10).map((f, idx) => {
     id: 21,
     question: 'Quelles sont les différentes catégories de personnel à la mairie de Gennevilliers ?',
     options: [
-      '1500 heures par année',
-      '1607 heures par année',
-      '1800 heures par année',
-      '2000 heures par année'
+      'Catégorie A, B et C uniquement',
+      'Catégorie A, B, C et D',
+      'Catégories de la fonction publique territoriale (A, B, C)',
+      'Il n\'y a qu\'une seule catégorie'
     ],
-    correctIndex: 1
+    correctIndex: 2
   },
   {
     id: 22,

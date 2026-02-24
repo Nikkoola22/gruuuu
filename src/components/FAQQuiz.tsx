@@ -489,7 +489,7 @@ const INITIAL_QUESTIONS: Question[] = faqData.slice(0, 10).map((f, idx) => {
   },
   {
     id: 21,
-    question: 'Quelle est la durée légale annuelle du temps de travail dans la fonction publique ?',
+    question: 'Quelles sont les différentes catégories de personnel à la mairie de Gennevilliers ?',
     options: [
       '1500 heures par année',
       '1607 heures par année',

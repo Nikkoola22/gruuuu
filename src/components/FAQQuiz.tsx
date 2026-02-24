@@ -339,20 +339,20 @@ const INITIAL_QUESTIONS: Question[] = faqData.slice(0, 10).map((f, idx) => {
     // explicit options for 'Quelles sont les conditions pour bénéficier du temps partiel ?' (faq slice index 4)
     opts = [
       'Le temps partiel peut être accordé de droit ou sur autorisation selon les situations',
-      'Le temps partiel peut être accordé de droit uniquement pour les femmes.',
-      'Le temps partiel peut être accordé sur autorisation pour se reposer',
-      'Le temps partiel peut être accordé de droit ou sur autorisation a 40 %'
+      'Le temps partiel n'est accordé que sur demande sans justification',
+      'Le temps partiel est réservé aux femmes ayant des enfants',
+      'Le temps partiel n'existe pas à Gennevilliers'
     ];
     correctIndex = 0; // first option is correct
   } else if (idx === 5) {
     // explicit options for 'Comment sont rémunérées les heures supplémentaires ?' (faq slice index 5)
     opts = [
-      'Les heures supplémentaires sont rémunérées uniquement les 15 premieres',
-      'Les heures supplémentaires sont rémunérées uniquement si elles sont effectuées à la demande de la hiérarchie.',
-      'Les heures supplémentaires sont rémunérées uniquement si vous le demandez',
-      'Les heures supplémentaires sont rémunérées uniquement si votre indice est en dessous de 545'
+      'Les 15 premières heures supplémentaires uniquement sont payées',
+      'Les heures supplémentaires sont accordées à titre gratuit (repos compensateur)',
+      'Les heures supplémentaires sont rémunérées si elles sont demandées par la hiérarchie',
+      'Les heures supplémentaires ne sont jamais rémunérées'
     ];
-    correctIndex = 1; // second option is correct (à la demande de la hiérarchie)
+    correctIndex = 2; // third option is correct (à la demande de la hiérarchie)
   } else if (idx === 8) {
     // explicit options for 'Comment fonctionnent les jours d\'ARTT ?' (faq slice index 8)
     opts = [

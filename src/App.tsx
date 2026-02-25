@@ -647,12 +647,12 @@ ${contenuCible}
     <div className="min-h-screen relative">
       {/* Background image with transparency */}
       <div
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0"
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0 pointer-events-none"
         style={{ backgroundImage: `url('${BASE_URL}unnamed.jpg')`, opacity: 0.3 }}
       ></div>
 
       {/* Subtle overlay for better text readability */}
-      <div className="fixed inset-0 bg-black/20 z-0"></div>
+      <div className="fixed inset-0 bg-black/20 z-0 pointer-events-none"></div>
 
       {/* Couches de fond supplémentaires */}
       <div className="bg-blob-3" aria-hidden="true" />

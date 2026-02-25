@@ -2,15 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Performance: désactiver les transitions globales qui causent des saccades */
-/* Appliquer les transitions uniquement où nécessaire */
-
-/* Boutons et liens avec transitions optimisées GPU */
-button, a {
-  transition: transform 0.15s ease-out, opacity 0.15s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
-  will-change: transform;
-}
-
+/* Transitions ciblées uniquement — will-change global sur button/a crée des centaines de couches GPU */
 button:active {
   transform: scale(0.97);
 }
@@ -18,7 +10,7 @@ button:active {
 /* Subtle background effects - Inspired by creative dribbble design */
 body {
   background: linear-gradient(135deg, #0f1419 0%, #1a1f3a 25%, #2d1b69 50%, #1f2555 75%, #0f1419 100%);
-  background-attachment: fixed;
+  background-attachment: scroll;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   font-weight: 300;
   font-size: 18px;
@@ -51,7 +43,7 @@ html {
 
 .glass-card {
   box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(16px) saturate(120%);
+  backdrop-filter: blur(6px);
 }
 
 .glass-card-light {
@@ -91,14 +83,16 @@ body::before {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
-  animation: blob-animation 15s ease-in-out infinite;
+    radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.12) 0%, transparent 50%);
+  /* Ralenti à 45s pour réduire la charge GPU */
+  animation: blob-animation 45s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
   will-change: transform;
   backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 body::after {
@@ -109,13 +103,13 @@ body::after {
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(ellipse at 60% 70%, rgba(99, 102, 241, 0.1) 0%, transparent 60%),
-    radial-gradient(ellipse at 30% 30%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
-  animation: blob-animation-reverse 20s ease-in-out infinite;
+    radial-gradient(ellipse at 60% 70%, rgba(99, 102, 241, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 30%, rgba(168, 85, 247, 0.07) 0%, transparent 50%);
+  /* Animation supprimée — un blob animé suffit */
   pointer-events: none;
   z-index: 0;
-  will-change: transform;
   backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 @keyframes blob-animation {
@@ -256,7 +250,9 @@ body {
   animation: marquee var(--marquee-duration, 45s) linear infinite;
   will-change: transform;
   backface-visibility: hidden;
+  transform: translateZ(0);
   -webkit-font-smoothing: antialiased;
+  contain: layout style;
 }
 
 .marquee-track {
@@ -372,7 +368,7 @@ body {
 .animate-cta-enter,
 .animate-view-enter,
 .animate-chat-enter {
-  will-change: transform, opacity;
+  /* will-change retiré — activé uniquement pendant l'animation via JS si besoin */
   backface-visibility: hidden;
 }
 
@@ -464,11 +460,10 @@ body {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(circle at 72% 12%, rgba(99, 102, 241, 0.13) 0%, transparent 45%),
-    radial-gradient(circle at 8% 88%, rgba(236, 72, 153, 0.10) 0%, transparent 45%);
-  animation: blob-3 28s ease-in-out infinite;
-  will-change: transform;
-  backface-visibility: hidden;
+    radial-gradient(circle at 72% 12%, rgba(99, 102, 241, 0.09) 0%, transparent 45%),
+    radial-gradient(circle at 8% 88%, rgba(236, 72, 153, 0.07) 0%, transparent 45%);
+  /* Animation supprimée — 4e couche fixed animée trop lourde */
+  transform: translateZ(0);
 }
 
 .bg-noise {
@@ -497,9 +492,9 @@ body {
     rgba(99, 102, 241, 0.04) 45%,
     transparent 100%
   );
-  animation: aurora-breathe 35s ease-in-out infinite;
-  will-change: opacity;
-  backface-visibility: hidden;
+  /* Animation supprimée — statique pour éviter un repaint d'opacité continu */
+  opacity: 0.55;
+  transform: translateZ(0);
 }
 
 /* ============================================================
@@ -617,7 +612,8 @@ body {
   60%  { box-shadow: 0 0 0 6px rgba(168, 85, 247, 0); }
   100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
 }
-.send-btn-pulse { animation: send-ring-pulse 1.8s ease-out infinite; will-change: box-shadow; }
+/* send-ring-pulse désactivé — box-shadow animé non-composited */
+.send-btn-pulse { box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3); }
 
 /* Shine sweep diagonal sur bouton CTA */
 @keyframes btn-shine-sweep {
@@ -724,13 +720,14 @@ body {
   0%, 100% { box-shadow: 0 0 6px rgba(251, 146, 60, 0.35), inset 0 0 6px rgba(251, 146, 60, 0.08); }
   50%      { box-shadow: 0 0 18px rgba(251, 146, 60, 0.65), inset 0 0 12px rgba(251, 146, 60, 0.18); }
 }
-.news-pill-glow { animation: news-pill-glow 2.8s ease-in-out infinite; will-change: box-shadow; }
+/* box-shadow animé = repaint CPU — remplacé par valeur statique */
+.news-pill-glow { box-shadow: 0 0 10px rgba(251, 146, 60, 0.4), inset 0 0 8px rgba(251, 146, 60, 0.1); }
 
 @keyframes actu-pill-glow {
   0%, 100% { box-shadow: 0 0 6px rgba(99, 102, 241, 0.35), inset 0 0 6px rgba(99, 102, 241, 0.08); }
   50%      { box-shadow: 0 0 18px rgba(99, 102, 241, 0.65), inset 0 0 12px rgba(99, 102, 241, 0.18); }
 }
-.actu-pill-glow { animation: actu-pill-glow 2.8s ease-in-out 1.4s infinite; will-change: box-shadow; }
+.actu-pill-glow { box-shadow: 0 0 10px rgba(99, 102, 241, 0.4), inset 0 0 8px rgba(99, 102, 241, 0.1); }
 
 .marquee-pausable:hover .animate-marquee,
 .marquee-pausable:hover .animate-marquee-rss {

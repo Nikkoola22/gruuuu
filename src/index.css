@@ -170,6 +170,23 @@ body {
   background: linear-gradient(180deg, rgba(96, 165, 250, 0.7), rgba(129, 140, 248, 0.7));
 }
 
+/* Carrousel actualités Interco CFDT - masquer la scrollbar */
+.interco-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+.interco-carousel-track {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* line-clamp utilitaire */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Styles pour le lecteur de podcast */
 .slider {
   -webkit-appearance: none;

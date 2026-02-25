@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
-import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator, TrendingUp, DollarSign, LayoutGrid, HelpCircle } from "lucide-react"
+import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator, TrendingUp, DollarSign, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper } from "lucide-react"
 
 // --- IMPORTATIONS DES DONNÉES ---
 import { chapitres } from "./data/temps.ts"
@@ -132,6 +132,18 @@ function App() {
   const [rssItems, setRssItems] = useState<RssItem[]>([])
   const [rssLoading, setRssLoading] = useState(false)
 
+  // --- ACTUALITÉS INTERCO CFDT ---
+  interface IntercoNewsItem {
+    title: string
+    link: string
+    pubDate: string
+    category: string
+    description: string
+  }
+  const [intercoNews, setIntercoNews] = useState<IntercoNewsItem[]>([])
+  const [intercoLoading, setIntercoLoading] = useState(true)
+  const intercoCarouselRef = useRef<HTMLDivElement>(null)
+
 
 
 
@@ -219,6 +231,49 @@ function App() {
     
     // Rafraîchir tous les 30 minutes
     const interval = setInterval(fetchRssFeeds, 30 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // --- ACTUALITÉS STATIQUES CFDT INTERCO (fallback) ---
+  const intercoFallbackNews: IntercoNewsItem[] = [
+    { title: "8 mars, Journée internationale des droits des femmes : la France doit s'engager pour l'égalité !", link: "https://interco.cfdt.fr/8-mars-journee-internationale-des-droits-des-femmes-la-france-doit-sengager-pour-legalite/", pubDate: "Sat, 08 Mar 2026 00:00:00 +0000", category: "Actu générale", description: "Communiqué intersyndical pour la Journée internationale des droits des femmes." },
+    { title: "La CFDT réagit à l'annonce de la création de 150 postes en milieu ouvert à la PJJ", link: "https://interco.cfdt.fr/quand-la-protection-judiciaire-de-la-jeunesse-entend-reinventer-le-placement/", pubDate: "Fri, 20 Feb 2026 00:00:00 +0000", category: "Protection judiciaire", description: "Quand la protection judiciaire de la jeunesse entend réinventer le placement." },
+    { title: "Défendre l'autonomie et les moyens du CNFPT", link: "https://interco.cfdt.fr/defendre-lautonomie-et-les-moyens-du-cnfpt/", pubDate: "Thu, 12 Feb 2026 00:00:00 +0000", category: "Territoriale", description: "Déclaration CFDT pour défendre l'autonomie et les moyens du CNFPT." },
+    { title: "Comment valoriser l'implication des agents et des magistrats ?", link: "https://interco.cfdt.fr/comment-valoriser-limplication-des-agents-et-des-magistrats-et-leur-determination-a-rendre-la-meilleure-justice/", pubDate: "Tue, 10 Feb 2026 00:00:00 +0000", category: "Services judiciaires", description: "Déclaration liminaire Formation spécialisée CSA des services judiciaires." },
+    { title: "Se donner l'ambition et les moyens — CSA PJJ du 5 février 2026", link: "https://interco.cfdt.fr/se-donner-lambition-et-les-moyens/", pubDate: "Thu, 05 Feb 2026 00:00:00 +0000", category: "Actu générale", description: "Déclaration préliminaire de la CFDT au CSA PJJ du 5 février 2026." },
+    { title: "Un changement de cap clair et concret est demandé !", link: "https://interco.cfdt.fr/un-changement-de-cap-clair-et-concret-est-demande/", pubDate: "Sun, 26 Jan 2026 00:00:00 +0000", category: "Affaires sociales", description: "Déclaration liminaire de la CFDT lors de la rencontre avec la ministre de la Santé." },
+    { title: "Déclaration liminaire CFDT au CSA services judiciaires du 19 février", link: "https://interco.cfdt.fr/lacte-de-juger-ne-se-reduit-pas-au-rendu-dune-decision/", pubDate: "Wed, 19 Feb 2026 00:00:00 +0000", category: "Services judiciaires", description: "L'absence de réflexion transverse sur le sens des missions de chacun." },
+  ]
+
+  // --- CHARGER LES ACTUALITÉS INTERCO CFDT ---
+  useEffect(() => {
+    const fetchIntercoNews = async () => {
+      try {
+        setIntercoLoading(true)
+        const apiUrl = import.meta.env.DEV
+          ? '/api/interco-rss'
+          : `${window.location.origin}${BASE_URL === '/' ? '' : BASE_URL}/api/interco-rss`
+        const response = await fetch(apiUrl)
+        if (!response.ok) throw new Error(`Erreur serveur: ${response.status}`)
+        const data = await response.json()
+        const items = (data.items || []).map((item: IntercoNewsItem) => ({
+          ...item,
+          title: item.title.replace(/^•\s*/, '').trim()
+        }))
+        if (items.length > 0) {
+          setIntercoNews(items)
+        } else {
+          setIntercoNews(intercoFallbackNews)
+        }
+      } catch (error) {
+        console.warn('Impossible de récupérer les actualités Interco CFDT, utilisation des données par défaut', error)
+        setIntercoNews(intercoFallbackNews)
+      } finally {
+        setIntercoLoading(false)
+      }
+    }
+    fetchIntercoNews()
+    const interval = setInterval(fetchIntercoNews, 30 * 60 * 1000)
     return () => clearInterval(interval)
   }, [])
 
@@ -796,6 +851,101 @@ ${contenuCible}
                     <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
                   </button>
                 </div>
+
+                {/* --- CARROUSEL ACTUALITÉS INTERCO CFDT --- */}
+                {(
+                <div className="mt-12 mb-4">
+                  <div className="flex items-center gap-3 mb-5 justify-center">
+                    <Newspaper className="w-5 h-5 text-blue-400" />
+                    <h3 className="text-lg font-light text-white tracking-wide">Actualités <span className="text-blue-300 font-normal">CFDT Interco</span></h3>
+                    <a
+                      href="https://interco.cfdt.fr/actualites/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-2 text-xs text-slate-400 hover:text-blue-300 transition-colors duration-150 underline underline-offset-2"
+                    >
+                      Voir toutes les actualités →
+                    </a>
+                  </div>
+
+                  {intercoLoading ? (
+                    <div className="flex gap-4 overflow-hidden">
+                      {[...Array(4)].map((_, i) => (
+                        <div key={i} className="flex-none w-72 h-44 bg-slate-800/50 rounded-2xl animate-pulse border border-slate-700/40" />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="relative group/carousel">
+                      {/* Flèche gauche */}
+                      <button
+                        onClick={() => {
+                          if (intercoCarouselRef.current) {
+                            intercoCarouselRef.current.scrollBy({ left: -320, behavior: 'smooth' })
+                          }
+                        }}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-9 h-9 rounded-full bg-slate-800/90 border border-slate-600/50 flex items-center justify-center text-white shadow-lg opacity-0 group-hover/carousel:opacity-100 hover:bg-slate-700 transition-all duration-150"
+                        aria-label="Défiler à gauche"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+
+                      {/* Flèche droite */}
+                      <button
+                        onClick={() => {
+                          if (intercoCarouselRef.current) {
+                            intercoCarouselRef.current.scrollBy({ left: 320, behavior: 'smooth' })
+                          }
+                        }}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-9 h-9 rounded-full bg-slate-800/90 border border-slate-600/50 flex items-center justify-center text-white shadow-lg opacity-0 group-hover/carousel:opacity-100 hover:bg-slate-700 transition-all duration-150"
+                        aria-label="Défiler à droite"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+
+                      {/* Dégradés latéraux */}
+                      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-900/80 to-transparent z-[1] pointer-events-none rounded-l-2xl" />
+                      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-900/80 to-transparent z-[1] pointer-events-none rounded-r-2xl" />
+
+                      {/* Scrollable track */}
+                      <div
+                        ref={intercoCarouselRef}
+                        className="flex gap-4 overflow-x-auto pb-2 scroll-smooth interco-carousel-track"
+                        style={{ scrollbarWidth: 'none' }}
+                      >
+                        {intercoNews.map((article, i) => {
+                          const date = article.pubDate ? new Date(article.pubDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : ''
+                          return (
+                            <a
+                              key={i}
+                              href={article.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group/card flex-none w-72 flex flex-col justify-between bg-gradient-to-br from-slate-800/80 via-blue-950/60 to-slate-800/80 backdrop-blur-md border border-blue-500/20 rounded-2xl p-5 hover:border-blue-400/50 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-150 glass-card"
+                            >
+                              <div>
+                                {article.category && (
+                                  <span className="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 mb-3">
+                                    {article.category}
+                                  </span>
+                                )}
+                                <p className="text-white font-light text-sm leading-snug group-hover/card:text-blue-200 transition-colors duration-150 line-clamp-3">
+                                  {article.title}
+                                </p>
+                              </div>
+                              <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-700/40">
+                                <span className="text-xs text-slate-400 font-light">{date}</span>
+                                <span className="text-xs text-blue-400 flex items-center gap-1 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150">
+                                  Lire <ArrowRight className="w-3 h-3" />
+                                </span>
+                              </div>
+                            </a>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                )}
               </div>
             </div>
           </>

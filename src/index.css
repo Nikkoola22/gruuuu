@@ -79,7 +79,7 @@ select:focus-visible {
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
 
-/* Dynamic abstract background with blobs */
+/* Fond abstrait statique — une seule couche fixed, zéro animation */
 body::before {
   content: '';
   position: fixed;
@@ -87,35 +87,16 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.12) 0%, transparent 50%);
-  /* Ralenti à 45s pour réduire la charge GPU */
-  animation: blob-animation 45s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 0;
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background:
+    radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.10) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.10) 0%, transparent 50%),
     radial-gradient(ellipse at 60% 70%, rgba(99, 102, 241, 0.07) 0%, transparent 60%),
     radial-gradient(ellipse at 30% 30%, rgba(168, 85, 247, 0.07) 0%, transparent 50%);
-  /* Animation supprimée — un blob animé suffit */
   pointer-events: none;
   z-index: 0;
-  backface-visibility: hidden;
-  transform: translateZ(0);
 }
+/* body::after supprimé — fusionné dans body::before */
 
 @keyframes blob-animation {
   /* scale() supprimé — sur un fixed 100vw×100vh il force une re-rasterisation plein écran à chaque frame */
@@ -754,14 +735,11 @@ body::after {
   background: linear-gradient(
     90deg,
     transparent            0%,
-    rgba(251, 146, 60, 0.6) 25%,
-    rgba(255, 255, 255, 0.9) 50%,
-    rgba(251, 146, 60, 0.6) 75%,
+    rgba(251, 146, 60, 0.5) 30%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(251, 146, 60, 0.5) 70%,
     transparent            100%
   );
-  background-size: 200% 100%;
-  animation: border-streak 6s linear infinite;
-  will-change: background-position;
   pointer-events: none;
 }
 

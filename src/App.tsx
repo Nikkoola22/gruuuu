@@ -654,13 +654,10 @@ ${contenuCible}
       {/* Subtle overlay for better text readability */}
       <div className="fixed inset-0 bg-black/20 z-0 pointer-events-none"></div>
 
-      {/* Couches de fond supplémentaires */}
-      <div className="bg-blob-3" aria-hidden="true" />
-      <div className="bg-noise"  aria-hidden="true" />
-      <div className="bg-aurora" aria-hidden="true" />
+      {/* Couches de fond supplémentaires — supprimées (GPU layers plein écran) */
 
       {/* HEADER PROFESSIONNEL */}
-      <header className="relative bg-gradient-to-r from-slate-900/70 via-purple-900/70 to-slate-900/70 backdrop-blur-md shadow-lg z-10 bg-cover bg-center glass-banner header-bottom-glow" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
+      <header className="relative bg-gradient-to-r from-slate-900/95 via-purple-900/90 to-slate-900/95 shadow-lg z-10 bg-cover bg-center glass-banner header-bottom-glow" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-purple-900/80 to-slate-900/80 z-0"></div>
         {/* Scan line traversant le header */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
@@ -705,9 +702,9 @@ ${contenuCible}
       </header>
 
       {/* Bandeau NEWS FPT - Pleine largeur sous le header */}
-      <section className="relative bg-gradient-to-r from-orange-500/60 via-red-500/60 to-pink-500/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-orange-400/30 z-10 glass-banner marquee-pausable banner-top-streak">
+      <section className="relative bg-gradient-to-r from-orange-600/90 via-red-600/90 to-pink-600/90 text-white overflow-hidden w-full shadow-lg border-b border-orange-400/30 z-10 glass-banner marquee-pausable banner-top-streak">
       <div className="relative h-16 flex items-center overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-32 flex items-center justify-center bg-gradient-to-r from-orange-600 to-red-600 backdrop-blur z-20 shadow-lg glass-pill news-pill-glow">
+        <div className="absolute left-0 top-0 h-full w-32 flex items-center justify-center bg-gradient-to-r from-orange-700 to-red-700 z-20 shadow-lg glass-pill news-pill-glow">
           <span className="text-base font-light tracking-wide text-white">NEWS:</span>
         </div>
         <div ref={newsMarqueeRef} className="marquee-track animate-marquee pl-36">

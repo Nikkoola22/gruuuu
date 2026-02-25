@@ -654,7 +654,7 @@ ${contenuCible}
       {/* Subtle overlay for better text readability */}
       <div className="fixed inset-0 bg-black/20 z-0 pointer-events-none"></div>
 
-      {/* Couches de fond supplémentaires — supprimées (GPU layers plein écran) */
+      {/* Couches de fond supplémentaires — supprimées (GPU layers plein écran) */}
 
       {/* HEADER PROFESSIONNEL */}
       <header className="relative bg-gradient-to-r from-slate-900/95 via-purple-900/90 to-slate-900/95 shadow-lg z-10 bg-cover bg-center glass-banner header-bottom-glow" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>

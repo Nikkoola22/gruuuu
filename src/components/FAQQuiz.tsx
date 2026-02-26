@@ -106,8 +106,8 @@ const ALL_QUESTIONS: Question[] = [
       "1 an",
       "3 ans",
     ],
-    correctIndex: 3,
-    explanation: "Le CMO peut durer jusqu'à 3 ans : 1 an à plein traitement puis 2 ans à demi-traitement.",
+    correctIndex: 2,
+    explanation: "Le CMO peut durer jusqu'à 1 ans : 3 mois à 90% du traitement puis 9 mois à demi-traitement.",
   },
   {
     question: "Qu'est-ce que le droit de retrait ?",

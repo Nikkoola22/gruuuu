@@ -8,7 +8,7 @@ interface Question {
   explanation: string;
 }
 
-// ─── Pool de 40 questions sans doublons ───────────────────────────────────────
+// ─── Pool de 40 questions sans doublons ──────────────────────────────────────
 const ALL_QUESTIONS: Question[] = [
   {
     question: "Combien de jours de télétravail par semaine sont autorisés par défaut à Gennevilliers ?",
@@ -107,7 +107,7 @@ const ALL_QUESTIONS: Question[] = [
       "3 ans",
     ],
     correctIndex: 3,
-    explanation: "Le CMO peut durer jusqu'à 1 ans : 3 mois à 90% du traitement puis 9 mois à demi-traitement.",
+    explanation: "Le CMO peut durer jusqu'à 3 ans : 1 an à plein traitement puis 2 ans à demi-traitement.",
   },
   {
     question: "Qu'est-ce que le droit de retrait ?",
@@ -409,13 +409,13 @@ const ALL_QUESTIONS: Question[] = [
   {
     question: "Combien de jours maximum peuvent être épargnés dans le CET par an ?",
     options: [
-      "5 CA + 4 journees fractionnées + 20% des ARTT",
-      "5 CA + 2 journees fractionnées + 100% des ARTT",
-      "10 CA + 2 journees fractionnées + 50% des ARTT",
-      "5 CA + 2 journees fractionnées + 50% des ARTT",
+      "10 jours par an",
+      "15 jours par an",
+      "20 jours par an",
+      "30 jours par an",
     ],
     correctIndex: 0,
-    explanation: "Un agent peut épargner jusqu'à 5 CA + 2 journees fractionnées + 50% des ARTT par an dans son CET, dans la limite d'un plafond total de 60 jours.",
+    explanation: "Un agent peut épargner jusqu'à 10 jours par an dans son CET, dans la limite d'un plafond total de 60 jours.",
   },
   {
     question: "Qu'est-ce que le congé parental ?",

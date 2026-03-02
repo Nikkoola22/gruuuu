@@ -88,7 +88,7 @@ async function loadBipDataFromMarkdownAsync(entries = bipIndex): Promise<BipFich
     }),
   );
 
-  return fiches.filter(f => f.title && f.content);
+  return fiches.filter(f => f.titre && f.content);
 }
 
 function getEntriesFromCategoryPaths(filePaths: string[]): typeof bipIndex {

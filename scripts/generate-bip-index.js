@@ -1,7 +1,7 @@
 /**
  * Generate BIP Index from Markdown Files
  * 
- * Reads all markdown files from src/data/bip/output/ and generates
+ * Reads all markdown files from public/bip/output/ and generates
  * a TypeScript index file with BipFiche objects containing actual content excerpts.
  * 
  * Usage: node scripts/generate-bip-index.js
@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const BIP_OUTPUT_DIR = path.join(__dirname, '../src/data/bip/output');
+const BIP_OUTPUT_DIR = path.join(__dirname, '../public/bip/output');
 const OUTPUT_FILE = path.join(__dirname, '../src/data/bip-index.ts');
 
 /**

@@ -500,60 +500,16 @@ Question d'un agent territorial : ${question}
 
   const genererContexteBip = async (question: string): Promise<string> => {
     const motsCles = extraireMotsClesQuestion(question)
-    if (motsCles.length === 0) {
-      return ""
-    }
+    if (motsCles.length === 0) return ""
 
     try {
       const searchResult = await searchFichesByKeywordsAsync(motsCles)
-      if (!searchResult.results || searchResult.results.length === 0) {
-        return ""
-      }
+      if (!searchResult.results || searchResult.results.length === 0) return ""
 
-      const compterOccurences = (texte: string, mot: string): number => {
-        if (!texte || !mot) return 0
-        const escaped = mot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-        const matches = texte.match(new RegExp(escaped, "g"))
-        return matches ? matches.length : 0
-      }
-
-      const resultatsScored = searchResult.results
-        .map((result) => {
-          const titre = ((result as { titre?: string; title?: string }).titre || (result as { titre?: string; title?: string }).title || "")
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-          const section = ((result as { section?: string; categorie?: string }).section || (result as { section?: string; categorie?: string }).categorie || "")
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-          const contenu = ((result as { content?: string }).content || "")
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-
-          let score = 0
-          motsCles.forEach((mot) => {
-            const motNorm = mot.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-            if (titre.includes(motNorm)) score += 6
-            if (section.includes(motNorm)) score += 3
-            score += Math.min(compterOccurences(contenu, motNorm), 3)
-          })
-
-          return { result, score }
-        })
-        .filter(({ score }) => score >= 4)
-        .sort((a, b) => b.score - a.score)
-
-      const topResults = resultatsScored.length > 0
-        ? resultatsScored.slice(0, 4).map(({ result }) => result)
-        : searchResult.results.slice(0, 2)
-
-      const blocs = topResults.map((result, index) => {
+      const blocs = searchResult.results.slice(0, 3).map((result, index) => {
         const titre = (result as { titre?: string; title?: string }).titre || (result as { titre?: string; title?: string }).title || "Fiche BIP"
         const section = (result as { section?: string; categorie?: string }).section || (result as { section?: string; categorie?: string }).categorie || "bip"
         const contenu = ((result as { content?: string }).content || "").slice(0, 2500)
-
         return `### BIP ${index + 1} — ${titre}\nSection: ${section}\n${contenu}`
       })
 
@@ -625,15 +581,7 @@ PROTOCOLE TÉLÉTRAVAIL :\n${typeof teletravailData === 'string' ? teletravailDa
       contenuCible = chargerContenuSections(idsFinals)
     }
 
-    const utiliserBip = idsFinals.length === 0
-    const bipContexte = utiliserBip ? await genererContexteBip(question) : ""
-
-    console.log(`[traiterQuestion] Mode de recherche: ${utiliserBip ? 'bip-fallback' : 'sommaire-unifie'}`)
-    if (utiliserBip) {
-      console.log(`[traiterQuestion] Contexte BIP injecté: ${bipContexte ? 'oui' : 'non'}`)
-    }
-
-    const systemPrompt = `
+    const systemPromptBase = `
 Tu es un assistant CFDT pour la Mairie de Gennevilliers.
 
 RÈGLES STRICTES :
@@ -661,18 +609,37 @@ RÈGLES STRICTES :
 
 DOCUMENTATION :
 ${contenuCible}
-${bipContexte}
     `
 
-    // Pour l'instant, pas d'historique de conversation pour éviter les erreurs d'alternance
-    // L'API Perplexity exige une alternance stricte user/assistant/user/assistant
-    // Chaque question est traitée indépendamment avec le contexte documentaire complet
-    const apiMessages = [
+    const isInternalNotFound = (text: string): boolean => {
+      const normalized = text
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+
+      return normalized === "je ne trouve pas cette information dans nos documents internes. contactez la cfdt au 01 40 85 64 64." ||
+        normalized.startsWith("je ne trouve pas cette information dans nos documents internes")
+    }
+
+    const buildMessages = (systemPrompt: string) => [
       { role: "system", content: systemPrompt },
       { role: "user", content: question },
     ]
 
-    return await appelPerplexity(apiMessages)
+    const reponseCore = await appelPerplexity(buildMessages(systemPromptBase))
+    if (!isInternalNotFound(reponseCore)) {
+      return reponseCore
+    }
+
+    const bipContexte = await genererContexteBip(question)
+    if (!bipContexte) {
+      return reponseCore
+    }
+
+    const systemPromptAvecBip = `${systemPromptBase}\n${bipContexte}`
+    return await appelPerplexity(buildMessages(systemPromptAvecBip))
   }
 
   const handleSendMessage = async () => {

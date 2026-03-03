@@ -234,6 +234,9 @@ function parseMarkdownFile(filePath) {
     const content = fs.readFileSync(filePath, 'utf-8');
     const code = extractCodeFromFilename(filePath);
     const title = extractTitle(content);
+    if (/^oops!\s+an\s+error\s+occurred$/i.test(title)) {
+      return null;
+    }
     const metadata = parseMetadata(content);
     const excerpt = extractContentExcerpt(content);
     const keywords = generateKeywords(title, metadata.section, content);

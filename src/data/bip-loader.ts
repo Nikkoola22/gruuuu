@@ -14,6 +14,7 @@ export interface BipFiche {
   source: string;
   type: string;
   section: string;
+  localPath?: string;
 }
 
 // Cache de dados carregados
@@ -53,6 +54,7 @@ function mapIndexEntryToFiche(entry: typeof bipIndex[number], content?: string):
     source: entry.source,
     type: entry.type,
     section: entry.section,
+    localPath: entry.localPath,
   };
 }
 

@@ -159,6 +159,7 @@ function App() {
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const newsMarqueeRef = useRef<HTMLDivElement>(null)
   const rssMarqueeRef = useRef<HTMLDivElement>(null)
+  const bipMarkdownCacheRef = useRef<Map<string, string>>(new Map())
 
   // --- EFFETS ---
   useEffect(() => {
@@ -506,6 +507,45 @@ Question d'un agent territorial : ${question}
       .slice(0, 10)
   }
 
+  const toPublicUrl = (path: string): string => {
+    const normalizedPath = path.startsWith('/') ? path.slice(1) : path
+    const normalizedBase = BASE_URL.endsWith('/') ? BASE_URL : `${BASE_URL}/`
+    return `${normalizedBase}${normalizedPath}`
+  }
+
+  const markdownToPlainText = (markdown: string): string => {
+    return markdown
+      .replace(/```[\s\S]*?```/g, ' ')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/[>*_~]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+  }
+
+  const chargerContenuBipComplet = async (localPath?: string): Promise<string | null> => {
+    if (!localPath) return null
+
+    const cache = bipMarkdownCacheRef.current
+    if (cache.has(localPath)) {
+      return cache.get(localPath) || null
+    }
+
+    try {
+      const response = await fetch(toPublicUrl(localPath))
+      if (!response.ok) return null
+
+      const markdown = await response.text()
+      const plain = markdownToPlainText(markdown)
+      cache.set(localPath, plain)
+      return plain
+    } catch {
+      return null
+    }
+  }
+
   const genererContexteBip = async (question: string): Promise<string> => {
     const motsCles = extraireMotsClesQuestion(question)
     if (motsCles.length === 0) return ""
@@ -514,12 +554,16 @@ Question d'un agent territorial : ${question}
       const searchResult = await searchFichesByKeywordsAsync(motsCles)
       if (!searchResult.results || searchResult.results.length === 0) return ""
 
-      const blocs = searchResult.results.slice(0, 3).map((result, index) => {
+      const topResults = searchResult.results.slice(0, 3)
+      const blocs = await Promise.all(topResults.map(async (result, index) => {
         const titre = (result as { titre?: string; title?: string }).titre || (result as { titre?: string; title?: string }).title || "Fiche BIP"
         const section = (result as { section?: string; categorie?: string }).section || (result as { section?: string; categorie?: string }).categorie || "bip"
-        const contenu = ((result as { content?: string }).content || "").slice(0, 2500)
+        const localPath = (result as { localPath?: string }).localPath
+        const contenuIndex = ((result as { content?: string }).content || "").slice(0, 2500)
+        const contenuComplet = await chargerContenuBipComplet(localPath)
+        const contenu = (contenuComplet || contenuIndex).slice(0, 3500)
         return `### BIP ${index + 1} — ${titre}\nSection: ${section}\n${contenu}`
-      })
+      }))
 
       return `\n\n=== FICHES BIP PERTINENTES ===\n${blocs.join("\n\n")}`
     } catch (error) {

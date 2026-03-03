@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
-import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator, TrendingUp, DollarSign, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper } from "lucide-react"
+import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator, TrendingUp, DollarSign, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, Scale, Landmark, GraduationCap, Coins } from "lucide-react"
 
 // --- IMPORTATIONS DES DONNÉES ---
 import { chapitres } from "./data/temps.ts"
@@ -152,6 +152,7 @@ function App() {
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [showExpandSearch, setShowExpandSearch] = useState(false)
+  const [showUsefulLinks, setShowUsefulLinks] = useState(false)
   const [lastQuestion, setLastQuestion] = useState<string>("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -314,6 +315,13 @@ function App() {
     setInputValue("")
     setSelectedInfo(null)
   }
+
+  const usefulLinks: { label: string; href: string; Icon: React.ComponentType<{ className?: string }> }[] = [
+    { label: "Jurisprudences", href: "https://www.conseil-etat.fr/actualites", Icon: Scale },
+    { label: "Legifrance", href: "https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006070633/", Icon: Landmark },
+    { label: "Formation", href: "https://www.cnfpt.fr/catalogue/catalogues/region84/#page/1", Icon: GraduationCap },
+    { label: "Primes", href: "https://www.cdg31.fr/sites/default/files/guide_des_primes_2025.pdf", Icon: Coins },
+  ]
 
   // --- LOGIQUE DU CALCULATEUR DE PRIMES ---
   const appelPerplexity = async (messages: { role: string; content: string }[], useExternalModel = false) => {
@@ -907,16 +915,43 @@ ${contenuCible}
                   </button>
                 </div>
 
-                {/* Bouton Questions Fréquentes */}
-                <div className="flex justify-center mt-8">
-                  <button
-                    onClick={() => setChatState({ ...chatState, currentView: 'faq' })}
-                    className="group flex items-center gap-3 bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-600 text-slate-900 font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-150 hover:scale-105 btn-cta animate-cta-enter btn-shine"
-                  >
-                    <HelpCircle className="w-6 h-6" />
-                    <span className="text-lg">Questions Fréquentes</span>
-                    <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
-                  </button>
+                <div className="flex flex-col items-center mt-8 gap-4">
+                  <div className="flex flex-wrap justify-center items-center gap-4">
+                    <button
+                      onClick={() => setChatState({ ...chatState, currentView: 'faq' })}
+                      className="group flex items-center gap-3 bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-600 text-slate-900 font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-150 hover:scale-105 btn-cta animate-cta-enter btn-shine"
+                    >
+                      <HelpCircle className="w-6 h-6" />
+                      <span className="text-lg">Questions Fréquentes</span>
+                      <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
+                    </button>
+
+                    <button
+                      onClick={() => setShowUsefulLinks((prev) => !prev)}
+                      className="group flex items-center gap-3 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-600 hover:from-blue-600 hover:via-indigo-600 hover:to-blue-700 text-white font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-150 hover:scale-105 btn-cta animate-cta-enter btn-shine"
+                    >
+                      <Link2 className="w-6 h-6" />
+                      <span className="text-lg">Liens utiles</span>
+                      <ArrowRight className={`w-5 h-5 transition-all duration-150 ${showUsefulLinks ? 'opacity-100 rotate-90' : 'opacity-0 group-hover:opacity-100'}`} />
+                    </button>
+                  </div>
+
+                  {showUsefulLinks && (
+                    <div className="flex flex-wrap justify-center gap-4 animate-cta-enter">
+                      {usefulLinks.map(({ label, href, Icon }) => (
+                        <a
+                          key={label}
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-center gap-3 bg-slate-800/80 border border-blue-500/30 rounded-full px-6 py-3 text-slate-100 hover:border-blue-400/60 hover:bg-slate-700/80 transition-all duration-150"
+                        >
+                          <Icon className="w-5 h-5 text-blue-300" />
+                          <span className="font-light">{label}</span>
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* --- CARROUSEL ACTUALITÉS INTERCO CFDT --- */}

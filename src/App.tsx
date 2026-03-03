@@ -835,17 +835,17 @@ ${contenuCible}
                   </section>
                 )}
 
-                <div className="flex justify-center mb-1 gap-8">
+                <div className="flex flex-col md:flex-row justify-center items-center mb-1 gap-8">
                   <button
                     onClick={() => handleDomainSelection(0)}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-purple-900/70 to-slate-800/70 backdrop-blur-md border border-purple-500/30 rounded-2xl p-10 hover:border-pink-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-1 card-border-sweep btn-ripple"
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-purple-900/70 to-slate-800/70 backdrop-blur-md border border-purple-500/30 rounded-2xl p-6 md:p-10 hover:border-pink-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm md:w-80 h-auto md:h-96 transition-transform duration-150 glass-card animate-card-enter-1 card-border-sweep btn-ripple"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
                         <span className="absolute -inset-3 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-6 bg-gradient-to-br from-purple-500/80 to-pink-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <Search className="w-16 h-16 text-white" />
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-500/80 to-pink-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
+                          <Search className="w-12 h-12 md:w-16 md:h-16 text-white" />
                         </div>
                       </div>
                       <h4 className="text-2xl font-light tracking-tight text-white card-title-purple">
@@ -863,13 +863,13 @@ ${contenuCible}
 
                   <button
                     onClick={() => setChatState({ ...chatState, currentView: 'calculators' })}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple"
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 md:p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm md:w-80 h-auto md:h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple"
                   >
                     <div className="absolute inset-0 bg-black/20"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <div className="relative p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <Calculator className="w-16 h-16 text-white" />
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
+                          <Calculator className="w-12 h-12 md:w-16 md:h-16 text-white" />
                         </div>
                       </div>
                       <h4 className="text-2xl font-light tracking-tight text-white card-title-blue">
@@ -888,14 +888,14 @@ ${contenuCible}
                   {/* Carte Grilles Indiciaires */}
                   <button
                     onClick={() => setChatState({ ...chatState, currentView: 'metiers' })}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-emerald-900/70 to-slate-800/70 backdrop-blur-md border border-emerald-500/30 rounded-2xl p-10 hover:border-green-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-3 card-border-sweep card-border-sweep-green btn-ripple"
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-emerald-900/70 to-slate-800/70 backdrop-blur-md border border-emerald-500/30 rounded-2xl p-6 md:p-10 hover:border-green-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm md:w-80 h-auto md:h-96 transition-transform duration-150 glass-card animate-card-enter-3 card-border-sweep card-border-sweep-green btn-ripple"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
                         <span className="absolute -inset-3 bg-gradient-to-br from-emerald-400/30 to-green-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-6 bg-gradient-to-br from-emerald-500/80 to-green-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <LayoutGrid className="w-16 h-16 text-white" />
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-emerald-500/80 to-green-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
+                          <LayoutGrid className="w-12 h-12 md:w-16 md:h-16 text-white" />
                         </div>
                       </div>
                       <h4 className="text-2xl font-light tracking-tight text-white card-title-green">

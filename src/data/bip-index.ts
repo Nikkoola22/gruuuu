@@ -2,8 +2,8 @@
  * BIP Index - Generated from markdown files
  * 
  * This file contains the index of BIP fiches with content excerpts.
- * Generated on: 2026-03-02T20:20:57.935Z
- * Total fiches: 185
+ * Generated on: 2026-03-03T19:52:20.188Z
+ * Total fiches: 175
  * 
  * DO NOT EDIT MANUALLY - Regenerate with: node scripts/generate-bip-index.js
  */
@@ -1408,45 +1408,6 @@ export const bipIndex: BipFicheIndex[] = [
     content: "Agents contractuels : rémunération (NTIREM) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : catégories particulières d'agents Rémunération des stagiaires (REMSTA) Rémunération des stagiaires REMSTA Télécharger Imprimer Ajouter S'abonner I. CADRES D'EMPLOIS DE CATEGORIE A II. CADRES D'EMPLOIS DE CATEGORIE B III. CADRES D'EMPLOIS DE CATEGORIE C IV. ELEMENTS OBLIGATOIRES ACCESSOIRES AU..."
   },
   {
-    id: "bip_durtra",
-    code: "durtra",
-    titre: "Durée du temps de travail",
-    motsCles: ["caa","duree","artt","cnil","cjue","annuelle","hebdomadaire","quotidienne","dispositions","durtra","congé","congés","rémunération","indemnité","maladie","santé","comité","télétravail","obligation","conditions"],
-    source: "bip",
-    resume: "Horaires variables (HORVAR) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Durée et organisation du temps de travail Durée du ...",
-    localPath: "/bip/output/bip_fiches_rag_conditions-d-exercice-des-fonctions-et-duree-du-travail_20260227_135728/conditions-d-exercice-des-fonctions-et-duree-du-travail_duree-et-organisation-du-temps-de-travail_durtra.md",
-    section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    timestamp: "2026-02-27T13:55:12.328254",
-    type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Horaires variables (HORVAR) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Durée et organisation du temps de travail Durée du temps de travail (DURTRA) Durée du temps de travail DURTRA Télécharger Imprimer Ajouter S'abonner I. LA DEFINITION DU TEMPS DE TRAVAIL II. LA DUREE ANNUELLE DU TRAVAIL III. LA DUREE HEBDOMADAIRE DU TRAVAIL IV. LA DUREE QUOTIDIENNE DU TRAVAIL V. L'AMENAGEMENT DU TEMPS DE TRAVAIL VI. DISPOSITIONS DEROGATOIRES Les collectivités territoriales et les ét..."
-  },
-  {
-    id: "bip_horvar",
-    code: "horvar",
-    titre: "Horaires variables",
-    motsCles: ["horaires","principe","imposes","garanties","minimales","horvar","variables","conditions","fonctions","duree","modulables","necessites","durtra","iii","prime","comité","obligation","aménagement","fiches","organisation"],
-    source: "bip",
-    resume: "Durée du temps de travail (DURTRA) Temps de travail des sapeurs-pompiers professionnels (TRASAP) Accueil Fiches Conditions d'exercice des fonctions et...",
-    localPath: "/bip/output/bip_fiches_rag_conditions-d-exercice-des-fonctions-et-duree-du-travail_20260227_135728/conditions-d-exercice-des-fonctions-et-duree-du-travail_duree-et-organisation-du-temps-de-travail_horvar.md",
-    section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    timestamp: "2026-02-27T13:55:17.450064",
-    type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Durée du temps de travail (DURTRA) Temps de travail des sapeurs-pompiers professionnels (TRASAP) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Durée et organisation du temps de travail Horaires variables (HORVAR) Horaires variables HORVAR Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. HORAIRES MODULABLES III. HORAIRES IMPOSES IV. NECESSITES DE SERVICE V. GARANTIES MINIMALES I. PRINCIPE La possibilité de mise en place d'un système d'horaires variables est prévue à..."
-  },
-  {
-    id: "bip_trasap",
-    code: "trasap",
-    titre: "Temps de travail des sapeurs-pompiers professionnels",
-    motsCles: ["duree","principe","annuelle","cjue","quotidienne","trasap","sapeurs","pompiers","professionnels","caa","rémunération","comité","conditions","fonctions","semestrielle","iii","durtra","sdis","congé","prime"],
-    source: "bip",
-    resume: "Horaires variables (HORVAR) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Durée et organisation du temps de travail Temps de ...",
-    localPath: "/bip/output/bip_fiches_rag_conditions-d-exercice-des-fonctions-et-duree-du-travail_20260227_135728/conditions-d-exercice-des-fonctions-et-duree-du-travail_duree-et-organisation-du-temps-de-travail_trasap.md",
-    section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    timestamp: "2026-02-27T13:55:23.056848",
-    type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Horaires variables (HORVAR) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Durée et organisation du temps de travail Temps de travail des sapeurs-pompiers professionnels (TRASAP) Temps de travail des sapeurs-pompiers professionnels TRASAP Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. DUREE QUOTIDIENNE III. DUREE ANNUELLE ET SEMESTRIELLE I. PRINCIPE 1- Textes applicables L'article 1er du décret n°2001-623 du 12 juillet 2001 dispose que les conditions dans lesquell..."
-  },
-  {
     id: "bip_meccom",
     code: "meccom",
     titre: "Mécénat de compétences (mise à disposition de fonctionnaires)",
@@ -1705,32 +1666,6 @@ export const bipIndex: BipFicheIndex[] = [
     timestamp: "2026-02-27T13:57:17.416483",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     content: "Comités sociaux territoriaux : élections des représentants du personnel (CSTELE) Formations spécialisées des comités sociaux territoriaux : généralités (FSPGEN) Accueil Fiches Organisation et organes de la FPT Comités sociaux territoriaux Comités sociaux territoriaux et formations spécialisées : fonctionnement (CSTFON) Comités sociaux territoriaux et formations spécialisées : fonctionnement CSTFON Télécharger Imprimer Ajouter S'abonner I. PREPARATION DE LA SEANCE II. PRESIDENCE, SECRETARIAT, REG..."
-  },
-  {
-    id: "bip_fspcom",
-    code: "fspcom",
-    titre: "Formations spécialisées des comités sociaux territoriaux : composition et désignation",
-    motsCles: ["cst","duree","representants","mandat","vacance","formations","comités","cstgen","siege","personnel","d’un","fspcom","spécialisées","sociaux","territoriaux","composition","désignation","candidats","formation","syndicale"],
-    source: "bip",
-    resume: "Formations spécialisées des comités sociaux territoriaux : généralités (FSPGEN) Comités sociaux territoriaux et formations spécialisées : fonctionneme...",
-    localPath: "/bip/output/bip_fiches_rag_conditions-d-exercice-des-fonctions-et-duree-du-travail_20260227_135728/organisation-et-organes-de-la-fpt_formations-specialisees-des-comites-sociaux-territoriaux_fspcom.md",
-    section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    timestamp: "2026-02-27T13:57:22.578103",
-    type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Formations spécialisées des comités sociaux territoriaux : généralités (FSPGEN) Comités sociaux territoriaux et formations spécialisées : fonctionnement (CSTFON) Accueil Fiches Organisation et organes de la FPT Formations spécialisées des comités sociaux territoriaux Formations spécialisées des comités sociaux territoriaux : composition et désignation (FSPCOM) Formations spécialisées des comités sociaux territoriaux : composition et désignation FSPCOM Télécharger Imprimer Ajouter S'abonner I. LE..."
-  },
-  {
-    id: "bip_fspgen",
-    code: "fspgen",
-    titre: "Formations spécialisées des comités sociaux territoriaux : généralités",
-    motsCles: ["acfi","cst","formations","chsct","medpre","spécialisées","formation","comités","télétravail","création","attributions","fspgen","sociaux","territoriaux","généralités","maladie","santé","représentant","représentants","comité"],
-    source: "bip",
-    resume: "Formations spécialisées des comités sociaux territoriaux : composition et désignation (FSPCOM) Accueil Fiches Organisation et organes de la FPT Format...",
-    localPath: "/bip/output/bip_fiches_rag_conditions-d-exercice-des-fonctions-et-duree-du-travail_20260227_135728/organisation-et-organes-de-la-fpt_formations-specialisees-des-comites-sociaux-territoriaux_fspgen.md",
-    section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    timestamp: "2026-02-27T13:57:28.017340",
-    type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Formations spécialisées des comités sociaux territoriaux : composition et désignation (FSPCOM) Accueil Fiches Organisation et organes de la FPT Formations spécialisées des comités sociaux territoriaux Formations spécialisées des comités sociaux territoriaux : généralités (FSPGEN) Formations spécialisées des comités sociaux territoriaux : généralités FSPGEN Télécharger Imprimer Ajouter S'abonner I. LA CRÉATION DES FORMATIONS SPÉCIALISÉES II. LES ATTRIBUTIONS DE LA FORMATION SPÉCIALISEE Cette fich..."
   },
   {
     id: "bip_ntico1",
@@ -2136,19 +2071,6 @@ export const bipIndex: BipFicheIndex[] = [
     content: "La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire (REPSER) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'allocation temporaire d'invalidité (ALTEIN) L'allocation temporaire d'invalidité ALTEIN Télécharger Imprimer Ajouter S'abonner I. CONDITIONS D’OCTROI II. PROCEDURE III. VERSEMENT, COTISATION, MONTANT, CUMUL IV. REVISION, RADIATION DES CADRES L'allocation temporaire d'invalidité (ATI) est une..."
   },
   {
-    id: "bip_conitis",
-    code: "conitis",
-    titre: "Le congé pour invalidité temporaire imputable au service",
-    motsCles: ["citis","dgafp","caa","iii","droits","accser","congé","malpro","durant","acctra","dgfap","madrob","repser","placement","obligations","conitis","invalidité","temporaire","imputable","fin"],
-    source: "bip",
-    resume: "No content available",
-    localPath: "/bip/output/bip_fiches_rag_indisponibilite-physique-et-securite-sociale_20260227_102823/indisponibilite-physique-et-securite-sociale_accident-de-service-et-maladie-professionnelle_conitis.md",
-    section: "indisponibilite-physique-et-securite-sociale",
-    timestamp: "2026-02-27T10:26:23.497720",
-    type: "indisponibilite-physique-et-securite-sociale",
-    content: "No content available"
-  },
-  {
     id: "bip_malpro",
     code: "malpro",
     titre: "La maladie professionnelle du fonctionnaire et la maladie contractée en accomplissant un acte de dévouement dans un intérêt public",
@@ -2355,58 +2277,6 @@ export const bipIndex: BipFicheIndex[] = [
     timestamp: "2026-02-27T10:27:50.713283",
     type: "indisponibilite-physique-et-securite-sociale",
     content: "Accueil Fiches Indisponibilité physique et sécurité sociale Projet de fin de carrière des sapeurs-pompiers Cessation des fonctions opérationnelles des sapeurs-pompiers professionnels (FINSAP) Cessation des fonctions opérationnelles des sapeurs-pompiers professionnels FINSAP Télécharger Imprimer Ajouter S'abonner I. ELEMENTS GENERAUX DE PROCEDURE II. L'AFFECTATION A DES FONCTIONS NON OPERATIONNELLES III. LE RECLASSEMENT POUR RAISON OPERATIONNELLE IV. LE CONGE POUR RAISON OPERATIONNELLE Le projet..."
-  },
-  {
-    id: "bip_casind",
-    code: "casind",
-    titre: "Cas de versement des indemnités de maladie du régime spécial",
-    motsCles: ["maladie","premal","sft","calcul","versement","regles","casind","indemnités","régime","spécial","iii","congé","rémunération","traitement","indemnité","arrêts","physique","securite","sociale","l'indemnite"],
-    source: "bip",
-    resume: "Les prestations en espèces de l'assurance maladie du régime spécial (PREMAL) Les prestations de l'assurance invalidité du régime spécial (PREINV) Accu...",
-    localPath: "/bip/output/bip_fiches_rag_indisponibilite-physique-et-securite-sociale_20260227_102823/indisponibilite-physique-et-securite-sociale_regime-special-de-securite-sociale-des-fonctionnaires-territoriaux_casind.md",
-    section: "indisponibilite-physique-et-securite-sociale",
-    timestamp: "2026-02-27T10:27:55.884505",
-    type: "indisponibilite-physique-et-securite-sociale",
-    content: "Les prestations en espèces de l'assurance maladie du régime spécial (PREMAL) Les prestations de l'assurance invalidité du régime spécial (PREINV) Accueil Fiches Indisponibilité physique et sécurité sociale Régime spécial de sécurité sociale des fonctionnaires territoriaux Cas de versement des indemnités de maladie du régime spécial (CASIND) Cas de versement des indemnités de maladie du régime spécial CASIND Télécharger Imprimer Ajouter S'abonner I. REGLES DE CALCUL II. L'INDEMNITE DIFFERENTIELLE..."
-  },
-  {
-    id: "bip_preinv",
-    code: "preinv",
-    titre: "Les prestations de l'assurance invalidité du régime spécial",
-    motsCles: ["ait","cpam","montant","principe","l'ait","conditions","preinv","prestations","invalidité","régime","spécial","sft","nbi","rémunération","traitement","maladie","physique","securite","sociale","generales"],
-    source: "bip",
-    resume: "Cas de versement des indemnités de maladie du régime spécial (CASIND) Accueil Fiches Indisponibilité physique et sécurité sociale Régime spécial de sé...",
-    localPath: "/bip/output/bip_fiches_rag_indisponibilite-physique-et-securite-sociale_20260227_102823/indisponibilite-physique-et-securite-sociale_regime-special-de-securite-sociale-des-fonctionnaires-territoriaux_preinv.md",
-    section: "indisponibilite-physique-et-securite-sociale",
-    timestamp: "2026-02-27T10:28:01.082631",
-    type: "indisponibilite-physique-et-securite-sociale",
-    content: "Cas de versement des indemnités de maladie du régime spécial (CASIND) Accueil Fiches Indisponibilité physique et sécurité sociale Régime spécial de sécurité sociale des fonctionnaires territoriaux Les prestations de l'assurance invalidité du régime spécial (PREINV) Les prestations de l'assurance invalidité du régime spécial PREINV Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. CONDITIONS GENERALES D'ATTRIBUTION DE L'AIT III. PROCEDURE IV. MONTANT DE L'AIT I. PRINCIPE Les prestations de l..."
-  },
-  {
-    id: "bip_premal",
-    code: "premal",
-    titre: "Les prestations en espèces de l'assurance maladie du régime spécial",
-    motsCles: ["sft","maladie","malade","montant","smic","nbi","casind","duree","protection","statutaire","conditions","versement","premal","prestations","espèces","régime","spécial","congé","congés","rémunération"],
-    source: "bip",
-    resume: "Le régime spécial de sécurité sociale des fonctionnaires territoriaux (REGSPE) Cas de versement des indemnités de maladie du régime spécial (CASIND) A...",
-    localPath: "/bip/output/bip_fiches_rag_indisponibilite-physique-et-securite-sociale_20260227_102823/indisponibilite-physique-et-securite-sociale_regime-special-de-securite-sociale-des-fonctionnaires-territoriaux_premal.md",
-    section: "indisponibilite-physique-et-securite-sociale",
-    timestamp: "2026-02-27T10:28:06.202579",
-    type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le régime spécial de sécurité sociale des fonctionnaires territoriaux (REGSPE) Cas de versement des indemnités de maladie du régime spécial (CASIND) Accueil Fiches Indisponibilité physique et sécurité sociale Régime spécial de sécurité sociale des fonctionnaires territoriaux Les prestations en espèces de l'assurance maladie du régime spécial (PREMAL) Les prestations en espèces de l'assurance maladie du régime spécial PREMAL Télécharger Imprimer Ajouter S'abonner I. LA PROTECTION STATUTAIRE DU FO..."
-  },
-  {
-    id: "bip_regspe",
-    code: "regspe",
-    titre: "Le régime spécial de sécurité sociale des fonctionnaires territoriaux",
-    motsCles: ["cnracl","principe","premal","sociale","elements","offertes","prestations","regspe","régime","spécial","sécurité","territoriaux","iii","congé","maladie","physique","securite","beneficiaires","procedure","indemnité"],
-    source: "bip",
-    resume: "Les prestations en espèces de l'assurance maladie du régime spécial (PREMAL) Accueil Fiches Indisponibilité physique et sécurité sociale Régime spécia...",
-    localPath: "/bip/output/bip_fiches_rag_indisponibilite-physique-et-securite-sociale_20260227_102823/indisponibilite-physique-et-securite-sociale_regime-special-de-securite-sociale-des-fonctionnaires-territoriaux_regspe.md",
-    section: "indisponibilite-physique-et-securite-sociale",
-    timestamp: "2026-02-27T10:28:11.318780",
-    type: "indisponibilite-physique-et-securite-sociale",
-    content: "Les prestations en espèces de l'assurance maladie du régime spécial (PREMAL) Accueil Fiches Indisponibilité physique et sécurité sociale Régime spécial de sécurité sociale des fonctionnaires territoriaux Le régime spécial de sécurité sociale des fonctionnaires territoriaux (REGSPE) Le régime spécial de sécurité sociale des fonctionnaires territoriaux REGSPE Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. BENEFICIAIRES III. ELEMENTS DE PROCEDURE IV. PRESTATIONS OFFERTES I. PRINCIPE L'art...."
   },
   {
     id: "bip_partic",

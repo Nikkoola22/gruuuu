@@ -748,28 +748,28 @@ ${contenuCible}
             }}
           />
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 relative z-10">
-          <div className="flex items-center justify-between gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 relative z-10">
+          <div className="flex items-center justify-between gap-5">
             {/* Logo et texte à gauche */}
-            <div className="flex items-center gap-5 group">
+            <div className="flex items-center gap-3 group">
               <div className="relative logo-glow-ambient">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <img
                   src={`${BASE_URL}logo-cfdt.jpg`}
                   alt="Logo CFDT"
-                  className="w-32 h-32 object-contain relative transition-transform duration-300 group-hover:scale-105"
+                  className="w-24 h-24 object-contain relative transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="space-y-1">
-                <h1 className="text-5xl font-light tracking-tight text-shimmer">Atlas</h1>
-                <p className="text-base text-slate-300 font-light">Assistant syndical CFDT</p>
+                <h1 className="text-4xl font-light tracking-tight text-shimmer">Atlas</h1>
+                <p className="text-sm text-slate-300 font-light">Assistant syndical CFDT</p>
               </div>
             </div>
             
             {/* Texte centre */}
             <div className="text-center flex-grow">
-              <h2 className="text-2xl font-light text-slate-100 tracking-tight">Mairie de Gennevilliers</h2>
-              <p className="text-base text-slate-400 mt-2 font-light">Chatbot d'assistance pour les agents municipaux</p>
+              <h2 className="text-xl font-light text-slate-100 tracking-tight">Mairie de Gennevilliers</h2>
+              <p className="text-sm text-slate-400 mt-1 font-light">Chatbot d'assistance pour les agents municipaux</p>
             </div>
             
             {/* Contact à droite */}
@@ -862,8 +862,9 @@ ${contenuCible}
                   </button>
 
                   <button
-                    onClick={() => setChatState({ ...chatState, currentView: 'calculators' })}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 md:p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm md:w-80 h-auto md:h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple"
+                    onClick={(e) => e.preventDefault()}
+                    disabled
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 md:p-10 w-full max-w-sm md:w-80 h-auto md:h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple opacity-60 cursor-not-allowed pointer-events-none"
                   >
                     <div className="absolute inset-0 bg-black/20"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
@@ -878,9 +879,8 @@ ${contenuCible}
                       <p className="text-center text-slate-300 font-light text-sm">
                         Primes IFSE - Calcul CIA - Outils de simulation
                       </p>
-                      <div className="flex items-center gap-2 text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <span className="font-light text-sm">Ouvrir les calculateurs</span>
-                        <ArrowRight className="w-4 h-4" />
+                      <div className="flex items-center gap-2 text-cyan-300/90">
+                        <span className="font-light text-sm">Disponible prochainement</span>
                       </div>
                     </div>
                   </button>
@@ -1264,7 +1264,7 @@ ${contenuCible}
       <RssBandeau rssItems={rssItems} rssLoading={rssLoading} marqueeRef={rssMarqueeRef} />
 
       <footer 
-        className="relative text-slate-400 text-center py-4 mt-0 z-10 border-t border-purple-500/20 glass-banner footer-glass"
+        className="relative text-slate-400 text-center py-3 mt-0 z-10 border-t border-purple-500/20 glass-banner footer-glass"
         style={{
           backgroundImage: `
             linear-gradient(to right, 
@@ -1280,10 +1280,10 @@ ${contenuCible}
         }}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center items-center gap-3 mb-8">
+          <div className="flex justify-center items-center gap-2 mb-3">
             <span className="text-pink-400 font-light text-base tracking-wide">CFDT Gennevilliers</span>
           </div>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-6">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-5 mb-3">
             <a
               href="tel:0140856464"
               className="flex items-center gap-2 text-pink-400/90 hover:text-pink-300 transition-all duration-200 hover:scale-110 font-light text-sm"
@@ -1303,12 +1303,12 @@ ${contenuCible}
               <span>177 av. Gabriel-Péri</span>
             </div>
           </div>
-          <p className="text-xs text-slate-500 font-light">
+          <p className="text-xs text-slate-500 font-light leading-tight">
             92237 Gennevilliers Cedex
           </p>
           
           {/* Bouton Admin */}
-          <div className="mt-8 pt-8 border-t border-purple-500/20">
+          <div className="mt-4 pt-4 border-t border-purple-500/20">
             <button
               onClick={() => {
                 // Vérifier si déjà authentifié

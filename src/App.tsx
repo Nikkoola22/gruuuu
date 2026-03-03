@@ -551,13 +551,26 @@ IDs des sections pertinentes :`
     ])
 
     // Parser la réponse pour extraire les IDs (tolérant à la ponctuation et au texte parasite)
-    const responseClean = identificationResponse.toLowerCase().replace(/["']/g, '').replace(/\[/g, '').replace(/\]/g, '').trim()
-    
-    // Extraire les IDs valides de façon robuste (même si le modèle dit "AUCUNE", fallback local)
+    const responseClean = identificationResponse
+      .toLowerCase()
+      .replace(/["']/g, '')
+      .replace(/\[/g, '')
+      .replace(/\]/g, '')
+      .trim()
+
+    // Extraire les IDs valides avec correspondance exacte sur tokens (évite les faux positifs type "bip_c")
     const knownIds = sommaireUnifie.map(s => s.id)
-    const idsExtraits = (responseClean === 'aucune' || responseClean.includes('aucune section')) 
-      ? [] 
-      : knownIds.filter(id => responseClean.includes(id.toLowerCase()))
+    const knownIdsSet = new Set(knownIds.map(id => id.toLowerCase()))
+    const tokens: string[] = Array.from(new Set<string>(
+      responseClean
+        .split(/[^a-z0-9_:-]+/g)
+        .map((token: string) => token.trim())
+        .filter(Boolean),
+    ))
+
+    const idsExtraits = (responseClean === 'aucune' || responseClean.includes('aucune section'))
+      ? []
+      : tokens.filter((token: string) => knownIdsSet.has(token))
 
     // Fallback déterministe local si le modèle n'a pas renvoyé d'IDs exploitables
     const idsLocaux = rechercherAvecPriorite(question, 4).map(section => section.id)
@@ -589,7 +602,7 @@ PROTOCOLE TÉLÉTRAVAIL :\n${typeof teletravailData === 'string' ? teletravailDa
       contenuCible = chargerContenuSections(idsFinals)
     }
 
-    const systemPromptBase = `
+    const systemPromptSommaire = `
 Tu es un assistant CFDT pour la Mairie de Gennevilliers.
 
 RÈGLES STRICTES :
@@ -619,16 +632,20 @@ DOCUMENTATION :
 ${contenuCible}
     `
 
-    const isInternalNotFound = (text: string): boolean => {
-      const normalized = text
+    const normalizeNotFoundText = (text: string): string =>
+      text
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[.,;:!?]/g, '')
         .replace(/\s+/g, ' ')
         .trim()
 
-      return normalized === "je ne trouve pas cette information dans nos documents internes. contactez la cfdt au 01 40 85 64 64." ||
-        normalized.startsWith("je ne trouve pas cette information dans nos documents internes")
+    const isInternalNotFound = (text: string): boolean => {
+      const normalized = normalizeNotFoundText(text)
+
+      return normalized === "je ne trouve pas cette information dans nos documents internes contactez la cfdt au 01 40 85 64 64" ||
+        normalized === "je ne trouve pas cette information dans nos documents internes contactez la cfdt au 01 40 85 64 64 pour plus de details"
     }
 
     const buildMessages = (systemPrompt: string) => [
@@ -636,7 +653,7 @@ ${contenuCible}
       { role: "user", content: question },
     ]
 
-    const reponseCore = await appelPerplexity(buildMessages(systemPromptBase))
+    const reponseCore = await appelPerplexity(buildMessages(systemPromptSommaire))
     if (!isInternalNotFound(reponseCore)) {
       return reponseCore
     }
@@ -646,8 +663,21 @@ ${contenuCible}
       return reponseCore
     }
 
-    const systemPromptAvecBip = `${systemPromptBase}\n${bipContexte}`
-    return await appelPerplexity(buildMessages(systemPromptAvecBip))
+    const systemPromptBip = `
+Tu es un assistant CFDT pour la Mairie de Gennevilliers.
+
+RÈGLES STRICTES :
+1. Réponds UNIQUEMENT à partir des fiches BIP ci-dessous
+2. Ne cherche JAMAIS sur internet, n'utilise JAMAIS tes connaissances externes
+3. Donne une réponse directe et précise quand l'information est présente
+4. Si l'information n'est pas présente dans les fiches BIP, réponds UNIQUEMENT :
+"Je ne trouve pas cette information dans nos documents internes. Contactez la CFDT au 01 40 85 64 64."
+
+FICHES BIP :
+${bipContexte}
+    `
+
+    return await appelPerplexity(buildMessages(systemPromptBip))
   }
 
   const handleSendMessage = async () => {
@@ -665,12 +695,13 @@ ${contenuCible}
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[.,;:!?]/g, '')
         .replace(/\s+/g, ' ')
         .trim()
 
       const isNotFound =
-        normalizedResponse === "je ne trouve pas cette information dans nos documents internes. contactez la cfdt au 01 40 85 64 64." ||
-        normalizedResponse.startsWith("je ne trouve pas cette information dans nos documents internes")
+        normalizedResponse === "je ne trouve pas cette information dans nos documents internes contactez la cfdt au 01 40 85 64 64" ||
+        normalizedResponse === "je ne trouve pas cette information dans nos documents internes contactez la cfdt au 01 40 85 64 64 pour plus de details"
       
       if (isNotFound) {
         // Proposer d'élargir la recherche

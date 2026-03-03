@@ -862,29 +862,26 @@ ${contenuCible}
                   </button>
 
                   <button
-                    onClick={(e) => e.preventDefault()}
-                    disabled
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-10 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-2 opacity-50 cursor-not-allowed pointer-events-none"
+                    onClick={() => setChatState({ ...chatState, currentView: 'calculators' })}
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-80 h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple"
                   >
                     <div className="absolute inset-0 bg-black/20"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <div className="relative p-6 bg-gradient-to-br from-blue-500/50 to-cyan-500/50 backdrop-blur rounded-2xl shadow-2xl">
-                          <Calculator className="w-16 h-16 text-white/70" />
+                        <div className="relative p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
+                          <Calculator className="w-16 h-16 text-white" />
                         </div>
                       </div>
-                      <h4 className="text-2xl font-light tracking-tight text-white/70 card-title-blue">
+                      <h4 className="text-2xl font-light tracking-tight text-white card-title-blue">
                         Calculateurs
                       </h4>
-                      <p className="text-center text-slate-300/60 font-light text-sm">
+                      <p className="text-center text-slate-300 font-light text-sm">
                         Primes IFSE - Calcul CIA - Outils de simulation
                       </p>
-                      <div className="flex items-center gap-2 text-cyan-400/60">
-                        <span className="font-light text-sm">Bientôt disponible</span>
+                      <div className="flex items-center gap-2 text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                        <span className="font-light text-sm">Ouvrir les calculateurs</span>
+                        <ArrowRight className="w-4 h-4" />
                       </div>
-                    </div>
-                    <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold shadow-lg z-20">
-                      BIENTÔT DISPONIBLE
                     </div>
                   </button>
 
@@ -1114,31 +1111,39 @@ ${contenuCible}
 
               {/* Carte CIA */}
               <button
-                onClick={() => setActiveCalculator('cia')}
-                className="group relative bg-gradient-to-br from-slate-800/80 to-orange-900/50 backdrop-blur-md border border-orange-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-orange-500/20 hover:scale-105 hover:-translate-y-2 transition-transform duration-150 glass-card"
+                onClick={(e) => e.preventDefault()}
+                disabled
+                className="group relative bg-gradient-to-br from-slate-800/80 to-orange-900/50 backdrop-blur-md border border-orange-500/30 rounded-2xl p-8 shadow-xl transition-transform duration-150 glass-card opacity-50 cursor-not-allowed pointer-events-none"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-amber-500/10 rounded-2xl"></div>
                 <div className="relative z-10 flex flex-col items-center gap-6">
-                  <div className="p-6 bg-gradient-to-br from-orange-500/80 to-amber-500/80 rounded-2xl shadow-2xl group-hover:scale-110 transition-transform duration-150">
+                  <div className="p-6 bg-gradient-to-br from-orange-500/80 to-amber-500/80 rounded-2xl shadow-2xl">
                     <Calculator className="w-16 h-16 text-white" />
                   </div>
-                  <h4 className="text-2xl font-light text-white group-hover:text-orange-200 transition-colors duration-100">CIA</h4>
+                  <h4 className="text-2xl font-light text-white">CIA</h4>
                   <p className="text-center text-slate-400 font-light text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
+                  <div className="flex items-center gap-2 text-orange-300/90">
+                    <span className="font-light text-sm">Bientôt disponible</span>
+                  </div>
                 </div>
               </button>
 
               {/* Carte 13ème Mois */}
               <button
-                onClick={() => setActiveCalculator('13eme')}
-                className="group relative bg-gradient-to-br from-slate-800/80 to-green-900/50 backdrop-blur-md border border-green-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-green-500/20 hover:scale-105 hover:-translate-y-2 transition-transform duration-150 glass-card"
+                onClick={(e) => e.preventDefault()}
+                disabled
+                className="group relative bg-gradient-to-br from-slate-800/80 to-green-900/50 backdrop-blur-md border border-green-500/30 rounded-2xl p-8 shadow-xl transition-transform duration-150 glass-card opacity-50 cursor-not-allowed pointer-events-none"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-emerald-500/10 rounded-2xl"></div>
                 <div className="relative z-10 flex flex-col items-center gap-6">
-                  <div className="p-6 bg-gradient-to-br from-green-500/80 to-emerald-500/80 rounded-2xl shadow-2xl group-hover:scale-110 transition-transform duration-150">
+                  <div className="p-6 bg-gradient-to-br from-green-500/80 to-emerald-500/80 rounded-2xl shadow-2xl">
                     <DollarSign className="w-16 h-16 text-white" />
                   </div>
-                  <h4 className="text-2xl font-light text-white group-hover:text-green-200 transition-colors duration-100">13ème Mois</h4>
+                  <h4 className="text-2xl font-light text-white">13ème Mois</h4>
                   <p className="text-center text-slate-400 font-light text-sm">Calculez votre prime de 13ème mois selon votre situation</p>
+                  <div className="flex items-center gap-2 text-green-300/90">
+                    <span className="font-light text-sm">Bientôt disponible</span>
+                  </div>
                 </div>
               </button>
             </div>

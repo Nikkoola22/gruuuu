@@ -576,11 +576,6 @@ IDs des sections pertinentes :`
     const idsLocaux = rechercherAvecPriorite(question, 4).map(section => section.id)
     const idsFinals = Array.from(new Set([...idsExtraits, ...idsLocaux]))
     
-    console.log(`[traiterQuestion] Question: "${question}"`)
-    console.log(`[traiterQuestion] IDs du modèle (phase 1): [${idsExtraits.join(', ')}]`)
-    console.log(`[traiterQuestion] IDs locaux (fallback): [${idsLocaux.join(', ')}]`)
-    console.log(`[traiterQuestion] IDs finaux: [${idsFinals.join(', ')}]`)
-
     // Si aucun ID valide trouvé, fallback sur recherche complète (1 chapitre)
     let contenuCible: string
     if (idsFinals.length === 0) {

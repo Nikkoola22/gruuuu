@@ -14,6 +14,8 @@ export interface BipFiche {
   source: string;
   type: string;
   section: string;
+  chapitre?: string;
+  sousPartie?: string;
   localPath?: string;
 }
 
@@ -55,6 +57,8 @@ function mapIndexEntryToFiche(entry: typeof bipIndex[number], content?: string):
     source: entry.source,
     type: entry.type,
     section: entry.section,
+    chapitre: (entry as { chapitre?: string }).chapitre,
+    sousPartie: (entry as { sousPartie?: string }).sousPartie,
     localPath: entry.localPath,
   };
 }
@@ -233,6 +237,16 @@ export async function searchBipByKeywords(keywords: string[]): Promise<BipFiche[
     const contentLower = fiche.content.toLowerCase();
     normalizedKeywords.forEach(keyword => {
       if (contentLower.includes(keyword)) score += 1;
+    });
+
+    const chapitreLower = (fiche.chapitre || '').toLowerCase();
+    normalizedKeywords.forEach(keyword => {
+      if (chapitreLower.includes(keyword)) score += 2;
+    });
+
+    const sousPartieLower = (fiche.sousPartie || '').toLowerCase();
+    normalizedKeywords.forEach(keyword => {
+      if (sousPartieLower.includes(keyword)) score += 2;
     });
 
     return { fiche, score };

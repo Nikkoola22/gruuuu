@@ -6,6 +6,36 @@ const OUTPUT_FILE = path.join(ROOT_DIR, 'bip-rag-index.json');
 const OUTPUT_JSONL_FILE = path.join(ROOT_DIR, 'bip-rag-index.jsonl');
 const OUTPUT_FILE_NAME = 'bip-rag-index.json';
 
+function toDisplayLabel(segment) {
+  return segment
+    .replace(/-/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractHierarchyFromSourceName(sourceName) {
+  const parts = sourceName.split('_').filter(Boolean);
+  if (parts.length <= 1) {
+    return { chapitre: '', sousPartie: '' };
+  }
+
+  const withoutCode = parts.slice(0, -1);
+  const chapitre = toDisplayLabel(withoutCode[0] || '');
+  const sousPartie = withoutCode.length > 1
+    ? toDisplayLabel(withoutCode.slice(1).join(' > ')).replace(/\s>\s/g, ' > ')
+    : '';
+
+  return { chapitre, sousPartie };
+}
+
+function extractTitleAndSectionFromChunkText(content) {
+  const lines = content.split('\n').map((line) => line.trim()).filter(Boolean);
+  const title = lines[0] || '';
+  const sectionLine = lines.find((line) => /^Section:\s*/i.test(line));
+  const section = sectionLine ? sectionLine.replace(/^Section:\s*/i, '').trim() : '';
+  return { title, section };
+}
+
 async function walkJsonFiles(dirPath) {
   const entries = await fs.readdir(dirPath, { withFileTypes: true });
   const files = [];
@@ -57,6 +87,9 @@ async function main() {
 
     const sourcePath = toWebPath(filePath);
     const sourceName = path.basename(filePath, '.json');
+    const hierarchy = extractHierarchyFromSourceName(sourceName);
+    let fileLevelTitle = '';
+    let fileLevelSection = '';
 
     for (const chunk of chunks) {
       if (!chunk || typeof chunk.content !== 'string') {
@@ -68,10 +101,22 @@ async function main() {
         continue;
       }
 
+      const extracted = extractTitleAndSectionFromChunkText(content);
+      if (!fileLevelTitle && extracted.title) {
+        fileLevelTitle = extracted.title;
+      }
+      if (!fileLevelSection && extracted.section) {
+        fileLevelSection = extracted.section;
+      }
+
       aggregated.push({
         id: globalId,
         sourceFile: sourcePath,
         sourceName,
+        title: fileLevelTitle || extracted.title,
+        section: fileLevelSection || extracted.section,
+        chapitre: hierarchy.chapitre,
+        sousPartie: hierarchy.sousPartie,
         chunkId: typeof chunk.id === 'number' ? chunk.id : null,
         content,
         length: content.length,

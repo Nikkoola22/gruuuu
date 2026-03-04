@@ -51,6 +51,30 @@ function extractCodeFromFilename(filePath) {
   return parts[parts.length - 1] || 'unknown';
 }
 
+function toDisplayLabel(segment) {
+  return segment
+    .replace(/-/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractHierarchyFromFilename(filePath) {
+  const filename = path.basename(filePath, '.md');
+  const parts = filename.split('_').filter(Boolean);
+
+  if (parts.length <= 1) {
+    return { chapitre: '', sousPartie: '' };
+  }
+
+  const withoutCode = parts.slice(0, -1);
+  const chapitre = toDisplayLabel(withoutCode[0] || '');
+  const sousPartie = withoutCode.length > 1
+    ? toDisplayLabel(withoutCode.slice(1).join(' > ')).replace(/\s>\s/g, ' > ')
+    : '';
+
+  return { chapitre, sousPartie };
+}
+
 /**
  * Parse markdown metadata block
  * Returns { url, section, date }
@@ -226,6 +250,23 @@ function generateKeywords(title, section, content) {
   return unique.slice(0, 20); // Return top 20 keywords
 }
 
+function mergeHierarchyKeywords(existingKeywords, ...labels) {
+  const merged = new Set(existingKeywords);
+
+  labels
+    .filter(Boolean)
+    .forEach((label) => {
+      label
+        .toLowerCase()
+        .split(/[^a-z0-9àâäéèêëîïôöùûüç]+/i)
+        .map((part) => part.trim())
+        .filter((part) => part.length >= 3)
+        .forEach((part) => merged.add(part));
+    });
+
+  return Array.from(merged).slice(0, 25);
+}
+
 /**
  * Parse a single markdown file and return BipFiche object
  */
@@ -238,8 +279,13 @@ function parseMarkdownFile(filePath) {
       return null;
     }
     const metadata = parseMetadata(content);
+    const hierarchy = extractHierarchyFromFilename(filePath);
     const excerpt = extractContentExcerpt(content);
-    const keywords = generateKeywords(title, metadata.section, content);
+    const keywords = mergeHierarchyKeywords(
+      generateKeywords(title, metadata.section, content),
+      hierarchy.chapitre,
+      hierarchy.sousPartie,
+    );
     const relativeFromOutput = path.relative(BIP_OUTPUT_DIR, filePath).replace(/\\/g, '/');
     const localPath = `/bip/output/${relativeFromOutput}`;
 
@@ -249,6 +295,8 @@ function parseMarkdownFile(filePath) {
       titre: title,
       localPath,
       section: metadata.section,
+      chapitre: hierarchy.chapitre,
+      sousPartie: hierarchy.sousPartie,
       timestamp: metadata.date,
       source: 'bip',
       type: metadata.section || 'general',
@@ -285,6 +333,8 @@ export interface BipFicheIndex {
   code: string;
   localPath: string;
   section: string;
+  chapitre?: string;
+  sousPartie?: string;
   timestamp: string;
   type: string;
   content: string;
@@ -309,6 +359,8 @@ export const bipIndex: BipFicheIndex[] = [`;
     resume: ${JSON.stringify(fiche.resume)},
     localPath: "${fiche.localPath}",
     section: "${fiche.section}",
+    chapitre: ${JSON.stringify(fiche.chapitre || '')},
+    sousPartie: ${JSON.stringify(fiche.sousPartie || '')},
     timestamp: "${fiche.timestamp}",
     type: "${fiche.type}",
     content: ${JSON.stringify(fiche.content)}

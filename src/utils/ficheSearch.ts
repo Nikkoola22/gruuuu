@@ -52,11 +52,15 @@ function canonicalKeyFromIndexFiche(fiche: FicheIndexEntry): string {
 function deduplicateBipResults(items: BipFiche[]): BipFiche[] {
   const seen = new Set<string>()
   const deduped: BipFiche[] = []
-
+          const categoryMatches = countUniqueMatchesInNormalized(normalizedSection, normalizedKeywords)
+          const chapitreMatches = countUniqueMatchesInNormalized(normalizedChapitre, normalizedKeywords)
+          const sousPartieMatches = countUniqueMatchesInNormalized(normalizedSousPartie, normalizedKeywords)
   items.forEach((item) => {
     const key = canonicalKeyFromBipFiche(item)
     if (!key || seen.has(key)) return
     seen.add(key)
+          score += chapitreMatches * 3
+          score += sousPartieMatches * 3
     deduped.push(item)
   })
 
@@ -169,6 +173,8 @@ type CachedBipSearchEntry = {
   fiche: BipFiche
   normalizedTitle: string
   normalizedSection: string
+  normalizedChapitre: string
+  normalizedSousPartie: string
   normalizedContent: string
 }
 
@@ -176,6 +182,8 @@ const cachedIndexEntries = ficheIndex.map((entry) => ({
   entry,
   normalizedTitle: normalizeText(entry.titre || ''),
   normalizedCategory: normalizeText((entry as { categorie?: string }).categorie || entry.section || ''),
+  normalizedChapitre: normalizeText((entry as { chapitre?: string }).chapitre || ''),
+  normalizedSousPartie: normalizeText((entry as { sousPartie?: string }).sousPartie || ''),
   normalizedKeywords: (entry.motsCles || []).map(k => normalizeText(k)),
 }))
 
@@ -187,6 +195,8 @@ function rebuildBipSearchCache(data: BipFiche[]): CachedBipSearchEntry[] {
     fiche,
     normalizedTitle: normalizeText(fiche.titre || ''),
     normalizedSection: normalizeText(fiche.section || ''),
+    normalizedChapitre: normalizeText((fiche as { chapitre?: string }).chapitre || ''),
+    normalizedSousPartie: normalizeText((fiche as { sousPartie?: string }).sousPartie || ''),
     normalizedContent: normalizeText(fiche.content || ''),
   }))
 }
@@ -323,16 +333,27 @@ export function searchFichesByKeywords(keywords: string[]): SearchResult {
   // Tentar usar dados locais primeiro (com conteúdo completo)
   if (bipDataInitialized && bipDataCache.length > 0) {
     try {
-      const scored = bipSearchCache.map(({ fiche, normalizedTitle, normalizedSection, normalizedContent }) => {
+      const scored = bipSearchCache.map(({
+        fiche,
+        normalizedTitle,
+        normalizedSection,
+        normalizedChapitre,
+        normalizedSousPartie,
+        normalizedContent,
+      }) => {
         let score = 0
 
         const titleMatches = countUniqueMatchesInNormalized(normalizedTitle, normalizedKeywords)
         const sectionMatches = countUniqueMatchesInNormalized(normalizedSection, normalizedKeywords)
+        const chapitreMatches = countUniqueMatchesInNormalized(normalizedChapitre, normalizedKeywords)
+        const sousPartieMatches = countUniqueMatchesInNormalized(normalizedSousPartie, normalizedKeywords)
         const contentMatches = countUniqueMatchesInNormalized(normalizedContent, normalizedKeywords)
         const intentBoost = computeIntentBoost(normalizedKeywords, fiche.section, fiche.titre)
 
         score += titleMatches * 8
         score += sectionMatches * 4
+        score += chapitreMatches * 3
+        score += sousPartieMatches * 3
         score += contentMatches * 2
         score += intentBoost
 
@@ -357,7 +378,12 @@ export function searchFichesByKeywords(keywords: string[]): SearchResult {
           score -= 5
         }
 
-        const minSignal = titleMatches > 0 || sectionMatches > 0 || contentMatches >= 2
+        const minSignal =
+          titleMatches > 0 ||
+          sectionMatches > 0 ||
+          chapitreMatches > 0 ||
+          sousPartieMatches > 0 ||
+          contentMatches >= 2
 
         return { fiche, score, minSignal }
       })
@@ -382,21 +408,37 @@ export function searchFichesByKeywords(keywords: string[]): SearchResult {
   }
 
   // Fallback para índice
-  const scored = cachedIndexEntries.map(({ entry: fiche, normalizedTitle, normalizedCategory, normalizedKeywords: indexKeywords }) => {
+  const scored = cachedIndexEntries.map(({
+    entry: fiche,
+    normalizedTitle,
+    normalizedCategory,
+    normalizedChapitre,
+    normalizedSousPartie,
+    normalizedKeywords: indexKeywords,
+  }) => {
     let score = 0
 
     const titleMatches = countUniqueMatchesInNormalized(normalizedTitle, normalizedKeywords)
     const categoryMatches = countUniqueMatchesInNormalized(normalizedCategory, normalizedKeywords)
+    const chapitreMatches = countUniqueMatchesInNormalized(normalizedChapitre, normalizedKeywords)
+    const sousPartieMatches = countUniqueMatchesInNormalized(normalizedSousPartie, normalizedKeywords)
     const intentBoost = computeIntentBoost(normalizedKeywords, getFicheCategory(fiche), getFicheTitle(fiche))
     const keywordMatches = indexKeywords
       .filter(mc => normalizedKeywords.some(k => mc.includes(k) || k.includes(mc))).length
 
     score += titleMatches * 6
     score += categoryMatches * 3
+    score += chapitreMatches * 3
+    score += sousPartieMatches * 3
     score += keywordMatches * 2
     score += intentBoost
 
-    const minSignal = titleMatches > 0 || categoryMatches > 0 || keywordMatches > 0
+    const minSignal =
+      titleMatches > 0 ||
+      categoryMatches > 0 ||
+      chapitreMatches > 0 ||
+      sousPartieMatches > 0 ||
+      keywordMatches > 0
 
     return { fiche, score, minSignal }
   })

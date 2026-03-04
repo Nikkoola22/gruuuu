@@ -52,15 +52,10 @@ function canonicalKeyFromIndexFiche(fiche: FicheIndexEntry): string {
 function deduplicateBipResults(items: BipFiche[]): BipFiche[] {
   const seen = new Set<string>()
   const deduped: BipFiche[] = []
-          const categoryMatches = countUniqueMatchesInNormalized(normalizedSection, normalizedKeywords)
-          const chapitreMatches = countUniqueMatchesInNormalized(normalizedChapitre, normalizedKeywords)
-          const sousPartieMatches = countUniqueMatchesInNormalized(normalizedSousPartie, normalizedKeywords)
   items.forEach((item) => {
     const key = canonicalKeyFromBipFiche(item)
     if (!key || seen.has(key)) return
     seen.add(key)
-          score += chapitreMatches * 3
-          score += sousPartieMatches * 3
     deduped.push(item)
   })
 
@@ -154,7 +149,7 @@ function computeIntentBoost(
 }
 
 function getFicheTitle(fiche: FicheIndexEntry): string {
-  return ((fiche as { titre?: string }).titre || (fiche as { title?: string }).titre || '').toLowerCase()
+  return ((fiche as { titre?: string }).titre || (fiche as { title?: string }).title || '').toLowerCase()
 }
 
 function getFicheCategory(fiche: FicheIndexEntry): string {

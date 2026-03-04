@@ -38,6 +38,13 @@ html {
   overflow-x: hidden;
 }
 
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 17px;

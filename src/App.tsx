@@ -1133,7 +1133,7 @@ ${bipContexte}
 
       {/* --- SECTION CALCULATEURS FULL-WIDTH --- */}
       {chatState.currentView === 'calculators' && (
-      <section className="fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+      <section className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-slate-800/95 to-blue-900/95 backdrop-blur-md border-b border-blue-500/30 z-30">
           <div className="max-w-6xl mx-auto px-4 py-4">
@@ -1235,7 +1235,7 @@ ${bipContexte}
 
       <main className={
         chatState.currentView === "chat"
-          ? "fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 px-4 sm:px-6 lg:px-8 py-4"
+            ? "fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 px-4 sm:px-6 lg:px-8 py-4"
           : "relative max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-2 z-10"
       }>
         {chatState.currentView === "chat" && (

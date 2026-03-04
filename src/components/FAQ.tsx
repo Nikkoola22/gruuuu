@@ -166,7 +166,7 @@ const FAQ: React.FC<Props> = ({ onBack }) => {
   const toggle = (id: number) => setOpenIds((s) => ({ ...s, [id]: !s[id] }));
 
   return (
-    <div className="relative z-30 isolate min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8 sm:py-12 px-2 sm:px-6 lg:px-8">
+    <div className="relative z-30 isolate min-h-screen overflow-x-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8 sm:py-12 px-2 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Back button */}
         {onBack && (

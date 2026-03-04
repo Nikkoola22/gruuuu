@@ -44,7 +44,7 @@ const MetierCard: React.FC<MetierCardProps & { onClose: () => void }> = ({ icon,
 
 const Metiers: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
-    <div className="relative z-30 isolate min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+    <div className="fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       {/* Intro Section */}
       <section className="relative z-40 bg-slate-800/50 py-12 text-center border-b border-slate-700 glass-banner">
         <div className="max-w-3xl mx-auto px-6">

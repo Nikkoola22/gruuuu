@@ -703,55 +703,6 @@ Question d'un agent territorial : ${question}
     }
   }
 
-  const genererReponseBipDeterministe = (question: string, bipContexte: string): string | null => {
-    const motsCles = extraireMotsClesQuestion(question)
-    if (motsCles.length === 0 || !bipContexte) return null
-    const motsEntite = extraireMotsEntite(motsCles)
-
-    const normalizedKeywords = Array.from(new Set(
-      motsCles
-        .map(m => normalizeForSearch(m))
-        .filter(m => m.length >= 3),
-    ))
-
-    if (normalizedKeywords.length === 0) return null
-
-    const texteNettoye = bipContexte
-      .replace(/\bURL:\s*https?:\/\/\S+/gi, ' ')
-      .replace(/\bSection:\s*[^\n]+/gi, ' ')
-      .replace(/\bDate:\s*\S+/gi, ' ')
-      .replace(/\s+/g, ' ')
-      .trim()
-
-    const phrases = texteNettoye
-      .split(/(?<=[\.;!?])\s+/)
-      .map(p => p.trim())
-      .filter(p => p.length >= 40 && p.length <= 280)
-
-    const scored = phrases.map((ligne) => {
-      const normalizedLine = normalizeForSearch(ligne)
-      const keywordMatches = normalizedKeywords.filter(k => normalizedLine.includes(k)).length
-      const entityMatches = motsEntite.filter(k => normalizedLine.includes(k)).length
-      const hasNumericSignal = /\d/.test(ligne) && /(an|ans|mois|jour|jours|semaine|semaines|annee|annees)/i.test(ligne)
-      const score = keywordMatches * 2 + entityMatches * 4 + (hasNumericSignal ? 3 : 0)
-      return { ligne, score, keywordMatches }
-    })
-
-    const pertinentes = scored
-      .filter(item => item.keywordMatches >= 2 || item.score >= 5)
-      .sort((a, b) => b.score - a.score)
-      .map(item => item.ligne)
-
-    const uniques = Array.from(new Set(pertinentes)).slice(0, 3)
-    if (uniques.length === 0) return null
-
-    return [
-      '📌 **Informations trouvées dans les fiches internes BIP** :',
-      '',
-      ...uniques.map(ligne => `- ${ligne}`),
-    ].join('\n')
-  }
-
   const traiterQuestion = async (question: string) => {
     // ÉTAPE 1 : Identifier les sections pertinentes avec le sommaire léger
     const sommaire = genererSommaireTexte()
@@ -897,15 +848,6 @@ ${bipContexte}
     `
 
     const reponseBip = await appelPerplexity(buildMessages(systemPromptBip))
-    if (!isInternalNotFound(reponseBip)) {
-      return reponseBip
-    }
-
-    const reponseDeterministe = genererReponseBipDeterministe(question, bipContexte)
-    if (reponseDeterministe) {
-      return reponseDeterministe
-    }
-
     return reponseBip
   }
 

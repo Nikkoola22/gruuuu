@@ -643,6 +643,14 @@ Question d'un agent territorial : ${question}
     const motsCles = extraireMotsClesQuestion(question)
     if (motsCles.length === 0) return ""
     const motsEntite = extraireMotsEntite(motsCles)
+    const motsClesSpecifiques = Array.from(new Set(
+      motsCles.filter((mot) => !GENERIC_QUERY_TERMS.has(normalizeForSearch(mot))),
+    ))
+    const termesRanking = motsClesSpecifiques.length > 0 ? motsClesSpecifiques : motsCles
+    const termesExtrait = Array.from(new Set([
+      ...motsEntite,
+      ...termesRanking,
+    ]))
 
     try {
       const searchResult = await searchFichesByKeywordsAsync(motsCles)
@@ -658,7 +666,7 @@ Question d'un agent territorial : ${question}
           const bContent = normalizeForSearch((b as { content?: string }).content || '')
 
           const scoreFor = (titre: string, section: string, content: string) => {
-            const keywordScore = motsCles.reduce((acc, kw) => {
+            const keywordScore = termesRanking.reduce((acc, kw) => {
               const k = normalizeForSearch(kw)
               return acc + (titre.includes(k) ? 4 : 0) + (section.includes(k) ? 2 : 0) + (content.includes(k) ? 1 : 0)
             }, 0)
@@ -692,7 +700,7 @@ Question d'un agent territorial : ${question}
         const contenuIndex = ((result as { content?: string }).content || "")
         const contenuComplet = await chargerContenuBipComplet(localPath)
         const source = contenuComplet || contenuIndex
-        const contenu = construireExtraitPertinent(source, motsCles, 2600)
+        const contenu = construireExtraitPertinent(source, termesExtrait, 2600)
         return `### BIP ${index + 1} — ${titre}\nSection: ${section}\n${contenu}`
       }))
 

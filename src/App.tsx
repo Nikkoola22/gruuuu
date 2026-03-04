@@ -1312,16 +1312,16 @@ ${bipContexte}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ex: Combien de jours de congés ? Comment utiliser mon CPF ? Télétravail possible ?"
-                  className="flex-1 px-4 py-3 border border-purple-500/30 rounded-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 outline-none transition-all duration-200 bg-slate-700/70 backdrop-blur-sm text-sm font-light text-slate-100 placeholder-slate-400"
+                  className="flex-1 px-4 py-3 border border-purple-500/30 rounded-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 outline-none transition-all duration-200 bg-slate-700/70 backdrop-blur-sm text-sm font-normal text-white placeholder-slate-300"
                   disabled={chatState.isProcessing}
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || chatState.isProcessing}
-                  className={`px-6 py-3 bg-gradient-to-r from-purple-600/70 to-pink-600/70 backdrop-blur-sm text-white rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl font-light${inputValue.trim() && !chatState.isProcessing ? ' send-btn-pulse' : ''}`}
+                  className={`px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl font-semibold${inputValue.trim() && !chatState.isProcessing ? ' send-btn-pulse' : ''}`}
                 >
                   <Send className="w-4 h-4" />
-                  <span className="hidden sm:inline text-sm">Envoyer</span>
+                  <span className="text-sm">Envoyer</span>
                 </button>
               </div>
             </div>

@@ -525,6 +525,86 @@ Question d'un agent territorial : ${question}
       .trim()
   }
 
+  const normalizeForSearch = (value: string): string =>
+    value
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+
+  const construireExtraitPertinent = (contenu: string, motsCles: string[], maxLen = 2600): string => {
+    if (!contenu) return ''
+
+    const normalizedContent = normalizeForSearch(contenu)
+    const normalizedKeywords = Array.from(
+      new Set(
+        motsCles
+          .map(m => normalizeForSearch(m).trim())
+          .filter(m => m.length >= 3),
+      ),
+    )
+
+    if (normalizedKeywords.length === 0) {
+      return contenu.slice(0, maxLen)
+    }
+
+    const windows: Array<{ start: number; end: number }> = []
+
+    normalizedKeywords.forEach((keyword) => {
+      let fromIndex = 0
+      let occurrences = 0
+
+      while (occurrences < 2) {
+        const idx = normalizedContent.indexOf(keyword, fromIndex)
+        if (idx === -1) break
+
+        windows.push({
+          start: Math.max(0, idx - 240),
+          end: Math.min(contenu.length, idx + 520),
+        })
+
+        fromIndex = idx + keyword.length
+        occurrences += 1
+      }
+    })
+
+    if (windows.length === 0) {
+      return contenu.slice(0, maxLen)
+    }
+
+    windows.sort((a, b) => a.start - b.start)
+    const merged: Array<{ start: number; end: number }> = []
+
+    windows.forEach((window) => {
+      const previous = merged[merged.length - 1]
+      if (!previous || window.start > previous.end + 80) {
+        merged.push({ ...window })
+      } else {
+        previous.end = Math.max(previous.end, window.end)
+      }
+    })
+
+    let excerpt = ''
+    for (const segment of merged) {
+      const chunk = contenu.slice(segment.start, segment.end).trim()
+      if (!chunk) continue
+
+      const separator = excerpt.length > 0 ? '\n\n[...]\n\n' : ''
+      const candidate = `${excerpt}${separator}${chunk}`
+
+      if (candidate.length > maxLen) {
+        const remaining = maxLen - excerpt.length - separator.length
+        if (remaining > 120) {
+          excerpt = `${excerpt}${separator}${chunk.slice(0, remaining).trim()}`
+        }
+        break
+      }
+
+      excerpt = candidate
+    }
+
+    return excerpt || contenu.slice(0, maxLen)
+  }
+
   const chargerContenuBipComplet = async (localPath?: string): Promise<string | null> => {
     if (!localPath) return null
 
@@ -554,14 +634,26 @@ Question d'un agent territorial : ${question}
       const searchResult = await searchFichesByKeywordsAsync(motsCles)
       if (!searchResult.results || searchResult.results.length === 0) return ""
 
-      const topResults = searchResult.results.slice(0, 3)
+      const topResults = [...searchResult.results]
+        .sort((a, b) => {
+          const aText = `${(a as { titre?: string; section?: string; content?: string }).titre || ''} ${(a as { titre?: string; section?: string; content?: string }).section || ''} ${(a as { titre?: string; section?: string; content?: string }).content || ''}`
+          const bText = `${(b as { titre?: string; section?: string; content?: string }).titre || ''} ${(b as { titre?: string; section?: string; content?: string }).section || ''} ${(b as { titre?: string; section?: string; content?: string }).content || ''}`
+          const aNorm = normalizeForSearch(aText)
+          const bNorm = normalizeForSearch(bText)
+          const aScore = motsCles.reduce((acc, kw) => acc + (aNorm.includes(normalizeForSearch(kw)) ? 1 : 0), 0)
+          const bScore = motsCles.reduce((acc, kw) => acc + (bNorm.includes(normalizeForSearch(kw)) ? 1 : 0), 0)
+          return bScore - aScore
+        })
+        .slice(0, 5)
+
       const blocs = await Promise.all(topResults.map(async (result, index) => {
         const titre = (result as { titre?: string; title?: string }).titre || (result as { titre?: string; title?: string }).title || "Fiche BIP"
         const section = (result as { section?: string; categorie?: string }).section || (result as { section?: string; categorie?: string }).categorie || "bip"
         const localPath = (result as { localPath?: string }).localPath
-        const contenuIndex = ((result as { content?: string }).content || "").slice(0, 2500)
+        const contenuIndex = ((result as { content?: string }).content || "")
         const contenuComplet = await chargerContenuBipComplet(localPath)
-        const contenu = (contenuComplet || contenuIndex).slice(0, 3500)
+        const source = contenuComplet || contenuIndex
+        const contenu = construireExtraitPertinent(source, motsCles, 2600)
         return `### BIP ${index + 1} — ${titre}\nSection: ${section}\n${contenu}`
       }))
 

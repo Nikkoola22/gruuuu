@@ -1316,7 +1316,7 @@ ${bipContexte}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ex: Combien de jours de congés ? Comment utiliser mon CPF ? Télétravail possible ?"
-                  className="flex-1 min-w-0 px-3 sm:px-4 py-3 border border-purple-500/30 rounded-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 outline-none transition-all duration-200 bg-slate-700/70 backdrop-blur-sm text-sm font-normal text-white placeholder-slate-300"
+                  className="flex-1 min-w-0 px-3 sm:px-4 py-3 border border-purple-500/30 rounded-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 outline-none transition-all duration-200 bg-slate-700/70 backdrop-blur-sm text-base sm:text-sm font-normal text-white placeholder-slate-300"
                   disabled={chatState.isProcessing}
                 />
                 <button

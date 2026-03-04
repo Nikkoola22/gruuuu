@@ -2,8 +2,8 @@
  * BIP Index - Generated from markdown files
  * 
  * This file contains the index of BIP fiches with content excerpts.
- * Generated on: 2026-03-03T20:43:43.567Z
- * Total fiches: 142
+ * Generated on: 2026-03-04T22:17:59.434Z
+ * Total fiches: 237
  * 
  * DO NOT EDIT MANUALLY - Regenerate with: node scripts/generate-bip-index.js
  */
@@ -40,7 +40,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:05.913934",
     type: "agents-contractuels",
-    content: "Concours externe spécial d’accès à certaines écoles de service public (CONSPE) Accueil Fiches Accès à la fonction publique, recrutement Concours Le recours à la visioconférence dans les voies d’accès à la fonction publique (VISACC) Le recours à la visioconférence dans les voies d’accès à la fonction publique VISACC Télécharger Imprimer Ajouter S'abonner I. Les recrutements par concours et les recrutements d'agents contractuels II. Les recrutements par voie d'examens et de concours professionnels..."
+    content: "Concours externe spécial d’accès à certaines écoles de service public (CONSPE) Accueil Fiches Accès à la fonction publique, recrutement Concours Le recours à la visioconférence dans les voies d’accès à la fonction publique (VISACC) Le recours à la visioconférence dans les voies d’accès à la fonction publique VISACC I. Les recrutements par concours et les recrutements d'agents contractuels II. Les recrutements par voie d'examens et de concours professionnels Les collectivités territoriales et leu..."
   },
   {
     id: "bip_conact",
@@ -53,20 +53,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:12.899982",
     type: "agents-contractuels",
-    content: "La vie d'un acte administratif (schéma) (VIEACT) Modèles d'actes Accueil Fiches Actes administratifs RH Le contrat de recrutement d'un agent contractuel de droit public (CONACT) Le contrat de recrutement d'un agent contractuel de droit public CONACT Télécharger Imprimer Ajouter S'abonner I. Un contrat de « droit public » II. Le contenu du contrat d'engagement III. Les formalités à accomplir postérieurement à la signature du contrat IV. L'irrégularité du contrat Cette fiche expose les règles s’im..."
+    content: "La vie d'un acte administratif (schéma) (VIEACT) Modèles d'actes Accueil Fiches Actes administratifs RH Le contrat de recrutement d'un agent contractuel de droit public (CONACT) Le contrat de recrutement d'un agent contractuel de droit public CONACT I. Un contrat de « droit public » II. Le contenu du contrat d'engagement III. Les formalités à accomplir postérieurement à la signature du contrat IV. L'irrégularité du contrat Cette fiche expose les règles s’imposant à la conclusion d’un contrat de..."
   },
   {
     id: "bip_ntidef",
     code: "ntidef",
     titre: "Agents contractuels : définition",
-    motsCles: ["caa","droit","contractuels","entre","distinction","vacataires","ntidef","définition","cdi","rémunération","recrutement","concours","formation","contrat","contrats","cnfpt","congé","congés","absence","prime"],
+    motsCles: ["caa","droit","contractuels","entre","distinction","vacataires","ntidef","définition","cdi","rémunération","recrutement","concours","formation","contrat","contrats","cnfpt","congé","congés","absence","arrêt"],
     source: "bip",
     resume: "Agents contractuels : généralités (NTIGEN) Accueil Fiches Agents contractuels Agents contractuels : généralités Agents contractuels : définition (NTID...",
     localPath: "/bip/output/bip_fiches_rag_agents-contractuels_20260227_105025/agents-contractuels_agents-contractuels-generalites_ntidef.md",
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:17.962034",
     type: "agents-contractuels",
-    content: "Agents contractuels : généralités (NTIGEN) Accueil Fiches Agents contractuels Agents contractuels : généralités Agents contractuels : définition (NTIDEF) Agents contractuels : définition NTIDEF Télécharger Imprimer Ajouter S'abonner I. LES AGENTS DE DROIT PUBLIC II. LA DISTINCTION ENTRE AGENTS CONTRACTUELS DE DROIT PUBLIC ET VACATAIRES I. LES AGENTS DE DROIT PUBLIC A) Définition Le Tribunal des Conflits a établi, par l’arrêt « Berkani » du 25 mars 1996, que « les personnels non statutaires trava..."
+    content: "Agents contractuels : généralités (NTIGEN) Accueil Fiches Agents contractuels Agents contractuels : généralités Agents contractuels : définition (NTIDEF) Agents contractuels : définition NTIDEF I. LES AGENTS DE DROIT PUBLIC II. LA DISTINCTION ENTRE AGENTS CONTRACTUELS DE DROIT PUBLIC ET VACATAIRES I. LES AGENTS DE DROIT PUBLIC A) Définition Le Tribunal des Conflits a établi, par l’arrêt « Berkani » du 25 mars 1996, que « les personnels non statutaires travaillant pour le compte d'un service publ..."
   },
   {
     id: "bip_ntigen",
@@ -79,7 +79,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:23.198427",
     type: "agents-contractuels",
-    content: "Agents contractuels : définition (NTIDEF) Accueil Fiches Agents contractuels Agents contractuels : généralités Agents contractuels : généralités (NTIGEN) Agents contractuels : généralités NTIGEN Télécharger Imprimer Ajouter S'abonner I. PRINCIPES GENERAUX II. CONDITIONS D’EXERCICE DES FONCTIONS Cette fiche présente les principes généraux applicables aux agents contractuels de droit public des collectivités territoriales et de leurs établissements publics. Pour une définition de la notion d'agent..."
+    content: "Agents contractuels : définition (NTIDEF) Accueil Fiches Agents contractuels Agents contractuels : généralités Agents contractuels : généralités (NTIGEN) Agents contractuels : généralités NTIGEN I. PRINCIPES GENERAUX II. CONDITIONS D’EXERCICE DES FONCTIONS Cette fiche présente les principes généraux applicables aux agents contractuels de droit public des collectivités territoriales et de leurs établissements publics. Pour une définition de la notion d'agent contractuel de droit public, se report..."
   },
   {
     id: "bip_ccpdis",
@@ -92,7 +92,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:28.849860",
     type: "agents-contractuels",
-    content: "Commissions consultatives paritaires : élections des représentants du personnel (CCPELE) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Le conseil de discipline des agents contractuels (CCPDIS) Le conseil de discipline des agents contractuels CCPDIS Télécharger Imprimer Ajouter S'abonner I. ORGANISATION II. OUVERTURE DE LA PROCEDURE III. REGLES DE COMPOSITION IV. LA SEANCE V. L’AVIS DU CONSEIL DE DISCIPLINE Les commissions consultatives paritaires (CCP) peuvent êt..."
+    content: "Commissions consultatives paritaires : élections des représentants du personnel (CCPELE) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Le conseil de discipline des agents contractuels (CCPDIS) Le conseil de discipline des agents contractuels CCPDIS I. ORGANISATION II. OUVERTURE DE LA PROCEDURE III. REGLES DE COMPOSITION IV. LA SEANCE V. L’AVIS DU CONSEIL DE DISCIPLINE Les commissions consultatives paritaires (CCP) peuvent être appelées à siéger en tant que consei..."
   },
   {
     id: "bip_ccpele",
@@ -105,7 +105,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:36.718915",
     type: "agents-contractuels",
-    content: "Commissions consultatives paritaires : fonctionnement (CCPFON) Le conseil de discipline des agents contractuels (CCPDIS) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : élections des représentants du personnel (CCPELE) Commissions consultatives paritaires : élections des représentants du personnel CCPELE Télécharger Imprimer Ajouter S'abonner I. Principes généraux II. La liste des électeurs III. Les listes de candidats IV. Les..."
+    content: "Commissions consultatives paritaires : fonctionnement (CCPFON) Le conseil de discipline des agents contractuels (CCPDIS) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : élections des représentants du personnel (CCPELE) Commissions consultatives paritaires : élections des représentants du personnel CCPELE I. Principes généraux II. La liste des électeurs III. Les listes de candidats IV. Les opérations électorales V. Les résultat..."
   },
   {
     id: "bip_ccpfon",
@@ -118,7 +118,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:42.869895",
     type: "agents-contractuels",
-    content: "Commissions consultatives paritaires : généralités (CCPGEN) Commissions consultatives paritaires : élections des représentants du personnel (CCPELE) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : fonctionnement (CCPFON) Commissions consultatives paritaires : fonctionnement CCPFON Télécharger Imprimer Ajouter S'abonner I. CONVOCATION II. QUORUM III. ORGANISATION DE REUNIONS A DISTANCE EN CAS D'URGENCE OU DE CIRCONSTANCES PARTI..."
+    content: "Commissions consultatives paritaires : généralités (CCPGEN) Commissions consultatives paritaires : élections des représentants du personnel (CCPELE) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : fonctionnement (CCPFON) Commissions consultatives paritaires : fonctionnement CCPFON I. CONVOCATION II. QUORUM III. ORGANISATION DE REUNIONS A DISTANCE EN CAS D'URGENCE OU DE CIRCONSTANCES PARTICULIERES IV. PRESIDENCE, SECRETARIAT, R..."
   },
   {
     id: "bip_ccpgen",
@@ -131,7 +131,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:48.973178",
     type: "agents-contractuels",
-    content: "Commissions consultatives paritaires : fonctionnement (CCPFON) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : généralités (CCPGEN) Commissions consultatives paritaires : généralités CCPGEN Télécharger Imprimer Ajouter S'abonner I. Organisation II. Compétences III. Composition Cette fiche présente les principes généraux relatifs aux commissions consultatives paritaires (CCP). Elle est complétée par les fiches suivantes : - CCP..."
+    content: "Commissions consultatives paritaires : fonctionnement (CCPFON) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : généralités (CCPGEN) Commissions consultatives paritaires : généralités CCPGEN I. Organisation II. Compétences III. Composition Cette fiche présente les principes généraux relatifs aux commissions consultatives paritaires (CCP). Elle est complétée par les fiches suivantes : - CCPFON relative au fonctionnement des CCP..."
   },
   {
     id: "bip_colcab",
@@ -144,7 +144,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:54.182377",
     type: "agents-contractuels",
-    content: "Le recrutement de personnes en situation de handicap (RECHAN) Accueil Fiches Agents contractuels Catégories particulières d'agents publics Les collaborateurs de cabinet (COLCAB) Les collaborateurs de cabinet COLCAB Télécharger Imprimer Ajouter S'abonner I. Le cabinet de l'autorité territoriale II. Les conditions de recrutement III. Les conditions d'exercice des fonctions IV. La rémunération V. La fin de fonctions I. LE CABINET DE L'AUTORITÉ TERRITORIALE Dans une collectivité ou un établissement..."
+    content: "Le recrutement de personnes en situation de handicap (RECHAN) Accueil Fiches Agents contractuels Catégories particulières d'agents publics Les collaborateurs de cabinet (COLCAB) Les collaborateurs de cabinet COLCAB I. Le cabinet de l'autorité territoriale II. Les conditions de recrutement III. Les conditions d'exercice des fonctions IV. La rémunération V. La fin de fonctions I. LE CABINET DE L'AUTORITÉ TERRITORIALE Dans une collectivité ou un établissement public, l’autorité territoriale peut fo..."
   },
   {
     id: "bip_ntico1",
@@ -157,7 +157,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:48:59.249966",
     type: "agents-contractuels",
-    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Agents contractuels Congés des agents contractuels Agents contractuels : généralités sur les congés (NTICO1) Agents contractuels : généralités sur les congés NTICO1 Télécharger Imprimer Ajouter S'abonner I. Conditions générales d'octroi II. Conditions générales de réemploi III. Prise en compte de la durée des congés Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN. Cette fiche présente les principes gé..."
+    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Agents contractuels Congés des agents contractuels Agents contractuels : généralités sur les congés (NTICO1) Agents contractuels : généralités sur les congés NTICO1 I. Conditions générales d'octroi II. Conditions générales de réemploi III. Prise en compte de la durée des congés Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN. Cette fiche présente les principes généraux sur les congés des agents contra..."
   },
   {
     id: "bip_ntico2",
@@ -183,7 +183,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:10.503025",
     type: "agents-contractuels",
-    content: "Accueil Fiches Agents contractuels Contrat à durée indéterminée Agents contractuels : le contrat à durée indéterminée (NTICDI) Agents contractuels : le contrat à durée indéterminée NTICDI Télécharger Imprimer Ajouter S'abonner I. CONDITIONS POUR BENEFICIER D'UN CDI II. SITUATION DES AGENTS SOUS CDI Sur les principes généraux applicables aux agents contractuels, -voir NTIGEN. I. CONDITIONS POUR BENEFICIER D'UN CDI A) Occupation à titre permanent d’un emploi permanent Les art. L. 332-9 code généra..."
+    content: "Accueil Fiches Agents contractuels Contrat à durée indéterminée Agents contractuels : le contrat à durée indéterminée (NTICDI) Agents contractuels : le contrat à durée indéterminée NTICDI I. CONDITIONS POUR BENEFICIER D'UN CDI II. SITUATION DES AGENTS SOUS CDI Sur les principes généraux applicables aux agents contractuels, -voir NTIGEN. I. CONDITIONS POUR BENEFICIER D'UN CDI A) Occupation à titre permanent d’un emploi permanent Les art. L. 332-9 code général de la fonction publique à art. L. 332..."
   },
   {
     id: "bip_ntidis",
@@ -196,7 +196,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:16.196258",
     type: "agents-contractuels",
-    content: "Le conseil de discipline des agents contractuels (CCPDIS) Accueil Fiches Agents contractuels Discipline des agents contractuels Agents contractuels : procédure disciplinaire (NTIDIS) Agents contractuels : procédure disciplinaire NTIDIS Télécharger Imprimer Ajouter S'abonner I. LA SUSPENSION II. L’OUVERTURE DE LA PROCEDURE III. LA CONSULTATION DU CONSEIL DE DISCIPLINE IV. LA DECISION DE SANCTION V. LA PROCEDURE EN CAS DE LICENCIEMENT POUR MOTIF DISCIPLINAIRE VI. LES RECOURS CONTRE LA SANCTION Tou..."
+    content: "Le conseil de discipline des agents contractuels (CCPDIS) Accueil Fiches Agents contractuels Discipline des agents contractuels Agents contractuels : procédure disciplinaire (NTIDIS) Agents contractuels : procédure disciplinaire NTIDIS I. LA SUSPENSION II. L’OUVERTURE DE LA PROCEDURE III. LA CONSULTATION DU CONSEIL DE DISCIPLINE IV. LA DECISION DE SANCTION V. LA PROCEDURE EN CAS DE LICENCIEMENT POUR MOTIF DISCIPLINAIRE VI. LES RECOURS CONTRE LA SANCTION Toute faute commise par un agent contractu..."
   },
   {
     id: "bip_reempr",
@@ -209,7 +209,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:21.288852",
     type: "agents-contractuels",
-    content: "Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 2012 (TIT2012) Accueil Fiches Agents contractuels Dispositifs de résorption de la précarité Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001) (REEMPR) Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001) REEMPR Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. AGENTS CONCERNES III. MODALITES D'INTEGRATION IV. EFFETS DE L'INTEGRATION Cette fiche traite de l'intégration dans la fonction publique..."
+    content: "Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 2012 (TIT2012) Accueil Fiches Agents contractuels Dispositifs de résorption de la précarité Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001) (REEMPR) Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001) REEMPR I. PRINCIPE II. AGENTS CONCERNES III. MODALITES D'INTEGRATION IV. EFFETS DE L'INTEGRATION Cette fiche traite de l'intégration dans la fonction publique territoriale, directe ou par concours r..."
   },
   {
     id: "bip_tit2012",
@@ -222,7 +222,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:26.454960",
     type: "agents-contractuels",
-    content: "Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001) (REEMPR) Accueil Fiches Agents contractuels Dispositifs de résorption de la précarité Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 2012 (TIT2012) Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 2012 TIT2012 Télécharger Imprimer Ajouter S'abonner I. PRINCIPES GENERAUX II. AGENTS CONCERNES ET CONDITIONS EXIGEES III. CONDITIONS DE CANDIDATURE ET CADRES D’EMPLOIS OUVERTS IV. MODALITES D’..."
+    content: "Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001) (REEMPR) Accueil Fiches Agents contractuels Dispositifs de résorption de la précarité Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 2012 (TIT2012) Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 2012 TIT2012 I. PRINCIPES GENERAUX II. AGENTS CONCERNES ET CONDITIONS EXIGEES III. CONDITIONS DE CANDIDATURE ET CADRES D’EMPLOIS OUVERTS IV. MODALITES D’ACCES AUX CADRES D’EMPLOIS V. SITUATION..."
   },
   {
     id: "bip_ntient",
@@ -235,7 +235,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:32.370758",
     type: "agents-contractuels",
-    content: "Accueil Fiches Agents contractuels Entretien professionnel des agents contractuels Agents contractuels : l'entretien professionnel (NTIENT) Agents contractuels : l'entretien professionnel NTIENT Télécharger Imprimer Ajouter S'abonner I. PROCEDURE II. REVISION ET RECOURS III. CAS PARTICULIER : LES AGENTS EXERCANT UNE ACTIVITE SYNDICALE Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN. Certains agents contractuels bénéficient, comme les fonctionnaires, d’un entretien profe..."
+    content: "Accueil Fiches Agents contractuels Entretien professionnel des agents contractuels Agents contractuels : l'entretien professionnel (NTIENT) Agents contractuels : l'entretien professionnel NTIENT I. PROCEDURE II. REVISION ET RECOURS III. CAS PARTICULIER : LES AGENTS EXERCANT UNE ACTIVITE SYNDICALE Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN. Certains agents contractuels bénéficient, comme les fonctionnaires, d’un entretien professionnel annuel, selon les modalités pr..."
   },
   {
     id: "bip_ntiint",
@@ -261,7 +261,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:42.793084",
     type: "agents-contractuels",
-    content: "Agents contractuels : fin de fonctions avec interruption de l'engagement (NTIINT) Accueil Fiches Agents contractuels Fin de fonctions des agents contractuels Agents contractuels : fin de fonctions au terme de l’engagement (NTITER) Agents contractuels : fin de fonctions au terme de l’engagement NTITER Télécharger Imprimer Ajouter S'abonner I. L’absence d'un droit au renouvellement II. Les conditions de renouvellement III. Le non renouvellement IV. Le droit aux allocations chômage Pour connaître l..."
+    content: "Agents contractuels : fin de fonctions avec interruption de l'engagement (NTIINT) Accueil Fiches Agents contractuels Fin de fonctions des agents contractuels Agents contractuels : fin de fonctions au terme de l’engagement (NTITER) Agents contractuels : fin de fonctions au terme de l’engagement NTITER I. L’absence d'un droit au renouvellement II. Les conditions de renouvellement III. Le non renouvellement IV. Le droit aux allocations chômage Pour connaître les principes généraux applicables aux a..."
   },
   {
     id: "bip_ntifor",
@@ -274,7 +274,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:47.897579",
     type: "agents-contractuels",
-    content: "Accueil Fiches Agents contractuels Formation des agents contractuels Formation des agents contractuels (NTIFOR) Formation des agents contractuels NTIFOR Télécharger Imprimer Ajouter S'abonner I. PRINCIPE GENERAL II. LE COMPTE PERSONNEL DE FORMATION III. FORMATION PERSONNELLE IV. LE CONGE DE TRANSITION PROFESSIONNELLE V. LUTTE CONTRE L'ILLETTRISME ET APPRENTISSAGE DE LA LANGUE FRANCAISE Cette fiche présente les dispositions en vigueur en matière de formation des agents contractuels territoriaux,..."
+    content: "Accueil Fiches Agents contractuels Formation des agents contractuels Formation des agents contractuels (NTIFOR) Formation des agents contractuels NTIFOR I. PRINCIPE GENERAL II. LE COMPTE PERSONNEL DE FORMATION III. FORMATION PERSONNELLE IV. LE CONGE DE TRANSITION PROFESSIONNELLE V. LUTTE CONTRE L'ILLETTRISME ET APPRENTISSAGE DE LA LANGUE FRANCAISE Cette fiche présente les dispositions en vigueur en matière de formation des agents contractuels territoriaux, telles qu'elles sont fixées par le code..."
   },
   {
     id: "bip_ntirec",
@@ -287,20 +287,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:53.744657",
     type: "agents-contractuels",
-    content: "Accueil Fiches Agents contractuels Reclassement des agents contractuels Agents contractuels : reclassement (NTIREC) Agents contractuels : reclassement NTIREC Télécharger Imprimer Ajouter S'abonner I. LE RECLASSEMENT POUR INAPTITUDE PHYSIQUE II. LE RECLASSEMENT DANS L’INTERET DU SERVICE Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN. Le principe d’un droit au reclassement avait été reconnu par la jurisprudence au profit des agents contractuels, parfois sous conditions,..."
+    content: "Accueil Fiches Agents contractuels Reclassement des agents contractuels Agents contractuels : reclassement (NTIREC) Agents contractuels : reclassement NTIREC I. LE RECLASSEMENT POUR INAPTITUDE PHYSIQUE II. LE RECLASSEMENT DANS L’INTERET DU SERVICE Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN. Le principe d’un droit au reclassement avait été reconnu par la jurisprudence au profit des agents contractuels, parfois sous conditions, en cas d’inaptitude physique et de supp..."
   },
   {
     id: "bip_conpro",
     code: "conpro",
     titre: "Le contrat de projet",
-    motsCles: ["contrat","ntimod","recrutement","conpro","projet","fin","iii","congés","rémunération","indemnité","maladie","licenciement","contractuels","situation","l'agent","ntiint","congé","absence","prime","disciplinaire"],
+    motsCles: ["contrat","ntimod","recrutement","conpro","projet","fin","iii","congés","rémunération","indemnité","maladie","licenciement","contractuels","situation","l'agent","ntiint","congé","absence","disciplinaire","candidat"],
     source: "bip",
     resume: "Le contrat de recrutement d'un agent contractuel de droit public (CONACT) Le recours à la visioconférence dans les voies d’accès à la fonction publiqu...",
     localPath: "/bip/output/bip_fiches_rag_agents-contractuels_20260227_105025/agents-contractuels_recrutement-des-agents-contractuels_conpro.md",
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:49:59.023860",
     type: "agents-contractuels",
-    content: "Le contrat de recrutement d'un agent contractuel de droit public (CONACT) Le recours à la visioconférence dans les voies d’accès à la fonction publique (VISACC) Accueil Fiches Agents contractuels Recrutement des agents contractuels Le contrat de projet (CONPRO) Le contrat de projet CONPRO Télécharger Imprimer Ajouter S'abonner I. Recrutement II. Situation de l'agent III. Fin du contrat Crée par la loi du 6 août 2019 de transformation de la fonction publique, le contrat de projet s'inspire de cel..."
+    content: "Le contrat de recrutement d'un agent contractuel de droit public (CONACT) Le recours à la visioconférence dans les voies d’accès à la fonction publique (VISACC) Accueil Fiches Agents contractuels Recrutement des agents contractuels Le contrat de projet (CONPRO) Le contrat de projet CONPRO I. Recrutement II. Situation de l'agent III. Fin du contrat Crée par la loi du 6 août 2019 de transformation de la fonction publique, le contrat de projet s'inspire de celui prévu pour les salariés de droit pri..."
   },
   {
     id: "bip_nticas",
@@ -313,7 +313,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:50:04.290943",
     type: "agents-contractuels",
-    content: "Agents contractuels : modalités de recrutement (NTIMOD) Accueil Fiches Agents contractuels Recrutement des agents contractuels Agents contractuels : cas et durée d’engagement (NTICAS) Agents contractuels : cas et durée d’engagement NTICAS Télécharger Imprimer Ajouter S'abonner I. Le recrutement sur un emploi non permanent II. Le recrutement sur un emploi permanent III. Les autres cas de recrutement IV. Tableau récapitulatif Pour connaître les principes généraux applicables aux agents contractuel..."
+    content: "Agents contractuels : modalités de recrutement (NTIMOD) Accueil Fiches Agents contractuels Recrutement des agents contractuels Agents contractuels : cas et durée d’engagement (NTICAS) Agents contractuels : cas et durée d’engagement NTICAS I. Le recrutement sur un emploi non permanent II. Le recrutement sur un emploi permanent III. Les autres cas de recrutement IV. Tableau récapitulatif Pour connaître les principes généraux applicables aux agents contractuels, -voir NTIGEN. Cette fiche présente l..."
   },
   {
     id: "bip_ntimod",
@@ -326,7 +326,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:50:09.436463",
     type: "agents-contractuels",
-    content: "Agents contractuels : cas et durée d’engagement (NTICAS) Le contrat de recrutement d'un agent contractuel de droit public (CONACT) Accueil Fiches Agents contractuels Recrutement des agents contractuels Agents contractuels : modalités de recrutement (NTIMOD) Agents contractuels : modalités de recrutement NTIMOD Télécharger Imprimer Ajouter S'abonner I. Les conditions exigées des candidats II. La création et la vacance d'emploi III. La procédure de recrutement sur un emploi permanent IV. La périod..."
+    content: "Agents contractuels : cas et durée d’engagement (NTICAS) Le contrat de recrutement d'un agent contractuel de droit public (CONACT) Accueil Fiches Agents contractuels Recrutement des agents contractuels Agents contractuels : modalités de recrutement (NTIMOD) Agents contractuels : modalités de recrutement NTIMOD I. Les conditions exigées des candidats II. La création et la vacance d'emploi III. La procédure de recrutement sur un emploi permanent IV. La période d'essai V. La communication des infor..."
   },
   {
     id: "bip_ntirem",
@@ -339,7 +339,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:50:14.512049",
     type: "agents-contractuels",
-    content: "Accueil Fiches Agents contractuels Rémunération des agents contractuels Agents contractuels : rémunération (NTIREM) Agents contractuels : rémunération NTIREM Télécharger Imprimer Ajouter S'abonner I. Composition II. Montant III. Réévaluation Pour connaître les principes généraux applicables aux agents contractuels, -voir NTIGEN. Cette fiche présente les principes généraux en matière de rémunération des agents contractuels de droit public. Elle n’aborde pas les modalités spécifiques de rémunérati..."
+    content: "Accueil Fiches Agents contractuels Rémunération des agents contractuels Agents contractuels : rémunération (NTIREM) Agents contractuels : rémunération NTIREM I. Composition II. Montant III. Réévaluation Pour connaître les principes généraux applicables aux agents contractuels, -voir NTIGEN. Cette fiche présente les principes généraux en matière de rémunération des agents contractuels de droit public. Elle n’aborde pas les modalités spécifiques de rémunération des assistants maternels et des assi..."
   },
   {
     id: "bip_ntico3",
@@ -352,7 +352,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:50:20.032300",
     type: "agents-contractuels",
-    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Congés et absences Congés des agents contractuels Agents contractuels : les congés de maladie (NTICO3) Agents contractuels : les congés de maladie NTICO3 Télécharger Imprimer Ajouter S'abonner I. Le congé de maladie ordinaire II. Le congé de grave maladie III. Le congé pour accident du travail ou maladie professionnelle IV. Coordination entre traitement et prestations de la sécurité sociale V. Contrôle médical VI. Situation de..."
+    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Congés et absences Congés des agents contractuels Agents contractuels : les congés de maladie (NTICO3) Agents contractuels : les congés de maladie NTICO3 I. Le congé de maladie ordinaire II. Le congé de grave maladie III. Le congé pour accident du travail ou maladie professionnelle IV. Coordination entre traitement et prestations de la sécurité sociale V. Contrôle médical VI. Situation de l'agent après un congé de maladie Cett..."
   },
   {
     id: "bip_rechan",
@@ -365,7 +365,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "agents-contractuels",
     timestamp: "2026-02-27T10:50:25.679224",
     type: "agents-contractuels",
-    content: "L'obligation d'emploi des travailleurs en situation de handicap (OBLEMP) Accueil Fiches Personnes en situation de handicap Le recrutement de personnes en situation de handicap (RECHAN) Le recrutement de personnes en situation de handicap RECHAN Télécharger Imprimer Ajouter S'abonner I. Le recrutement en qualité d'agent contractuel ayant vocation à être titularisé II. Les dérogations aux règles normales de déroulement des concours, des procédures de recrutement et des examens en faveur des candid..."
+    content: "L'obligation d'emploi des travailleurs en situation de handicap (OBLEMP) Accueil Fiches Personnes en situation de handicap Le recrutement de personnes en situation de handicap (RECHAN) Le recrutement de personnes en situation de handicap RECHAN I. Le recrutement en qualité d'agent contractuel ayant vocation à être titularisé II. Les dérogations aux règles normales de déroulement des concours, des procédures de recrutement et des examens en faveur des candidats en situation de handicap III. Expér..."
   },
   {
     id: "bip_cadcaa",
@@ -378,7 +378,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois-generalites",
     timestamp: "2026-02-27T14:23:44.196681",
     type: "cadres-d-emplois-generalites",
-    content: "Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois classés en catégorie B (CADCAB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie A CADCAA Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE I. FILIERE ADM..."
+    content: "Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois classés en catégorie B (CADCAB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie A CADCAA I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE I. FILIERE ADMINISTRATIVE Trois cadres d'emplois admi..."
   },
   {
     id: "bip_cadcab",
@@ -391,7 +391,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois-generalites",
     timestamp: "2026-02-27T14:23:49.252960",
     type: "cadres-d-emplois-generalites",
-    content: "Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie C (CADCAC) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie B (CADCAB) Liste des cadres d'emplois classés en catégorie B CADCAB Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. FILIERE ANIMATION V..."
+    content: "Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie C (CADCAC) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie B (CADCAB) Liste des cadres d'emplois classés en catégorie B CADCAB I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. FILIERE ANIMATION VIII. FILIERE POLICE MUNICIPALE I. FILIE..."
   },
   {
     id: "bip_cadcac",
@@ -404,20 +404,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois-generalites",
     timestamp: "2026-02-27T14:23:54.284896",
     type: "cadres-d-emplois-generalites",
-    content: "Liste des cadres d'emplois classés en catégorie B (CADCAB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie C (CADCAC) Liste des cadres d'emplois classés en catégorie C CADCAC Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. S..."
+    content: "Liste des cadres d'emplois classés en catégorie B (CADCAB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie C (CADCAC) Liste des cadres d'emplois classés en catégorie C CADCAC I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE..."
   },
   {
     id: "bip_cademp",
     code: "cademp",
     titre: "Cadres d'emplois : généralités",
-    motsCles: ["notion","cadre","grade","statut","cadres","d'emplois","particulier","cademp","généralités","recrutement","concours","categories","hierarchiques","iii","prime","sanction","promotion","avancement","formation","formations"],
+    motsCles: ["notion","cadre","grade","statut","cadres","d'emplois","particulier","cademp","généralités","recrutement","concours","categories","hierarchiques","iii","sanction","promotion","avancement","formation","formations","fiches"],
     source: "bip",
     resume: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) C...",
     localPath: "/bip/output/bip_fiches_rag_cadres-d-emplois-generalites_20260227_142415/cadres-d-emplois_cadres-d-emplois-generalites_cademp.md",
     section: "cadres-d-emplois-generalites",
     timestamp: "2026-02-27T14:23:59.388603",
     type: "cadres-d-emplois-generalites",
-    content: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) Cadres d'emplois : généralités CADEMP Télécharger Imprimer Ajouter S'abonner I. LA NOTION DE CADRE D'EMPLOIS II. LE GRADE III. LES CATEGORIES HIERARCHIQUES IV. LE STATUT PARTICULIER I. LA NOTION DE CADRE D'EMPLOIS L'art. L. 411-1 code général de la fonction publique définit la notion de cadre d'emplois de la façon suivante : \"Chaque corps ou cadre d..."
+    content: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) Cadres d'emplois : généralités CADEMP I. LA NOTION DE CADRE D'EMPLOIS II. LE GRADE III. LES CATEGORIES HIERARCHIQUES IV. LE STATUT PARTICULIER I. LA NOTION DE CADRE D'EMPLOIS L'art. L. 411-1 code général de la fonction publique définit la notion de cadre d'emplois de la façon suivante : \"Chaque corps ou cadre d’emplois comprend un ou plusieurs grade..."
   },
   {
     id: "bip_categoriec",
@@ -430,7 +430,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois-generalites",
     timestamp: "2026-02-27T14:24:04.888717",
     type: "cadres-d-emplois-generalites",
-    content: "Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires (CATEGORIEC) Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires CATEGORIEC Télécharger Imprimer Ajouter S'abonner I. Classement II. Avancement III. Détachement, intégration, intégration directe IV. Echelles indiciaires Depuis la..."
+    content: "Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires (CATEGORIEC) Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires CATEGORIEC I. Classement II. Avancement III. Détachement, intégration, intégration directe IV. Echelles indiciaires Depuis la mise en œuvre du protocole d’accord rel..."
   },
   {
     id: "bip_categorieb",
@@ -443,7 +443,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois-generalites",
     timestamp: "2026-02-27T14:24:10.401015",
     type: "cadres-d-emplois-generalites",
-    content: "Techniciens territoriaux : création du cadre d’emplois (CRETEC) Accueil Fiches Cadres d'emplois Filière technique Techniciens (B) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires CATEGORIEB Télécharger Imprimer Ajouter S'abonner I. Recrutement II. Stage et classement III. Avancement de grade IV. Détachement, intégration, intégration directe V. Echelles indiciair..."
+    content: "Techniciens territoriaux : création du cadre d’emplois (CRETEC) Accueil Fiches Cadres d'emplois Filière technique Techniciens (B) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires CATEGORIEB I. Recrutement II. Stage et classement III. Avancement de grade IV. Détachement, intégration, intégration directe V. Echelles indiciaires Des dispositions statutaires commune..."
   },
   {
     id: "bip_liscad",
@@ -456,7 +456,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois-generalites",
     timestamp: "2026-02-27T14:24:15.868551",
     type: "cadres-d-emplois-generalites",
-    content: "Cadres d'emplois : généralités Accueil Fiches Cadres d'emplois Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois de la FPT LISCAD Télécharger Imprimer Ajouter S'abonner I. Filière administrative II. Filière animation III. Filière technique IV. Filière culturelle V. Filière sportive VI. Filière médico-sociale VII. Police municipale VIII. Sapeurs-pompiers professionnels Pour aller plus loin, on pourra utilement se reporter au Répertoire des carrières : - volume 1 : filières..."
+    content: "Cadres d'emplois : généralités Accueil Fiches Cadres d'emplois Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois de la FPT LISCAD I. Filière administrative II. Filière animation III. Filière technique IV. Filière culturelle V. Filière sportive VI. Filière médico-sociale VII. Police municipale VIII. Sapeurs-pompiers professionnels Pour aller plus loin, on pourra utilement se reporter au Répertoire des carrières : - volume 1 : filières administrative, technique, sapeurs-pomp..."
   },
   {
     id: "bip_cadcaa",
@@ -469,7 +469,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:15:16.225332",
     type: "cadres-d-emplois",
-    content: "Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois classés en catégorie B (CADCAB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie A CADCAA Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE I. FILIERE ADM..."
+    content: "Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois classés en catégorie B (CADCAB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie A CADCAA I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE I. FILIERE ADMINISTRATIVE Trois cadres d'emplois admi..."
   },
   {
     id: "bip_cadcab",
@@ -482,7 +482,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:15:21.337938",
     type: "cadres-d-emplois",
-    content: "Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie C (CADCAC) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie B (CADCAB) Liste des cadres d'emplois classés en catégorie B CADCAB Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. FILIERE ANIMATION V..."
+    content: "Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie C (CADCAC) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie B (CADCAB) Liste des cadres d'emplois classés en catégorie B CADCAB I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. FILIERE ANIMATION VIII. FILIERE POLICE MUNICIPALE I. FILIE..."
   },
   {
     id: "bip_cadcac",
@@ -495,20 +495,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:15:26.483936",
     type: "cadres-d-emplois",
-    content: "Liste des cadres d'emplois classés en catégorie B (CADCAB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie C (CADCAC) Liste des cadres d'emplois classés en catégorie C CADCAC Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. S..."
+    content: "Liste des cadres d'emplois classés en catégorie B (CADCAB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie C (CADCAC) Liste des cadres d'emplois classés en catégorie C CADCAC I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE..."
   },
   {
     id: "bip_cademp",
     code: "cademp",
     titre: "Cadres d'emplois : généralités",
-    motsCles: ["notion","cadre","grade","statut","cadres","d'emplois","particulier","cademp","généralités","recrutement","concours","categories","hierarchiques","iii","prime","sanction","promotion","avancement","formation","formations"],
+    motsCles: ["notion","cadre","grade","statut","cadres","d'emplois","particulier","cademp","généralités","recrutement","concours","categories","hierarchiques","iii","sanction","promotion","avancement","formation","formations","fiches"],
     source: "bip",
     resume: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) C...",
     localPath: "/bip/output/bip_fiches_rag_cadres-d-emplois_20260227_141811/cadres-d-emplois_cadres-d-emplois-generalites_cademp.md",
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:15:31.514479",
     type: "cadres-d-emplois",
-    content: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) Cadres d'emplois : généralités CADEMP Télécharger Imprimer Ajouter S'abonner I. LA NOTION DE CADRE D'EMPLOIS II. LE GRADE III. LES CATEGORIES HIERARCHIQUES IV. LE STATUT PARTICULIER I. LA NOTION DE CADRE D'EMPLOIS L'art. L. 411-1 code général de la fonction publique définit la notion de cadre d'emplois de la façon suivante : \"Chaque corps ou cadre d..."
+    content: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) Cadres d'emplois : généralités CADEMP I. LA NOTION DE CADRE D'EMPLOIS II. LE GRADE III. LES CATEGORIES HIERARCHIQUES IV. LE STATUT PARTICULIER I. LA NOTION DE CADRE D'EMPLOIS L'art. L. 411-1 code général de la fonction publique définit la notion de cadre d'emplois de la façon suivante : \"Chaque corps ou cadre d’emplois comprend un ou plusieurs grade..."
   },
   {
     id: "bip_categoriec",
@@ -521,7 +521,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:15:36.680113",
     type: "cadres-d-emplois",
-    content: "Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires (CATEGORIEC) Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires CATEGORIEC Télécharger Imprimer Ajouter S'abonner I. Classement II. Avancement III. Détachement, intégration, intégration directe IV. Echelles indiciaires Depuis la..."
+    content: "Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires (CATEGORIEC) Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires CATEGORIEC I. Classement II. Avancement III. Détachement, intégration, intégration directe IV. Echelles indiciaires Depuis la mise en œuvre du protocole d’accord rel..."
   },
   {
     id: "bip_cadcaa",
@@ -534,7 +534,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:20:01.542220",
     type: "cadres-d-emplois",
-    content: "Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois classés en catégorie B (CADCAB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie A CADCAA Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE I. FILIERE ADM..."
+    content: "Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois classés en catégorie B (CADCAB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie A CADCAA I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE I. FILIERE ADMINISTRATIVE Trois cadres d'emplois admi..."
   },
   {
     id: "bip_cadcab",
@@ -547,7 +547,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:20:06.663336",
     type: "cadres-d-emplois",
-    content: "Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie C (CADCAC) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie B (CADCAB) Liste des cadres d'emplois classés en catégorie B CADCAB Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. FILIERE ANIMATION V..."
+    content: "Liste des cadres d'emplois classés en catégorie A (CADCAA) Liste des cadres d'emplois classés en catégorie C (CADCAC) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie B (CADCAB) Liste des cadres d'emplois classés en catégorie B CADCAB I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. FILIERE ANIMATION VIII. FILIERE POLICE MUNICIPALE I. FILIE..."
   },
   {
     id: "bip_cadcac",
@@ -560,20 +560,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:20:12.049026",
     type: "cadres-d-emplois",
-    content: "Liste des cadres d'emplois classés en catégorie B (CADCAB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie C (CADCAC) Liste des cadres d'emplois classés en catégorie C CADCAC Télécharger Imprimer Ajouter S'abonner I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. S..."
+    content: "Liste des cadres d'emplois classés en catégorie B (CADCAB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Liste des cadres d'emplois classés en catégorie C (CADCAC) Liste des cadres d'emplois classés en catégorie C CADCAC I. FILIERE ADMINISTRATIVE II. FILIERE TECHNIQUE III. FILIERE CULTURELLE IV. FILIERE SPORTIVE V. FILIERE MEDICO-SOCIALE VI. SAPEURS-POMPIERS VII. POLICE MUNICIPALE..."
   },
   {
     id: "bip_cademp",
     code: "cademp",
     titre: "Cadres d'emplois : généralités",
-    motsCles: ["notion","cadre","grade","statut","cadres","d'emplois","particulier","cademp","généralités","recrutement","concours","categories","hierarchiques","iii","prime","sanction","promotion","avancement","formation","formations"],
+    motsCles: ["notion","cadre","grade","statut","cadres","d'emplois","particulier","cademp","généralités","recrutement","concours","categories","hierarchiques","iii","sanction","promotion","avancement","formation","formations","fiches"],
     source: "bip",
     resume: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) C...",
     localPath: "/bip/output/bip_fiches_rag_cadres-d-emplois_20260227_142041/cadres-d-emplois_cadres-d-emplois-generalites_cademp.md",
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:20:18.579498",
     type: "cadres-d-emplois",
-    content: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) Cadres d'emplois : généralités CADEMP Télécharger Imprimer Ajouter S'abonner I. LA NOTION DE CADRE D'EMPLOIS II. LE GRADE III. LES CATEGORIES HIERARCHIQUES IV. LE STATUT PARTICULIER I. LA NOTION DE CADRE D'EMPLOIS L'art. L. 411-1 code général de la fonction publique définit la notion de cadre d'emplois de la façon suivante : \"Chaque corps ou cadre d..."
+    content: "Liste des cadres d'emplois de la FPT (LISCAD) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP) Cadres d'emplois : généralités CADEMP I. LA NOTION DE CADRE D'EMPLOIS II. LE GRADE III. LES CATEGORIES HIERARCHIQUES IV. LE STATUT PARTICULIER I. LA NOTION DE CADRE D'EMPLOIS L'art. L. 411-1 code général de la fonction publique définit la notion de cadre d'emplois de la façon suivante : \"Chaque corps ou cadre d’emplois comprend un ou plusieurs grade..."
   },
   {
     id: "bip_categoriec",
@@ -586,7 +586,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:20:24.312142",
     type: "cadres-d-emplois",
-    content: "Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires (CATEGORIEC) Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires CATEGORIEC Télécharger Imprimer Ajouter S'abonner I. Classement II. Avancement III. Détachement, intégration, intégration directe IV. Echelles indiciaires Depuis la..."
+    content: "Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires (CATEGORIEC) Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires CATEGORIEC I. Classement II. Avancement III. Détachement, intégration, intégration directe IV. Echelles indiciaires Depuis la mise en œuvre du protocole d’accord rel..."
   },
   {
     id: "bip_categorieb",
@@ -599,7 +599,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:20:29.675786",
     type: "cadres-d-emplois",
-    content: "Techniciens territoriaux : création du cadre d’emplois (CRETEC) Accueil Fiches Cadres d'emplois Filière technique Techniciens (B) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires CATEGORIEB Télécharger Imprimer Ajouter S'abonner I. Recrutement II. Stage et classement III. Avancement de grade IV. Détachement, intégration, intégration directe V. Echelles indiciair..."
+    content: "Techniciens territoriaux : création du cadre d’emplois (CRETEC) Accueil Fiches Cadres d'emplois Filière technique Techniciens (B) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires (CATEGORIEB) Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indiciaires CATEGORIEB I. Recrutement II. Stage et classement III. Avancement de grade IV. Détachement, intégration, intégration directe V. Echelles indiciaires Des dispositions statutaires commune..."
   },
   {
     id: "bip_liscad",
@@ -612,7 +612,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:20:35.251894",
     type: "cadres-d-emplois",
-    content: "Cadres d'emplois : généralités Accueil Fiches Cadres d'emplois Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois de la FPT LISCAD Télécharger Imprimer Ajouter S'abonner I. Filière administrative II. Filière animation III. Filière technique IV. Filière culturelle V. Filière sportive VI. Filière médico-sociale VII. Police municipale VIII. Sapeurs-pompiers professionnels Pour aller plus loin, on pourra utilement se reporter au Répertoire des carrières : - volume 1 : filières..."
+    content: "Cadres d'emplois : généralités Accueil Fiches Cadres d'emplois Liste des cadres d'emplois de la FPT (LISCAD) Liste des cadres d'emplois de la FPT LISCAD I. Filière administrative II. Filière animation III. Filière technique IV. Filière culturelle V. Filière sportive VI. Filière médico-sociale VII. Police municipale VIII. Sapeurs-pompiers professionnels Pour aller plus loin, on pourra utilement se reporter au Répertoire des carrières : - volume 1 : filières administrative, technique, sapeurs-pomp..."
   },
   {
     id: "bip_segema",
@@ -620,12 +620,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "Les secrétaires généraux de mairie",
     motsCles: ["sgm","cnfpt","dgcl","mairie","formation","carrière","dgs","fonction","casema","genfon","forobl","secrétaire","général","segema","secrétaires","généraux","iii","iaj","recrutement","promotion"],
     source: "bip",
-    resume: "Accueil Fiches Secrétaire général de mairie Les secrétaires généraux de mairie (SEGEMA) Les secrétaires généraux de mairie SEGEMA Télécharger Imprimer...",
+    resume: "Accueil Fiches Secrétaire général de mairie Les secrétaires généraux de mairie (SEGEMA) Les secrétaires généraux de mairie SEGEMA I. La fonction de se...",
     localPath: "/bip/output/bip_fiches_rag_cadres-d-emplois_20260227_142041/secretaire-general-de-mairie_segema.md",
     section: "cadres-d-emplois",
     timestamp: "2026-02-27T14:20:41.173180",
     type: "cadres-d-emplois",
-    content: "Accueil Fiches Secrétaire général de mairie Les secrétaires généraux de mairie (SEGEMA) Les secrétaires généraux de mairie SEGEMA Télécharger Imprimer Ajouter S'abonner I. La fonction de secrétaire général de mairie II. Formation III. Carrière En vue de favoriser la reconnaissance des agents exerçant le métier de secrétaire de mairie et des compétences qu'il requiert, et afin d’en améliorer l’attractivité, une réforme revalorisant ce métier est mise en œuvre par une loi 30 décembre 2023. Elle in..."
+    content: "Accueil Fiches Secrétaire général de mairie Les secrétaires généraux de mairie (SEGEMA) Les secrétaires généraux de mairie SEGEMA I. La fonction de secrétaire général de mairie II. Formation III. Carrière En vue de favoriser la reconnaissance des agents exerçant le métier de secrétaire de mairie et des compétences qu'il requiert, et afin d’en améliorer l’attractivité, une réforme revalorisant ce métier est mise en œuvre par une loi 30 décembre 2023. Elle inscrit notamment la fonction de « secrét..."
   },
   {
     id: "bip_ntifor",
@@ -638,7 +638,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:00:01.915429",
     type: "carriere",
-    content: "Accueil Fiches Agents contractuels Formation des agents contractuels Formation des agents contractuels (NTIFOR) Formation des agents contractuels NTIFOR Télécharger Imprimer Ajouter S'abonner I. PRINCIPE GENERAL II. LE COMPTE PERSONNEL DE FORMATION III. FORMATION PERSONNELLE IV. LE CONGE DE TRANSITION PROFESSIONNELLE V. LUTTE CONTRE L'ILLETTRISME ET APPRENTISSAGE DE LA LANGUE FRANCAISE Cette fiche présente les dispositions en vigueur en matière de formation des agents contractuels territoriaux,..."
+    content: "Accueil Fiches Agents contractuels Formation des agents contractuels Formation des agents contractuels (NTIFOR) Formation des agents contractuels NTIFOR I. PRINCIPE GENERAL II. LE COMPTE PERSONNEL DE FORMATION III. FORMATION PERSONNELLE IV. LE CONGE DE TRANSITION PROFESSIONNELLE V. LUTTE CONTRE L'ILLETTRISME ET APPRENTISSAGE DE LA LANGUE FRANCAISE Cette fiche présente les dispositions en vigueur en matière de formation des agents contractuels territoriaux, telles qu'elles sont fixées par le code..."
   },
   {
     id: "bip_avaech",
@@ -651,7 +651,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:00:08.959175",
     type: "carriere",
-    content: "Avancement de grade (AVAGRA) Tableau annuel d'avancement (TABAVA) Accueil Fiches Carrière Avancement Avancement d'échelon (AVAECH) Avancement d'échelon AVAECH Télécharger Imprimer Ajouter S'abonner I. DEFINITION ET PROCEDURE II. L'ANCIENNETE VALABLE POUR L'AVANCEMENT III. LES DIFFERENTES MODALITES D'AVANCEMENT I. DEFINITION ET PROCEDURE L'avancement d'échelon fait partie de la progression de carrière à laquelle a droit : - le fonctionnaire titulaire - le fonctionnaire stagiaire dans un cadre d'e..."
+    content: "Avancement de grade (AVAGRA) Tableau annuel d'avancement (TABAVA) Accueil Fiches Carrière Avancement Avancement d'échelon (AVAECH) Avancement d'échelon AVAECH I. DEFINITION ET PROCEDURE II. L'ANCIENNETE VALABLE POUR L'AVANCEMENT III. LES DIFFERENTES MODALITES D'AVANCEMENT I. DEFINITION ET PROCEDURE L'avancement d'échelon fait partie de la progression de carrière à laquelle a droit : - le fonctionnaire titulaire - le fonctionnaire stagiaire dans un cadre d'emplois de catégorie B ou C, qui est en..."
   },
   {
     id: "bip_avagra",
@@ -659,12 +659,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "Avancement de grade",
     motsCles: ["ldg","graf","principe","taux","lignes","gestion","tabava","promotion","avancement","lidige","fixation","conditions","directrices","nomination","particulier","syndicaux","avagra","grade","caa","congé"],
     source: "bip",
-    resume: "Avancement d'échelon (AVAECH) Accueil Fiches Carrière Avancement Avancement de grade (AVAGRA) Avancement de grade AVAGRA Télécharger Imprimer Ajouter ...",
+    resume: "Avancement d'échelon (AVAECH) Accueil Fiches Carrière Avancement Avancement de grade (AVAGRA) Avancement de grade AVAGRA I. PRINCIPE II. FONCTIONNAIRE...",
     localPath: "/bip/output/bip_fiches_rag_carriere_20260227_140229/carriere_avancement_avagra.md",
     section: "carriere",
     timestamp: "2026-02-27T14:00:14.126101",
     type: "carriere",
-    content: "Avancement d'échelon (AVAECH) Accueil Fiches Carrière Avancement Avancement de grade (AVAGRA) Avancement de grade AVAGRA Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. FONCTIONNAIRES CONCERNES III. CONDITIONS IV. FIXATION DU TAUX DE PROMOTION V. ELABORATION DES LIGNES DIRECTRICES DE GESTION VI. MODALITES DE L'AVANCEMENT VI. NOMINATION VII. CAS PARTICULIER DES REPRESENTANTS SYNDICAUX Pour aller plus loin : la revue des Informations administratives et juridiques (IAJ) a consacré un dossier..."
+    content: "Avancement d'échelon (AVAECH) Accueil Fiches Carrière Avancement Avancement de grade (AVAGRA) Avancement de grade AVAGRA I. PRINCIPE II. FONCTIONNAIRES CONCERNES III. CONDITIONS IV. FIXATION DU TAUX DE PROMOTION V. ELABORATION DES LIGNES DIRECTRICES DE GESTION VI. MODALITES DE L'AVANCEMENT VI. NOMINATION VII. CAS PARTICULIER DES REPRESENTANTS SYNDICAUX Pour aller plus loin : la revue des Informations administratives et juridiques (IAJ) a consacré un dossier à l'avancement de grade : juin 2025 I...."
   },
   {
     id: "bip_tabava",
@@ -672,12 +672,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "Tableau annuel d'avancement",
     motsCles: ["tableau","recours","caa","generaux","portee","ldg","principes","tabava","annuel","carrière","promotion","avancement","etablissement","juridique","iii","avagra","lidige","d'avancement","absence","absences"],
     source: "bip",
-    resume: "Avancement d'échelon (AVAECH) Accueil Fiches Carrière Avancement Tableau annuel d'avancement (TABAVA) Tableau annuel d'avancement TABAVA Télécharger I...",
+    resume: "Avancement d'échelon (AVAECH) Accueil Fiches Carrière Avancement Tableau annuel d'avancement (TABAVA) Tableau annuel d'avancement TABAVA I. PRINCIPES ...",
     localPath: "/bip/output/bip_fiches_rag_carriere_20260227_140229/carriere_avancement_tabava.md",
     section: "carriere",
     timestamp: "2026-02-27T14:00:20.535687",
     type: "carriere",
-    content: "Avancement d'échelon (AVAECH) Accueil Fiches Carrière Avancement Tableau annuel d'avancement (TABAVA) Tableau annuel d'avancement TABAVA Télécharger Imprimer Ajouter S'abonner I. PRINCIPES GENERAUX III. ETABLISSEMENT DU TABLEAU IV. PORTEE JURIDIQUE DU TABLEAU V. RECOURS Les décisions d'avancement de grade concernent les seuls fonctionnaires inscrits à un tableau annuel d'avancement qui est établi par l'autorité territoriale (art. L. 522-28 code général de la fonction publique). Pour plus de déta..."
+    content: "Avancement d'échelon (AVAECH) Accueil Fiches Carrière Avancement Tableau annuel d'avancement (TABAVA) Tableau annuel d'avancement TABAVA I. PRINCIPES GENERAUX III. ETABLISSEMENT DU TABLEAU IV. PORTEE JURIDIQUE DU TABLEAU V. RECOURS Les décisions d'avancement de grade concernent les seuls fonctionnaires inscrits à un tableau annuel d'avancement qui est établi par l'autorité territoriale (art. L. 522-28 code général de la fonction publique). Pour plus de détails sur l'avancement de grade, se repor..."
   },
   {
     id: "bip_entpro",
@@ -690,7 +690,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:00:25.813093",
     type: "carriere",
-    content: "Accueil Fiches Carrière Entretien professionnel L’entretien professionnel des fonctionnaires (ENTPRO) L’entretien professionnel des fonctionnaires ENTPRO Télécharger Imprimer Ajouter S'abonner I. GENERALITES II. PROCEDURE III. REVISION ET RECOURS IV. CAS PARTICULIER : LES FONCTIONNAIRES EXERCANT UNE ACTIVITE SYNDICALE Cette fiche concerne exclusivement les fonctionnaires ; concernant l'entretien professionnel des agents contractuels, prévu par le décret n°88-145 du 15 février 1988, -voir NTIENT...."
+    content: "Accueil Fiches Carrière Entretien professionnel L’entretien professionnel des fonctionnaires (ENTPRO) L’entretien professionnel des fonctionnaires ENTPRO I. GENERALITES II. PROCEDURE III. REVISION ET RECOURS IV. CAS PARTICULIER : LES FONCTIONNAIRES EXERCANT UNE ACTIVITE SYNDICALE Cette fiche concerne exclusivement les fonctionnaires ; concernant l'entretien professionnel des agents contractuels, prévu par le décret n°88-145 du 15 février 1988, -voir NTIENT. Pour aller plus loin : la revue des In..."
   },
   {
     id: "bip_medhon",
@@ -703,7 +703,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:00:31.024932",
     type: "carriere",
-    content: "Accueil Fiches Carrière Médaille d'honneur Médaille d'honneur régionale, départementale et communale (MEDHON) Médaille d'honneur régionale, départementale et communale MEDHON Télécharger Imprimer Ajouter S'abonner I. OBJET II. BENEFICIAIRES III. CONDITIONS D'ATTRIBUTION IV. PROCEDURE V. CUMUL VI. PERTE ET RETRAIT DE LA MEDAILLE I. OBJET La médaille d'honneur régionale, départementale et communale a été créée par le décret n°87-594 du 22 juillet 1987, en substitution de la distinction de même nat..."
+    content: "Accueil Fiches Carrière Médaille d'honneur Médaille d'honneur régionale, départementale et communale (MEDHON) Médaille d'honneur régionale, départementale et communale MEDHON I. OBJET II. BENEFICIAIRES III. CONDITIONS D'ATTRIBUTION IV. PROCEDURE V. CUMUL VI. PERTE ET RETRAIT DE LA MEDAILLE I. OBJET La médaille d'honneur régionale, départementale et communale a été créée par le décret n°87-594 du 22 juillet 1987, en substitution de la distinction de même nature qui existait précédemment. Elle a p..."
   },
   {
     id: "bip_chanem",
@@ -716,7 +716,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:00:38.202328",
     type: "carriere",
-    content: "La mutation d'une collectivité à une autre (MUTATI) Mobilité : généralités (MOBGEN) Accueil Fiches Carrière Mutation et mobilité Le changement d'emploi à l'intérieur de la même collectivité (CHANEM) Le changement d'emploi à l'intérieur de la même collectivité CHANEM Télécharger Imprimer Ajouter S'abonner I. PRINCIPES II. PROCEDURE III. LES MOTIFS IV. LA MUTATION ABUSIVE V. LES CONSEQUENCES DU CHANGEMENT D'AFFECTATION I. PRINCIPES A) Pouvoir de l'autorité territoriale L'autorité territoriale proc..."
+    content: "La mutation d'une collectivité à une autre (MUTATI) Mobilité : généralités (MOBGEN) Accueil Fiches Carrière Mutation et mobilité Le changement d'emploi à l'intérieur de la même collectivité (CHANEM) Le changement d'emploi à l'intérieur de la même collectivité CHANEM I. PRINCIPES II. PROCEDURE III. LES MOTIFS IV. LA MUTATION ABUSIVE V. LES CONSEQUENCES DU CHANGEMENT D'AFFECTATION I. PRINCIPES A) Pouvoir de l'autorité territoriale L'autorité territoriale procède aux mouvements des fonctionnaires a..."
   },
   {
     id: "bip_mobgen",
@@ -729,7 +729,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:00:44.057582",
     type: "carriere",
-    content: "Le changement d'emploi à l'intérieur de la même collectivité (CHANEM) Accueil Fiches Carrière Mutation et mobilité Mobilité : généralités (MOBGEN) Mobilité : généralités MOBGEN Télécharger Imprimer Ajouter S'abonner I. MOBILITE : GENERALITES II. DETACHEMENT III. INTEGRATION DIRECTE IV. CONCOURS INTERNE V. MISE A DISPOSITION VI. TOUR EXTERIEUR Pour aller plus loin : la revue des Informations administratives et juridiques (IAJ) a consacré un dossier à la mobilité (numéro de septembre 2025). I. MOB..."
+    content: "Le changement d'emploi à l'intérieur de la même collectivité (CHANEM) Accueil Fiches Carrière Mutation et mobilité Mobilité : généralités (MOBGEN) Mobilité : généralités MOBGEN I. MOBILITE : GENERALITES II. DETACHEMENT III. INTEGRATION DIRECTE IV. CONCOURS INTERNE V. MISE A DISPOSITION VI. TOUR EXTERIEUR Pour aller plus loin : la revue des Informations administratives et juridiques (IAJ) a consacré un dossier à la mobilité (numéro de septembre 2025). I. MOBILITE : GENERALITES Le code général de..."
   },
   {
     id: "bip_mutati",
@@ -742,7 +742,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:00:50.127950",
     type: "carriere",
-    content: "Le changement d'emploi à l'intérieur de la même collectivité (CHANEM) Accueil Fiches Carrière Mutation et mobilité La mutation d'une collectivité à une autre (MUTATI) La mutation d'une collectivité à une autre MUTATI Télécharger Imprimer Ajouter S'abonner I. DEFINITION II. LA PROCEDURE DE MUTATION III. LES CONDITIONS DE LA MUTATION IV. DELAI ENTRE TITULARISATION ET MUTATION I. DEFINITION Les art. L. 512-24 code général de la fonction publique et suivants traitent des modalités de mutation des fo..."
+    content: "Le changement d'emploi à l'intérieur de la même collectivité (CHANEM) Accueil Fiches Carrière Mutation et mobilité La mutation d'une collectivité à une autre (MUTATI) La mutation d'une collectivité à une autre MUTATI I. DEFINITION II. LA PROCEDURE DE MUTATION III. LES CONDITIONS DE LA MUTATION IV. DELAI ENTRE TITULARISATION ET MUTATION I. DEFINITION Les art. L. 512-24 code général de la fonction publique et suivants traitent des modalités de mutation des fonctionnaires d'une collectivité à une a..."
   },
   {
     id: "bip_lisapt",
@@ -755,7 +755,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:00:55.964175",
     type: "carriere",
-    content: "Promotion interne (PROINT) Accueil Fiches Carrière Promotion interne Liste d'aptitude au titre de la promotion interne (LISAPT) Liste d'aptitude au titre de la promotion interne LISAPT Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. MODALITES III. AUTORITE COMPETENTE IV. INSCRIPTIONS ET REINSCRIPTIONS V. PORTEE JURIDIQUE VI. RECOURS I. PRINCIPE L'accès d'un fonctionnaire territorial à un cadre d'emplois par la voie de la promotion interne (-voir PROINT) est subordonné à son inscription su..."
+    content: "Promotion interne (PROINT) Accueil Fiches Carrière Promotion interne Liste d'aptitude au titre de la promotion interne (LISAPT) Liste d'aptitude au titre de la promotion interne LISAPT I. PRINCIPE II. MODALITES III. AUTORITE COMPETENTE IV. INSCRIPTIONS ET REINSCRIPTIONS V. PORTEE JURIDIQUE VI. RECOURS I. PRINCIPE L'accès d'un fonctionnaire territorial à un cadre d'emplois par la voie de la promotion interne (-voir PROINT) est subordonné à son inscription sur une liste d'aptitude aux fonctions de..."
   },
   {
     id: "bip_proint",
@@ -768,20 +768,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:01.515423",
     type: "carriere",
-    content: "Liste d'aptitude au titre de la promotion interne (LISAPT) Accueil Fiches Carrière Promotion interne Promotion interne (PROINT) Promotion interne PROINT Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. MODALITES III. FONCTIONNAIRES CONCERNES IV. CONDITIONS V. QUOTA VI. NOMINATION, TITULARISATION Cette fiche présente les principes généraux relatifs à la promotion interne ; elle est complétée par la fiche LISAPT, qui porte plus spécifiquement sur la liste d’aptitude. I. PRINCIPE Les fonction..."
+    content: "Liste d'aptitude au titre de la promotion interne (LISAPT) Accueil Fiches Carrière Promotion interne Promotion interne (PROINT) Promotion interne PROINT I. PRINCIPE II. MODALITES III. FONCTIONNAIRES CONCERNES IV. CONDITIONS V. QUOTA VI. NOMINATION, TITULARISATION Cette fiche présente les principes généraux relatifs à la promotion interne ; elle est complétée par la fiche LISAPT, qui porte plus spécifiquement sur la liste d’aptitude. I. PRINCIPE Les fonctionnaires justifiant d'une certaine expéri..."
   },
   {
     id: "bip_sereff",
     code: "sereff",
     titre: "Notion de services effectifs",
-    motsCles: ["effectifs","grade","cadre","publics","sereff","notion","congé","promotion","contrat","definition","d'emplois","anciennete","iii","dispon","detach","congés","absence","rémunération","prime","maladie"],
+    motsCles: ["effectifs","grade","cadre","publics","sereff","notion","congé","promotion","contrat","definition","d'emplois","anciennete","iii","dispon","detach","congés","absence","rémunération","maladie","arrêt"],
     source: "bip",
-    resume: "Accueil Fiches Carrière Services effectifs Notion de services effectifs (SEREFF) Notion de services effectifs SEREFF Télécharger Imprimer Ajouter S'ab...",
+    resume: "Accueil Fiches Carrière Services effectifs Notion de services effectifs (SEREFF) Notion de services effectifs SEREFF I. DEFINITION II. SERVICES EFFECT...",
     localPath: "/bip/output/bip_fiches_rag_carriere_20260227_140229/carriere_services-effectifs_sereff.md",
     section: "carriere",
     timestamp: "2026-02-27T14:01:11.327101",
     type: "carriere",
-    content: "Accueil Fiches Carrière Services effectifs Notion de services effectifs (SEREFF) Notion de services effectifs SEREFF Télécharger Imprimer Ajouter S'abonner I. DEFINITION II. SERVICES EFFECTIFS DANS UN GRADE, UN CADRE D'EMPLOIS OU UN EMPLOI III. ANCIENNETE DE SERVICES PUBLICS EFFECTIFS Cette fiche doit faire l'objet d'une refonte afin d'être actualisée et enrichie. I. DEFINITION * Principe En l'absence de définition générale de la notion de service effectif, peuvent être considérées comme des ser..."
+    content: "Accueil Fiches Carrière Services effectifs Notion de services effectifs (SEREFF) Notion de services effectifs SEREFF I. DEFINITION II. SERVICES EFFECTIFS DANS UN GRADE, UN CADRE D'EMPLOIS OU UN EMPLOI III. ANCIENNETE DE SERVICES PUBLICS EFFECTIFS Cette fiche doit faire l'objet d'une refonte afin d'être actualisée et enrichie. I. DEFINITION * Principe En l'absence de définition générale de la notion de service effectif, peuvent être considérées comme des services effectifs les périodes pendant le..."
   },
   {
     id: "bip_carast",
@@ -794,7 +794,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:16.586086",
     type: "carriere",
-    content: "Fin du stage (FINSTA) Titularisation : généralités (TITGEN) Accueil Fiches Carrière Stage et titularisation Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST) Cas de radiation des stagiaires à l'initiative de la collectivité CARAST Télécharger Imprimer Ajouter S'abonner I. Licenciement pour insuffisance professionnelle II. Licenciement pour faute disciplinaire III. Radiation pour perte des droits civiques ou mention incompatible IV. Licenciement pour suppression d'emploi..."
+    content: "Fin du stage (FINSTA) Titularisation : généralités (TITGEN) Accueil Fiches Carrière Stage et titularisation Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST) Cas de radiation des stagiaires à l'initiative de la collectivité CARAST I. Licenciement pour insuffisance professionnelle II. Licenciement pour faute disciplinaire III. Radiation pour perte des droits civiques ou mention incompatible IV. Licenciement pour suppression d'emploi V. Licenciement pour inaptitude physiqu..."
   },
   {
     id: "bip_consta",
@@ -807,7 +807,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:21.789257",
     type: "carriere",
-    content: "Rémunération des stagiaires (REMSTA) Protection sociale des stagiaires (PROSTA) Accueil Fiches Carrière Stage et titularisation Les congés des fonctionnaires stagiaires (CONSTA) Les congés des fonctionnaires stagiaires CONSTA Télécharger Imprimer Ajouter S'abonner I. Les congés avec traitement II. Les congés sans traitement III. Les effets des congés sur la date de fin de stage IV. La prise en compte des congés pour le classement, l'avancement et la retraite Pour connaître les généralités sur le..."
+    content: "Rémunération des stagiaires (REMSTA) Protection sociale des stagiaires (PROSTA) Accueil Fiches Carrière Stage et titularisation Les congés des fonctionnaires stagiaires (CONSTA) Les congés des fonctionnaires stagiaires CONSTA I. Les congés avec traitement II. Les congés sans traitement III. Les effets des congés sur la date de fin de stage IV. La prise en compte des congés pour le classement, l'avancement et la retraite Pour connaître les généralités sur les congés de maladie, -voir CONMAL. Sur..."
   },
   {
     id: "bip_finsta",
@@ -820,7 +820,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:26.941138",
     type: "carriere",
-    content: "Protection sociale des stagiaires (PROSTA) Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST) Accueil Fiches Carrière Stage et titularisation Fin du stage (FINSTA) Fin du stage FINSTA Télécharger Imprimer Ajouter S'abonner I. Titularisation II. Prolongation du stage à l'initiative de l'autorité territoriale III. Radiation à l'initiative de l'autorité territoriale et ses effets IV. Démission du stagiaire V. Décès du stagiaire La présente fiche traite des principes généraux..."
+    content: "Protection sociale des stagiaires (PROSTA) Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST) Accueil Fiches Carrière Stage et titularisation Fin du stage (FINSTA) Fin du stage FINSTA I. Titularisation II. Prolongation du stage à l'initiative de l'autorité territoriale III. Radiation à l'initiative de l'autorité territoriale et ses effets IV. Démission du stagiaire V. Décès du stagiaire La présente fiche traite des principes généraux relatifs aux événements marquant la fi..."
   },
   {
     id: "bip_prosta",
@@ -833,7 +833,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:32.244126",
     type: "carriere",
-    content: "Les congés des fonctionnaires stagiaires (CONSTA) Fin du stage (FINSTA) Accueil Fiches Carrière Stage et titularisation Protection sociale des stagiaires (PROSTA) Protection sociale des stagiaires PROSTA Télécharger Imprimer Ajouter S'abonner I. Régime de sécurité sociale II. Régime de retraite Les stagiaires bénéficient d'un régime de sécurité sociale spécial prévu par le décr. n°77-812 du 13 juil. 1977. Ils ne dépendent donc pas du régime général de sécurité sociale, sous réserve des règles re..."
+    content: "Les congés des fonctionnaires stagiaires (CONSTA) Fin du stage (FINSTA) Accueil Fiches Carrière Stage et titularisation Protection sociale des stagiaires (PROSTA) Protection sociale des stagiaires PROSTA I. Régime de sécurité sociale II. Régime de retraite Les stagiaires bénéficient d'un régime de sécurité sociale spécial prévu par le décr. n°77-812 du 13 juil. 1977. Ils ne dépendent donc pas du régime général de sécurité sociale, sous réserve des règles relatives aux stagiaires à temps non comp..."
   },
   {
     id: "bip_stagen",
@@ -841,12 +841,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "Stage : généralités",
     motsCles: ["stage","caa","nes","remsta","dispense","stagia","iii","nomination","classement","prolongation","stagen","généralités","congé","congés","rémunération","santé","recrutement","candidats","concours","promotion"],
     source: "bip",
-    resume: "Stagiaires (STAGIA) Accueil Fiches Carrière Stage et titularisation Stage : généralités (STAGEN) Stage : généralités STAGEN Télécharger Imprimer Ajout...",
+    resume: "Stagiaires (STAGIA) Accueil Fiches Carrière Stage et titularisation Stage : généralités (STAGEN) Stage : généralités STAGEN I. Nomination au stage II....",
     localPath: "/bip/output/bip_fiches_rag_carriere_20260227_140229/carriere_stage-et-titularisation_stagen.md",
     section: "carriere",
     timestamp: "2026-02-27T14:01:37.344990",
     type: "carriere",
-    content: "Stagiaires (STAGIA) Accueil Fiches Carrière Stage et titularisation Stage : généralités (STAGEN) Stage : généralités STAGEN Télécharger Imprimer Ajouter S'abonner I. Nomination au stage II. Classement III. Durée du stage et prolongation IV. Dispense de stage Cette fiche présente les dispositions applicables en matière de stage, période probatoire au cours de laquelle l'aptitude à l'exercice des fonctions est vérifiée, avant une éventuelle titularisation. Le stage est prévu dans les statuts parti..."
+    content: "Stagiaires (STAGIA) Accueil Fiches Carrière Stage et titularisation Stage : généralités (STAGEN) Stage : généralités STAGEN I. Nomination au stage II. Classement III. Durée du stage et prolongation IV. Dispense de stage Cette fiche présente les dispositions applicables en matière de stage, période probatoire au cours de laquelle l'aptitude à l'exercice des fonctions est vérifiée, avant une éventuelle titularisation. Le stage est prévu dans les statuts particuliers des cadres d'emplois avec, parf..."
   },
   {
     id: "bip_stagia",
@@ -859,7 +859,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:42.469351",
     type: "carriere",
-    content: "Stage : généralités (STAGEN) Rémunération des stagiaires (REMSTA) Accueil Fiches Carrière Stage et titularisation Stagiaires (STAGIA) Stagiaires STAGIA Télécharger Imprimer Ajouter S'abonner I. Qu'est-ce qu'un fonctionnaire stagiaire ? II. Particularités de cette situation III. Formation IV. Discipline I. QU'EST-CE QU'UN FONCTIONNAIRE STAGIAIRE ? Est fonctionnaire territorial stagiaire, la personne qui (art. R. 327-1 code général de la fonction publique) : - est nommée dans un emploi permanent -..."
+    content: "Stage : généralités (STAGEN) Rémunération des stagiaires (REMSTA) Accueil Fiches Carrière Stage et titularisation Stagiaires (STAGIA) Stagiaires STAGIA I. Qu'est-ce qu'un fonctionnaire stagiaire ? II. Particularités de cette situation III. Formation IV. Discipline I. QU'EST-CE QU'UN FONCTIONNAIRE STAGIAIRE ? Est fonctionnaire territorial stagiaire, la personne qui (art. R. 327-1 code général de la fonction publique) : - est nommée dans un emploi permanent - accomplit les fonctions afférentes à c..."
   },
   {
     id: "bip_titgen",
@@ -872,7 +872,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:47.661002",
     type: "carriere",
-    content: "Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST) Accueil Fiches Carrière Stage et titularisation Titularisation : généralités (TITGEN) Titularisation : généralités TITGEN Télécharger Imprimer Ajouter S'abonner I. DEFINITION II. MODALITES III. REFUS DE TITULARISATION IV. CAS PARTICULIER DES AGENTS CONTRACTUELS V. EXCLUSIONS VI. DELAI ENTRE TITULARISATION ET MUTATION I. DEFINITION La titularisation est la décision qui confère à un agent la qualité de fonctionnaire, après..."
+    content: "Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST) Accueil Fiches Carrière Stage et titularisation Titularisation : généralités (TITGEN) Titularisation : généralités TITGEN I. DEFINITION II. MODALITES III. REFUS DE TITULARISATION IV. CAS PARTICULIER DES AGENTS CONTRACTUELS V. EXCLUSIONS VI. DELAI ENTRE TITULARISATION ET MUTATION I. DEFINITION La titularisation est la décision qui confère à un agent la qualité de fonctionnaire, après sa nomination dans un emploi permanent..."
   },
   {
     id: "bip_cpacpf",
@@ -885,7 +885,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:52.812753",
     type: "carriere",
-    content: "Formation : généralités (FORGEN) Formation obligatoire des fonctionnaires (FOROBL) Accueil Fiches Droits et obligations Droits et garanties Formation Le compte personnel d’activité (CPF et CEC) (CPACPF) Le compte personnel d’activité (CPF et CEC) CPACPF Télécharger Imprimer Ajouter S'abonner I. Le compte personnel d'activité (CPA) : principes généraux II. Le compte personnel de formation (CPF) III. Le compte d'engagement citoyen (CEC) I. LE COMPTE PERSONNEL D'ACTIVITÉ (CPA) : PRINCIPES GÉNÉRAUX..."
+    content: "Formation : généralités (FORGEN) Formation obligatoire des fonctionnaires (FOROBL) Accueil Fiches Droits et obligations Droits et garanties Formation Le compte personnel d’activité (CPF et CEC) (CPACPF) Le compte personnel d’activité (CPF et CEC) CPACPF I. Le compte personnel d'activité (CPA) : principes généraux II. Le compte personnel de formation (CPF) III. Le compte d'engagement citoyen (CEC) I. LE COMPTE PERSONNEL D'ACTIVITÉ (CPA) : PRINCIPES GÉNÉRAUX ◈ Objectifs : Les agents publics bénéfi..."
   },
   {
     id: "bip_forfac",
@@ -898,7 +898,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:01:57.950042",
     type: "carriere",
-    content: "Formation obligatoire des fonctionnaires (FOROBL) Formation des agents contractuels (NTIFOR) Accueil Fiches Droits et obligations Droits et garanties Formation Formation facultative des fonctionnaires (FORFAC) Formation facultative des fonctionnaires FORFAC Télécharger Imprimer Ajouter S'abonner I. PRINCIPES GENERAUX II. LE COMPTE PERSONNEL DE FORMATION III. FORMATION PERSONNELLE IV. LE CONGE DE TRANSITION PROFESSIONNELLE V. LUTTE CONTRE L'ILLETTRISME ET APPRENTISSAGE DE LA LANGUE FRANCAISE Cett..."
+    content: "Formation obligatoire des fonctionnaires (FOROBL) Formation des agents contractuels (NTIFOR) Accueil Fiches Droits et obligations Droits et garanties Formation Formation facultative des fonctionnaires (FORFAC) Formation facultative des fonctionnaires FORFAC I. PRINCIPES GENERAUX II. LE COMPTE PERSONNEL DE FORMATION III. FORMATION PERSONNELLE IV. LE CONGE DE TRANSITION PROFESSIONNELLE V. LUTTE CONTRE L'ILLETTRISME ET APPRENTISSAGE DE LA LANGUE FRANCAISE Cette fiche présente les dispositions en vi..."
   },
   {
     id: "bip_forgen",
@@ -911,7 +911,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:02:03.593989",
     type: "carriere",
-    content: "Le compte personnel d’activité (CPF et CEC) (CPACPF) Accueil Fiches Droits et obligations Droits et garanties Formation Formation : généralités (FORGEN) Formation : généralités FORGEN Télécharger Imprimer Ajouter S'abonner I. PRINCIPES GENERAUX II. FORMATION OBLIGATOIRE III. FORMATION NON OBLIGATOIRE IV. FORMATION RENFORCEE POUR CERTAINS AGENTS PUBLICS V. ACCOMPAGNEMENT DANS LES PROJETS D'EVOLUTION PROFESSIONNELLE Cette fiche présente les conditions générales de formation des agents territoriaux..."
+    content: "Le compte personnel d’activité (CPF et CEC) (CPACPF) Accueil Fiches Droits et obligations Droits et garanties Formation Formation : généralités (FORGEN) Formation : généralités FORGEN I. PRINCIPES GENERAUX II. FORMATION OBLIGATOIRE III. FORMATION NON OBLIGATOIRE IV. FORMATION RENFORCEE POUR CERTAINS AGENTS PUBLICS V. ACCOMPAGNEMENT DANS LES PROJETS D'EVOLUTION PROFESSIONNELLE Cette fiche présente les conditions générales de formation des agents territoriaux ; les dispositions applicables sont dé..."
   },
   {
     id: "bip_forobl",
@@ -924,33 +924,33 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:02:08.679599",
     type: "carriere",
-    content: "Le compte personnel d’activité (CPF et CEC) (CPACPF) Formation facultative des fonctionnaires (FORFAC) Accueil Fiches Droits et obligations Droits et garanties Formation Formation obligatoire des fonctionnaires (FOROBL) Formation obligatoire des fonctionnaires FOROBL Télécharger Imprimer Ajouter S'abonner I. PRINCIPES GENERAUX II. FORMATION D'INTEGRATION III. FORMATION DE PROFESSIONNALISATION IV. DISPENSES V. OBLIGATIONS LIEES AU SUIVI DE LA FORMATION Cette fiche présente le cadre général de la..."
+    content: "Le compte personnel d’activité (CPF et CEC) (CPACPF) Formation facultative des fonctionnaires (FORFAC) Accueil Fiches Droits et obligations Droits et garanties Formation Formation obligatoire des fonctionnaires (FOROBL) Formation obligatoire des fonctionnaires FOROBL I. PRINCIPES GENERAUX II. FORMATION D'INTEGRATION III. FORMATION DE PROFESSIONNALISATION IV. DISPENSES V. OBLIGATIONS LIEES AU SUIVI DE LA FORMATION Cette fiche présente le cadre général de la formation obligatoire des fonctionnaire..."
   },
   {
     id: "bip_lidige",
     code: "lidige",
     titre: "Les lignes directrices de gestion",
-    motsCles: ["ldg","lignes","gestion","directrices","rsubds","lidige","iii","promotion","comité","comités","definition","elaboration","opposabilite","cst","congé","congés","prime","arrêt","recrutement","candidat"],
+    motsCles: ["ldg","lignes","gestion","directrices","rsubds","lidige","iii","promotion","comité","comités","definition","elaboration","opposabilite","cst","congé","congés","arrêt","recrutement","candidat","candidats"],
     source: "bip",
     resume: "Le rapport social unique et la base de données sociales (RSUBDS) Accueil Fiches Organisation et organes de la FPT Les lignes directrices de gestion Le...",
     localPath: "/bip/output/bip_fiches_rag_carriere_20260227_140229/organisation-et-organes-de-la-fpt_les-lignes-directrices-de-gestion_lidige.md",
     section: "carriere",
     timestamp: "2026-02-27T14:02:13.804795",
     type: "carriere",
-    content: "Le rapport social unique et la base de données sociales (RSUBDS) Accueil Fiches Organisation et organes de la FPT Les lignes directrices de gestion Les lignes directrices de gestion (LIDIGE) Les lignes directrices de gestion LIDIGE Télécharger Imprimer Ajouter S'abonner I. DEFINITION DES LIGNES DIRECTRICES DE GESTION II. ELABORATION DES LIGNES DIRECTRICES DE GESTION III. OPPOSABILITE DES LIGNES DIRECTRICES DE GESTION Les lignes directrices de gestion sont un instrument juridique de gestion des r..."
+    content: "Le rapport social unique et la base de données sociales (RSUBDS) Accueil Fiches Organisation et organes de la FPT Les lignes directrices de gestion Les lignes directrices de gestion (LIDIGE) Les lignes directrices de gestion LIDIGE I. DEFINITION DES LIGNES DIRECTRICES DE GESTION II. ELABORATION DES LIGNES DIRECTRICES DE GESTION III. OPPOSABILITE DES LIGNES DIRECTRICES DE GESTION Les lignes directrices de gestion sont un instrument juridique de gestion des ressources humaines créé par la loi n°20..."
   },
   {
     id: "bip_acchan",
     code: "acchan",
     titre: "Accompagnement des agents en situation de handicap",
-    motsCles: ["handicap","accompagnement","formation","referent","l’emploi","acchan","situation","congé","portabilite","equipements","oblemp","iii","rémunération","traitement","prime","santé","licenciement","carrière","promotion","syndical"],
+    motsCles: ["handicap","accompagnement","formation","referent","l’emploi","acchan","situation","congé","portabilite","equipements","oblemp","iii","rémunération","traitement","santé","licenciement","carrière","promotion","syndical","syndicale"],
     source: "bip",
     resume: "L'obligation d'emploi des travailleurs en situation de handicap (OBLEMP) Promotion par voie de détachement des agents en situation de handicap (expéri...",
     localPath: "/bip/output/bip_fiches_rag_carriere_20260227_140229/personnes-en-situation-de-handicap_acchan.md",
     section: "carriere",
     timestamp: "2026-02-27T14:02:19.528525",
     type: "carriere",
-    content: "L'obligation d'emploi des travailleurs en situation de handicap (OBLEMP) Promotion par voie de détachement des agents en situation de handicap (expérimentation) (PROHAN) Accueil Fiches Personnes en situation de handicap Accompagnement des agents en situation de handicap (ACCHAN) Accompagnement des agents en situation de handicap ACCHAN Télécharger Imprimer Ajouter S'abonner I. ACCOMPAGNEMENT DANS L’EMPLOI ET FORMATION II. REFERENT HANDICAP III. PORTABILITE DES EQUIPEMENTS Cette fiche présente le..."
+    content: "L'obligation d'emploi des travailleurs en situation de handicap (OBLEMP) Promotion par voie de détachement des agents en situation de handicap (expérimentation) (PROHAN) Accueil Fiches Personnes en situation de handicap Accompagnement des agents en situation de handicap (ACCHAN) Accompagnement des agents en situation de handicap ACCHAN I. ACCOMPAGNEMENT DANS L’EMPLOI ET FORMATION II. REFERENT HANDICAP III. PORTABILITE DES EQUIPEMENTS Cette fiche présente les mesures destinées à favoriser l’accom..."
   },
   {
     id: "bip_prohan",
@@ -963,7 +963,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:02:24.557484",
     type: "carriere",
-    content: "Accompagnement des agents en situation de handicap (ACCHAN) Accueil Fiches Personnes en situation de handicap Promotion par voie de détachement des agents en situation de handicap (expérimentation) (PROHAN) Promotion par voie de détachement des agents en situation de handicap (expérimentation) PROHAN Télécharger Imprimer Ajouter S'abonner I. Présentation du dispositif II. Bénéficiaires III. Procédure à suivre IV. Déroulement de la période de détachement V. Situation de l’agent à l’issue du détac..."
+    content: "Accompagnement des agents en situation de handicap (ACCHAN) Accueil Fiches Personnes en situation de handicap Promotion par voie de détachement des agents en situation de handicap (expérimentation) (PROHAN) Promotion par voie de détachement des agents en situation de handicap (expérimentation) PROHAN I. Présentation du dispositif II. Bénéficiaires III. Procédure à suivre IV. Déroulement de la période de détachement V. Situation de l’agent à l’issue du détachement VI. Présentation du bilan de l’e..."
   },
   {
     id: "bip_remsta",
@@ -976,7 +976,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "carriere",
     timestamp: "2026-02-27T14:02:29.627492",
     type: "carriere",
-    content: "Agents contractuels : rémunération (NTIREM) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : catégories particulières d'agents Rémunération des stagiaires (REMSTA) Rémunération des stagiaires REMSTA Télécharger Imprimer Ajouter S'abonner I. CADRES D'EMPLOIS DE CATEGORIE A II. CADRES D'EMPLOIS DE CATEGORIE B III. CADRES D'EMPLOIS DE CATEGORIE C IV. ELEMENTS OBLIGATOIRES ACCESSOIRES AU..."
+    content: "Agents contractuels : rémunération (NTIREM) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : catégories particulières d'agents Rémunération des stagiaires (REMSTA) Rémunération des stagiaires REMSTA I. CADRES D'EMPLOIS DE CATEGORIE A II. CADRES D'EMPLOIS DE CATEGORIE B III. CADRES D'EMPLOIS DE CATEGORIE C IV. ELEMENTS OBLIGATOIRES ACCESSOIRES AU TRAITEMENT V. ELEMENTS FACULTATIFS ACC..."
   },
   {
     id: "bip_meccom",
@@ -989,7 +989,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:55:28.189809",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Mise à disposition d'une organisation syndicale (DISSYN) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition Mécénat de compétences (mise à disposition de fonctionnaires) (MECCOM) Mécénat de compétences (mise à disposition de fonctionnaires) MECCOM Télécharger Imprimer Ajouter S'abonner I. EXPERIMENTATION DU MECENAT DE COMPETENCES DANS LA FONCTION PUBLIQUE II. LES ACTEURS CONCERNES PAR LE MECENAT DE COMPETENCES III. MISE EN OEUVRE DE LA MISE A DISPOSITION DA..."
+    content: "Mise à disposition d'une organisation syndicale (DISSYN) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition Mécénat de compétences (mise à disposition de fonctionnaires) (MECCOM) Mécénat de compétences (mise à disposition de fonctionnaires) MECCOM I. EXPERIMENTATION DU MECENAT DE COMPETENCES DANS LA FONCTION PUBLIQUE II. LES ACTEURS CONCERNES PAR LE MECENAT DE COMPETENCES III. MISE EN OEUVRE DE LA MISE A DISPOSITION DANS LE CADRE D'UN MECENAT DE COMPETENCES..."
   },
   {
     id: "bip_misdis",
@@ -1002,7 +1002,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:55:33.503532",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Mise à disposition d'une organisation syndicale (DISSYN) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition La mise à disposition (MISDIS) La mise à disposition MISDIS Télécharger Imprimer Ajouter S'abonner I. Les agents concernés II. Les conditions de mise à disposition des fonctionnaires territoriaux III. La mise à disposition des agents contractuels IV. La mise à disposition de personnels de droit privé Sont exposées dans cette fiche les modalités généra..."
+    content: "Mise à disposition d'une organisation syndicale (DISSYN) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition La mise à disposition (MISDIS) La mise à disposition MISDIS I. Les agents concernés II. Les conditions de mise à disposition des fonctionnaires territoriaux III. La mise à disposition des agents contractuels IV. La mise à disposition de personnels de droit privé Sont exposées dans cette fiche les modalités générales de mise à disposition ; ne sont pas..."
   },
   {
     id: "bip_teltra",
@@ -1010,12 +1010,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "Le télétravail",
     motsCles: ["mise","oeuvre","dgafp","télétravail","faq","champ","fin","periode","situation","teletravail","teltra","santé","formation","comité","conditions","fonctions","definition","d'application","modalites","procedure"],
     source: "bip",
-    resume: "Accueil Fiches Conditions d'exercice des fonctions et durée du travail Télétravail Le télétravail (TELTRA) Le télétravail TELTRA Télécharger Imprimer ...",
+    resume: "Accueil Fiches Conditions d'exercice des fonctions et durée du travail Télétravail Le télétravail (TELTRA) Le télétravail TELTRA I. DEFINITION ET CHAM...",
     localPath: "/bip/output/bip_fiches_rag_conditions-d-exercice-des-fonctions-et-duree-du-travail_20260227_135728/conditions-d-exercice-des-fonctions-et-duree-du-travail_teletravail_teltra.md",
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:55:38.631983",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Accueil Fiches Conditions d'exercice des fonctions et durée du travail Télétravail Le télétravail (TELTRA) Le télétravail TELTRA Télécharger Imprimer Ajouter S'abonner I. DEFINITION ET CHAMP D'APPLICATION II. MODALITES DE MISE EN OEUVRE III. PROCEDURE DE MISE EN OEUVRE IV. SITUATION DES AGENTS TELETRAVAILLEURS V. FIN DE LA PERIODE DE TELETRAVAIL La possibilité de recourir au télétravail dans la fonction publique est prévue par les art. L. 430-1 code général de la fonction publique et suivants. L..."
+    content: "Accueil Fiches Conditions d'exercice des fonctions et durée du travail Télétravail Le télétravail (TELTRA) Le télétravail TELTRA I. DEFINITION ET CHAMP D'APPLICATION II. MODALITES DE MISE EN OEUVRE III. PROCEDURE DE MISE EN OEUVRE IV. SITUATION DES AGENTS TELETRAVAILLEURS V. FIN DE LA PERIODE DE TELETRAVAIL La possibilité de recourir au télétravail dans la fonction publique est prévue par les art. L. 430-1 code général de la fonction publique et suivants. Le décret n°2016-151 du 11 février 2016..."
   },
   {
     id: "bip_tempar",
@@ -1028,7 +1028,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:55:43.740178",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Temps partiel : effets (TEPAEF) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Temps partiel Service à temps partiel (TEMPAR) Service à temps partiel TEMPAR Télécharger Imprimer Ajouter S'abonner I. Bénéficiaires II. Organisation du service à temps partiel III. Suspension, modification et fin Cette fiche présente les principes généraux en matière d'exercice des fonctions à temps partiel ; elle est complétée par la fiche TEPAEF, qui expose les effets du temps partiel sur l..."
+    content: "Temps partiel : effets (TEPAEF) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Temps partiel Service à temps partiel (TEMPAR) Service à temps partiel TEMPAR I. Bénéficiaires II. Organisation du service à temps partiel III. Suspension, modification et fin Cette fiche présente les principes généraux en matière d'exercice des fonctions à temps partiel ; elle est complétée par la fiche TEPAEF, qui expose les effets du temps partiel sur la situation de l'agent. Elle ne présent..."
   },
   {
     id: "bip_tepaef",
@@ -1041,7 +1041,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:55:48.822246",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Service à temps partiel (TEMPAR) Temps partiel thérapeutique (TEMTHE) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Temps partiel Temps partiel : effets (TEPAEF) Temps partiel : effets TEPAEF Télécharger Imprimer Ajouter S'abonner I. STAGE II. REMUNERATION III. REGLES DE CUMUL IV. CONGES V. CARRIERE ET FORMATION VI. PROTECTION SOCIALE Les fonctionnaires titulaires et stagiaires, ainsi que les agents contractuels, peuvent, s'ils remplissent les conditions exigées, être au..."
+    content: "Service à temps partiel (TEMPAR) Temps partiel thérapeutique (TEMTHE) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Temps partiel Temps partiel : effets (TEPAEF) Temps partiel : effets TEPAEF I. STAGE II. REMUNERATION III. REGLES DE CUMUL IV. CONGES V. CARRIERE ET FORMATION VI. PROTECTION SOCIALE Les fonctionnaires titulaires et stagiaires, ainsi que les agents contractuels, peuvent, s'ils remplissent les conditions exigées, être autorisés à accomplir leur service à temp..."
   },
   {
     id: "bip_dissyn",
@@ -1054,7 +1054,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:55:55.465962",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Décharges d'activité de service pour activités syndicales (DECACT) Congé pour formation syndicale (COFOSY) Accueil Fiches Droits et obligations Droits et garanties Droit syndical Mise à disposition d'une organisation syndicale (DISSYN) Mise à disposition d'une organisation syndicale DISSYN Télécharger Imprimer Ajouter S'abonner I. DEFINITION II. CONTINGENT III. REPARTITION ENTRE LES ORGANISATIONS SYNDICALES IV. PROCEDURE V. SITUATION DES AGENTS MIS A DISPOSITION VI. FIN DE LA MISE A DISPOSITION..."
+    content: "Décharges d'activité de service pour activités syndicales (DECACT) Congé pour formation syndicale (COFOSY) Accueil Fiches Droits et obligations Droits et garanties Droit syndical Mise à disposition d'une organisation syndicale (DISSYN) Mise à disposition d'une organisation syndicale DISSYN I. DEFINITION II. CONTINGENT III. REPARTITION ENTRE LES ORGANISATIONS SYNDICALES IV. PROCEDURE V. SITUATION DES AGENTS MIS A DISPOSITION VI. FIN DE LA MISE A DISPOSITION I. DEFINITION La mise à disposition con..."
   },
   {
     id: "bip_cumeac",
@@ -1067,7 +1067,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:02.621003",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Activités privées et déontologie (ACPRIN) Déontologie et obligations (DEOBLI) Accueil Fiches Droits et obligations Obligations et responsabilités Cumul d'activités (CUMEAC) Cumul d'activités CUMEAC Télécharger Imprimer Ajouter S'abonner I. CADRE GENERAL II. EXERCICE D'ACTIVITES DIVERSES SANS AUTORISATION PREALABLE III. ACTIVITES PRIVEES SOUMISES A UNE SIMPLE DECLARATION IV. EXERCICE D'ACTIVITES ACCESSOIRES SUR AUTORISATION V. CREATION OU REPRISE D’UNE ENTREPRISE Pour des informations sur les act..."
+    content: "Activités privées et déontologie (ACPRIN) Déontologie et obligations (DEOBLI) Accueil Fiches Droits et obligations Obligations et responsabilités Cumul d'activités (CUMEAC) Cumul d'activités CUMEAC I. CADRE GENERAL II. EXERCICE D'ACTIVITES DIVERSES SANS AUTORISATION PREALABLE III. ACTIVITES PRIVEES SOUMISES A UNE SIMPLE DECLARATION IV. EXERCICE D'ACTIVITES ACCESSOIRES SUR AUTORISATION V. CREATION OU REPRISE D’UNE ENTREPRISE Pour des informations sur les activités privées et la déontologie, -voir..."
   },
   {
     id: "bip_canoco",
@@ -1080,7 +1080,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:08.049501",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions (PONOCO) Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Fonctionnaires occupant un emploi à temps non complet : carrière CANOCO Télécharger Imprimer Ajouter S'abonner I. STAGE ET TITULARISATION II. ENTRETIEN PROFESSIONNEL III. AVANCEMENT ET PROMOTION IN..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions (PONOCO) Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Fonctionnaires occupant un emploi à temps non complet : carrière CANOCO I. STAGE ET TITULARISATION II. ENTRETIEN PROFESSIONNEL III. AVANCEMENT ET PROMOTION INTERNE IV. DISCIPLINE V. FORMATION VI. M..."
   },
   {
     id: "bip_cenoco",
@@ -1093,7 +1093,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:13.138410",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Fonctionnaires occupant un emploi à temps non complet : protection sociale (SONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions (CENOCO) Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions CENOCO Télécharger Imprimer Ajouter S'abonner I. LICENCIEMENT POUR INSUFFISANCE PROFESSIONNELLE II. LICENCIEMENT POUR INAPTITUDE PHYSIQUE III. SUPPRESSION D’EMPLOI IV. RETRAITE V. AUTRES CAS Cette fiche pré..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : protection sociale (SONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions (CENOCO) Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions CENOCO I. LICENCIEMENT POUR INSUFFISANCE PROFESSIONNELLE II. LICENCIEMENT POUR INAPTITUDE PHYSIQUE III. SUPPRESSION D’EMPLOI IV. RETRAITE V. AUTRES CAS Cette fiche présente les conditions de cessation des f..."
   },
   {
     id: "bip_conoco",
@@ -1106,7 +1106,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:18.318898",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : congés CONOCO Télécharger Imprimer Ajouter S'abonner I. CONGES ANNUELS II. CONGES LIES A L'ARRIVEE D'UN ENFANT AU FOYER III. CONGES DE MALADIE IV. SITUATION DU FONCTIONNAIRE A T..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : congés CONOCO I. CONGES ANNUELS II. CONGES LIES A L'ARRIVEE D'UN ENFANT AU FOYER III. CONGES DE MALADIE IV. SITUATION DU FONCTIONNAIRE A TEMPS NON COMPLET RELEVANT DU REGIME GEN..."
   },
   {
     id: "bip_fonoco",
@@ -1119,33 +1119,33 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:23.440454",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Fonctionnaires occupant un emploi à temps non complet : intégration (INNOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : généralités (FONOCO) Fonctionnaires occupant un emploi à temps non complet : généralités FONOCO Télécharger Imprimer Ajouter S'abonner I. DEFINITION ET CREATION DES EMPLOIS A TEMPS NON COMPLET II. RECRUTEMENT DANS LES EMPLOIS A TEMPS NON COMPLET III. CONDITIONS DE CUMUL IV. STATUT DES FONCTIONNAIRES Cette fiche présente le..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : intégration (INNOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : généralités (FONOCO) Fonctionnaires occupant un emploi à temps non complet : généralités FONOCO I. DEFINITION ET CREATION DES EMPLOIS A TEMPS NON COMPLET II. RECRUTEMENT DANS LES EMPLOIS A TEMPS NON COMPLET III. CONDITIONS DE CUMUL IV. STATUT DES FONCTIONNAIRES Cette fiche présente les principes généraux applicables aux em..."
   },
   {
     id: "bip_innoco",
     code: "innoco",
     titre: "Fonctionnaires occupant un emploi à temps non complet : intégration",
-    motsCles: ["principe","general","innoco","occupant","complet","intégration","conditions","d’integration","non","rémunération","prime","arrêt","recrutement","promotion","fiches","plusieurs","correspondant","intégré","d’emplois","décr"],
+    motsCles: ["principe","general","innoco","occupant","complet","intégration","conditions","d’integration","non","rémunération","arrêt","recrutement","promotion","fiches","plusieurs","correspondant","intégré","d’emplois","décr","n°91"],
     source: "bip",
     resume: "Fonctionnaires occupant un emploi à temps non complet : généralités (FONOCO) Fonctionnaires occupant un emploi à temps non complet : positions et cond...",
     localPath: "/bip/output/bip_fiches_rag_conditions-d-exercice-des-fonctions-et-duree-du-travail_20260227_135728/emplois-a-temps-non-complet_innoco.md",
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:28.542206",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Fonctionnaires occupant un emploi à temps non complet : généralités (FONOCO) Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions (PONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : intégration (INNOCO) Fonctionnaires occupant un emploi à temps non complet : intégration INNOCO Télécharger Imprimer Ajouter S'abonner I. PRINCIPE GENERAL II. CAS D’INTEGRATION I. PRINCIPE GENERAL Le fonctionna..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : généralités (FONOCO) Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions (PONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : intégration (INNOCO) Fonctionnaires occupant un emploi à temps non complet : intégration INNOCO I. PRINCIPE GENERAL II. CAS D’INTEGRATION I. PRINCIPE GENERAL Le fonctionnaire occupant un ou plusieurs emplois à..."
   },
   {
     id: "bip_ponoco",
     code: "ponoco",
     titre: "Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions",
-    motsCles: ["cadre","parental","conditions","fonctions","general","activite","conge","ponoco","occupant","complet","positions","d’exercice","congé","congés","disponibilite","detachement","iii","non","indemnité","prime"],
+    motsCles: ["cadre","parental","conditions","fonctions","general","activite","conge","ponoco","occupant","complet","positions","d’exercice","congé","congés","disponibilite","detachement","iii","non","indemnité","santé"],
     source: "bip",
     resume: "Fonctionnaires occupant un emploi à temps non complet : intégration (INNOCO) Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO)...",
     localPath: "/bip/output/bip_fiches_rag_conditions-d-exercice-des-fonctions-et-duree-du-travail_20260227_135728/emplois-a-temps-non-complet_ponoco.md",
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:34.544885",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Fonctionnaires occupant un emploi à temps non complet : intégration (INNOCO) Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions (PONOCO) Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions PONOCO Télécharger Imprimer Ajouter S'abonner I. CADRE GENERAL II. ACTIVITE III. DISPON..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : intégration (INNOCO) Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions (PONOCO) Fonctionnaires occupant un emploi à temps non complet : positions et conditions d’exercice des fonctions PONOCO I. CADRE GENERAL II. ACTIVITE III. DISPONIBILITE IV. DETACHEMENT V. CONGE PARENT..."
   },
   {
     id: "bip_renoco",
@@ -1158,7 +1158,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:39.626748",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : protection sociale (SONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération RENOCO Télécharger Imprimer Ajouter S'abonner I. PRINCIPE GENERAL II. REMUNERATION PRINCIPALE III. PRIMES, INDEMNITES ET COMPLEMENTS DE REMUNERATION IV. P..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : protection sociale (SONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération RENOCO I. PRINCIPE GENERAL II. REMUNERATION PRINCIPALE III. PRIMES, INDEMNITES ET COMPLEMENTS DE REMUNERATION IV. PRELEVEMENTS OBLIGATOIRES Cette fiche pr..."
   },
   {
     id: "bip_sonoco",
@@ -1171,7 +1171,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:45.964366",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions (CENOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : protection sociale (SONOCO) Fonctionnaires occupant un emploi à temps non complet : protection sociale SONOCO Télécharger Imprimer Ajouter S'abonner I. RETRAITE II. REGIME DE SECURITE SOCIALE III. PROTECTION CONTRE LA MALADIE IV. PREST..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions (CENOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : protection sociale (SONOCO) Fonctionnaires occupant un emploi à temps non complet : protection sociale SONOCO I. RETRAITE II. REGIME DE SECURITE SOCIALE III. PROTECTION CONTRE LA MALADIE IV. PRESTATIONS V. ASSURANCE CHOMAGE Cette fiche..."
   },
   {
     id: "bip_duerp",
@@ -1184,7 +1184,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:52.101060",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Comités sociaux territoriaux et formations spécialisées : fonctionnement (CSTFON) Accueil Fiches Hygiène et sécurité Le document unique d’évaluation des risques professionnels (DUERP) Le document unique d’évaluation des risques professionnels DUERP Télécharger Imprimer Ajouter S'abonner I. L’ETABLISSEMENT DU DOCUMENT UNIQUE D’EVALUATION DES RISQUES PROFESSIONNELS II. LA MISE EN ŒUVRE DES ACTIONS DE PREVENTION III. LA PUBLICITE ET LA CONSERVATION DU DUERP IV. L’OBLIGATION DE MISE A JOUR DU DUERP..."
+    content: "Comités sociaux territoriaux et formations spécialisées : fonctionnement (CSTFON) Accueil Fiches Hygiène et sécurité Le document unique d’évaluation des risques professionnels (DUERP) Le document unique d’évaluation des risques professionnels DUERP I. L’ETABLISSEMENT DU DOCUMENT UNIQUE D’EVALUATION DES RISQUES PROFESSIONNELS II. LA MISE EN ŒUVRE DES ACTIONS DE PREVENTION III. LA PUBLICITE ET LA CONSERVATION DU DUERP IV. L’OBLIGATION DE MISE A JOUR DU DUERP V. CONSEQUENCES DE L’ABSENCE DE TRANSCR..."
   },
   {
     id: "bip_hygloc",
@@ -1197,7 +1197,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:56:59.974176",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Hygiène, sécurité et santé au travail : les moyens (HYGMOY) Formations spécialisées des comités sociaux territoriaux : généralités (FSPGEN) Accueil Fiches Hygiène et sécurité Hygiène, sécurité et santé au travail : les locaux et les équipements (HYGLOC) Hygiène, sécurité et santé au travail : les locaux et les équipements HYGLOC Télécharger Imprimer Ajouter S'abonner I. Aération et éclairage II. Ambiance thermique et prévention en cas de canicule III. Tabac, alcool et produits dérivés IV. Sécuri..."
+    content: "Hygiène, sécurité et santé au travail : les moyens (HYGMOY) Formations spécialisées des comités sociaux territoriaux : généralités (FSPGEN) Accueil Fiches Hygiène et sécurité Hygiène, sécurité et santé au travail : les locaux et les équipements (HYGLOC) Hygiène, sécurité et santé au travail : les locaux et les équipements HYGLOC I. Aération et éclairage II. Ambiance thermique et prévention en cas de canicule III. Tabac, alcool et produits dérivés IV. Sécurité sur le lieu de travail V. Aménagemen..."
   },
   {
     id: "bip_hygmoy",
@@ -1210,7 +1210,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:57:07.047072",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Hygiène, sécurité et santé au travail : les locaux et les équipements (HYGLOC) Accueil Fiches Hygiène et sécurité Hygiène, sécurité et santé au travail : les moyens (HYGMOY) Hygiène, sécurité et santé au travail : les moyens HYGMOY Télécharger Imprimer Ajouter S'abonner I. Organes et agents compétents II. Formations à l'hygiène et à la sécurité III. Droit de retrait IV. Les documents de sécurité Cette fiche présente les moyens mobilisables en matière d’hygiène, de sécurité et de conditions de tr..."
+    content: "Hygiène, sécurité et santé au travail : les locaux et les équipements (HYGLOC) Accueil Fiches Hygiène et sécurité Hygiène, sécurité et santé au travail : les moyens (HYGMOY) Hygiène, sécurité et santé au travail : les moyens HYGMOY I. Organes et agents compétents II. Formations à l'hygiène et à la sécurité III. Droit de retrait IV. Les documents de sécurité Cette fiche présente les moyens mobilisables en matière d’hygiène, de sécurité et de conditions de travail dans la fonction publique territo..."
   },
   {
     id: "bip_temthe",
@@ -1223,7 +1223,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:57:12.217823",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Reclassement Disponibilité d’office pour raisons de santé (DISOFF) Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Temps partiel thérapeutique (TEMTHE) Temps partiel thérapeutique TEMTHE Télécharger Imprimer Ajouter S'abonner I. Conditions d'octroi II. Procédure d'octroi III. Effets sur la situation de l'agent IV. Prolongation et fin du temps partiel thérapeutique V. Les agents relevant du régime général Le fonctionnaire en activité (titulaire ou stag..."
+    content: "Reclassement Disponibilité d’office pour raisons de santé (DISOFF) Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Temps partiel thérapeutique (TEMTHE) Temps partiel thérapeutique TEMTHE I. Conditions d'octroi II. Procédure d'octroi III. Effets sur la situation de l'agent IV. Prolongation et fin du temps partiel thérapeutique V. Les agents relevant du régime général Le fonctionnaire en activité (titulaire ou stagiaire) peut être autorisé à accomplir u..."
   },
   {
     id: "bip_cstfon",
@@ -1236,7 +1236,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
     timestamp: "2026-02-27T13:57:17.416483",
     type: "conditions-d-exercice-des-fonctions-et-duree-du-travail",
-    content: "Comités sociaux territoriaux : élections des représentants du personnel (CSTELE) Formations spécialisées des comités sociaux territoriaux : généralités (FSPGEN) Accueil Fiches Organisation et organes de la FPT Comités sociaux territoriaux Comités sociaux territoriaux et formations spécialisées : fonctionnement (CSTFON) Comités sociaux territoriaux et formations spécialisées : fonctionnement CSTFON Télécharger Imprimer Ajouter S'abonner I. PREPARATION DE LA SEANCE II. PRESIDENCE, SECRETARIAT, REG..."
+    content: "Comités sociaux territoriaux : élections des représentants du personnel (CSTELE) Formations spécialisées des comités sociaux territoriaux : généralités (FSPGEN) Accueil Fiches Organisation et organes de la FPT Comités sociaux territoriaux Comités sociaux territoriaux et formations spécialisées : fonctionnement (CSTFON) Comités sociaux territoriaux et formations spécialisées : fonctionnement CSTFON I. PREPARATION DE LA SEANCE II. PRESIDENCE, SECRETARIAT, REGLEMENT INTERIEUR III. PARTICIPATION AUX..."
   },
   {
     id: "bip_ntico1",
@@ -1249,7 +1249,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:53:50.960255",
     type: "conges-et-absences",
-    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Agents contractuels Congés des agents contractuels Agents contractuels : généralités sur les congés (NTICO1) Agents contractuels : généralités sur les congés NTICO1 Télécharger Imprimer Ajouter S'abonner I. Conditions générales d'octroi II. Conditions générales de réemploi III. Prise en compte de la durée des congés Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN. Cette fiche présente les principes gé..."
+    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Agents contractuels Congés des agents contractuels Agents contractuels : généralités sur les congés (NTICO1) Agents contractuels : généralités sur les congés NTICO1 I. Conditions générales d'octroi II. Conditions générales de réemploi III. Prise en compte de la durée des congés Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN. Cette fiche présente les principes généraux sur les congés des agents contra..."
   },
   {
     id: "bip_ntico2",
@@ -1275,7 +1275,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:01.832553",
     type: "conges-et-absences",
-    content: "Rémunération des stagiaires (REMSTA) Protection sociale des stagiaires (PROSTA) Accueil Fiches Carrière Stage et titularisation Les congés des fonctionnaires stagiaires (CONSTA) Les congés des fonctionnaires stagiaires CONSTA Télécharger Imprimer Ajouter S'abonner I. Les congés avec traitement II. Les congés sans traitement III. Les effets des congés sur la date de fin de stage IV. La prise en compte des congés pour le classement, l'avancement et la retraite Pour connaître les généralités sur le..."
+    content: "Rémunération des stagiaires (REMSTA) Protection sociale des stagiaires (PROSTA) Accueil Fiches Carrière Stage et titularisation Les congés des fonctionnaires stagiaires (CONSTA) Les congés des fonctionnaires stagiaires CONSTA I. Les congés avec traitement II. Les congés sans traitement III. Les effets des congés sur la date de fin de stage IV. La prise en compte des congés pour le classement, l'avancement et la retraite Pour connaître les généralités sur les congés de maladie, -voir CONMAL. Sur..."
   },
   {
     id: "bip_auabdi",
@@ -1288,7 +1288,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:06.909051",
     type: "conges-et-absences",
-    content: "Autorisations d'absence : participation aux organismes statutaires et autres (AUTORG) Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence diverses (AUABDI) Autorisations d'absence diverses AUABDI Télécharger Imprimer Ajouter S'abonner I. PARTICIPATION AUX FETES RELIGIEUSES II. FONCTIONNAIRES COHABITANT AVEC DES PERSONNES ATTEINTES DE MALADIE CONTAGIEUSE III. SURVEILLANCE MEDICALE IV. PARTICIPATION AUX JURYS D'ASSISES V. FONCTIONNAIRE ENGAGE EN TANT QUE SAPEUR-POMPIE..."
+    content: "Autorisations d'absence : participation aux organismes statutaires et autres (AUTORG) Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence diverses (AUABDI) Autorisations d'absence diverses AUABDI I. PARTICIPATION AUX FETES RELIGIEUSES II. FONCTIONNAIRES COHABITANT AVEC DES PERSONNES ATTEINTES DE MALADIE CONTAGIEUSE III. SURVEILLANCE MEDICALE IV. PARTICIPATION AUX JURYS D'ASSISES V. FONCTIONNAIRE ENGAGE EN TANT QUE SAPEUR-POMPIER VOLONTAIRE I. PARTICIPATION AUX FETES..."
   },
   {
     id: "bip_auabfa",
@@ -1301,7 +1301,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:12.037686",
     type: "conges-et-absences",
-    content: "Autorisations d'absence : généralités (AUTABS) Autorisations d'absence pour mandat syndical (AUABSY) Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence concernant la famille (AUABFA) Autorisations d'absence concernant la famille AUABFA Télécharger Imprimer Ajouter S'abonner I. Evénements familiaux II. Absences liées à la parentalité III. Décès d'un enfant Les agents publics, fonctionnaires et contractuels, bénéficient d’autorisations spéciales d’absence de droit à..."
+    content: "Autorisations d'absence : généralités (AUTABS) Autorisations d'absence pour mandat syndical (AUABSY) Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence concernant la famille (AUABFA) Autorisations d'absence concernant la famille AUABFA I. Evénements familiaux II. Absences liées à la parentalité III. Décès d'un enfant Les agents publics, fonctionnaires et contractuels, bénéficient d’autorisations spéciales d’absence de droit à l’occasion de certains événements liés..."
   },
   {
     id: "bip_autabs",
@@ -1314,7 +1314,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:17.120783",
     type: "conges-et-absences",
-    content: "Autorisations d'absence concernant la famille (AUABFA) Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence : généralités (AUTABS) Autorisations d'absence : généralités AUTABS Télécharger Imprimer Ajouter S'abonner I. Définition II. Différents types d'autorisations III. Incidence sur la situation du fonctionnaire I. DÉFINITION Les agents publics, fonctionnaires et contractuels, peuvent être autorisés à s'absenter de leur service dans un certain nombre de cas prévus p..."
+    content: "Autorisations d'absence concernant la famille (AUABFA) Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence : généralités (AUTABS) Autorisations d'absence : généralités AUTABS I. Définition II. Différents types d'autorisations III. Incidence sur la situation du fonctionnaire I. DÉFINITION Les agents publics, fonctionnaires et contractuels, peuvent être autorisés à s'absenter de leur service dans un certain nombre de cas prévus par la loi (art. L. 622-1 code général d..."
   },
   {
     id: "bip_autorg",
@@ -1327,7 +1327,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:22.656943",
     type: "conges-et-absences",
-    content: "Garanties accordées à l'agent candidat ou titulaire d'un mandat électif (GARELE) Autorisations d'absence diverses (AUABDI) Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence : participation aux organismes statutaires et autres (AUTORG) Autorisations d'absence : participation aux organismes statutaires et autres AUTORG Télécharger Imprimer Ajouter S'abonner I. ORGANISMES STATUTAIRES II. ORGANISMES MUTUALISTES III. CAISSES DE SECURITE SOCIALE ET D'ALLOCATIONS FAMILIA..."
+    content: "Garanties accordées à l'agent candidat ou titulaire d'un mandat électif (GARELE) Autorisations d'absence diverses (AUABDI) Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence : participation aux organismes statutaires et autres (AUTORG) Autorisations d'absence : participation aux organismes statutaires et autres AUTORG I. ORGANISMES STATUTAIRES II. ORGANISMES MUTUALISTES III. CAISSES DE SECURITE SOCIALE ET D'ALLOCATIONS FAMILIALES IV. OFFICES PUBLICS DE L'HABITAT V...."
   },
   {
     id: "bip_coepte",
@@ -1335,12 +1335,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "Compte épargne-temps",
     motsCles: ["cet","rafp","compte","droits","epargne","crds","absences","principe","epargnes","erafp","l’utilisation","coepte","épargne","csg","congé","congés","caa","cap","ccp","absence"],
     source: "bip",
-    resume: "Accueil Fiches Congés et absences Compte épargne temps Compte épargne-temps (COEPTE) Compte épargne-temps COEPTE Télécharger Imprimer Ajouter S'abonne...",
+    resume: "Accueil Fiches Congés et absences Compte épargne temps Compte épargne-temps (COEPTE) Compte épargne-temps COEPTE I. LE PRINCIPE DU COMPTE EPARGNE-TEMP...",
     localPath: "/bip/output/bip_fiches_rag_conges-et-absences_20260227_105453/conges-et-absences_compte-epargne-temps_coepte.md",
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:27.955704",
     type: "conges-et-absences",
-    content: "Accueil Fiches Congés et absences Compte épargne temps Compte épargne-temps (COEPTE) Compte épargne-temps COEPTE Télécharger Imprimer Ajouter S'abonner I. LE PRINCIPE DU COMPTE EPARGNE-TEMPS II. L’UTILISATION DES DROITS EPARGNES I. LE PRINCIPE DU COMPTE EPARGNE-TEMPS Le dispositif du compte épargne-temps (CET), réglementé par le décr. n°2004-878 du 26 août 2004, consiste à permettre à l’agent d’épargner des droits à congé, qu’il pourra utiliser ultérieurement sous différentes formes. L'instaurat..."
+    content: "Accueil Fiches Congés et absences Compte épargne temps Compte épargne-temps (COEPTE) Compte épargne-temps COEPTE I. LE PRINCIPE DU COMPTE EPARGNE-TEMPS II. L’UTILISATION DES DROITS EPARGNES I. LE PRINCIPE DU COMPTE EPARGNE-TEMPS Le dispositif du compte épargne-temps (CET), réglementé par le décr. n°2004-878 du 26 août 2004, consiste à permettre à l’agent d’épargner des droits à congé, qu’il pourra utiliser ultérieurement sous différentes formes. L'instauration du CET est obligatoire dans les col..."
   },
   {
     id: "bip_ntico3",
@@ -1353,20 +1353,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:33.050747",
     type: "conges-et-absences",
-    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Congés et absences Congés des agents contractuels Agents contractuels : les congés de maladie (NTICO3) Agents contractuels : les congés de maladie NTICO3 Télécharger Imprimer Ajouter S'abonner I. Le congé de maladie ordinaire II. Le congé de grave maladie III. Le congé pour accident du travail ou maladie professionnelle IV. Coordination entre traitement et prestations de la sécurité sociale V. Contrôle médical VI. Situation de..."
+    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Congés et absences Congés des agents contractuels Agents contractuels : les congés de maladie (NTICO3) Agents contractuels : les congés de maladie NTICO3 I. Le congé de maladie ordinaire II. Le congé de grave maladie III. Le congé pour accident du travail ou maladie professionnelle IV. Coordination entre traitement et prestations de la sécurité sociale V. Contrôle médical VI. Situation de l'agent après un congé de maladie Cett..."
   },
   {
     id: "bip_jofepo",
     code: "jofepo",
     titre: "Jours fériés et ponts",
-    motsCles: ["liste","feries","pont","annuel","absences","conge","jofepo","fériés","ponts","congé","remuneration","incidence","recuperation","iii","congés","absence","rémunération","prime","comité","temps partiel"],
+    motsCles: ["liste","feries","pont","annuel","absences","conge","jofepo","fériés","ponts","congé","remuneration","incidence","recuperation","iii","congés","absence","rémunération","comité","temps partiel","obligation"],
     source: "bip",
-    resume: "Accueil Fiches Congés et absences Jours fériés et ponts Jours fériés et ponts (JOFEPO) Jours fériés et ponts JOFEPO Télécharger Imprimer Ajouter S'abo...",
+    resume: "Accueil Fiches Congés et absences Jours fériés et ponts Jours fériés et ponts (JOFEPO) Jours fériés et ponts JOFEPO I. LISTE DES JOURS FERIES II. PONT...",
     localPath: "/bip/output/bip_fiches_rag_conges-et-absences_20260227_105453/conges-et-absences_jours-feries-et-ponts_jofepo.md",
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:38.114600",
     type: "conges-et-absences",
-    content: "Accueil Fiches Congés et absences Jours fériés et ponts Jours fériés et ponts (JOFEPO) Jours fériés et ponts JOFEPO Télécharger Imprimer Ajouter S'abonner I. LISTE DES JOURS FERIES II. PONT III. REMUNERATION IV. INCIDENCE SUR LE CONGE ANNUEL ET RECUPERATION I. LISTE DES JOURS FERIES * La liste résulte de l'art. L. 621-8 code général de la fonction publique qui dispose : \"Les fêtes légales fériées dont bénéficient les agents publics sont celles énumérées à l’article L. 3133-1 du code du travail.\"..."
+    content: "Accueil Fiches Congés et absences Jours fériés et ponts Jours fériés et ponts (JOFEPO) Jours fériés et ponts JOFEPO I. LISTE DES JOURS FERIES II. PONT III. REMUNERATION IV. INCIDENCE SUR LE CONGE ANNUEL ET RECUPERATION I. LISTE DES JOURS FERIES * La liste résulte de l'art. L. 621-8 code général de la fonction publique qui dispose : \"Les fêtes légales fériées dont bénéficient les agents publics sont celles énumérées à l’article L. 3133-1 du code du travail.\" Les dates des jours fériés sont les su..."
   },
   {
     id: "bip_auabsy",
@@ -1379,7 +1379,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:43.181858",
     type: "conges-et-absences",
-    content: "Droit syndical : conditions matérielles (SYNMAT) Décharges d'activité de service pour activités syndicales (DECACT) Accueil Fiches Droits et obligations Droits et garanties Droit syndical Autorisations d'absence pour mandat syndical (AUABSY) Autorisations d'absence pour mandat syndical AUABSY Télécharger Imprimer Ajouter S'abonner I. Principe II. Autorisations d'absence pour assister aux congrès professionnels syndicaux fédéraux, confédéraux et internationaux et aux réunions des organismes direc..."
+    content: "Droit syndical : conditions matérielles (SYNMAT) Décharges d'activité de service pour activités syndicales (DECACT) Accueil Fiches Droits et obligations Droits et garanties Droit syndical Autorisations d'absence pour mandat syndical (AUABSY) Autorisations d'absence pour mandat syndical AUABSY I. Principe II. Autorisations d'absence pour assister aux congrès professionnels syndicaux fédéraux, confédéraux et internationaux et aux réunions des organismes directeurs III. Autorisations d'absence impu..."
   },
   {
     id: "bip_garele",
@@ -1392,7 +1392,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:48.362831",
     type: "conges-et-absences",
-    content: "Accueil Fiches Droits et obligations Droits et garanties Garanties de l'agent candidat ou titulaire d'un mandat électif Garanties accordées à l'agent candidat ou titulaire d'un mandat électif (GARELE) Garanties accordées à l'agent candidat ou titulaire d'un mandat électif GARELE Télécharger Imprimer Ajouter S'abonner I. L’agent candidat à une élection II. L’agent titulaire d'un mandat local III. L’agent titulaire d'un mandat parlementaire \"Tout Français et toute Française ayant la qualité d'élec..."
+    content: "Accueil Fiches Droits et obligations Droits et garanties Garanties de l'agent candidat ou titulaire d'un mandat électif Garanties accordées à l'agent candidat ou titulaire d'un mandat électif (GARELE) Garanties accordées à l'agent candidat ou titulaire d'un mandat électif GARELE I. L’agent candidat à une élection II. L’agent titulaire d'un mandat local III. L’agent titulaire d'un mandat parlementaire \"Tout Français et toute Française ayant la qualité d'électeur peut faire acte de candidature et..."
   },
   {
     id: "bip_conoco",
@@ -1405,7 +1405,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "conges-et-absences",
     timestamp: "2026-02-27T10:54:53.446197",
     type: "conges-et-absences",
-    content: "Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : congés CONOCO Télécharger Imprimer Ajouter S'abonner I. CONGES ANNUELS II. CONGES LIES A L'ARRIVEE D'UN ENFANT AU FOYER III. CONGES DE MALADIE IV. SITUATION DU FONCTIONNAIRE A T..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : congés CONOCO I. CONGES ANNUELS II. CONGES LIES A L'ARRIVEE D'UN ENFANT AU FOYER III. CONGES DE MALADIE IV. SITUATION DU FONCTIONNAIRE A TEMPS NON COMPLET RELEVANT DU REGIME GEN..."
   },
   {
     id: "bip_ccpdis",
@@ -1418,7 +1418,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "discipline2",
     timestamp: "2026-02-27T14:07:37.515217",
     type: "discipline2",
-    content: "Commissions consultatives paritaires : élections des représentants du personnel (CCPELE) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Le conseil de discipline des agents contractuels (CCPDIS) Le conseil de discipline des agents contractuels CCPDIS Télécharger Imprimer Ajouter S'abonner I. ORGANISATION II. OUVERTURE DE LA PROCEDURE III. REGLES DE COMPOSITION IV. LA SEANCE V. L’AVIS DU CONSEIL DE DISCIPLINE Les commissions consultatives paritaires (CCP) peuvent êt..."
+    content: "Commissions consultatives paritaires : élections des représentants du personnel (CCPELE) Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Le conseil de discipline des agents contractuels (CCPDIS) Le conseil de discipline des agents contractuels CCPDIS I. ORGANISATION II. OUVERTURE DE LA PROCEDURE III. REGLES DE COMPOSITION IV. LA SEANCE V. L’AVIS DU CONSEIL DE DISCIPLINE Les commissions consultatives paritaires (CCP) peuvent être appelées à siéger en tant que consei..."
   },
   {
     id: "bip_ntidis",
@@ -1431,20 +1431,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "discipline2",
     timestamp: "2026-02-27T14:07:44.288946",
     type: "discipline2",
-    content: "Le conseil de discipline des agents contractuels (CCPDIS) Accueil Fiches Agents contractuels Discipline des agents contractuels Agents contractuels : procédure disciplinaire (NTIDIS) Agents contractuels : procédure disciplinaire NTIDIS Télécharger Imprimer Ajouter S'abonner I. LA SUSPENSION II. L’OUVERTURE DE LA PROCEDURE III. LA CONSULTATION DU CONSEIL DE DISCIPLINE IV. LA DECISION DE SANCTION V. LA PROCEDURE EN CAS DE LICENCIEMENT POUR MOTIF DISCIPLINAIRE VI. LES RECOURS CONTRE LA SANCTION Tou..."
+    content: "Le conseil de discipline des agents contractuels (CCPDIS) Accueil Fiches Agents contractuels Discipline des agents contractuels Agents contractuels : procédure disciplinaire (NTIDIS) Agents contractuels : procédure disciplinaire NTIDIS I. LA SUSPENSION II. L’OUVERTURE DE LA PROCEDURE III. LA CONSULTATION DU CONSEIL DE DISCIPLINE IV. LA DECISION DE SANCTION V. LA PROCEDURE EN CAS DE LICENCIEMENT POUR MOTIF DISCIPLINAIRE VI. LES RECOURS CONTRE LA SANCTION Toute faute commise par un agent contractu..."
   },
   {
     id: "bip_amnist",
     code: "amnist",
     titre: "Amnistie",
-    motsCles: ["effets","amnistie","l'amnistie","disciplinaire","objet","penale","conditions","amnist","sanction","sanctions","carrière","beneficiaires","modalites","contestations","iii","vii","prime","arrêt","discipline","licenciement"],
+    motsCles: ["effets","amnistie","l'amnistie","disciplinaire","objet","penale","conditions","amnist","sanction","sanctions","carrière","beneficiaires","modalites","contestations","iii","vii","arrêt","discipline","licenciement","avancement"],
     source: "bip",
-    resume: "La suspension (SUSPEN) Sanctions déguisées (SANDEG) Accueil Fiches Discipline Amnistie (AMNIST) Amnistie AMNIST Télécharger Imprimer Ajouter S'abonner...",
+    resume: "La suspension (SUSPEN) Sanctions déguisées (SANDEG) Accueil Fiches Discipline Amnistie (AMNIST) Amnistie AMNIST I. OBJET DE L'AMNISTIE II. CONDITIONS ...",
     localPath: "/bip/output/bip_fiches_rag_discipline2_20260227_140828/discipline2_amnist.md",
     section: "discipline2",
     timestamp: "2026-02-27T14:07:49.965787",
     type: "discipline2",
-    content: "La suspension (SUSPEN) Sanctions déguisées (SANDEG) Accueil Fiches Discipline Amnistie (AMNIST) Amnistie AMNIST Télécharger Imprimer Ajouter S'abonner I. OBJET DE L'AMNISTIE II. CONDITIONS III. BENEFICIAIRES IV. MODALITES V. EFFETS DE L'AMNISTIE DISCIPLINAIRE VI. EFFETS DE L'AMNISTIE PENALE VII. CONTESTATIONS I. OBJET DE L'AMNISTIE La loi n°2002-1062 du 6 août 2002 (loi n°2002-1062 du 6 août 2002) a amnistié les sanctions disciplinaires reposant sur des faits commis avant le 17 mai 2002. Cette l..."
+    content: "La suspension (SUSPEN) Sanctions déguisées (SANDEG) Accueil Fiches Discipline Amnistie (AMNIST) Amnistie AMNIST I. OBJET DE L'AMNISTIE II. CONDITIONS III. BENEFICIAIRES IV. MODALITES V. EFFETS DE L'AMNISTIE DISCIPLINAIRE VI. EFFETS DE L'AMNISTIE PENALE VII. CONTESTATIONS I. OBJET DE L'AMNISTIE La loi n°2002-1062 du 6 août 2002 (loi n°2002-1062 du 6 août 2002) a amnistié les sanctions disciplinaires reposant sur des faits commis avant le 17 mai 2002. Cette loi entraîne également l'amnistie d'un c..."
   },
   {
     id: "bip_condis",
@@ -1457,7 +1457,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "discipline2",
     timestamp: "2026-02-27T14:07:55.363611",
     type: "discipline2",
-    content: "Les sanctions disciplinaires (SANDIS) Le recours disciplinaire (RECDIS) Accueil Fiches Discipline La consultation du conseil de discipline (CONDIS) La consultation du conseil de discipline CONDIS Télécharger Imprimer Ajouter S'abonner I. ORGANISATION II. OUVERTURE DE LA PROCEDURE III. PARITE, QUORUM ET REGLES DE COMPOSITION IV. LA SEANCE V. L’AVIS DU CONSEIL DE DISCIPLINE Cette fiche présente le rôle du conseil de discipline dans la procédure disciplinaire applicable aux fonctionnaires territori..."
+    content: "Les sanctions disciplinaires (SANDIS) Le recours disciplinaire (RECDIS) Accueil Fiches Discipline La consultation du conseil de discipline (CONDIS) La consultation du conseil de discipline CONDIS I. ORGANISATION II. OUVERTURE DE LA PROCEDURE III. PARITE, QUORUM ET REGLES DE COMPOSITION IV. LA SEANCE V. L’AVIS DU CONSEIL DE DISCIPLINE Cette fiche présente le rôle du conseil de discipline dans la procédure disciplinaire applicable aux fonctionnaires territoriaux ; à titre de complément, il convien..."
   },
   {
     id: "bip_faudis",
@@ -1465,12 +1465,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "La faute disciplinaire",
     motsCles: ["caa","faute","disciplinaire","sanction","choix","gravité","faudis","congé","maladie","santé","discipline","sanctions","fautes","obligation","caractérisation","pouhie","longue maladie","longue durée","absence","prime"],
     source: "bip",
-    resume: "La procédure disciplinaire (PRODIS) Accueil Fiches Discipline La faute disciplinaire (FAUDIS) La faute disciplinaire FAUDIS Télécharger Imprimer Ajout...",
+    resume: "La procédure disciplinaire (PRODIS) Accueil Fiches Discipline La faute disciplinaire (FAUDIS) La faute disciplinaire FAUDIS I. La caractérisation de l...",
     localPath: "/bip/output/bip_fiches_rag_discipline2_20260227_140828/discipline2_faudis.md",
     section: "discipline2",
     timestamp: "2026-02-27T14:08:00.523891",
     type: "discipline2",
-    content: "La procédure disciplinaire (PRODIS) Accueil Fiches Discipline La faute disciplinaire (FAUDIS) La faute disciplinaire FAUDIS Télécharger Imprimer Ajouter S'abonner I. La caractérisation de la faute disciplinaire II. La gravité de la faute et le choix de la sanction Cette fiche définit la notion de « faute disciplinaire » et les critères qui peuvent permettre d’apprécier son degré de gravité. Autres fiches relatives à la discipline I. LA CARACTÉRISATION DE LA FAUTE DISCIPLINAIRE A) Principes génér..."
+    content: "La procédure disciplinaire (PRODIS) Accueil Fiches Discipline La faute disciplinaire (FAUDIS) La faute disciplinaire FAUDIS I. La caractérisation de la faute disciplinaire II. La gravité de la faute et le choix de la sanction Cette fiche définit la notion de « faute disciplinaire » et les critères qui peuvent permettre d’apprécier son degré de gravité. Autres fiches relatives à la discipline I. LA CARACTÉRISATION DE LA FAUTE DISCIPLINAIRE A) Principes généraux Il n’existe ni définition générale..."
   },
   {
     id: "bip_prodis",
@@ -1483,33 +1483,33 @@ export const bipIndex: BipFicheIndex[] = [
     section: "discipline2",
     timestamp: "2026-02-27T14:08:06.123406",
     type: "discipline2",
-    content: "La faute disciplinaire (FAUDIS) Les sanctions disciplinaires (SANDIS) Accueil Fiches Discipline La procédure disciplinaire (PRODIS) La procédure disciplinaire PRODIS Télécharger Imprimer Ajouter S'abonner I. L’ouverture de la procédure II. La consultation du conseil de discipline III. La décision de sanction IV. Les recours contre la sanction V. L'information de l'administration des procédures ou des condamnations pénales VI. Le principe d'indépendance entre les procédures disciplinaire et pénal..."
+    content: "La faute disciplinaire (FAUDIS) Les sanctions disciplinaires (SANDIS) Accueil Fiches Discipline La procédure disciplinaire (PRODIS) La procédure disciplinaire PRODIS I. L’ouverture de la procédure II. La consultation du conseil de discipline III. La décision de sanction IV. Les recours contre la sanction V. L'information de l'administration des procédures ou des condamnations pénales VI. Le principe d'indépendance entre les procédures disciplinaire et pénale Cette fiche présente les principes gé..."
   },
   {
     id: "bip_recdis",
     code: "recdis",
     titre: "Le recours disciplinaire",
-    motsCles: ["recours","gracieux","disciplinaire","contentieux","recdis","caa","discipline","sanction","sanctions","carrière","faute","fautes","condis","suspen","absence","rémunération","indemnité","prime","santé","arrêt"],
+    motsCles: ["recours","gracieux","disciplinaire","contentieux","recdis","caa","discipline","sanction","sanctions","carrière","faute","fautes","condis","suspen","absence","rémunération","indemnité","santé","arrêt","formation"],
     source: "bip",
     resume: "La consultation du conseil de discipline (CONDIS) La suspension (SUSPEN) Accueil Fiches Discipline Le recours disciplinaire (RECDIS) Le recours discip...",
     localPath: "/bip/output/bip_fiches_rag_discipline2_20260227_140828/discipline2_recdis.md",
     section: "discipline2",
     timestamp: "2026-02-27T14:08:11.261035",
     type: "discipline2",
-    content: "La consultation du conseil de discipline (CONDIS) La suspension (SUSPEN) Accueil Fiches Discipline Le recours disciplinaire (RECDIS) Le recours disciplinaire RECDIS Télécharger Imprimer Ajouter S'abonner I. LE RECOURS GRACIEUX II. LE RECOURS CONTENTIEUX Cette fiche présente les possibilités de recours qui s’offrent à l’agent et à l’autorité territoriale en matière disciplinaire ; à titre de complément, il convient de se référer principalement aux fiches suivantes : - FAUDIS, sur la notion de fau..."
+    content: "La consultation du conseil de discipline (CONDIS) La suspension (SUSPEN) Accueil Fiches Discipline Le recours disciplinaire (RECDIS) Le recours disciplinaire RECDIS I. LE RECOURS GRACIEUX II. LE RECOURS CONTENTIEUX Cette fiche présente les possibilités de recours qui s’offrent à l’agent et à l’autorité territoriale en matière disciplinaire ; à titre de complément, il convient de se référer principalement aux fiches suivantes : - FAUDIS, sur la notion de faute disciplinaire - PRODIS, sur la procé..."
   },
   {
     id: "bip_sandeg",
     code: "sandeg",
     titre: "Sanctions déguisées",
-    motsCles: ["sanction","sanctions","caa","recours","exemples","notion","deguisee","sandeg","déguisées","disciplinaire","deguisees","iii","prime","discipline","mutation","mutations","responsabilité","faute","fiches","pouvoir"],
+    motsCles: ["sanction","sanctions","caa","recours","exemples","notion","deguisee","sandeg","déguisées","disciplinaire","deguisees","iii","discipline","mutation","mutations","responsabilité","faute","fiches","pouvoir","peut"],
     source: "bip",
     resume: "Amnistie (AMNIST) Agents contractuels : procédure disciplinaire (NTIDIS) Accueil Fiches Discipline Sanctions déguisées (SANDEG) Sanctions déguisées SA...",
     localPath: "/bip/output/bip_fiches_rag_discipline2_20260227_140828/discipline2_sandeg.md",
     section: "discipline2",
     timestamp: "2026-02-27T14:08:17.106064",
     type: "discipline2",
-    content: "Amnistie (AMNIST) Agents contractuels : procédure disciplinaire (NTIDIS) Accueil Fiches Discipline Sanctions déguisées (SANDEG) Sanctions déguisées SANDEG Télécharger Imprimer Ajouter S'abonner I. LA NOTION DE SANCTION DEGUISEE II. RECOURS III. EXEMPLES DE SANCTIONS DEGUISEES I. LA NOTION DE SANCTION DEGUISEE L'autorité territoriale dispose d'un pouvoir discrétionnaire de sanction en cas de faute disciplinaire (-voir FAUDIS). Mais ce pouvoir n'est pas arbitraire : - l'autorité ne peut prononcer..."
+    content: "Amnistie (AMNIST) Agents contractuels : procédure disciplinaire (NTIDIS) Accueil Fiches Discipline Sanctions déguisées (SANDEG) Sanctions déguisées SANDEG I. LA NOTION DE SANCTION DEGUISEE II. RECOURS III. EXEMPLES DE SANCTIONS DEGUISEES I. LA NOTION DE SANCTION DEGUISEE L'autorité territoriale dispose d'un pouvoir discrétionnaire de sanction en cas de faute disciplinaire (-voir FAUDIS). Mais ce pouvoir n'est pas arbitraire : - l'autorité ne peut prononcer d'autres sanctions que celles limitativ..."
   },
   {
     id: "bip_sandis",
@@ -1522,7 +1522,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "discipline2",
     timestamp: "2026-02-27T14:08:22.459578",
     type: "discipline2",
-    content: "La procédure disciplinaire (PRODIS) La consultation du conseil de discipline (CONDIS) Accueil Fiches Discipline Les sanctions disciplinaires (SANDIS) Les sanctions disciplinaires SANDIS Télécharger Imprimer Ajouter S'abonner I. Sanctions du premier groupe II. Sanctions du deuxième groupe III. Sanctions du troisième groupe IV. Sanctions du quatrième groupe V. Focus sur l'exclusion temporaire de fonctions VI. Exemples de sanctions VII. Fonctionnaires stagiaires et agents contractuels Cette fiche p..."
+    content: "La procédure disciplinaire (PRODIS) La consultation du conseil de discipline (CONDIS) Accueil Fiches Discipline Les sanctions disciplinaires (SANDIS) Les sanctions disciplinaires SANDIS I. Sanctions du premier groupe II. Sanctions du deuxième groupe III. Sanctions du troisième groupe IV. Sanctions du quatrième groupe V. Focus sur l'exclusion temporaire de fonctions VI. Exemples de sanctions VII. Fonctionnaires stagiaires et agents contractuels Cette fiche présente la liste des sanctions discipli..."
   },
   {
     id: "bip_suspen",
@@ -1530,12 +1530,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "La suspension",
     motsCles: ["caa","effets","suspension","principe","général","suspen","fin","congé","congés","rémunération","traitement","maladie","discipline","disciplinaire","sanction","faute","recdis","iii","arsusp","iaj"],
     source: "bip",
-    resume: "Le recours disciplinaire (RECDIS) Amnistie (AMNIST) Accueil Fiches Discipline La suspension (SUSPEN) La suspension SUSPEN Télécharger Imprimer Ajouter...",
+    resume: "Le recours disciplinaire (RECDIS) Amnistie (AMNIST) Accueil Fiches Discipline La suspension (SUSPEN) La suspension SUSPEN I. Principe général II. Proc...",
     localPath: "/bip/output/bip_fiches_rag_discipline2_20260227_140828/discipline2_suspen.md",
     section: "discipline2",
     timestamp: "2026-02-27T14:08:28.698042",
     type: "discipline2",
-    content: "Le recours disciplinaire (RECDIS) Amnistie (AMNIST) Accueil Fiches Discipline La suspension (SUSPEN) La suspension SUSPEN Télécharger Imprimer Ajouter S'abonner I. Principe général II. Procédure III. Durée et fin de la suspension IV. EFFETS A titre de complément, il convient de se référer principalement aux fiches suivantes : - FAUDIS, sur la notion de faute disciplinaire - PRODIS, sur la procédure disciplinaire - SANDIS, sur les sanctions disciplinaires - CONDIS, sur le conseil de discipline -..."
+    content: "Le recours disciplinaire (RECDIS) Amnistie (AMNIST) Accueil Fiches Discipline La suspension (SUSPEN) La suspension SUSPEN I. Principe général II. Procédure III. Durée et fin de la suspension IV. EFFETS A titre de complément, il convient de se référer principalement aux fiches suivantes : - FAUDIS, sur la notion de faute disciplinaire - PRODIS, sur la procédure disciplinaire - SANDIS, sur les sanctions disciplinaires - CONDIS, sur le conseil de discipline - RECDIS, sur les recours en matière disc..."
   },
   {
     id: "bip_consta",
@@ -1548,7 +1548,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:25:40.467954",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Rémunération des stagiaires (REMSTA) Protection sociale des stagiaires (PROSTA) Accueil Fiches Carrière Stage et titularisation Les congés des fonctionnaires stagiaires (CONSTA) Les congés des fonctionnaires stagiaires CONSTA Télécharger Imprimer Ajouter S'abonner I. Les congés avec traitement II. Les congés sans traitement III. Les effets des congés sur la date de fin de stage IV. La prise en compte des congés pour le classement, l'avancement et la retraite Pour connaître les généralités sur le..."
+    content: "Rémunération des stagiaires (REMSTA) Protection sociale des stagiaires (PROSTA) Accueil Fiches Carrière Stage et titularisation Les congés des fonctionnaires stagiaires (CONSTA) Les congés des fonctionnaires stagiaires CONSTA I. Les congés avec traitement II. Les congés sans traitement III. Les effets des congés sur la date de fin de stage IV. La prise en compte des congés pour le classement, l'avancement et la retraite Pour connaître les généralités sur les congés de maladie, -voir CONMAL. Sur..."
   },
   {
     id: "bip_cessami",
@@ -1561,7 +1561,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:25:46.637848",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Accueil Fiches Cessation de fonctions Cessation anticipée d'activité - amiante La cessation anticipée d'activité des agents reconnus atteints d'une maladie professionnelle provoquée par l'amiante (CESSAMI) La cessation anticipée d'activité des agents reconnus atteints d'une maladie professionnelle provoquée par l'amiante CESSAMI Télécharger Imprimer Ajouter S'abonner I. CONDITIONS D’OCTROI ET PROCEDURE II. L’ALLOCATION SPECIFIQUE III. LA SITUATION DE L’AGENT IV. FIN DU DISPOSITIF Les art. L. 555..."
+    content: "Accueil Fiches Cessation de fonctions Cessation anticipée d'activité - amiante La cessation anticipée d'activité des agents reconnus atteints d'une maladie professionnelle provoquée par l'amiante (CESSAMI) La cessation anticipée d'activité des agents reconnus atteints d'une maladie professionnelle provoquée par l'amiante CESSAMI I. CONDITIONS D’OCTROI ET PROCEDURE II. L’ALLOCATION SPECIFIQUE III. LA SITUATION DE L’AGENT IV. FIN DU DISPOSITIF Les art. L. 555-1 code général de la fonction publique..."
   },
   {
     id: "bip_retinv",
@@ -1574,7 +1574,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:25:51.831257",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le cumul emploi retraite (à compter du 1er janvier 2027) (CUEMRE2027) Retraite additionnelle de la fonction publique (READDI) Accueil Fiches Cessation de fonctions Retraite La retraite pour invalidité (RETINV) La retraite pour invalidité RETINV Télécharger Imprimer Ajouter S'abonner I. Conditions de la mise à la retraite pour invalidité II. Les étapes de la procédure III. Les prestations I. CONDITIONS DE LA MISE À LA RETRAITE POUR INVALIDITÉ A) Conditions générales La retraite pour invalidité es..."
+    content: "Le cumul emploi retraite (à compter du 1er janvier 2027) (CUEMRE2027) Retraite additionnelle de la fonction publique (READDI) Accueil Fiches Cessation de fonctions Retraite La retraite pour invalidité (RETINV) La retraite pour invalidité RETINV I. Conditions de la mise à la retraite pour invalidité II. Les étapes de la procédure III. Les prestations I. CONDITIONS DE LA MISE À LA RETRAITE POUR INVALIDITÉ A) Conditions générales La retraite pour invalidité est un dispositif d'admission à la retrai..."
   },
   {
     id: "bip_ntico3",
@@ -1587,7 +1587,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:25:57.354142",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Congés et absences Congés des agents contractuels Agents contractuels : les congés de maladie (NTICO3) Agents contractuels : les congés de maladie NTICO3 Télécharger Imprimer Ajouter S'abonner I. Le congé de maladie ordinaire II. Le congé de grave maladie III. Le congé pour accident du travail ou maladie professionnelle IV. Coordination entre traitement et prestations de la sécurité sociale V. Contrôle médical VI. Situation de..."
+    content: "Agents contractuels : les congés hors maladie (NTICO2) Accueil Fiches Congés et absences Congés des agents contractuels Agents contractuels : les congés de maladie (NTICO3) Agents contractuels : les congés de maladie NTICO3 I. Le congé de maladie ordinaire II. Le congé de grave maladie III. Le congé pour accident du travail ou maladie professionnelle IV. Coordination entre traitement et prestations de la sécurité sociale V. Contrôle médical VI. Situation de l'agent après un congé de maladie Cett..."
   },
   {
     id: "bip_conoco",
@@ -1600,7 +1600,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:02.496123",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : congés CONOCO Télécharger Imprimer Ajouter S'abonner I. CONGES ANNUELS II. CONGES LIES A L'ARRIVEE D'UN ENFANT AU FOYER III. CONGES DE MALADIE IV. SITUATION DU FONCTIONNAIRE A T..."
+    content: "Fonctionnaires occupant un emploi à temps non complet : carrière (CANOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : congés CONOCO I. CONGES ANNUELS II. CONGES LIES A L'ARRIVEE D'UN ENFANT AU FOYER III. CONGES DE MALADIE IV. SITUATION DU FONCTIONNAIRE A TEMPS NON COMPLET RELEVANT DU REGIME GEN..."
   },
   {
     id: "bip_accser",
@@ -1613,20 +1613,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:07.822328",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le congé pour invalidité temporaire imputable au service (CONITIS) La maladie professionnelle du fonctionnaire et la maladie contractée en accomplissant un acte de dévouement dans un intérêt public (MALPRO) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'accident de service du fonctionnaire (ACCSER) L'accident de service du fonctionnaire ACCSER Télécharger Imprimer Ajouter S'abonner I. La notion d'accident II. L’imputabilité au service..."
+    content: "Le congé pour invalidité temporaire imputable au service (CONITIS) La maladie professionnelle du fonctionnaire et la maladie contractée en accomplissant un acte de dévouement dans un intérêt public (MALPRO) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'accident de service du fonctionnaire (ACCSER) L'accident de service du fonctionnaire ACCSER I. La notion d'accident II. L’imputabilité au service d'un accident III. La faute personnell..."
   },
   {
     id: "bip_acctra",
     code: "acctra",
     titre: "L'accident de trajet",
-    motsCles: ["trajet","caa","l'accident","preuve","accident","imputable","définition","acctra","congé","maladie","physique","sociale","critères","d’exclusion","l'imputabilité","conitis","iii","longue durée","traitement","prime"],
+    motsCles: ["trajet","caa","l'accident","preuve","accident","imputable","définition","acctra","congé","maladie","physique","sociale","critères","d’exclusion","l'imputabilité","conitis","iii","longue durée","traitement","santé"],
     source: "bip",
     resume: "Le congé pour invalidité temporaire imputable au service (CONITIS) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et ...",
     localPath: "/bip/output/bip_fiches_rag_indisponibilite-physique-et-securite-sociale_20260227_102823/indisponibilite-physique-et-securite-sociale_accident-de-service-et-maladie-professionnelle_acctra.md",
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:12.966995",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le congé pour invalidité temporaire imputable au service (CONITIS) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'accident de trajet (ACCTRA) L'accident de trajet ACCTRA Télécharger Imprimer Ajouter S'abonner I. L'accident de trajet imputable au service : définition et preuve II. Les critères de l'accident de trajet III. Les cas d’exclusion de l'imputabilité au service de l'accident de trajet Cette fiche définit la notion d’accident d..."
+    content: "Le congé pour invalidité temporaire imputable au service (CONITIS) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'accident de trajet (ACCTRA) L'accident de trajet ACCTRA I. L'accident de trajet imputable au service : définition et preuve II. Les critères de l'accident de trajet III. Les cas d’exclusion de l'imputabilité au service de l'accident de trajet Cette fiche définit la notion d’accident de trajet applicable aux fonctionnaires..."
   },
   {
     id: "bip_altein",
@@ -1639,7 +1639,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:18.110469",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire (REPSER) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'allocation temporaire d'invalidité (ALTEIN) L'allocation temporaire d'invalidité ALTEIN Télécharger Imprimer Ajouter S'abonner I. CONDITIONS D’OCTROI II. PROCEDURE III. VERSEMENT, COTISATION, MONTANT, CUMUL IV. REVISION, RADIATION DES CADRES L'allocation temporaire d'invalidité (ATI) est une..."
+    content: "La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire (REPSER) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'allocation temporaire d'invalidité (ALTEIN) L'allocation temporaire d'invalidité ALTEIN I. CONDITIONS D’OCTROI II. PROCEDURE III. VERSEMENT, COTISATION, MONTANT, CUMUL IV. REVISION, RADIATION DES CADRES L'allocation temporaire d'invalidité (ATI) est une prestation destinée aux fonctionnaires..."
   },
   {
     id: "bip_malpro",
@@ -1665,20 +1665,20 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:36.021747",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "La maladie professionnelle du fonctionnaire et la maladie contractée en accomplissant un acte de dévouement dans un intérêt public (MALPRO) L'allocation temporaire d'invalidité (ALTEIN) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire (REPSER) La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire REPSER Télécharger I..."
+    content: "La maladie professionnelle du fonctionnaire et la maladie contractée en accomplissant un acte de dévouement dans un intérêt public (MALPRO) L'allocation temporaire d'invalidité (ALTEIN) Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire (REPSER) La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire REPSER I. Le rembour..."
   },
   {
     id: "bip_annmed",
     code: "annmed",
     titre: "L'année médicale",
-    motsCles: ["principe","exemples","médicale","annmed","congé","congés","traitement","maladie","physique","sociale","comaor","l'année","longue maladie","rémunération","prime","médical","fiches","ordinaire","selon","droit"],
+    motsCles: ["principe","exemples","médicale","annmed","congé","congés","traitement","maladie","physique","sociale","comaor","l'année","longue maladie","rémunération","médical","fiches","ordinaire","selon","droit","trois"],
     source: "bip",
     resume: "Le congé de maladie ordinaire du fonctionnaire (COMAOR) Accueil Fiches Indisponibilité physique et sécurité sociale Congé de maladie ordinaire L'année...",
     localPath: "/bip/output/bip_fiches_rag_indisponibilite-physique-et-securite-sociale_20260227_102823/indisponibilite-physique-et-securite-sociale_conge-de-maladie-ordinaire_annmed.md",
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:41.552938",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le congé de maladie ordinaire du fonctionnaire (COMAOR) Accueil Fiches Indisponibilité physique et sécurité sociale Congé de maladie ordinaire L'année médicale (ANNMED) L'année médicale ANNMED Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. EXEMPLES Sur le congé de maladie ordinaire, -voir COMAOR. I. PRINCIPE Selon la loi, le fonctionnaire a droit à un congé de maladie ordinaire d’une durée maximale de 12 mois consécutifs, dont trois à 90 % du traitement* puis neuf à demi-traitement. * la..."
+    content: "Le congé de maladie ordinaire du fonctionnaire (COMAOR) Accueil Fiches Indisponibilité physique et sécurité sociale Congé de maladie ordinaire L'année médicale (ANNMED) L'année médicale ANNMED I. PRINCIPE II. EXEMPLES Sur le congé de maladie ordinaire, -voir COMAOR. I. PRINCIPE Selon la loi, le fonctionnaire a droit à un congé de maladie ordinaire d’une durée maximale de 12 mois consécutifs, dont trois à 90 % du traitement* puis neuf à demi-traitement. * la réduction de l'indemnisation de 100 %..."
   },
   {
     id: "bip_comaor",
@@ -1691,7 +1691,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:47.110617",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "L'année médicale (ANNMED) Accueil Fiches Indisponibilité physique et sécurité sociale Congé de maladie ordinaire Le congé de maladie ordinaire du fonctionnaire (COMAOR) Le congé de maladie ordinaire du fonctionnaire COMAOR Télécharger Imprimer Ajouter S'abonner I. Ouverture des droits II. Procédure d'octroi III. Contrôle médical IV. Rémunération durant le congé V. Situation du fonctionnaire après un congé Pour connaître les généralités sur les congés de maladie, -voir CONMAL. Sur les droits et o..."
+    content: "L'année médicale (ANNMED) Accueil Fiches Indisponibilité physique et sécurité sociale Congé de maladie ordinaire Le congé de maladie ordinaire du fonctionnaire (COMAOR) Le congé de maladie ordinaire du fonctionnaire COMAOR I. Ouverture des droits II. Procédure d'octroi III. Contrôle médical IV. Rémunération durant le congé V. Situation du fonctionnaire après un congé Pour connaître les généralités sur les congés de maladie, -voir CONMAL. Sur les droits et obligations généraux durant un congé de..."
   },
   {
     id: "bip_colodu",
@@ -1704,7 +1704,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:52.202082",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le congé de longue maladie du fonctionnaire (COLOMA) Accueil Fiches Indisponibilité physique et sécurité sociale Congés de longue maladie et de longue durée Le congé de longue durée du fonctionnaire (COLODU) Le congé de longue durée du fonctionnaire COLODU Télécharger Imprimer Ajouter S'abonner I. Ouverture des droits II. Procédure de placement en congé III. Droits et obligations durant le congé de longue durée IV. Situation du fonctionnaire après un congé Pour connaître les généralités sur les..."
+    content: "Le congé de longue maladie du fonctionnaire (COLOMA) Accueil Fiches Indisponibilité physique et sécurité sociale Congés de longue maladie et de longue durée Le congé de longue durée du fonctionnaire (COLODU) Le congé de longue durée du fonctionnaire COLODU I. Ouverture des droits II. Procédure de placement en congé III. Droits et obligations durant le congé de longue durée IV. Situation du fonctionnaire après un congé Pour connaître les généralités sur les congés de maladie, -voir CONMAL. Sur le..."
   },
   {
     id: "bip_coloma",
@@ -1717,7 +1717,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:26:57.356724",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le congé de longue durée du fonctionnaire (COLODU) Accueil Fiches Indisponibilité physique et sécurité sociale Congés de longue maladie et de longue durée Le congé de longue maladie du fonctionnaire (COLOMA) Le congé de longue maladie du fonctionnaire COLOMA Télécharger Imprimer Ajouter S'abonner I. Ouverture des droits II. Procédure de placement en congé III. Droits et obligations durant le congé de longue maladie IV. Situation du fonctionnaire après un congé Pour connaître les généralités sur..."
+    content: "Le congé de longue durée du fonctionnaire (COLODU) Accueil Fiches Indisponibilité physique et sécurité sociale Congés de longue maladie et de longue durée Le congé de longue maladie du fonctionnaire (COLOMA) Le congé de longue maladie du fonctionnaire COLOMA I. Ouverture des droits II. Procédure de placement en congé III. Droits et obligations durant le congé de longue maladie IV. Situation du fonctionnaire après un congé Pour connaître les généralités sur les congés de maladie, -voir CONMAL. Su..."
   },
   {
     id: "bip_conmal",
@@ -1730,7 +1730,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:02.444961",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Droits et obligations durant les congés de maladie (MADROB) Accueil Fiches Indisponibilité physique et sécurité sociale Congés de maladie : principes généraux Congés de maladie dans la FPT : généralités (CONMAL) Congés de maladie dans la FPT : généralités CONMAL Télécharger Imprimer Ajouter S'abonner I. Typologie des congés II. Conditions d'octroi III. Le sort de l'agent à la fin d'un congé IV. Le remplacement de l'agent placé en congé de maladie Cette fiche expose les principes généraux en mati..."
+    content: "Droits et obligations durant les congés de maladie (MADROB) Accueil Fiches Indisponibilité physique et sécurité sociale Congés de maladie : principes généraux Congés de maladie dans la FPT : généralités (CONMAL) Congés de maladie dans la FPT : généralités CONMAL I. Typologie des congés II. Conditions d'octroi III. Le sort de l'agent à la fin d'un congé IV. Le remplacement de l'agent placé en congé de maladie Cette fiche expose les principes généraux en matière de congés de maladie ; elle est com..."
   },
   {
     id: "bip_madrob",
@@ -1743,7 +1743,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:07.641662",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Congés de maladie dans la FPT : généralités (CONMAL) Accueil Fiches Indisponibilité physique et sécurité sociale Congés de maladie : principes généraux Droits et obligations durant les congés de maladie (MADROB) Droits et obligations durant les congés de maladie MADROB Télécharger Imprimer Ajouter S'abonner I. Rémunération II. Carrière III. Contrôle médical Pour les généralités concernant les congés de maladie, -voir CONMAL. La présente fiche expose les droits et obligations généraux auxquels so..."
+    content: "Congés de maladie dans la FPT : généralités (CONMAL) Accueil Fiches Indisponibilité physique et sécurité sociale Congés de maladie : principes généraux Droits et obligations durant les congés de maladie (MADROB) Droits et obligations durant les congés de maladie MADROB I. Rémunération II. Carrière III. Contrôle médical Pour les généralités concernant les congés de maladie, -voir CONMAL. La présente fiche expose les droits et obligations généraux auxquels sont soumis les agents publics durant un..."
   },
   {
     id: "bip_curthe",
@@ -1751,12 +1751,12 @@ export const bipIndex: BipFicheIndex[] = [
     titre: "Cure thermale",
     motsCles: ["maladie","annuel","prise","charge","certains","frais","principe","conge","curthe","cure","thermale","congé","traitement","physique","sociale","modalites","d'octroi","remuneration","octroi","iii"],
     source: "bip",
-    resume: "Accueil Fiches Indisponibilité physique et sécurité sociale Cure thermale Cure thermale (CURTHE) Cure thermale CURTHE Télécharger Imprimer Ajouter S'a...",
+    resume: "Accueil Fiches Indisponibilité physique et sécurité sociale Cure thermale Cure thermale (CURTHE) Cure thermale CURTHE I. PRINCIPE II. MODALITES D'OCTR...",
     localPath: "/bip/output/bip_fiches_rag_indisponibilite-physique-et-securite-sociale_20260227_102823/indisponibilite-physique-et-securite-sociale_cure-thermale_curthe.md",
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:12.674680",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Accueil Fiches Indisponibilité physique et sécurité sociale Cure thermale Cure thermale (CURTHE) Cure thermale CURTHE Télécharger Imprimer Ajouter S'abonner I. PRINCIPE II. MODALITES D'OCTROI DU CONGE ANNUEL OU DE MALADIE III. REMUNERATION ET PRISE EN CHARGE DE CERTAINS FRAIS I. PRINCIPE Il n'existe pas de congé statutaire pour les cures thermales. Par analogie avec la fonction publique d'Etat, ces cures ne peuvent être effectuées que dans le cadre (instr. min. du 23 mars 1950) : - d'un congé an..."
+    content: "Accueil Fiches Indisponibilité physique et sécurité sociale Cure thermale Cure thermale (CURTHE) Cure thermale CURTHE I. PRINCIPE II. MODALITES D'OCTROI DU CONGE ANNUEL OU DE MALADIE III. REMUNERATION ET PRISE EN CHARGE DE CERTAINS FRAIS I. PRINCIPE Il n'existe pas de congé statutaire pour les cures thermales. Par analogie avec la fonction publique d'Etat, ces cures ne peuvent être effectuées que dans le cadre (instr. min. du 23 mars 1950) : - d'un congé annuel (-voir CONANN) - d'un congé de mal..."
   },
   {
     id: "bip_coingu",
@@ -1769,7 +1769,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:18.443855",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Accueil Fiches Indisponibilité physique et sécurité sociale Infirmité de guerre Le congé accordé au fonctionnaire invalide pour faits de guerre (COINGU) Le congé accordé au fonctionnaire invalide pour faits de guerre COINGU Télécharger Imprimer Ajouter S'abonner I. DEFINITION II. CONDITIONS D'OCTROI III. DROITS ET OBLIGATIONS DU FONCTIONNAIRE EN CONGE IV. FIN DU CONGE I. DEFINITION Le congé pour infirmité de guerre a été initialement prévu pour les fonctionnaires qui, ayant pendant leur présence..."
+    content: "Accueil Fiches Indisponibilité physique et sécurité sociale Infirmité de guerre Le congé accordé au fonctionnaire invalide pour faits de guerre (COINGU) Le congé accordé au fonctionnaire invalide pour faits de guerre COINGU I. DEFINITION II. CONDITIONS D'OCTROI III. DROITS ET OBLIGATIONS DU FONCTIONNAIRE EN CONGE IV. FIN DU CONGE I. DEFINITION Le congé pour infirmité de guerre a été initialement prévu pour les fonctionnaires qui, ayant pendant leur présence sous les drapeaux au cours de la campa..."
   },
   {
     id: "bip_comesu",
@@ -1782,7 +1782,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:23.657264",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le conseil médical (CONMED) La médecine préventive (MEDPRE) Accueil Fiches Indisponibilité physique et sécurité sociale Instances médicales Le conseil médical supérieur (COMESU) Le conseil médical supérieur COMESU Télécharger Imprimer Ajouter S'abonner I. ORGANISATION II. CHAMP DE COMPETENCES III. PROCEDURE IV. PORTEE JURIDIQUE DE L’AVIS I. ORGANISATION Un conseil médical supérieur, commun aux trois fonctions publiques, est placé auprès du ministre chargé de la santé (art. 16 décr. n°86-442 du 1..."
+    content: "Le conseil médical (CONMED) La médecine préventive (MEDPRE) Accueil Fiches Indisponibilité physique et sécurité sociale Instances médicales Le conseil médical supérieur (COMESU) Le conseil médical supérieur COMESU I. ORGANISATION II. CHAMP DE COMPETENCES III. PROCEDURE IV. PORTEE JURIDIQUE DE L’AVIS I. ORGANISATION Un conseil médical supérieur, commun aux trois fonctions publiques, est placé auprès du ministre chargé de la santé (art. 16 décr. n°86-442 du 14 mars 1986). Il comprend deux sections..."
   },
   {
     id: "bip_conmed",
@@ -1808,7 +1808,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:34.128610",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Le conseil médical supérieur (COMESU) Accueil Fiches Indisponibilité physique et sécurité sociale Instances médicales La médecine préventive (MEDPRE) La médecine préventive MEDPRE Télécharger Imprimer Ajouter S'abonner I. MISE EN PLACE ET ORGANISATION II. MISSIONS En matière d’hygiène, de sécurité et de conditions de travail, il convient de se référer aux fiches suivantes : - HYGMOY : les moyens en matière d’hygiène, de sécurité et de santé au travail - FSPGEN : les formations spécialisées des c..."
+    content: "Le conseil médical supérieur (COMESU) Accueil Fiches Indisponibilité physique et sécurité sociale Instances médicales La médecine préventive (MEDPRE) La médecine préventive MEDPRE I. MISE EN PLACE ET ORGANISATION II. MISSIONS En matière d’hygiène, de sécurité et de conditions de travail, il convient de se référer aux fiches suivantes : - HYGMOY : les moyens en matière d’hygiène, de sécurité et de santé au travail - FSPGEN : les formations spécialisées des comités sociaux territoriaux - HYGLOC :..."
   },
   {
     id: "bip_disoff",
@@ -1821,7 +1821,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:39.240287",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Temps partiel thérapeutique (TEMTHE) La retraite pour invalidité (RETINV) Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Disponibilité d’office pour raisons de santé (DISOFF) Disponibilité d’office pour raisons de santé DISOFF Télécharger Imprimer Ajouter S'abonner I. CONDITIONS D’OCTROI II. REMUNERATION III. FIN DE LA DISPONIBILITE I. CONDITIONS D’OCTROI A) Bénéficiaires La disponibilité d’office pour raisons de santé est prévue à l’art. L. 514-4 co..."
+    content: "Temps partiel thérapeutique (TEMTHE) La retraite pour invalidité (RETINV) Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Disponibilité d’office pour raisons de santé (DISOFF) Disponibilité d’office pour raisons de santé DISOFF I. CONDITIONS D’OCTROI II. REMUNERATION III. FIN DE LA DISPONIBILITE I. CONDITIONS D’OCTROI A) Bénéficiaires La disponibilité d’office pour raisons de santé est prévue à l’art. L. 514-4 code général de la fonction publique ; pe..."
   },
   {
     id: "bip_temthe",
@@ -1834,7 +1834,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:44.392434",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Reclassement Disponibilité d’office pour raisons de santé (DISOFF) Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Temps partiel thérapeutique (TEMTHE) Temps partiel thérapeutique TEMTHE Télécharger Imprimer Ajouter S'abonner I. Conditions d'octroi II. Procédure d'octroi III. Effets sur la situation de l'agent IV. Prolongation et fin du temps partiel thérapeutique V. Les agents relevant du régime général Le fonctionnaire en activité (titulaire ou stag..."
+    content: "Reclassement Disponibilité d’office pour raisons de santé (DISOFF) Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Temps partiel thérapeutique (TEMTHE) Temps partiel thérapeutique TEMTHE I. Conditions d'octroi II. Procédure d'octroi III. Effets sur la situation de l'agent IV. Prolongation et fin du temps partiel thérapeutique V. Les agents relevant du régime général Le fonctionnaire en activité (titulaire ou stagiaire) peut être autorisé à accomplir u..."
   },
   {
     id: "bip_finsap",
@@ -1847,7 +1847,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:27:50.713283",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Accueil Fiches Indisponibilité physique et sécurité sociale Projet de fin de carrière des sapeurs-pompiers Cessation des fonctions opérationnelles des sapeurs-pompiers professionnels (FINSAP) Cessation des fonctions opérationnelles des sapeurs-pompiers professionnels FINSAP Télécharger Imprimer Ajouter S'abonner I. ELEMENTS GENERAUX DE PROCEDURE II. L'AFFECTATION A DES FONCTIONS NON OPERATIONNELLES III. LE RECLASSEMENT POUR RAISON OPERATIONNELLE IV. LE CONGE POUR RAISON OPERATIONNELLE Le projet..."
+    content: "Accueil Fiches Indisponibilité physique et sécurité sociale Projet de fin de carrière des sapeurs-pompiers Cessation des fonctions opérationnelles des sapeurs-pompiers professionnels (FINSAP) Cessation des fonctions opérationnelles des sapeurs-pompiers professionnels FINSAP I. ELEMENTS GENERAUX DE PROCEDURE II. L'AFFECTATION A DES FONCTIONS NON OPERATIONNELLES III. LE RECLASSEMENT POUR RAISON OPERATIONNELLE IV. LE CONGE POUR RAISON OPERATIONNELLE Le projet de fin de carrière est destiné aux sape..."
   },
   {
     id: "bip_partic",
@@ -1860,7 +1860,7 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:28:17.749439",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Protection sociale complémentaire La protection sociale complémentaire (PARTIC) La protection sociale complémentaire PARTIC Télécharger Imprimer Ajouter S'abonner I. L'application progressive du dispositif II. Le principe de la participation de l'employeur à la PSC III. Les garanties minimales IV. Les modalités de la participation V. Le montant de la participation VI. La réforme de la participation au risque \"Prévoyance\" à com..."
+    content: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Protection sociale complémentaire La protection sociale complémentaire (PARTIC) La protection sociale complémentaire PARTIC I. L'application progressive du dispositif II. Le principe de la participation de l'employeur à la PSC III. Les garanties minimales IV. Les modalités de la participation V. Le montant de la participation VI. La réforme de la participation au risque \"Prévoyance\" à compter du 1er janvier 2029 Les collectivi..."
   },
   {
     id: "bip_delcar",
@@ -1873,7 +1873,1242 @@ export const bipIndex: BipFicheIndex[] = [
     section: "indisponibilite-physique-et-securite-sociale",
     timestamp: "2026-02-27T10:28:23.254419",
     type: "indisponibilite-physique-et-securite-sociale",
-    content: "Rémunération : valeurs, indices et taux (REM) La déclaration sociale nominative (DESONO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités Le délai de carence (DELCAR) Le délai de carence DELCAR Télécharger Imprimer Ajouter S'abonner I. CHAMP D’APPLICATION II. LES CONDITIONS D’APPLICATION Initialement, le jour de carence dans la fonction publique avait été institué par l’article 105 de la loi n°2011-1977 du 28 décembre 2011 de finances pour 2012, pu..."
+    content: "Rémunération : valeurs, indices et taux (REM) La déclaration sociale nominative (DESONO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités Le délai de carence (DELCAR) Le délai de carence DELCAR I. CHAMP D’APPLICATION II. LES CONDITIONS D’APPLICATION Initialement, le jour de carence dans la fonction publique avait été institué par l’article 105 de la loi n°2011-1977 du 28 décembre 2011 de finances pour 2012, puis abrogé le 1er janvier 2014 par l’art..."
+  },
+  {
+    id: "bip_protocole-d-accord-relatif-a-la-modernisation-des-parcours-professionnels-ppcr",
+    code: "protocole-d-accord-relatif-a-la-modernisation-des-parcours-professionnels-ppcr",
+    titre: "Protocole d’accord relatif à la modernisation des parcours professionnels (PPCR)",
+    motsCles: ["ppcr","protocole","d’accord","relatif","modernisation","parcours","professionnels","primes","rémunération","prime","carrière","avancement","liste","principales","indemnites","url","ppcrgen","ppcrrev","ppcrcar","ppcravu"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_protocole-d-accord-relatif-a-la-modernisation-des-parcours-professionnels-ppcr.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:02.114439",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "No content available"
+  },
+  {
+    id: "bip_dainsa",
+    code: "dainsa",
+    titre: "Indemnités pour travaux dangereux, insalubres, incommodes ou salissants",
+    motsCles: ["montant","primes","regles","cumul","conditions","versement","obligatoires","dainsa","indemnités","incommodes","salissants","indemnité","santé","liste","principales","indemnites","d'octroi","prelevements","octroi","iii"],
+    source: "bip",
+    resume: "Indemnité versée aux instituteurs et aux directeurs d'école (INDENS) Indemnité de maniement de fonds (REAVRE) Accueil Fiches Rémunération, autres avan...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_dainsa.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:07.842527",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité versée aux instituteurs et aux directeurs d'école (INDENS) Indemnité de maniement de fonds (REAVRE) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnités pour travaux dangereux, insalubres, incommodes ou salissants (DAINSA) Indemnités pour travaux dangereux, insalubres, incommodes ou salissants DAINSA I. CONDITIONS D'OCTROI II...."
+  },
+  {
+    id: "bip_forele",
+    code: "forele",
+    titre: "Indemnité forfaitaire complémentaire pour élections",
+    motsCles: ["montant","ifts","indemnité","élections","primes","cumul","conditions","obligatoires","forele","forfaitaire","complémentaire","rémunération","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","csg"],
+    source: "bip",
+    resume: "Prime de technicité pour travail régulier sur machine comptable (MACCOM) Indemnité de chaussures et de petit équipement (INCHEQ) Accueil Fiches Rémuné...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_forele.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:12.889799",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Prime de technicité pour travail régulier sur machine comptable (MACCOM) Indemnité de chaussures et de petit équipement (INCHEQ) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité forfaitaire complémentaire pour élections (FORELE) Indemnité forfaitaire complémentaire pour élections FORELE I. CONDITIONS D'OCTROI II. MONTANT III. CUMUL IV..."
+  },
+  {
+    id: "bip_forsup",
+    code: "forsup",
+    titre: "Indemnité forfaitaire pour travaux supplémentaires",
+    motsCles: ["ifts","montant","cumul","octroi","rifseep","indemnité","primes","conditions","versement","obligatoires","forsup","forfaitaire","supplémentaires","santé","liste","principales","indemnites","vertu","corps","sapeurs"],
+    source: "bip",
+    resume: "Indemnités horaires pour travaux supplémentaires (HORSUP) Indemnité de permanence (INDPER) Accueil Fiches Rémunération, autres avantages financiers, c...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_forsup.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:18.004261",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnités horaires pour travaux supplémentaires (HORSUP) Indemnité de permanence (INDPER) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité forfaitaire pour travaux supplémentaires (FORSUP) Indemnité forfaitaire pour travaux supplémentaires FORSUP I. CONDITIONS D'OCTROI II. MONTANT ET VERSEMENT III. CUMUL IV. PRELEVEMENTS OBLIGATOIRES..."
+  },
+  {
+    id: "bip_hornui",
+    code: "hornui",
+    titre: "Indemnité horaire pour travail de nuit",
+    motsCles: ["montant","indemnité","primes","conditions","obligatoires","hornui","horaire","nuit","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","regind","csg","crds","rémunération","prime"],
+    source: "bip",
+    resume: "Prime de responsabilité liée aux emplois fonctionnels (PRIRES) Indemnité horaire pour travail du dimanche et des jours fériés (TRADIM) Accueil Fiches ...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_hornui.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:23.335480",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Prime de responsabilité liée aux emplois fonctionnels (PRIRES) Indemnité horaire pour travail du dimanche et des jours fériés (TRADIM) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité horaire pour travail de nuit (HORNUI) Indemnité horaire pour travail de nuit HORNUI I. CONDITIONS D'OCTROI II. MONTANT III. PRELEVEMENTS OBLIGATOIRES Po..."
+  },
+  {
+    id: "bip_horsup",
+    code: "horsup",
+    titre: "Indemnités horaires pour travaux supplémentaires",
+    motsCles: ["ihts","fph","montant","cumul","primes","octroi","conditions","versement","obligatoires","horsup","montants","indemnités","horaires","supplémentaires","fpe","rémunération","traitement","indemnité","santé","liste"],
+    source: "bip",
+    resume: "Indemnité d'administration et de technicité (INDADT) Indemnité forfaitaire pour travaux supplémentaires (FORSUP) Accueil Fiches Rémunération, autres a...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_horsup.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:28.446466",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité d'administration et de technicité (INDADT) Indemnité forfaitaire pour travaux supplémentaires (FORSUP) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnités horaires pour travaux supplémentaires (HORSUP) Indemnités horaires pour travaux supplémentaires HORSUP I. CONDITIONS D'OCTROI II. MONTANT ET VERSEMENT III. CUMUL IV. PRELEVE..."
+  },
+  {
+    id: "bip_incheq",
+    code: "incheq",
+    titre: "Indemnité de chaussures et de petit équipement",
+    motsCles: ["indemnité","primes","montant","conditions","versement","obligatoires","incheq","chaussures","petit","équipement","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","regind","csg","crds"],
+    source: "bip",
+    resume: "Indemnité forfaitaire complémentaire pour élections (FORELE) Indemnité de panier (INDPAN) Accueil Fiches Rémunération, autres avantages financiers, co...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_incheq.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:33.838450",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité forfaitaire complémentaire pour élections (FORELE) Indemnité de panier (INDPAN) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité de chaussures et de petit équipement (INCHEQ) Indemnité de chaussures et de petit équipement INCHEQ I. CONDITIONS D'OCTROI II. MONTANT ET VERSEMENT III. PRELEVEMENTS OBLIGATOIRES Pour connaître les..."
+  },
+  {
+    id: "bip_indadt",
+    code: "indadt",
+    titre: "Indemnité d'administration et de technicité",
+    motsCles: ["iat","atsem","adjoints","montant","cumul","rifseep","indemnité","regind","primes","conditions","versement","obligatoires","indadt","principe","technicité","rémunération","liste","principales","indemnites","vertu"],
+    source: "bip",
+    resume: "Régime indemnitaire tenant compte des fonctions, des sujétions, de l’expertise et de l’engagement professionnel (RIFSEEP) Indemnités horaires pour tra...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_indadt.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:39.494126",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Régime indemnitaire tenant compte des fonctions, des sujétions, de l’expertise et de l’engagement professionnel (RIFSEEP) Indemnités horaires pour travaux supplémentaires (HORSUP) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité d'administration et de technicité (INDADT) Indemnité d'administration et de technicité INDADT I. CONDITIONS..."
+  },
+  {
+    id: "bip_indast",
+    code: "indast",
+    titre: "Indemnité d'astreinte et d'intervention",
+    motsCles: ["indemnité","montant","repos","primes","conditions","prélèvements","obligatoires","indast","cumul","rémunération","télétravail","liste","principales","indemnites","d'octroi","l'indemnité","indper","iii","cjue","ihts"],
+    source: "bip",
+    resume: "Indemnité de permanence (INDPER) Prime de responsabilité liée aux emplois fonctionnels (PRIRES) Accueil Fiches Rémunération, autres avantages financie...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_indast.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:44.571429",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité de permanence (INDPER) Prime de responsabilité liée aux emplois fonctionnels (PRIRES) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité d'astreinte et d'intervention (INDAST) Indemnité d'astreinte et d'intervention INDAST I. Conditions d'octroi II. Montant de l'indemnité III. Durée du repos IV. Cumul V. Prélèvements obligatoi..."
+  },
+  {
+    id: "bip_indens",
+    code: "indens",
+    titre: "Indemnité versée aux instituteurs et aux directeurs d'école",
+    motsCles: ["montant","indemnité","primes","indens","versée","aux","instituteurs","directeurs","rémunération","traitement","liste","principales","indemnites","conditions","d'octroi","prelevements","obligatoires","octroi","iii","rafp"],
+    source: "bip",
+    resume: "Indemnité horaire pour travail du dimanche et des jours fériés (TRADIM) Indemnités pour travaux dangereux, insalubres, incommodes ou salissants (DAINS...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_indens.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:49.924014",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité horaire pour travail du dimanche et des jours fériés (TRADIM) Indemnités pour travaux dangereux, insalubres, incommodes ou salissants (DAINSA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité versée aux instituteurs et aux directeurs d'école (INDENS) Indemnité versée aux instituteurs et aux directeurs d'école INDENS I. CONDI..."
+  },
+  {
+    id: "bip_indlan",
+    code: "indlan",
+    titre: "Indemnité pour utilisation habituelle d'une langue étrangère",
+    motsCles: ["indemnité","primes","montant","conditions","versement","obligatoires","indlan","utilisation","habituelle","langue","étrangère","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","regind","csg"],
+    source: "bip",
+    resume: "Indemnité de maniement de fonds (REAVRE) Indemnité horaire spéciale des agents affectés au traitement de l'information (INHOIN) Accueil Fiches Rémunér...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_indlan.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:53:55.457197",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité de maniement de fonds (REAVRE) Indemnité horaire spéciale des agents affectés au traitement de l'information (INHOIN) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité pour utilisation habituelle d'une langue étrangère (INDLAN) Indemnité pour utilisation habituelle d'une langue étrangère INDLAN I. CONDITIONS D'OCTROI II. MONT..."
+  },
+  {
+    id: "bip_indpan",
+    code: "indpan",
+    titre: "Indemnité de panier",
+    motsCles: ["montant","indemnité","primes","cumul","conditions","indpan","panier","liste","principales","indemnites","d'octroi","prelevements","obligatoires","octroi","iii","regind","rémunération","prime","fiches","cotisations"],
+    source: "bip",
+    resume: "Indemnité de chaussures et de petit équipement (INCHEQ) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire list...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_indpan.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:00.947547",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité de chaussures et de petit équipement (INCHEQ) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité de panier (INDPAN) Indemnité de panier INDPAN I. CONDITIONS D'OCTROI II. MONTANT III. CUMUL IV. PRELEVEMENTS OBLIGATOIRES Pour connaître les principes généraux applicables en matière de régime indemnitaire, -voir REGIND. I. CONDITI..."
+  },
+  {
+    id: "bip_indper",
+    code: "indper",
+    titre: "Indemnité de permanence",
+    motsCles: ["montant","repos","permanence","indemnité","indast","primes","duree","cumul","compensateur","cotisations","indper","rémunération","liste","principales","indemnites","beneficiaires","l'indemnite","fiscalite","iii","cnracl"],
+    source: "bip",
+    resume: "Indemnité forfaitaire pour travaux supplémentaires (FORSUP) Indemnité d'astreinte et d'intervention (INDAST) Accueil Fiches Rémunération, autres avant...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_indper.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:06.416502",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité forfaitaire pour travaux supplémentaires (FORSUP) Indemnité d'astreinte et d'intervention (INDAST) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité de permanence (INDPER) Indemnité de permanence INDPER I. BENEFICIAIRES II. MONTANT DE L'INDEMNITE DE PERMANENCE III. DUREE DU REPOS COMPENSATEUR IV. CUMUL V. COTISATIONS ET FISCA..."
+  },
+  {
+    id: "bip_inhoin",
+    code: "inhoin",
+    titre: "Indemnité horaire spéciale des agents affectés au traitement de l'information",
+    motsCles: ["indemnité","traitement","primes","montant","cumul","obligatoires","inhoin","horaire","spéciale","affectés","liste","principales","indemnites","beneficiaires","prelevements","iii","csg","crds","l'information","rémunération"],
+    source: "bip",
+    resume: "Indemnité pour utilisation habituelle d'une langue étrangère (INDLAN) Indemnité de risques des agents des parcs zoologiques (PARZOO) Accueil Fiches Ré...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_inhoin.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:11.783042",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité pour utilisation habituelle d'une langue étrangère (INDLAN) Indemnité de risques des agents des parcs zoologiques (PARZOO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité horaire spéciale des agents affectés au traitement de l'information (INHOIN) Indemnité horaire spéciale des agents affectés au traitement de l'information..."
+  },
+  {
+    id: "bip_inhuma",
+    code: "inhuma",
+    titre: "Indemnités pour opérations d'inhumation",
+    motsCles: ["primes","montant","conditions","obligatoires","inhuma","indemnités","opérations","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","regind","csg","crds","d'inhumation","rémunération","traitement"],
+    source: "bip",
+    resume: "Indemnité de risques des agents des parcs zoologiques (PARZOO) Prime de fonctions des personnels affectés au traitement de l'information (TRAINF) Accu...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_inhuma.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:17.260344",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité de risques des agents des parcs zoologiques (PARZOO) Prime de fonctions des personnels affectés au traitement de l'information (TRAINF) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnités pour opérations d'inhumation (INHUMA) Indemnités pour opérations d'inhumation INHUMA I. CONDITIONS D'OCTROI II. MONTANT III. PRELEVEMENTS OB..."
+  },
+  {
+    id: "bip_maccom",
+    code: "maccom",
+    titre: "Prime de technicité pour travail régulier sur machine comptable",
+    motsCles: ["prime","primes","montant","conditions","versement","obligatoires","maccom","technicité","régulier","machine","comptable","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","regind","csg"],
+    source: "bip",
+    resume: "Prime de fonctions des personnels affectés au traitement de l'information (TRAINF) Indemnité forfaitaire complémentaire pour élections (FORELE) Accuei...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_maccom.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:22.655924",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Prime de fonctions des personnels affectés au traitement de l'information (TRAINF) Indemnité forfaitaire complémentaire pour élections (FORELE) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Prime de technicité pour travail régulier sur machine comptable (MACCOM) Prime de technicité pour travail régulier sur machine comptable MACCOM I. CONDIT..."
+  },
+  {
+    id: "bip_parzoo",
+    code: "parzoo",
+    titre: "Indemnité de risques des agents des parcs zoologiques",
+    motsCles: ["indemnité","primes","montant","conditions","obligatoires","parzoo","risques","parcs","zoologiques","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","regind","csg","crds","rémunération"],
+    source: "bip",
+    resume: "Indemnité horaire spéciale des agents affectés au traitement de l'information (INHOIN) Indemnités pour opérations d'inhumation (INHUMA) Accueil Fiches...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_parzoo.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:28.074205",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité horaire spéciale des agents affectés au traitement de l'information (INHOIN) Indemnités pour opérations d'inhumation (INHUMA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité de risques des agents des parcs zoologiques (PARZOO) Indemnité de risques des agents des parcs zoologiques PARZOO I. CONDITIONS D'OCTROI II. MONTANT II..."
+  },
+  {
+    id: "bip_prires",
+    code: "prires",
+    titre: "Prime de responsabilité liée aux emplois fonctionnels",
+    motsCles: ["montant","prime","responsabilité","primes","cumul","conditions","obligatoires","prires","liée","fonctionnels","congé","traitement","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","csg"],
+    source: "bip",
+    resume: "Indemnité d'astreinte et d'intervention (INDAST) Indemnité horaire pour travail de nuit (HORNUI) Accueil Fiches Rémunération, autres avantages financi...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_prires.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:33.176883",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité d'astreinte et d'intervention (INDAST) Indemnité horaire pour travail de nuit (HORNUI) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Prime de responsabilité liée aux emplois fonctionnels (PRIRES) Prime de responsabilité liée aux emplois fonctionnels PRIRES I. CONDITIONS D'OCTROI II. MONTANT III. CUMUL IV. PRELEVEMENTS OBLIGATOIRES..."
+  },
+  {
+    id: "bip_reavre",
+    code: "reavre",
+    titre: "Indemnité de maniement de fonds",
+    motsCles: ["montant","cumul","indemnité","primes","conditions","obligatoires","reavre","maniement","fonds","ifse","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","regind","csg","crds"],
+    source: "bip",
+    resume: "Indemnités pour travaux dangereux, insalubres, incommodes ou salissants (DAINSA) Indemnité pour utilisation habituelle d'une langue étrangère (INDLAN)...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_reavre.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:38.617378",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnités pour travaux dangereux, insalubres, incommodes ou salissants (DAINSA) Indemnité pour utilisation habituelle d'une langue étrangère (INDLAN) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité de maniement de fonds (REAVRE) Indemnité de maniement de fonds REAVRE I. CONDITIONS D'OCTROI II. MONTANT III. CUMUL IV. PRELEVEMENTS OBL..."
+  },
+  {
+    id: "bip_tradim",
+    code: "tradim",
+    titre: "Indemnité horaire pour travail du dimanche et des jours fériés",
+    motsCles: ["indemnité","primes","montant","cumul","conditions","obligatoires","tradim","horaire","dimanche","fériés","rémunération","liste","principales","indemnites","d'octroi","prelevements","octroi","iii","regind","csg"],
+    source: "bip",
+    resume: "Indemnité horaire pour travail de nuit (HORNUI) Indemnité versée aux instituteurs et aux directeurs d'école (INDENS) Accueil Fiches Rémunération, autr...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_tradim.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:45.023384",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité horaire pour travail de nuit (HORNUI) Indemnité versée aux instituteurs et aux directeurs d'école (INDENS) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Indemnité horaire pour travail du dimanche et des jours fériés (TRADIM) Indemnité horaire pour travail du dimanche et des jours fériés TRADIM I. CONDITIONS D'OCTROI II. MONTANT III..."
+  },
+  {
+    id: "bip_trainf",
+    code: "trainf",
+    titre: "Prime de fonctions des personnels affectés au traitement de l'information",
+    motsCles: ["montant","prime","traitement","rifseep","primes","cumul","caa","obligatoires","trainf","fonctions","personnels","affectés","concours","liste","principales","indemnites","beneficiaires","prelevements","iii","csg"],
+    source: "bip",
+    resume: "Indemnités pour opérations d'inhumation (INHUMA) Prime de technicité pour travail régulier sur machine comptable (MACCOM) Accueil Fiches Rémunération,...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_primes-et-indemnites-liees-a-des-fonctions-ou-sujetions-particulieres_trainf.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:50.099423",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnités pour opérations d'inhumation (INHUMA) Prime de technicité pour travail régulier sur machine comptable (MACCOM) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Primes et indemnités liées à des fonctions ou sujétions particulières Prime de fonctions des personnels affectés au traitement de l'information (TRAINF) Prime de fonctions des personnels affectés au traitement de l'information TRAINF I. BENEFICI..."
+  },
+  {
+    id: "bip_depvol",
+    code: "depvol",
+    titre: "Indemnité de départ volontaire",
+    motsCles: ["montant","indemnité","primes","conditions","versement","obligatoires","depvol","départ","volontaire","rémunération","liste","principales","indemnites","d’octroi","prelevements","octroi","iii","caa","choinv","csg"],
+    source: "bip",
+    resume: "Indemnité de mobilité (INDMOB) Prime de pouvoir d'achat exceptionnelle (PRIPVA) Accueil Fiches Rémunération, autres avantages financiers, cotisations ...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_regime-indemnitaire-autres-primes-et-indemnites_depvol.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:54:55.526256",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité de mobilité (INDMOB) Prime de pouvoir d'achat exceptionnelle (PRIPVA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Régime indemnitaire : autres primes et indemnités Indemnité de départ volontaire (DEPVOL) Indemnité de départ volontaire DEPVOL I. CONDITIONS D’OCTROI II. MONTANT ET VERSEMENT III. PRELEVEMENTS OBLIGATOIRES I. CONDITIONS D’OCTROI Le décret n°2009-1594 du 18 décembre 2009 (décr. n°2009-1..."
+  },
+  {
+    id: "bip_garind",
+    code: "garind",
+    titre: "Indemnité de garantie individuelle du pouvoir d'achat",
+    motsCles: ["gipa","montant","indemnité","primes","conditions","versement","obligatoires","garind","garantie","individuelle","pouvoir","rémunération","traitement","liste","principales","indemnites","d'octroi","prelevements","octroi","iii"],
+    source: "bip",
+    resume: "Prime spéciale d'installation (PRINST) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_regime-indemnitaire-autres-primes-et-indemnites_garind.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:01.143404",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Prime spéciale d'installation (PRINST) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Régime indemnitaire : autres primes et indemnités Indemnité de garantie individuelle du pouvoir d'achat (GARIND) Indemnité de garantie individuelle du pouvoir d'achat GARIND I. CONDITIONS D'OCTROI II. MONTANT ET VERSEMENT III. PRELEVEMENTS OBLIGATOIRES Une \"indemnité de garantie individuelle du pouvoir d'achat\" (GIPA) est inst..."
+  },
+  {
+    id: "bip_inacmo",
+    code: "inacmo",
+    titre: "Indemnité d'accompagnement à la mobilité des fonctionnaires de l'Etat",
+    motsCles: ["indemnité","primes","inacmo","mobilité","liste","principales","indemnites","d'accompagnement","l'etat","rémunération","traitement","prime","arrêt","autres","avantages","cotisations","indemnitaire","régime","indemnités","n°2011"],
+    source: "bip",
+    resume: "Prime spéciale d'installation (PRINST) Indemnité compensatoire pour frais de transport en Corse (INDCOR) Accueil Fiches Rémunération, autres avantages...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_regime-indemnitaire-autres-primes-et-indemnites_inacmo.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:06.601134",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Prime spéciale d'installation (PRINST) Indemnité compensatoire pour frais de transport en Corse (INDCOR) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Régime indemnitaire : autres primes et indemnités Indemnité d'accompagnement à la mobilité des fonctionnaires de l'Etat (INACMO) Indemnité d'accompagnement à la mobilité des fonctionnaires de l'Etat INACMO Avertissement : Le décret n°2011-513 du 10 mai 2011 rela..."
+  },
+  {
+    id: "bip_indcor",
+    code: "indcor",
+    titre: "Indemnité compensatoire pour frais de transport en Corse",
+    motsCles: ["montant","indemnité","primes","principe","versement","obligatoires","indcor","compensatoire","frais","transport","corse","liste","principales","indemnites","prelevements","iii","pacs","csg","crds","rémunération"],
+    source: "bip",
+    resume: "Indemnité d'accompagnement à la mobilité des fonctionnaires de l'Etat (INACMO) Prime d’intéressement tenant compte des résultats collectifs des servic...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_regime-indemnitaire-autres-primes-et-indemnites_indcor.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:12.165072",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité d'accompagnement à la mobilité des fonctionnaires de l'Etat (INACMO) Prime d’intéressement tenant compte des résultats collectifs des services (PRIREC) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Régime indemnitaire : autres primes et indemnités Indemnité compensatoire pour frais de transport en Corse (INDCOR) Indemnité compensatoire pour frais de transport en Corse INDCOR I. PRINCIPE II. MONTANT E..."
+  },
+  {
+    id: "bip_indmob",
+    code: "indmob",
+    titre: "Indemnité de mobilité",
+    motsCles: ["montant","indemnité","primes","cumul","epci","conditions","obligatoires","indmob","mobilité","iii","liste","principales","indemnites","d'octroi","prelevements","octroi","csg","crds","rémunération","prime"],
+    source: "bip",
+    resume: "Prime d’intéressement tenant compte des résultats collectifs des services (PRIREC) Indemnité de départ volontaire (DEPVOL) Accueil Fiches Rémunération...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_regime-indemnitaire-autres-primes-et-indemnites_indmob.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:17.661117",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Prime d’intéressement tenant compte des résultats collectifs des services (PRIREC) Indemnité de départ volontaire (DEPVOL) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Régime indemnitaire : autres primes et indemnités Indemnité de mobilité (INDMOB) Indemnité de mobilité INDMOB I. CONDITIONS D'OCTROI II. MONTANT III. CUMUL IV. PRELEVEMENTS OBLIGATOIRES Pour connaître les principes généraux applicables en matiè..."
+  },
+  {
+    id: "bip_prinst",
+    code: "prinst",
+    titre: "Prime spéciale d'installation",
+    motsCles: ["prime","montant","primes","condition","versement","prélèvements","obligatoires","prinst","spéciale","cumul","indemnité","liste","principales","indemnites","d'octroi","iii","cnracl","csg","crds","d'installation"],
+    source: "bip",
+    resume: "Indemnité de garantie individuelle du pouvoir d'achat (GARIND) Indemnité d'accompagnement à la mobilité des fonctionnaires de l'Etat (INACMO) Accueil ...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_regime-indemnitaire-autres-primes-et-indemnites_prinst.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:23.102287",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité de garantie individuelle du pouvoir d'achat (GARIND) Indemnité d'accompagnement à la mobilité des fonctionnaires de l'Etat (INACMO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Régime indemnitaire : autres primes et indemnités Prime spéciale d'installation (PRINST) Prime spéciale d'installation PRINST I. Condition d'octroi II. Montant et versement III. Cumul IV. Prélèvements obligatoires I. CONDITIO..."
+  },
+  {
+    id: "bip_pripva",
+    code: "pripva",
+    titre: "Prime de pouvoir d'achat exceptionnelle",
+    motsCles: ["dgafp","dgcl","faq","montant","prime","primes","conditions","versement","pripva","pouvoir","exceptionnelle","rémunération","traitement","liste","principales","indemnites","brute","courant","juillet","juin"],
+    source: "bip",
+    resume: "Indemnité de départ volontaire (DEPVOL) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principale...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_regime-indemnitaire-autres-primes-et-indemnites_pripva.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:28.639916",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité de départ volontaire (DEPVOL) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Régime indemnitaire : autres primes et indemnités Prime de pouvoir d'achat exceptionnelle (PRIPVA) Prime de pouvoir d'achat exceptionnelle PRIPVA I. BENEFICIAIRES ET CONDITIONS D’ELIGIBILITE II. MONTANT ET VERSEMENT La prime de pouvoir d’achat exceptionnelle a été mise en place dans la fonction publique afin de soutenir le po..."
+  },
+  {
+    id: "bip_prirec",
+    code: "prirec",
+    titre: "Prime d’intéressement tenant compte des résultats collectifs des services",
+    motsCles: ["mise","prime","primes","place","criteres","cumul","conditions","cotisations","prirec","d’intéressement","tenant","compte","résultats","collectifs","congé","indemnité","maladie","formation","liste","principales"],
+    source: "bip",
+    resume: "Indemnité compensatoire pour frais de transport en Corse (INDCOR) Indemnité de mobilité (INDMOB) Accueil Fiches Rémunération, autres avantages financi...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_liste-des-principales-primes-et-indemnites_regime-indemnitaire-autres-primes-et-indemnites_prirec.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:33.980867",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Indemnité compensatoire pour frais de transport en Corse (INDCOR) Indemnité de mobilité (INDMOB) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire liste des principales primes et indemnités Régime indemnitaire : autres primes et indemnités Prime d’intéressement tenant compte des résultats collectifs des services (PRIREC) Prime d’intéressement tenant compte des résultats collectifs des services PRIREC I. CONDITIONS GENERALES DE MISE EN PLACE II. CRITERES IN..."
+  },
+  {
+    id: "bip_regind",
+    code: "regind",
+    titre: "Régime indemnitaire : généralités",
+    motsCles: ["regmod","principe","sdis","primes","conditions","versement","prélèvements","obligatoires","regind","régime","indemnitaire","généralités","fpt","fpe","rémunération","traitement","indemnité","prime","liste","parité"],
+    source: "bip",
+    resume: "Régime indemnitaire : conditions de modulation (REGMOD) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire Régi...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_regind.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:39.078484",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Régime indemnitaire : conditions de modulation (REGMOD) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire Régime indemnitaire : généralités (REGIND) Régime indemnitaire : généralités REGIND I. Les conditions de versement II. Le principe de parité III. Les prélèvements obligatoires Pour connaître les principes de base relatifs à la rémunération, -voir ELREGE. Cette fiche présente les dispositions générales en matière de régime indemnitaire ; elle est complé..."
+  },
+  {
+    id: "bip_regmod",
+    code: "regmod",
+    titre: "Régime indemnitaire : conditions de modulation",
+    motsCles: ["caa","prise","compte","clm","modulation","absences","ifts","cld","mise","servir","regind","rifseep","ihts","primes","matiere","oeuvre","maniere","iat","individuelle","fonctions"],
+    source: "bip",
+    resume: "Régime indemnitaire : généralités (REGIND) Régime indemnitaire tenant compte des fonctions, des sujétions, de l’expertise et de l’engagement professio...",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_regmod.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:44.194842",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "Régime indemnitaire : généralités (REGIND) Régime indemnitaire tenant compte des fonctions, des sujétions, de l’expertise et de l’engagement professionnel (RIFSEEP) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire Régime indemnitaire : conditions de modulation (REGMOD) Régime indemnitaire : conditions de modulation REGMOD I. LES COMPETENCES EN MATIERE DE MODULATION INDIVIDUELLE II. LES MODALITES DE MISE EN OEUVRE DE LA MODULATION III. LA PRISE EN COMPTE D..."
+  },
+  {
+    id: "bip_rifseep",
+    code: "rifseep",
+    titre: "Régime indemnitaire tenant compte des fonctions, des sujétions, de l’expertise et de l’engagement professionnel",
+    motsCles: ["plafond","annuel","ifse","logement","cia","global","sans","groupe","rifseep","pfr","caa","nbi","montants","cadres","crep","primes","principes","généraux","dispositif","régime"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_liste-des-principales-primes-et-indemnites_20260304_225549/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_rifseep.md",
+    section: "liste-des-principales-primes-et-indemnites",
+    timestamp: "2026-03-04T22:55:49.464874",
+    type: "liste-des-principales-primes-et-indemnites",
+    content: "No content available"
+  },
+  {
+    id: "bip_meccom",
+    code: "meccom",
+    titre: "Mécénat de compétences (mise à disposition de fonctionnaires)",
+    motsCles: ["mise","mecenat","competences","disposition","fonction","cadre","misdis","acteurs","oeuvre","fin","meccom","mécénat","compétences","congés","rémunération","maladie","formation","experimentation","concernes","d'un"],
+    source: "bip",
+    resume: "Mise à disposition d'une organisation syndicale (DISSYN) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition Méc...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/conditions-d-exercice-des-fonctions-et-duree-du-travail_mise-a-disposition_meccom.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:00:41.565204",
+    type: "positions",
+    content: "Mise à disposition d'une organisation syndicale (DISSYN) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition Mécénat de compétences (mise à disposition de fonctionnaires) (MECCOM) Mécénat de compétences (mise à disposition de fonctionnaires) MECCOM I. EXPERIMENTATION DU MECENAT DE COMPETENCES DANS LA FONCTION PUBLIQUE II. LES ACTEURS CONCERNES PAR LE MECENAT DE COMPETENCES III. MISE EN OEUVRE DE LA MISE A DISPOSITION DANS LE CADRE D'UN MECENAT DE COMPETENCES..."
+  },
+  {
+    id: "bip_misdis",
+    code: "misdis",
+    titre: "La mise à disposition",
+    motsCles: ["mise","epci","disposition","iii","droit","caa","conditions","territoriaux","contractuels","personnels","privé","misdis","congé","congés","rémunération","maladie","disciplinaire","recrutement","mutation","formation"],
+    source: "bip",
+    resume: "Mise à disposition d'une organisation syndicale (DISSYN) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition La ...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/conditions-d-exercice-des-fonctions-et-duree-du-travail_mise-a-disposition_misdis.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:00:46.730615",
+    type: "positions",
+    content: "Mise à disposition d'une organisation syndicale (DISSYN) Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition La mise à disposition (MISDIS) La mise à disposition MISDIS I. Les agents concernés II. Les conditions de mise à disposition des fonctionnaires territoriaux III. La mise à disposition des agents contractuels IV. La mise à disposition de personnels de droit privé Sont exposées dans cette fiche les modalités générales de mise à disposition ; ne sont pas..."
+  },
+  {
+    id: "bip_disoff",
+    code: "disoff",
+    titre: "Disponibilité d’office pour raisons de santé",
+    motsCles: ["caa","santé","fin","conditions","disoff","disponibilité","d’office","raisons","ait","congé","congés","traitement","maladie","médical","inaptitude","d’octroi","remuneration","disponibilite","octroi","iii"],
+    source: "bip",
+    resume: "Temps partiel thérapeutique (TEMTHE) La retraite pour invalidité (RETINV) Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des c...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/indisponibilite-physique-et-securite-sociale_les-suites-des-conges-de-maladie_disoff.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:00:51.931638",
+    type: "positions",
+    content: "Temps partiel thérapeutique (TEMTHE) La retraite pour invalidité (RETINV) Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Disponibilité d’office pour raisons de santé (DISOFF) Disponibilité d’office pour raisons de santé DISOFF I. CONDITIONS D’OCTROI II. REMUNERATION III. FIN DE LA DISPONIBILITE I. CONDITIONS D’OCTROI A) Bénéficiaires La disponibilité d’office pour raisons de santé est prévue à l’art. L. 514-4 code général de la fonction publique ; pe..."
+  },
+  {
+    id: "bip_activi",
+    code: "activi",
+    titre: "L'activité",
+    motsCles: ["droits","position","lies","conditions","activi","congé","congés","promotion","formation","positions","definition","juridiques","modalites","d'exercice","d'activite","misdis","iii","activite","l'activité","absence"],
+    source: "bip",
+    resume: "Mécénat de compétences (mise à disposition de fonctionnaires) (MECCOM) La mise à disposition (MISDIS) Accueil Fiches Positions Activité L'activité (AC...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_activite_activi.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:00:57.819743",
+    type: "positions",
+    content: "Mécénat de compétences (mise à disposition de fonctionnaires) (MECCOM) La mise à disposition (MISDIS) Accueil Fiches Positions Activité L'activité (ACTIVI) L'activité ACTIVI I. DEFINITION II. CONDITIONS JURIDIQUES III. MODALITES D'EXERCICE IV. DROITS LIES A LA POSITION D'ACTIVITE I. DEFINITION L'activité est la position dans laquelle le fonctionnaire, titulaire d'un grade, exerce effectivement les fonctions de ce grade dans l'un des emplois correspondants (art. L. 512-1 code général de la foncti..."
+  },
+  {
+    id: "bip_conpar",
+    code: "conpar",
+    titre: "Le congé parental",
+    motsCles: ["conge","nouveau","congé","fin","conditions","renouvellement","conpar","parental","iii","fpt","positions","d'octroi","sicopa","octroi","congés","rémunération","prime","maladie","congé maternité","congé paternité"],
+    source: "bip",
+    resume: "Situation de l'agent en congé parental (SICOPA) Accueil Fiches Positions Congé parental Le congé parental (CONPAR) Le congé parental CONPAR I. CONDITI...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_conge-parental_conpar.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:03.621065",
+    type: "positions",
+    content: "Situation de l'agent en congé parental (SICOPA) Accueil Fiches Positions Congé parental Le congé parental (CONPAR) Le congé parental CONPAR I. CONDITIONS D'OCTROI II. RENOUVELLEMENT ET NOUVEAU CONGE III. FIN DU CONGE Cette fiche présente les principes généraux relatifs au congé parental ; elle est complétée par la fiche SICOPA, qui traite de la situation du fonctionnaire durant le congé. Le congé parental est la position du fonctionnaire placé hors de son administration d'origine pour élever son..."
+  },
+  {
+    id: "bip_sicopa",
+    code: "sicopa",
+    titre: "Situation de l'agent en congé parental",
+    motsCles: ["congé","parental","concours","conpar","rémunération","congés","formation","pendant","droit","annuels","liste","sociale","retraite","cjue","paritaires","protection","remplacement","sicopa","situation","aux"],
+    source: "bip",
+    resume: "Le congé parental (CONPAR) Accueil Fiches Positions Congé parental Situation de l'agent en congé parental (SICOPA) Situation de l'agent en congé paren...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_conge-parental_sicopa.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:08.744533",
+    type: "positions",
+    content: "Le congé parental (CONPAR) Accueil Fiches Positions Congé parental Situation de l'agent en congé parental (SICOPA) Situation de l'agent en congé parental SICOPA I. Activités autorisées pendant le congé parental II. Rémunération III. Droit à l'avancement IV. Congés annuels V. Elections aux organismes paritaires VI. Formation, liste d'aptitude et concours VII. Protection sociale VIII. Retraite IX. Remplacement Sur les principes généraux en matière de congé parental, -voir CONPAR. La période de con..."
+  },
+  {
+    id: "bip_detach",
+    code: "detach",
+    titre: "Détachement : généralités",
+    motsCles: ["prodet","receur","exigees","duree","detachement","conditions","renouvellement","detach","détachement","généralités","fpt","caa","recrutement","concours","formation","inaptitude","positions","definition","iii","findet"],
+    source: "bip",
+    resume: "Détachement : procédure (PRODET) Accueil Fiches Positions Détachement Détachement : généralités (DETACH) Détachement : généralités DETACH I. DEFINITIO...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_detachement_detach.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:13.848740",
+    type: "positions",
+    content: "Détachement : procédure (PRODET) Accueil Fiches Positions Détachement Détachement : généralités (DETACH) Détachement : généralités DETACH I. DEFINITION II. CAS DE DETACHEMENT III. CONDITIONS EXIGEES IV. DUREE ET RENOUVELLEMENT Cette fiche présente les principes généraux du détachement dans la fonction publique territoriale ; elle est principalement complétée par les fiches suivantes : - PRODET, sur la procédure de détachement - FONDET, sur la situation du fonctionnaire détaché - FINDET, sur la f..."
+  },
+  {
+    id: "bip_detoff",
+    code: "detoff",
+    titre: "Le détachement d’office en cas de transfert d’activité",
+    motsCles: ["spic","principe","fin","situation","détaché","detachement","detoff","détachement","d’office","transfert","d’activité","congé","rémunération","indemnité","primes","licenciement","contrat","positions","procedure","iii"],
+    source: "bip",
+    resume: "Détachement : fin (FINDET) Accueil Fiches Positions Détachement Le détachement d’office en cas de transfert d’activité (DETOFF) Le détachement d’offic...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_detachement_detoff.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:19.406759",
+    type: "positions",
+    content: "Détachement : fin (FINDET) Accueil Fiches Positions Détachement Le détachement d’office en cas de transfert d’activité (DETOFF) Le détachement d’office en cas de transfert d’activité DETOFF I. LE PRINCIPE II. LA PROCEDURE III. SITUATION DU FONCTIONNAIRE DÉTACHÉ IV. FIN DU DETACHEMENT La loi n°2019-828 du 6 août 2019 crée un nouveau cas de détachement en cas d’externalisation d’un service public vers une personne morale de droit privé. Par dérogation aux règles de droit commun, ce détachement est..."
+  },
+  {
+    id: "bip_findet",
+    code: "findet",
+    titre: "Détachement : fin",
+    motsCles: ["position","hors","cadres","reintegration","findet","détachement","cap","congé","traitement","indemnité","licenciement","promotion","avancement","faute","positions","cours","terme","integration","particuliers","fondet"],
+    source: "bip",
+    resume: "Détachement : situation du fonctionnaire (FONDET) Le détachement d’office en cas de transfert d’activité (DETOFF) Accueil Fiches Positions Détachement...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_detachement_findet.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:24.503170",
+    type: "positions",
+    content: "Détachement : situation du fonctionnaire (FONDET) Le détachement d’office en cas de transfert d’activité (DETOFF) Accueil Fiches Positions Détachement Détachement : fin (FINDET) Détachement : fin FINDET I. REINTEGRATION II. INTEGRATION III. LA POSITION HORS CADRES IV. CAS PARTICULIERS Le détachement est toujours prononcé pour une durée déterminée (art. L. 513-2 code général de la fonction publique) ; il prend alors normalement fin au terme initialement prévu, si aucun renouvellement n'intervient..."
+  },
+  {
+    id: "bip_fondet",
+    code: "fondet",
+    titre: "Détachement : situation du fonctionnaire",
+    motsCles: ["cnracl","caa","findet","rémunération","avancement","promotion","discipline","sociale","retraite","fonctions","classement","entretien","professionnel","insuffisance","professionnelle","sécurité","fondet","détachement","situation","vacance"],
+    source: "bip",
+    resume: "Détachement : procédure (PRODET) Détachement : fin (FINDET) Accueil Fiches Positions Détachement Détachement : situation du fonctionnaire (FONDET) Dét...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_detachement_fondet.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:29.613891",
+    type: "positions",
+    content: "Détachement : procédure (PRODET) Détachement : fin (FINDET) Accueil Fiches Positions Détachement Détachement : situation du fonctionnaire (FONDET) Détachement : situation du fonctionnaire FONDET I. Vacance de l'emploi d'origine II. Exercice des fonctions III. Classement et rémunération IV. Entretien professionnel, avancement, promotion V. Discipline et insuffisance professionnelle VI. Sécurité sociale et retraite De façon générale, le fonctionnaire détaché est soumis aux règles régissant la fonc..."
+  },
+  {
+    id: "bip_prodet",
+    code: "prodet",
+    titre: "Détachement : procédure",
+    motsCles: ["demande","prise","decision","prodet","détachement","cap","positions","detach","rémunération","médical","arrêt","disciplinaire","recrutement","carrière","formation","formations","contrat","représentant","inaptitude","obligation"],
+    source: "bip",
+    resume: "Détachement : généralités (DETACH) Détachement : situation du fonctionnaire (FONDET) Accueil Fiches Positions Détachement Détachement : procédure (PRO...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_detachement_prodet.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:34.660074",
+    type: "positions",
+    content: "Détachement : généralités (DETACH) Détachement : situation du fonctionnaire (FONDET) Accueil Fiches Positions Détachement Détachement : procédure (PRODET) Détachement : procédure PRODET I. LA DEMANDE II. LA PRISE DE DECISION La présente fiche développe les éléments de procédure applicables au détachement des fonctionnaires territoriaux. Il convient de signaler que les renouvellements de détachement sont prononcés selon une procédure identique (art. 3 décr. n°86-68 du 13 janv. 1986). Les fonction..."
+  },
+  {
+    id: "bip_diatre",
+    code: "diatre",
+    titre: "Disponibilité d'office en attente de réintégration",
+    motsCles: ["apres","cap","parental","disoff","conge","diatre","disponibilité","attente","réintégration","congé","santé","licenciement","faute","positions","detachement","findet","iii","d'office","absence","maladie"],
+    source: "bip",
+    resume: "Disponibilité d’office pour raisons de santé (DISOFF) Accueil Fiches Positions Disponibilité Disponibilité d'office en attente de réintégration (DIATR...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_disponibilite_diatre.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:39.733612",
+    type: "positions",
+    content: "Disponibilité d’office pour raisons de santé (DISOFF) Accueil Fiches Positions Disponibilité Disponibilité d'office en attente de réintégration (DIATRE) Disponibilité d'office en attente de réintégration DIATRE I. APRES UN DETACHEMENT II. APRES UN CONGE PARENTAL Le fonctionnaire peut être placé en disponibilité d'office soit pour raisons de santé, à l'expiration des droits à congé de maladie, soit dans l'attente d'une réintégration. La mise en disponibilité d'office pour raisons de santé est abo..."
+  },
+  {
+    id: "bip_disdis",
+    code: "disdis",
+    titre: "La disponibilité sous réserve des nécessités de service",
+    motsCles: ["caa","sous","disponibilité","réserve","nécessités","motifs","droit","cnfpt","éléments","réintégration","allocations","chômage","disdis","aux","iii","rémunération","santé","candidats","faute","positions"],
+    source: "bip",
+    resume: "La disponibilité de droit (DISDRO) Disponibilité d’office pour raisons de santé (DISOFF) Accueil Fiches Positions Disponibilité La disponibilité sous ...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_disponibilite_disdis.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:44.841017",
+    type: "positions",
+    content: "La disponibilité de droit (DISDRO) Disponibilité d’office pour raisons de santé (DISOFF) Accueil Fiches Positions Disponibilité La disponibilité sous réserve des nécessités de service (DISDIS) La disponibilité sous réserve des nécessités de service DISDIS I. Les motifs d'octroi d'une disponibilité sous réserve des nécessités de service II. Les éléments de procédure III. La réintégration de l'agent IV. Le droit aux allocations d'assurance chômage Sur demande du fonctionnaire, l'autorité territori..."
+  },
+  {
+    id: "bip_disdro",
+    code: "disdro",
+    titre: "La disponibilité de droit",
+    motsCles: ["pacs","droit","caa","disdis","conditions","réintégration","allocations","chômage","disdro","disponibilité","aux","santé","positions","d'octroi","l'agent","d'assurance","dispon","iii","dom","cnfpt"],
+    source: "bip",
+    resume: "Disponibilité : généralités (DISPON) La disponibilité sous réserve des nécessités de service (DISDIS) Accueil Fiches Positions Disponibilité La dispon...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_disponibilite_disdro.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:49.930305",
+    type: "positions",
+    content: "Disponibilité : généralités (DISPON) La disponibilité sous réserve des nécessités de service (DISDIS) Accueil Fiches Positions Disponibilité La disponibilité de droit (DISDRO) La disponibilité de droit DISDRO I. Conditions d'octroi II. La réintégration de l'agent III. Le droit aux allocations d'assurance chômage Sur demande du fonctionnaire, l'autorité territoriale peut lui accorder : - une disponibilité de droit : la présente fiche détaille les cas d'octroi d'une telle disponibilité (partie I)..."
+  },
+  {
+    id: "bip_dispon",
+    code: "dispon",
+    titre: "Disponibilité : généralités",
+    motsCles: ["disoff","disdro","cap","disponibilite","situation","dispon","disponibilité","généralités","iii","congé","congés","maladie","positions","procedure","l'agent","diatre","disdis","pacs","graf","urssaf"],
+    source: "bip",
+    resume: "La disponibilité de droit (DISDRO) Accueil Fiches Positions Disponibilité Disponibilité : généralités (DISPON) Disponibilité : généralités DISPON I. C...",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_disponibilite_dispon.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:01:54.980850",
+    type: "positions",
+    content: "La disponibilité de droit (DISDRO) Accueil Fiches Positions Disponibilité Disponibilité : généralités (DISPON) Disponibilité : généralités DISPON I. CAS DE DISPONIBILITE II. PROCEDURE III. SITUATION DE L'AGENT La disponibilité est l'une des positions statutaires, énumérées à l'art. L. 511-1 code général de la fonction publique, dans lesquelles peut être placé le fonctionnaire territorial ; dans cette position, l'agent est placé hors de son administration ou service d'origine. Elle est inapplicab..."
+  },
+  {
+    id: "bip_posgen",
+    code: "posgen",
+    titre: "Positions : généralités",
+    motsCles: ["positions","principe","posgen","généralités","congé","concernes","differentes","iii","congés","traitement","arrêt","carrière","avancement","congé parental","fiches","sont","placés","général","fonction","position"],
+    source: "bip",
+    resume: "Accueil Fiches Positions Positions : généralités Positions : généralités (POSGEN) Positions : généralités POSGEN I. PRINCIPE II. AGENTS CONCERNES III....",
+    localPath: "/bip/output/bip_fiches_rag_positions_20260304_230200/positions_positions-generalites_posgen.md",
+    section: "positions",
+    timestamp: "2026-03-04T23:02:00.035406",
+    type: "positions",
+    content: "Accueil Fiches Positions Positions : généralités Positions : généralités (POSGEN) Positions : généralités POSGEN I. PRINCIPE II. AGENTS CONCERNES III. LES DIFFERENTES POSITIONS I. PRINCIPE Les fonctionnaires sont obligatoirement placés dans l'une des quatre positions statutaires prévues par le statut général des fonctionnaires (art. L. 511-1 code général de la fonction publique). Chaque position est régie par des dispositions propres. Un agent ne peut être simultanément placé dans deux positions..."
+  },
+  {
+    id: "bip_reasma",
+    code: "reasma",
+    titre: "Assistants maternels et familiaux : rémunération",
+    motsCles: ["smic","assistants","remuneration","assmat","maternels","familiaux","rémunération","reasma","congé","congés","indemnité","contrat","cotisations","absence","maladie","maladies","santé","médical","arrêt","formation"],
+    source: "bip",
+    resume: "Assistants maternel et familiaux : congés (CONASM) Accueil Fiches Agents contractuels Catégories particulières d'agents publics Assistants maternels e...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/agents-contractuels_categories-particulieres-d-agents-publics_assistants-maternels-et-assistants-familiaux_reasma.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:38:47.043591",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Assistants maternel et familiaux : congés (CONASM) Accueil Fiches Agents contractuels Catégories particulières d'agents publics Assistants maternels et assistants familiaux Assistants maternels et familiaux : rémunération (REASMA) Assistants maternels et familiaux : rémunération REASMA I. LA REMUNERATION DES ASSISTANTS MATERNELS II. LA REMUNERATION DES ASSISTANTS FAMILIAUX Avertissements liminaires Cette fiche présente les règles générales relatives à la rémunération des assistants maternels et..."
+  },
+  {
+    id: "bip_ntirem",
+    code: "ntirem",
+    titre: "Agents contractuels : rémunération",
+    motsCles: ["caa","rémunération","montant","réévaluation","ntirem","contractuels","sft","traitement","indemnité","carrière","contrat","autres","avantages","composition","iii","smic","dgcl","cdd","nbi","cdi"],
+    source: "bip",
+    resume: "Accueil Fiches Agents contractuels Rémunération des agents contractuels Agents contractuels : rémunération (NTIREM) Agents contractuels : rémunération...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/agents-contractuels_remuneration-des-agents-contractuels_ntirem.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:38:52.155512",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Accueil Fiches Agents contractuels Rémunération des agents contractuels Agents contractuels : rémunération (NTIREM) Agents contractuels : rémunération NTIREM I. Composition II. Montant III. Réévaluation Pour connaître les principes généraux applicables aux agents contractuels, -voir NTIGEN. Cette fiche présente les principes généraux en matière de rémunération des agents contractuels de droit public. Elle n’aborde pas les modalités spécifiques de rémunération des assistants maternels et des assi..."
+  },
+  {
+    id: "bip_cotisa",
+    code: "cotisa",
+    titre: "Les cotisations au régime de retraite",
+    motsCles: ["cnracl","retenue","cotisations","nbi","contribution","employeur","cotisa","régime","retraite","traitement","taux","compter","detachement","iii","dgafp","fpt","rémunération","indemnité","arrêt","avancement"],
+    source: "bip",
+    resume: "Retraite additionnelle de la fonction publique (READDI) Accueil Fiches Cessation de fonctions Retraite Les cotisations au régime de retraite (COTISA) ...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/cessation-de-fonctions_retraite_cotisa.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:38:57.307220",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Retraite additionnelle de la fonction publique (READDI) Accueil Fiches Cessation de fonctions Retraite Les cotisations au régime de retraite (COTISA) Les cotisations au régime de retraite COTISA I. LA RETENUE AGENT II. LA CONTRIBUTION EMPLOYEUR III. LE DETACHEMENT Sur les principes généraux du régime de retraite CNRACL, -voir GENRET. Le régime de retraite de la CNRACL est financé par deux types de cotisations : - une « retenue », qui est à la charge du fonctionnaire - une « contribution », qui e..."
+  },
+  {
+    id: "bip_renoco",
+    code: "renoco",
+    titre: "Fonctionnaires occupant un emploi à temps non complet : rémunération",
+    motsCles: ["primes","remuneration","principe","rémunération","general","renoco","occupant","complet","sft","traitement","indemnité","prime","cotisations","principale","indemnites","complements","prelevements","obligatoires","sonoco","iii"],
+    source: "bip",
+    resume: "Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : protection sociale (SO...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/emplois-a-temps-non-complet_renoco.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:02.379533",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO) Fonctionnaires occupant un emploi à temps non complet : protection sociale (SONOCO) Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Fonctionnaires occupant un emploi à temps non complet : rémunération RENOCO I. PRINCIPE GENERAL II. REMUNERATION PRINCIPALE III. PRIMES, INDEMNITES ET COMPLEMENTS DE REMUNERATION IV. PRELEVEMENTS OBLIGATOIRES Cette fiche pr..."
+  },
+  {
+    id: "bip_remfon",
+    code: "remfon",
+    titre: "Rémunération des agents nommés sur les emplois fonctionnels",
+    motsCles: ["nature","frais","traitement","rémunération","avantages","regime","indiciaire","accessoires","indemnitaire","remfon","nommés","fonctionnels","iii","prime","primes","responsabilité","autres","obligatoires","representation","ppcr"],
+    source: "bip",
+    resume: "Echelles indiciaires Accueil Fiches Emplois de direction et emplois d'expert Emplois de direction : rémunération Rémunération des agents nommés sur le...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/emplois-de-direction-et-emplois-d-expert_emplois-de-direction-remuneration_remfon.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:07.477408",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Echelles indiciaires Accueil Fiches Emplois de direction et emplois d'expert Emplois de direction : rémunération Rémunération des agents nommés sur les emplois fonctionnels (REMFON) Rémunération des agents nommés sur les emplois fonctionnels REMFON I. TRAITEMENT INDICIAIRE II. ACCESSOIRES OBLIGATOIRES III. REGIME INDEMNITAIRE IV. AVANTAGES EN NATURE ET FRAIS DE REPRESENTATION A noter : s'agissant du prélèvement à la source de l'impôt sur le revenu (art. 204 A code général des impôts et suivants)..."
+  },
+  {
+    id: "bip_comrem",
+    code: "comrem",
+    titre: "Les avantages collectivement acquis",
+    motsCles: ["epci","principe","maintien","avantages","général","conditions","prélèvements","obligatoires","comrem","collectivement","acquis","iii","caa","rémunération","primes","autres","financiers","cotisations","conséquences","changement"],
+    source: "bip",
+    resume: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Avantages collectivement acquis Les avantages collectivement acquis (COMREM) Les...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_avantages-collectivement-acquis_comrem.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:12.595482",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Avantages collectivement acquis Les avantages collectivement acquis (COMREM) Les avantages collectivement acquis COMREM I. Principe général II. Conditions du maintien III. Conséquences du changement d'affectation IV. Prélèvements obligatoires I. PRINCIPE GÉNÉRAL A) Les dispositions législatives en vigueur Les éléments de rémunération auxquels ont droit, après service fait, les fonctionnaires, sont énumérés à l'art. L. 712-1 co..."
+  },
+  {
+    id: "bip_avanat",
+    code: "avanat",
+    titre: "Barèmes pour l'évaluation forfaitaire de certains avantages en nature",
+    motsCles: ["ttc","logement","borne","recharge","outils","avantages","nourriture","véhicule","électrique","communication","avanat","repas","location","barèmes","forfaitaire","certains","nature","hicule","rémunération","autres"],
+    source: "bip",
+    resume: "Les prélèvements obligatoires (COT) Accueil Fiches Rémunération, autres avantages financiers, cotisations Cotisations Barèmes pour l'évaluation forfai...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_cotisations_avanat.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:17.666907",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Les prélèvements obligatoires (COT) Accueil Fiches Rémunération, autres avantages financiers, cotisations Cotisations Barèmes pour l'évaluation forfaitaire de certains avantages en nature (AVANAT) Barèmes pour l'évaluation forfaitaire de certains avantages en nature AVANAT I. Nourriture II. Logement III. Véhicule IV. Borne de recharge électrique V. Outils de communication Les avantages en nature désignent les biens ou les services fournis ou mis à disposition des agents par leur employeur, soit..."
+  },
+  {
+    id: "bip_cot",
+    code: "cot",
+    titre: "Les prélèvements obligatoires",
+    motsCles: ["part","assiette","base","rence","general","regime","securite","sociale","nbi","cnracl","crds","cotisa","cadre","special","csg","prélèvements","obligatoires","rémunération","traitement","maladie"],
+    source: "bip",
+    resume: "Barèmes pour l'évaluation forfaitaire de certains avantages en nature (AVANAT) Les cotisations au régime de retraite (COTISA) Accueil Fiches Rémunérat...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_cotisations_cot.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:22.821182",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Barèmes pour l'évaluation forfaitaire de certains avantages en nature (AVANAT) Les cotisations au régime de retraite (COTISA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Cotisations Les prélèvements obligatoires (COT) Les prélèvements obligatoires COT I. CADRE GENERAL II. REGIME SPECIAL DE SECURITE SOCIALE III. REGIME GENERAL DE SECURITE SOCIALE I. CADRE GENERAL 1- Régime de sécurité sociale des agents publics territoriaux Cette fiche présente les règles générales en ma..."
+  },
+  {
+    id: "bip_rehsup",
+    code: "rehsup",
+    titre: "Réduction des cotisations d’assurance vieillesse sur les heures supplémentaires",
+    motsCles: ["ihts","calcul","mise","oeuvre","rafp","remuneration","cnracl","cotisations","elements","rehsup","réduction","d’assurance","vieillesse","heures","supplémentaires","iii","rémunération","autres","avantages","financiers"],
+    source: "bip",
+    resume: "Les cotisations au régime de retraite (COTISA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Cotisations Réduction des cotisat...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_cotisations_rehsup.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:27.924570",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Les cotisations au régime de retraite (COTISA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Cotisations Réduction des cotisations d’assurance vieillesse sur les heures supplémentaires (REHSUP) Réduction des cotisations d’assurance vieillesse sur les heures supplémentaires REHSUP I. LES ELEMENTS DE REMUNERATION CONCERNES II. CALCUL DE LA REDUCTION III. CONDITIONS DE MISE EN OEUVRE La loi n°2018-1203 du 22 décembre 2018 de financement de la sécurité sociale pour 2019 a rét..."
+  },
+  {
+    id: "bip_indcom",
+    code: "indcom",
+    titre: "Indemnité compensatrice de la hausse de la contribution sociale généralisée (CSG)",
+    motsCles: ["csg","calcul","montant","l’indemnite","selon","indemnité","cnracl","iii","situation","l’agent","versement","indcom","compensatrice","hausse","contribution","sociale","généralisée","congé","rémunération","traitement"],
+    source: "bip",
+    resume: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Indemnité compensatrice de la hausse de la CSG Indemnité compensatrice de la hau...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-compensatrice-de-la-hausse-de-la-csg_indcom.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:33.249873",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Indemnité compensatrice de la hausse de la CSG Indemnité compensatrice de la hausse de la contribution sociale généralisée (CSG) (INDCOM) Indemnité compensatrice de la hausse de la contribution sociale généralisée (CSG) INDCOM I. CALCUL DU MONTANT DE L’INDEMNITE SELON LA SITUATION DE L’AGENT II. MODALITES DE VERSEMENT ET REEVALUATION DE L’INDEMNITE La hausse de la CSG de 1,7 %, intervenue au 1er janvier 2018, est compensée dan..."
+  },
+  {
+    id: "bip_indres",
+    code: "indres",
+    titre: "L'indemnité de résidence",
+    motsCles: ["calcul","mode","conditions","obligatoires","indres","résidence","congé","rémunération","traitement","maladie","autres","avantages","financiers","cotisations","d'octroi","situations","particulieres","prelevements","zonres","octroi"],
+    source: "bip",
+    resume: "Zones d'indemnité de résidence (ZONRES) Accueil Fiches Rémunération, autres avantages financiers, cotisations Indemnité de résidence L'indemnité de ré...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-de-residence_indres.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:39.027202",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Zones d'indemnité de résidence (ZONRES) Accueil Fiches Rémunération, autres avantages financiers, cotisations Indemnité de résidence L'indemnité de résidence (INDRES) L'indemnité de résidence INDRES I. CONDITIONS D'OCTROI II. MODE DE CALCUL III. SITUATIONS PARTICULIERES IV. PRELEVEMENTS OBLIGATOIRES I. CONDITIONS D'OCTROI L'indemnité de résidence est destinée à compenser les différences de coût de la vie entre les différents lieux où un fonctionnaire peut exercer ses fonctions. Elle ne doit pas..."
+  },
+  {
+    id: "bip_zonrea",
+    code: "zonrea",
+    titre: "Indemnité de résidence : départements de l'Ain au Finistère",
+    motsCles: ["indemnité","alpes","zonrea","haute","corse","résidence","départements","finistère","autres","avantages","financiers","cotisations","provence","charente","eure","l'ain","rémunération","zone","saint","toutes"],
+    source: "bip",
+    resume: "Zones d'indemnité de résidence (ZONRES) Indemnité de résidence : départements du Gard à la Meurthe-et-Moselle (ZONREB) Accueil Fiches Rémunération, au...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-de-residence_zonrea.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:44.203284",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Zones d'indemnité de résidence (ZONRES) Indemnité de résidence : départements du Gard à la Meurthe-et-Moselle (ZONREB) Accueil Fiches Rémunération, autres avantages financiers, cotisations Indemnité de résidence Indemnité de résidence : départements de l'Ain au Finistère (ZONREA) Indemnité de résidence : départements de l'Ain au Finistère ZONREA AIN (01) : ➝ zone 2 (1 %) : Beynost, La Boisse, Dagneux, Massieux, Miribel, Misérieux, Montluel, Neyron, Parcieux, Reyrieux, Saint-Didier-de- Formans, S..."
+  },
+  {
+    id: "bip_zonreb",
+    code: "zonreb",
+    titre: "Indemnité de résidence : départements du Gard à la Meurthe-et-Moselle",
+    motsCles: ["loire","indemnité","haute","gard","meurthe","moselle","zonreb","indre","résidence","départements","autres","avantages","financiers","cotisations","garonne","lot","marne","rémunération","zone","alès"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-de-residence_zonreb.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:49.546872",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "No content available"
+  },
+  {
+    id: "bip_zonrec",
+    code: "zonrec",
+    titre: "Indemnité de résidence : départements de la Meuse à l'Oise",
+    motsCles: ["indemnité","meuse","zonrec","résidence","départements","autres","avantages","financiers","cotisations","moselle","nord","oise","l'oise","rémunération","toutes","communes","sont","classées","zone","saint"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-de-residence_zonrec.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:39:54.808165",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "No content available"
+  },
+  {
+    id: "bip_zonred",
+    code: "zonred",
+    titre: "Indemnité de résidence : départements de l'Orne à Paris",
+    motsCles: ["indemnité","pyrenees","paris","zonred","haute","savoie","résidence","départements","autres","avantages","financiers","cotisations","rhin","saone","l'orne","rémunération","toutes","communes","sont","classées"],
+    source: "bip",
+    resume: "Indemnité de résidence : départements de la Meuse à l'Oise (ZONREC) Indemnité de résidence : départements de la Seine-Maritime aux Yvelines (ZONREE) A...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-de-residence_zonred.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:00.022661",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Indemnité de résidence : départements de la Meuse à l'Oise (ZONREC) Indemnité de résidence : départements de la Seine-Maritime aux Yvelines (ZONREE) Accueil Fiches Rémunération, autres avantages financiers, cotisations Indemnité de résidence Indemnité de résidence : départements de l'Orne à Paris (ZONRED) Indemnité de résidence : départements de l'Orne à Paris ZONRED ORNE (61) : Toutes les communes sont classées en zone 3 (0%) PAS DE CALAIS (62) : ➝ zone 2 (1 %) : Ablain-Saint-Nazaire, Aix-Noule..."
+  },
+  {
+    id: "bip_zonree",
+    code: "zonree",
+    titre: "Indemnité de résidence : départements de la Seine-Maritime aux Yvelines",
+    motsCles: ["seine","indemnité","maritime","yvelines","zonree","résidence","départements","autres","avantages","financiers","cotisations","marne","aux","rémunération","carrière","zone","bois","rouen","fontaine","sous"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-de-residence_zonree.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:05.222429",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "No content available"
+  },
+  {
+    id: "bip_zonref",
+    code: "zonref",
+    titre: "Indemnité de résidence : des Deux-Sèvres au Val d'Oise et outre-mer",
+    motsCles: ["indemnité","deux","val","zonref","seine","résidence","sèvres","outre","autres","avantages","financiers","cotisations","saint","oise","tarn","vienne","d'oise","mer","rémunération","toutes"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-de-residence_zonref.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:10.445051",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "No content available"
+  },
+  {
+    id: "bip_zonres",
+    code: "zonres",
+    titre: "Zones d'indemnité de résidence",
+    motsCles: ["zone","communes","principe","classement","zonres","zones","résidence","indemnité","autres","avantages","financiers","cotisations","particuliers","differentes","zonrea","iii","d'indemnité","rémunération","salaire","départements"],
+    source: "bip",
+    resume: "L'indemnité de résidence (INDRES) Indemnité de résidence : départements de l'Ain au Finistère (ZONREA) Accueil Fiches Rémunération, autres avantages f...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_indemnite-de-residence_zonres.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:15.758071",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "L'indemnité de résidence (INDRES) Indemnité de résidence : départements de l'Ain au Finistère (ZONREA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Indemnité de résidence Zones d'indemnité de résidence (ZONRES) Zones d'indemnité de résidence ZONRES I. LE PRINCIPE II. CAS PARTICULIERS III. ZONE DE CLASSEMENT DES DIFFERENTES COMMUNES I. LE PRINCIPE * Les trois zones d'indemnité de résidence correspondent géographiquement aux zones territoriales d'abattement de salaires dét..."
+  },
+  {
+    id: "bip_logfon",
+    code: "logfon",
+    titre: "Logement de fonction",
+    motsCles: ["caa","charges","cumul","dues","regles","fin","conditions","modification","concession","logfon","logement","fonction","epci","rémunération","indemnité","prime","maladie","mutation","autres","avantages"],
+    source: "bip",
+    resume: "Logement de fonction et indemnité de logement de sapeurs-pompiers professionnels (LOGSAP) Accueil Fiches Rémunération, autres avantages financiers, co...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_logement-de-fonction_logfon.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:20.882492",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Logement de fonction et indemnité de logement de sapeurs-pompiers professionnels (LOGSAP) Accueil Fiches Rémunération, autres avantages financiers, cotisations Logement de fonction Logement de fonction (LOGFON) Logement de fonction LOGFON I. LES CONDITIONS D'ATTRIBUTION II. LES CHARGES DUES PAR L'AGENT III. LES REGLES DE CUMUL IV. LA FIN OU LA MODIFICATION DE LA CONCESSION I. LES CONDITIONS D'ATTRIBUTION A) Le principe général 1- Attribution aux agents territoriaux et principe de parité L'organe..."
+  },
+  {
+    id: "bip_logsap",
+    code: "logsap",
+    titre: "Logement de fonction et indemnité de logement de sapeurs-pompiers professionnels",
+    motsCles: ["montant","logement","indemnité","cumul","conditions","obligatoires","logsap","fonction","sapeurs","pompiers","professionnels","autres","avantages","financiers","cotisations","d'octroi","prelevements","logfon","octroi","iii"],
+    source: "bip",
+    resume: "Logement de fonction (LOGFON) Accueil Fiches Rémunération, autres avantages financiers, cotisations Logement de fonction Logement de fonction et indem...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_logement-de-fonction_logsap.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:26.375054",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Logement de fonction (LOGFON) Accueil Fiches Rémunération, autres avantages financiers, cotisations Logement de fonction Logement de fonction et indemnité de logement de sapeurs-pompiers professionnels (LOGSAP) Logement de fonction et indemnité de logement de sapeurs-pompiers professionnels LOGSAP I. CONDITIONS D'OCTROI II. MONTANT III. CUMUL IV. PRELEVEMENTS OBLIGATOIRES Pour connaître les principes généraux applicables en matière de régime indemnitaire, -voir REGIND. Pour les sapeurs-pompiers..."
+  },
+  {
+    id: "bip_nobdir",
+    code: "nobdir",
+    titre: "NBI : emplois administratifs de direction",
+    motsCles: ["dgas","dgs","nbi","dga","nombre","points","montant","nobdir","administratifs","direction","traitement","autres","avantages","financiers","cotisations","generalites","prelevements","obligatoires","iii","cnaf"],
+    source: "bip",
+    resume: "La nouvelle bonification indiciaire (NOBOIN) Accueil Fiches Rémunération, autres avantages financiers, cotisations Nouvelle bonification indiciaire NB...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_nouvelle-bonification-indiciaire_nobdir.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:31.429571",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "La nouvelle bonification indiciaire (NOBOIN) Accueil Fiches Rémunération, autres avantages financiers, cotisations Nouvelle bonification indiciaire NBI : emplois administratifs de direction (NOBDIR) NBI : emplois administratifs de direction NOBDIR I. GENERALITES II. MONTANT III. PRELEVEMENTS OBLIGATOIRES I. GENERALITES Une nouvelle bonification indiciaire est versée, en raison de leurs fonctions, aux fonctionnaires détachés dans l'un des emplois administratifs de direction énumérés dans le décre..."
+  },
+  {
+    id: "bip_noboin",
+    code: "noboin",
+    titre: "La nouvelle bonification indiciaire",
+    motsCles: ["nbi","caa","rémunération","pfr","retraite","mise","oeuvre","prélèvements","noboin","nouvelle","bonification","indiciaire","effets","sociaux","congé","congés","traitement","primes","maladie","responsabilité"],
+    source: "bip",
+    resume: "NBI : emplois administratifs de direction (NOBDIR) Accueil Fiches Rémunération, autres avantages financiers, cotisations Nouvelle bonification indicia...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_nouvelle-bonification-indiciaire_noboin.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:36.545516",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "NBI : emplois administratifs de direction (NOBDIR) Accueil Fiches Rémunération, autres avantages financiers, cotisations Nouvelle bonification indiciaire La nouvelle bonification indiciaire (NOBOIN) La nouvelle bonification indiciaire NOBOIN I. Bénéficiaires II. Effets sur la rémunération et la retraite III. Mise en oeuvre IV. Prélèvements sociaux La nouvelle bonification indiciaire (NBI) constitue un élément à part entière de la rémunération, sur la base de l'attribution de points d'indice majo..."
+  },
+  {
+    id: "bip_aidfam",
+    code: "aidfam",
+    titre: "Prestations d'action sociale : aide à la famille",
+    motsCles: ["prestation","garde","repos","cesu","sejour","aidfam","enfants","prestations","sociale","aide","famille","autres","avantages","financiers","cotisations","d'enfants","presoc","d'action","congé","rémunération"],
+    source: "bip",
+    resume: "Prestations d'action sociale : restauration du personnel (ALLRES) Prestations d'action sociale : mesures concernant les enfants handicapés (PREHAN) Ac...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_prestations-sociales_aidfam.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:41.825931",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Prestations d'action sociale : restauration du personnel (ALLRES) Prestations d'action sociale : mesures concernant les enfants handicapés (PREHAN) Accueil Fiches Rémunération, autres avantages financiers, cotisations Prestations sociales Prestations d'action sociale : aide à la famille (AIDFAM) Prestations d'action sociale : aide à la famille AIDFAM I. LA PRESTATION POUR GARDE D'ENFANTS II. LA PRESTATION POUR SEJOUR DE REPOS Pour connaître les principes généraux en matière de prestations d'acti..."
+  },
+  {
+    id: "bip_allres",
+    code: "allres",
+    titre: "Prestations d'action sociale : restauration du personnel",
+    motsCles: ["repas","titres","presoc","télétravail","prestation","restaurant","allres","prestations","sociale","restauration","personnel","autres","avantages","financiers","cotisations","d'action","rémunération","traitement","contrat","obligation"],
+    source: "bip",
+    resume: "Prestations d'action sociale : généralités (PRESOC) Prestations d'action sociale : aide à la famille (AIDFAM) Accueil Fiches Rémunération, autres avan...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_prestations-sociales_allres.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:47.428813",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Prestations d'action sociale : généralités (PRESOC) Prestations d'action sociale : aide à la famille (AIDFAM) Accueil Fiches Rémunération, autres avantages financiers, cotisations Prestations sociales Prestations d'action sociale : restauration du personnel (ALLRES) Prestations d'action sociale : restauration du personnel ALLRES I. LA PRESTATION REPAS II. LES TITRES RESTAURANT Pour connaître les principes généraux en matière de prestations d'action sociale, -voir PRESOC. Les données contenues da..."
+  },
+  {
+    id: "bip_pre",
+    code: "pre",
+    titre: "Valeurs, indices et taux des prestations d'action sociale",
+    motsCles: ["enfants","aides","aux","familles","sejours","indices","taux","prestations","sociale","autres","avantages","financiers","cotisations","handicapes","d'enfants","restauration","pre","iii","valeurs,","d'action"],
+    source: "bip",
+    resume: "Prestations d'action sociale : séjours d'enfants (SEJENF) Accueil Fiches Rémunération, autres avantages financiers, cotisations Prestations sociales V...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_prestations-sociales_pre.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:52.670356",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Prestations d'action sociale : séjours d'enfants (SEJENF) Accueil Fiches Rémunération, autres avantages financiers, cotisations Prestations sociales Valeurs, indices et taux des prestations d'action sociale (PRE) Valeurs, indices et taux des prestations d'action sociale PRE I. AIDES AUX FAMILLES II. ENFANTS HANDICAPES III. SEJOURS D'ENFANTS IV. RESTAURATION Les données contenues dans cette fiche ne sont présentées qu'à titre indicatif. Elles sont en effet fondées sur les dispositions applicables..."
+  },
+  {
+    id: "bip_prehan",
+    code: "prehan",
+    titre: "Prestations d'action sociale : mesures concernant les enfants handicapés",
+    motsCles: ["allocation","enfant","handicape","jeune","adulte","vacances","principe","malade","sejours","centres","prehan","prestations","sociale","mesures","concernant","enfants","handicapés","maladie","handicap","handicapé"],
+    source: "bip",
+    resume: "Prestations d'action sociale : aide à la famille (AIDFAM) Prestations d'action sociale : séjours d'enfants (SEJENF) Accueil Fiches Rémunération, autre...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_prestations-sociales_prehan.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:40:58.144327",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Prestations d'action sociale : aide à la famille (AIDFAM) Prestations d'action sociale : séjours d'enfants (SEJENF) Accueil Fiches Rémunération, autres avantages financiers, cotisations Prestations sociales Prestations d'action sociale : mesures concernant les enfants handicapés (PREHAN) Prestations d'action sociale : mesures concernant les enfants handicapés PREHAN I. PRINCIPE II. ALLOCATION POUR ENFANT HANDICAPE III. ALLOCATION POUR JEUNE ADULTE MALADE OU HANDICAPE IV. SEJOURS EN CENTRES DE VA..."
+  },
+  {
+    id: "bip_presoc",
+    code: "presoc",
+    titre: "Prestations d'action sociale : généralités",
+    motsCles: ["principe","types","prestations","general","obligatoires","presoc","sociale","généralités","fpe","rémunération","autres","avantages","financiers","cotisations","differents","prelevements","allres","iii","d'action","congé"],
+    source: "bip",
+    resume: "Prestations d'action sociale : restauration du personnel (ALLRES) Accueil Fiches Rémunération, autres avantages financiers, cotisations Prestations so...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_prestations-sociales_presoc.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:03.697657",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Prestations d'action sociale : restauration du personnel (ALLRES) Accueil Fiches Rémunération, autres avantages financiers, cotisations Prestations sociales Prestations d'action sociale : généralités (PRESOC) Prestations d'action sociale : généralités PRESOC I. LE PRINCIPE GENERAL II. LES DIFFERENTS TYPES DE PRESTATIONS III. LES PRELEVEMENTS OBLIGATOIRES I. LE PRINCIPE GENERAL 1- La base législative L'art. L. 731-1 code général de la fonction publique dispose que l'action sociale vise à améliore..."
+  },
+  {
+    id: "bip_sejenf",
+    code: "sejenf",
+    titre: "Prestations d'action sociale : séjours d'enfants",
+    motsCles: ["sejour","centre","vacances","hebergement","loisirs","sans","familial","france","gite","educatif","fpe","linguistique","sejenf","prestations","sociale","séjours","autres","avantages","financiers","cotisations"],
+    source: "bip",
+    resume: "Prestations d'action sociale : mesures concernant les enfants handicapés (PREHAN) Valeurs, indices et taux des prestations d'action sociale (PRE) Accu...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_prestations-sociales_sejenf.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:08.950414",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Prestations d'action sociale : mesures concernant les enfants handicapés (PREHAN) Valeurs, indices et taux des prestations d'action sociale (PRE) Accueil Fiches Rémunération, autres avantages financiers, cotisations Prestations sociales Prestations d'action sociale : séjours d'enfants (SEJENF) Prestations d'action sociale : séjours d'enfants SEJENF I. SEJOUR EN CENTRE DE VACANCES AVEC HEBERGEMENT II. SEJOUR EN CENTRE DE LOISIRS SANS HEBERGEMENT III. SEJOUR EN CENTRE FAMILIAL DE VACANCES OU EN GI..."
+  },
+  {
+    id: "bip_partic",
+    code: "partic",
+    titre: "La protection sociale complémentaire",
+    motsCles: ["psc","participation","iii","montant","risque","compter","janvier","progressive","dispositif","garanties","minimales","modalités","réforme","\"prévoyance\"","partic","protection","sociale","complémentaire","principe","congé"],
+    source: "bip",
+    resume: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Protection sociale complémentaire La protection sociale complémentaire (PARTIC) ...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_protection-sociale-complementaire_partic.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:14.182198",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Protection sociale complémentaire La protection sociale complémentaire (PARTIC) La protection sociale complémentaire PARTIC I. L'application progressive du dispositif II. Le principe de la participation de l'employeur à la PSC III. Les garanties minimales IV. Les modalités de la participation V. Le montant de la participation VI. La réforme de la participation au risque \"Prévoyance\" à compter du 1er janvier 2029 Les collectivi..."
+  },
+  {
+    id: "bip_protocole-d-accord-relatif-a-la-modernisation-des-parcours-professionnels-ppcr",
+    code: "protocole-d-accord-relatif-a-la-modernisation-des-parcours-professionnels-ppcr",
+    titre: "Protocole d’accord relatif à la modernisation des parcours professionnels (PPCR)",
+    motsCles: ["ppcr","protocole","d’accord","relatif","modernisation","parcours","professionnels","autres","avantages","financiers","cotisations","rémunération","prime","primes","carrière","avancement","remuneration","url","ppcrgen","ppcrrev"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_protocole-d-accord-relatif-a-la-modernisation-des-parcours-professionnels-ppcr.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:19.304734",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "No content available"
+  },
+  {
+    id: "bip_regind",
+    code: "regind",
+    titre: "Régime indemnitaire : généralités",
+    motsCles: ["regmod","principe","sdis","conditions","versement","prélèvements","obligatoires","regind","régime","indemnitaire","généralités","fpt","fpe","rémunération","traitement","indemnité","prime","primes","autres","avantages"],
+    source: "bip",
+    resume: "Régime indemnitaire : conditions de modulation (REGMOD) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire Régi...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_regind.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:24.377846",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Régime indemnitaire : conditions de modulation (REGMOD) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire Régime indemnitaire : généralités (REGIND) Régime indemnitaire : généralités REGIND I. Les conditions de versement II. Le principe de parité III. Les prélèvements obligatoires Pour connaître les principes de base relatifs à la rémunération, -voir ELREGE. Cette fiche présente les dispositions générales en matière de régime indemnitaire ; elle est complé..."
+  },
+  {
+    id: "bip_regmod",
+    code: "regmod",
+    titre: "Régime indemnitaire : conditions de modulation",
+    motsCles: ["caa","prise","compte","clm","modulation","absences","ifts","cld","mise","servir","regind","rifseep","ihts","matiere","oeuvre","maniere","iat","individuelle","fonctions","regmod"],
+    source: "bip",
+    resume: "Régime indemnitaire : généralités (REGIND) Régime indemnitaire tenant compte des fonctions, des sujétions, de l’expertise et de l’engagement professio...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_regmod.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:29.473094",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Régime indemnitaire : généralités (REGIND) Régime indemnitaire tenant compte des fonctions, des sujétions, de l’expertise et de l’engagement professionnel (RIFSEEP) Accueil Fiches Rémunération, autres avantages financiers, cotisations Régime indemnitaire Régime indemnitaire : conditions de modulation (REGMOD) Régime indemnitaire : conditions de modulation REGMOD I. LES COMPETENCES EN MATIERE DE MODULATION INDIVIDUELLE II. LES MODALITES DE MISE EN OEUVRE DE LA MODULATION III. LA PRISE EN COMPTE D..."
+  },
+  {
+    id: "bip_rifseep",
+    code: "rifseep",
+    titre: "Régime indemnitaire tenant compte des fonctions, des sujétions, de l’expertise et de l’engagement professionnel",
+    motsCles: ["plafond","annuel","ifse","logement","cia","global","sans","groupe","rifseep","pfr","caa","nbi","montants","cadres","crep","principes","généraux","dispositif","régime","indemnitaire"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_regime-indemnitaire_rifseep.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:34.734569",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "No content available"
+  },
+  {
+    id: "bip_remsta",
+    code: "remsta",
+    titre: "Rémunération des stagiaires",
+    motsCles: ["cadres","elements","categorie","traitement","d'emplois","accessoires","frais","rémunération","remsta","stagiaires","remuneration","autres","avantages","financiers","cotisations","obligatoires","facultatifs","deplacement","iii","traite"],
+    source: "bip",
+    resume: "Agents contractuels : rémunération (NTIREM) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Rémunération,...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_remuneration-categories-particulieres-d-agents_remsta.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:40.355946",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Agents contractuels : rémunération (NTIREM) Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : catégories particulières d'agents Rémunération des stagiaires (REMSTA) Rémunération des stagiaires REMSTA I. CADRES D'EMPLOIS DE CATEGORIE A II. CADRES D'EMPLOIS DE CATEGORIE B III. CADRES D'EMPLOIS DE CATEGORIE C IV. ELEMENTS OBLIGATOIRES ACCESSOIRES AU TRAITEMENT V. ELEMENTS FACULTATIFS ACC..."
+  },
+  {
+    id: "bip_delcar",
+    code: "delcar",
+    titre: "Le délai de carence",
+    motsCles: ["ald","d’application","champ","delcar","délai","carence","congé","congés","rémunération","traitement","primes","maladie","arrêt","arrêts","remuneration","autres","avantages","financiers","cotisations","retenue"],
+    source: "bip",
+    resume: "Rémunération : valeurs, indices et taux (REM) La déclaration sociale nominative (DESONO) Accueil Fiches Rémunération, autres avantages financiers, cot...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_remuneration-generalites_delcar.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:45.772284",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Rémunération : valeurs, indices et taux (REM) La déclaration sociale nominative (DESONO) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités Le délai de carence (DELCAR) Le délai de carence DELCAR I. CHAMP D’APPLICATION II. LES CONDITIONS D’APPLICATION Initialement, le jour de carence dans la fonction publique avait été institué par l’article 105 de la loi n°2011-1977 du 28 décembre 2011 de finances pour 2012, puis abrogé le 1er janvier 2014 par l’art..."
+  },
+  {
+    id: "bip_desono",
+    code: "desono",
+    titre: "La déclaration sociale nominative",
+    motsCles: ["dsn","fpt","mise","place","champ","contenu","modalités","délais","transmission","desono","déclaration","sociale","nominative","objet","maladie","contrat","remuneration","autres","avantages","financiers"],
+    source: "bip",
+    resume: "Le délai de carence (DELCAR) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités La déclaration sociale n...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_remuneration-generalites_desono.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:51.216098",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Le délai de carence (DELCAR) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités La déclaration sociale nominative (DESONO) La déclaration sociale nominative DESONO I. Mise en place dans la FPT, objet et définition II. Champ d'application et contenu III. Modalités et délais de transmission I. MISE EN PLACE DANS LA FPT, OBJET ET DÉFINITION Mise en place dans le secteur privé depuis le 1er janvier 2017, la déclaration sociale nominative (DSN) a été inst..."
+  },
+  {
+    id: "bip_elrege",
+    code: "elrege",
+    titre: "Rémunération : généralités",
+    motsCles: ["sft","nbi","rémunération","perçu","caa","entre","montant","trop","moins","bulletin","paie","smic","dépend","situation","statutaire","réglementaire","fonctions","publiques","conditions","versement"],
+    source: "bip",
+    resume: "Rémunération : valeurs, indices et taux (REM) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités Rémunér...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_remuneration-generalites_elrege.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:41:58.316736",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Rémunération : valeurs, indices et taux (REM) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités Rémunération : généralités (ELREGE) Rémunération : généralités ELREGE I. Composition II. La rémunération dépend de la situation statutaire et réglementaire de l'agent III. Equivalence entre les fonctions publiques IV. Montant garanti V. Conditions de versement VI. Trop perçu et moins perçu VII. La dématérialisation du bulletin de paie Cette fiche présente..."
+  },
+  {
+    id: "bip_rem",
+    code: "rem",
+    titre: "Rémunération : valeurs, indices et taux",
+    motsCles: ["smic","traitement","minimum","garanti","familial","rémunération","indiciaire","indices","taux","iii","nbi","remuneration","autres","avantages","financiers","cotisations","indemnite","residence","supplement","elrege"],
+    source: "bip",
+    resume: "Rémunération : généralités (ELREGE) Le délai de carence (DELCAR) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : ...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_remuneration-generalites_rem.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:03.367762",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Rémunération : généralités (ELREGE) Le délai de carence (DELCAR) Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités Rémunération : valeurs, indices et taux (REM) Rémunération : valeurs, indices et taux REM I. TRAITEMENT INDICIAIRE II. SMIC ET MINIMUM GARANTI III. INDEMNITE DE RESIDENCE IV. SUPPLEMENT FAMILIAL DE TRAITEMENT Pour connaître les principes généraux applicables en matière de rémunération, -voir ELREGE. Pour consulter le barème des éléments..."
+  },
+  {
+    id: "bip_serfai",
+    code: "serfai",
+    titre: "La règle du service fait",
+    motsCles: ["caa","fait","absence","droit","notion","remuneration","apres","autres","d’absence","l’absence","situations","serfai","règle","sft","congé","congés","rémunération","traitement","primes","maladie"],
+    source: "bip",
+    resume: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Service fait La règle du service fait (SERFAI) La règle du service fait SERFAI I...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_service-fait_serfai.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:08.646048",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Accueil Fiches Rémunération, autres avantages financiers, cotisations Service fait La règle du service fait (SERFAI) La règle du service fait SERFAI I. LE DROIT A REMUNERATION APRES SERVICE FAIT II. LA NOTION D’ABSENCE DE SERVICE FAIT III. LES CONSEQUENCES DE L’ABSENCE DE SERVICE FAIT IV. SITUATIONS PARTICULIERES I. LE DROIT A REMUNERATION APRES SERVICE FAIT Les fonctionnaires ont droit, après service fait, à une rémunération comprenant le traitement, l'indemnité de résidence, le supplément fami..."
+  },
+  {
+    id: "bip_valsmi",
+    code: "valsmi",
+    titre: "Evolution de la valeur du SMIC",
+    motsCles: ["smic","valsmi","minimum","evolution","valeur","autres","avantages","financiers","cotisations","mensuel","effet","horaire","brut","garanti","rence","rémunération","salaire","janvier","euros","décr"],
+    source: "bip",
+    resume: "Accueil Fiches Rémunération, autres avantages financiers, cotisations SMIC Evolution de la valeur du SMIC (VALSMI) Evolution de la valeur du SMIC VALS...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_smic_valsmi.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:14.136989",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Accueil Fiches Rémunération, autres avantages financiers, cotisations SMIC Evolution de la valeur du SMIC (VALSMI) Evolution de la valeur du SMIC VALSMI Cette fiche donne l'évolution de la valeur du SMIC (salaire minimum interprofessionnel de croissance) qui a succédé, en 1970, au SMIG. DATE D'EFFET SMIC HORAIRE BRUT MINIMUM GARANTI TEXTE DE RÉFÉRENCE ET MONTANT MENSUEL BRUT 1er janvier 2026 12,02 euros 4,25 euros décr. n°2025-1228 du 17 déc. 2025 SMIC mensuel : 1 823,03 euros 1er novembre 2024..."
+  },
+  {
+    id: "bip_cosufa",
+    code: "cosufa",
+    titre: "Fonds de compensation du supplément familial de traitement",
+    motsCles: ["fonds","compensation","sft","traitement","principe","regles","fonctionnement","cosufa","supplément","familial","scr","autres","avantages","financiers","cotisations","collectivites","concernees","d'affiliation","modalites","supfam"],
+    source: "bip",
+    resume: "Le supplément familial de traitement (SUPFAM) Accueil Fiches Rémunération, autres avantages financiers, cotisations Supplément familial de traitement ...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_supplement-familial-de-traitement_cosufa.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:19.410346",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Le supplément familial de traitement (SUPFAM) Accueil Fiches Rémunération, autres avantages financiers, cotisations Supplément familial de traitement Fonds de compensation du supplément familial de traitement (COSUFA) Fonds de compensation du supplément familial de traitement COSUFA I. PRINCIPE II. COLLECTIVITES CONCERNEES III. REGLES D'AFFILIATION IV. FONCTIONNEMENT DES FONDS DE COMPENSATION V. MODALITES DE COMPENSATION I. PRINCIPE Le supplément familial de traitement (SFT, -voir SUPFAM) donne..."
+  },
+  {
+    id: "bip_supfam",
+    code: "supfam",
+    titre: "Le supplément familial de traitement",
+    motsCles: ["sft","dgafp","charge","notion","mode","calcul","divorce","traitement","crds","conditions","obligatoires","supfam","enfant","supplément","familial","csg","congé","rémunération","maladie","autres"],
+    source: "bip",
+    resume: "Fonds de compensation du supplément familial de traitement (COSUFA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Supplément f...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_supplement-familial-de-traitement_supfam.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:24.600985",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Fonds de compensation du supplément familial de traitement (COSUFA) Accueil Fiches Rémunération, autres avantages financiers, cotisations Supplément familial de traitement Le supplément familial de traitement (SUPFAM) Le supplément familial de traitement SUPFAM I. CONDITIONS D’OCTROI II. NOTION D'ENFANT A CHARGE III. MODE DE CALCUL IV. CONSEQUENCES DU DIVORCE ET DE LA SEPARATION V. PRELEVEMENTS OBLIGATOIRES I. CONDITIONS D’OCTROI Le supplément familial de traitement (SFT) est un accessoire oblig..."
+  },
+  {
+    id: "bip_comind",
+    code: "comind",
+    titre: "Le complément de traitement indiciaire",
+    motsCles: ["cti","dgcl","iii","traitement","ehpad","epci","principe","objectif","montants","cumul","regime","fpt","territoriaux","versement","comind","complément","indiciaire","rémunération","prime","primes"],
+    source: "bip",
+    resume: "Traitement brut moyen du grade ou de la classe (TRAMOY) Accueil Fiches Rémunération, autres avantages financiers, cotisations Traitement indiciaire Le...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_traitement-indiciaire_comind.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:30.240172",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Traitement brut moyen du grade ou de la classe (TRAMOY) Accueil Fiches Rémunération, autres avantages financiers, cotisations Traitement indiciaire Le complément de traitement indiciaire (COMIND) Le complément de traitement indiciaire COMIND I. PRINCIPE ET OBJECTIF II. AGENTS TERRITORIAUX BENEFICIAIRES ET MONTANTS III. MODALITES DE VERSEMENT ET CUMUL IV. REGIME DU COMPLEMENT DE TRAITEMENT En application du \"Ségur de la santé\", qui a donné lieu à un accord sur les rémunérations des personnels des..."
+  },
+  {
+    id: "bip_evoind",
+    code: "evoind",
+    titre: "Evolution de la valeur de l'indice 100",
+    motsCles: ["valeur","evoind","evolution","rémunération","traitement","autres","avantages","financiers","cotisations","indice","l'indice","100","juillet","février","octobre","mars","novembre","janvier","décembre","avril"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_traitement-indiciaire_evoind.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:35.514842",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "No content available"
+  },
+  {
+    id: "bip_evomin",
+    code: "evomin",
+    titre: "Evolution des indices correspondant au minimum de rémunération",
+    motsCles: ["rémunération","evomin","evolution","indices","correspondant","minimum","traitement","autres","avantages","financiers","cotisations","janvier","décr","n°2023","juin","juillet","avril","décembre","octobre","septembre"],
+    source: "bip",
+    resume: "No content available",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_traitement-indiciaire_evomin.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:40.777829",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "No content available"
+  },
+  {
+    id: "bip_traite",
+    code: "traite",
+    titre: "Rémunération : le traitement",
+    motsCles: ["traitement","smic","indices","montant","hors","minimal","rémunération","epci","cnfpt","echelle","traitements","traite","indemnité","autres","avantages","financiers","cotisations","evoind","iii","cig"],
+    source: "bip",
+    resume: "Evolution de la valeur de l'indice 100 (EVOIND) Accueil Fiches Rémunération, autres avantages financiers, cotisations Traitement indiciaire Rémunérati...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_traitement-indiciaire_traite.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:45.867308",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Evolution de la valeur de l'indice 100 (EVOIND) Accueil Fiches Rémunération, autres avantages financiers, cotisations Traitement indiciaire Rémunération : le traitement (TRAITE) Rémunération : le traitement TRAITE I. INDICES ET MONTANT DU TRAITEMENT II. TRAITEMENTS HORS ECHELLE III. TRAITEMENT MINIMAL Cette fiche est consacrée au traitement indiciaire versé aux fonctionnaires. Les principes généraux en matière de rémunération sont développés dans la fiche ELREGE. Suivant les dispositions de l'ar..."
+  },
+  {
+    id: "bip_tramoy",
+    code: "tramoy",
+    titre: "Traitement brut moyen du grade ou de la classe",
+    motsCles: ["filiere","sociale","sapeurs","pompiers","traitement","medico","culturelle","professionnels","tramoy","brut","moyen","grade","classe","santé","autres","avantages","financiers","cotisations","generalites","iii"],
+    source: "bip",
+    resume: "Evolution des indices correspondant au minimum de rémunération (EVOMIN) Le complément de traitement indiciaire (COMIND) Accueil Fiches Rémunération, a...",
+    localPath: "/bip/output/bip_fiches_rag_remuneration-autres-avantages-financiers-cotisations_20260304_224251/remuneration-autres-avantages-financiers-cotisations_traitement-indiciaire_tramoy.md",
+    section: "remuneration-autres-avantages-financiers-cotisations",
+    timestamp: "2026-03-04T22:42:51.487130",
+    type: "remuneration-autres-avantages-financiers-cotisations",
+    content: "Evolution des indices correspondant au minimum de rémunération (EVOMIN) Le complément de traitement indiciaire (COMIND) Accueil Fiches Rémunération, autres avantages financiers, cotisations Traitement indiciaire Traitement brut moyen du grade ou de la classe (TRAMOY) Traitement brut moyen du grade ou de la classe TRAMOY I. GENERALITES II. FILIERE MEDICO-SOCIALE III. FILIERE CULTURELLE IV. SAPEURS-POMPIERS PROFESSIONNELS A noter : La présente fiche donne les valeurs en cours à compter du 1er janv..."
   }
   ];
 

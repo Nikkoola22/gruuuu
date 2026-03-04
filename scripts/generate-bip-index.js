@@ -87,17 +87,17 @@ function extractTitle(content) {
 }
 
 /**
- * Extract content excerpt (first 500 chars after ## Contenu)
+ * Extract content excerpt (first 1500 chars after ## Contenu)
  */
 function extractContentExcerpt(content) {
-  const contentMatch = content.match(/## Contenu\s*\n([\s\S]*?)(?:Fiches en référence|Textes en référence)/);
+  const contentMatch = content.match(/## Contenu\s*\n([\s\S]*?)(?:Fiches en référence|Textes en référence|\n##\s|$)/i);
   if (contentMatch) {
     let excerpt = contentMatch[1]
       .split('\n')
       .filter(line => line.trim().length > 0)
       .join(' ')
       .trim()
-      .substring(0, 500)
+      .substring(0, 1500)
       .trim();
     return excerpt + '...';
   }

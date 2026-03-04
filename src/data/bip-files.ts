@@ -61,6 +61,27 @@ export const BIP_FILE_CATEGORIES: BipFileCategory[] = [
     directory: 'indisponibilite-physique-et-securite-sociale',
     path: '/bip/output/bip-indisponibilite.jsonl',
     keywords: ['indisponibilité', 'maladie', 'santé', 'médecin', 'arrêt', 'sécurité', 'sociale']
+  },
+  {
+    id: 'positions',
+    label: 'Positions Statutaires',
+    directory: 'positions',
+    path: '/bip/output/bip-positions.jsonl',
+    keywords: ['position', 'positions', 'détachement', 'detachement', 'disponibilité', 'congé parental', 'réintégration', 'integration', 'fin de détachement', 'statutaire']
+  },
+  {
+    id: 'primes-indemnites',
+    label: 'Primes & Indemnités',
+    directory: 'liste-des-principales-primes-et-indemnites',
+    path: '/bip/output/bip-primes-indemnites.jsonl',
+    keywords: ['prime', 'primes', 'indemnité', 'indemnites', 'rifseep', 'ifse', 'cia', 'sujétions', 'sujetions', 'nbi']
+  },
+  {
+    id: 'remuneration-cotisations',
+    label: 'Rémunération & Cotisations',
+    directory: 'remuneration-autres-avantages-financiers-cotisations',
+    path: '/bip/output/bip-remuneration-cotisations.jsonl',
+    keywords: ['rémunération', 'remuneration', 'traitement', 'cotisation', 'cotisations', 'sft', 'smic', 'csg', 'indemnité de résidence', 'logement de fonction']
   }
 ];
 
@@ -74,7 +95,10 @@ export const BIP_JSONL_FILES = [
   '/bip/output/bip-conditions-travail.jsonl',
   '/bip/output/bip-conges-absences.jsonl',
   '/bip/output/bip-discipline.jsonl',
-  '/bip/output/bip-indisponibilite.jsonl'
+  '/bip/output/bip-indisponibilite.jsonl',
+  '/bip/output/bip-positions.jsonl',
+  '/bip/output/bip-primes-indemnites.jsonl',
+  '/bip/output/bip-remuneration-cotisations.jsonl'
 ];
 
 /**

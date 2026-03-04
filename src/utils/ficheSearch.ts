@@ -107,6 +107,14 @@ const INTENT_RULES: IntentRule[] = [
     triggerKeywords: ['carriere', 'avancement', 'promotion', 'titularisation', 'mobilite'],
     targetSections: ['carriere'],
   },
+  {
+    triggerKeywords: ['detachement', 'détachement', 'disponibilite', 'disponibilité', 'position', 'positions', 'reintegration', 'réintégration'],
+    targetSections: ['positions', 'carriere'],
+  },
+  {
+    triggerKeywords: ['remuneration', 'rémunération', 'prime', 'primes', 'indemnite', 'indemnité', 'ifse', 'cia', 'rifseep', 'cotisation', 'cotisations'],
+    targetSections: ['remuneration-autres-avantages-financiers-cotisations', 'liste-des-principales-primes-et-indemnites', 'carriere'],
+  },
 ]
 
 function computeIntentBoost(

@@ -20,6 +20,7 @@ export interface BipFiche {
 // Cache de dados carregados
 let bipCache: BipFiche[] | null = null;
 let bipCachePromise: Promise<BipFiche[]> | null = null;
+const markdownContentCache = new Map<string, string>();
 
 const BASE_URL = import.meta.env.BASE_URL || '/';
 
@@ -58,8 +59,66 @@ function mapIndexEntryToFiche(entry: typeof bipIndex[number], content?: string):
   };
 }
 
+function normalizeMarkdownForSearch(markdown: string): string {
+  const withoutFrontMatter = markdown.replace(/^---[\s\S]*?---\s*/m, '');
+
+  return withoutFrontMatter
+    .replace(/^\*\*URL:\*\*.*$/gim, '')
+    .replace(/^\*\*Section:\*\*.*$/gim, '')
+    .replace(/^\*\*Date:\*\*.*$/gim, '')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^>\s?/gm, '')
+    .replace(/^[-*+]\s+/gm, '')
+    .replace(/^\d+[.)]\s+/gm, '')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '$1')
+    .replace(/^\s*---\s*$/gm, '')
+    .replace(/Fiches en référence[\s\S]*$/i, '')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+async function fetchFullMarkdownContent(localPath?: string): Promise<string | undefined> {
+  if (!localPath) return undefined;
+
+  if (markdownContentCache.has(localPath)) {
+    return markdownContentCache.get(localPath);
+  }
+
+  try {
+    const normalizedPath = localPath.startsWith('/') ? localPath.slice(1) : localPath;
+    const requestPath = `${BASE_URL}${normalizedPath}`;
+    const response = await fetch(requestPath, { cache: 'force-cache' });
+    if (!response.ok) return undefined;
+    const markdown = await response.text();
+    const normalized = normalizeMarkdownForSearch(markdown);
+    if (!normalized) return undefined;
+    markdownContentCache.set(localPath, normalized);
+    return normalized;
+  } catch {
+    return undefined;
+  }
+}
+
 async function loadBipDataFromMarkdownAsync(entries = bipIndex): Promise<BipFiche[]> {
-  const fiches = entries.map((entry) => mapIndexEntryToFiche(entry));
+  const batchSize = 12;
+  const fiches: BipFiche[] = [];
+
+  for (let cursor = 0; cursor < entries.length; cursor += batchSize) {
+    const batch = entries.slice(cursor, cursor + batchSize);
+    const batchResults = await Promise.all(
+      batch.map(async (entry) => {
+        const fullContent = await fetchFullMarkdownContent(entry.localPath);
+        return mapIndexEntryToFiche(entry, fullContent);
+      }),
+    );
+
+    fiches.push(...batchResults);
+  }
+
   return fiches.filter(f => f.titre && f.content);
 }
 

@@ -13,10 +13,6 @@ Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST)
 Accueil Fiches Carrière Stage et titularisation Fin du stage (FINSTA)
 Fin du stage
 FINSTA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Titularisation
 II. Prolongation du stage à l'initiative de l'autorité territoriale
 III. Radiation à l'initiative de l'autorité territoriale et ses effets

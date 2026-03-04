@@ -11,10 +11,6 @@
 Accueil Fiches Carrière Services effectifs Notion de services effectifs (SEREFF)
 Notion de services effectifs
 SEREFF
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. DEFINITION
 II. SERVICES EFFECTIFS DANS UN GRADE, UN CADRE D'EMPLOIS OU UN EMPLOI
 III. ANCIENNETE DE SERVICES PUBLICS EFFECTIFS

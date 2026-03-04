@@ -11,10 +11,6 @@
 Accueil Fiches Agents contractuels Rémunération des agents contractuels Agents contractuels : rémunération (NTIREM)
 Agents contractuels : rémunération
 NTIREM
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Composition
 II. Montant
 III. Réévaluation

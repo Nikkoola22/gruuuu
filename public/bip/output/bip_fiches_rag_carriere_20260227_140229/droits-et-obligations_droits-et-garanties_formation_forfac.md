@@ -13,10 +13,6 @@ Formation des agents contractuels (NTIFOR)
 Accueil Fiches Droits et obligations Droits et garanties Formation Formation facultative des fonctionnaires (FORFAC)
 Formation facultative des fonctionnaires
 FORFAC
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPES GENERAUX
 II. LE COMPTE PERSONNEL DE FORMATION
 III. FORMATION PERSONNELLE

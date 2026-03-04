@@ -13,10 +13,6 @@ Les sanctions disciplinaires (SANDIS)
 Accueil Fiches Discipline La procédure disciplinaire (PRODIS)
 La procédure disciplinaire
 PRODIS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. L’ouverture de la procédure
 II. La consultation du conseil de discipline
 III. La décision de sanction

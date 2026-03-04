@@ -11,10 +11,6 @@
 Accueil Fiches Carrière Médaille d'honneur Médaille d'honneur régionale, départementale et communale (MEDHON)
 Médaille d'honneur régionale, départementale et communale
 MEDHON
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. OBJET
 II. BENEFICIAIRES
 III. CONDITIONS D'ATTRIBUTION

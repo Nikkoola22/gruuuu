@@ -13,10 +13,6 @@ La médecine préventive (MEDPRE)
 Accueil Fiches Indisponibilité physique et sécurité sociale Instances médicales Le conseil médical supérieur (COMESU)
 Le conseil médical supérieur
 COMESU
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. ORGANISATION
 II. CHAMP DE COMPETENCES
 III. PROCEDURE

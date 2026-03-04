@@ -12,10 +12,6 @@ Mise à disposition d'une organisation syndicale (DISSYN)
 Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition La mise à disposition (MISDIS)
 La mise à disposition
 MISDIS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Les agents concernés
 II. Les conditions de mise à disposition des fonctionnaires territoriaux
 III. La mise à disposition des agents contractuels

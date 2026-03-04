@@ -13,10 +13,6 @@ Disponibilité d’office pour raisons de santé (DISOFF)
 Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Temps partiel thérapeutique (TEMTHE)
 Temps partiel thérapeutique
 TEMTHE
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Conditions d'octroi
 II. Procédure d'octroi
 III. Effets sur la situation de l'agent

@@ -12,10 +12,6 @@ Le compte personnel d’activité (CPF et CEC) (CPACPF)
 Accueil Fiches Droits et obligations Droits et garanties Formation Formation : généralités (FORGEN)
 Formation : généralités
 FORGEN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPES GENERAUX
 II. FORMATION OBLIGATOIRE
 III. FORMATION NON OBLIGATOIRE

@@ -11,10 +11,6 @@
 Accueil Fiches Indisponibilité physique et sécurité sociale Infirmité de guerre Le congé accordé au fonctionnaire invalide pour faits de guerre (COINGU)
 Le congé accordé au fonctionnaire invalide pour faits de guerre
 COINGU
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. DEFINITION
 II. CONDITIONS D'OCTROI
 III. DROITS ET OBLIGATIONS DU FONCTIONNAIRE EN CONGE

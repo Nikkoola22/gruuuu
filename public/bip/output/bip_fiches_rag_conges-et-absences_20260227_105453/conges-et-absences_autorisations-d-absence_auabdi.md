@@ -12,10 +12,6 @@ Autorisations d'absence : participation aux organismes statutaires et autres (AU
 Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence diverses (AUABDI)
 Autorisations d'absence diverses
 AUABDI
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PARTICIPATION AUX FETES RELIGIEUSES
 II. FONCTIONNAIRES COHABITANT AVEC DES PERSONNES ATTEINTES DE MALADIE CONTAGIEUSE
 III. SURVEILLANCE MEDICALE

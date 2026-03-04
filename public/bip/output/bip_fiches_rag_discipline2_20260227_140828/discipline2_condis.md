@@ -13,10 +13,6 @@ Le recours disciplinaire (RECDIS)
 Accueil Fiches Discipline La consultation du conseil de discipline (CONDIS)
 La consultation du conseil de discipline
 CONDIS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. ORGANISATION
 II. OUVERTURE DE LA PROCEDURE
 III. PARITE, QUORUM ET REGLES DE COMPOSITION

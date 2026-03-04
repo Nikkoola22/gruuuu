@@ -11,10 +11,6 @@
 Accueil Fiches Carrière Entretien professionnel L’entretien professionnel des fonctionnaires (ENTPRO)
 L’entretien professionnel des fonctionnaires
 ENTPRO
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. GENERALITES
 II. PROCEDURE
 III. REVISION ET RECOURS

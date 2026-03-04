@@ -12,10 +12,6 @@ Cadres d'emplois : généralités
 Accueil Fiches Cadres d'emplois Liste des cadres d'emplois de la FPT (LISCAD)
 Liste des cadres d'emplois de la FPT
 LISCAD
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Filière administrative
 II. Filière animation
 III. Filière technique

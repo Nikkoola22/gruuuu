@@ -12,10 +12,6 @@ Le congé de longue durée du fonctionnaire (COLODU)
 Accueil Fiches Indisponibilité physique et sécurité sociale Congés de longue maladie et de longue durée Le congé de longue maladie du fonctionnaire (COLOMA)
 Le congé de longue maladie du fonctionnaire
 COLOMA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Ouverture des droits
 II. Procédure de placement en congé
 III. Droits et obligations durant le congé de longue maladie

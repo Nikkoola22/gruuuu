@@ -11,10 +11,6 @@
 Accueil Fiches Cessation de fonctions Cessation anticipée d'activité - amiante La cessation anticipée d'activité des agents reconnus atteints d'une maladie professionnelle provoquée par l'amiante (CESSAMI)
 La cessation anticipée d'activité des agents reconnus atteints d'une maladie professionnelle provoquée par l'amiante
 CESSAMI
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. CONDITIONS D’OCTROI ET PROCEDURE
 II. L’ALLOCATION SPECIFIQUE
 III. LA SITUATION DE L’AGENT

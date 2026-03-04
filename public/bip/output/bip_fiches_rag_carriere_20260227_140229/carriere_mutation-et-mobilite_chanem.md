@@ -13,10 +13,6 @@ Mobilité : généralités (MOBGEN)
 Accueil Fiches Carrière Mutation et mobilité Le changement d'emploi à l'intérieur de la même collectivité (CHANEM)
 Le changement d'emploi à l'intérieur de la même collectivité
 CHANEM
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPES
 II. PROCEDURE
 III. LES MOTIFS

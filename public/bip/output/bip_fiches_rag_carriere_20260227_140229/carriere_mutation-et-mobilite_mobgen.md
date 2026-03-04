@@ -12,10 +12,6 @@ Le changement d'emploi à l'intérieur de la même collectivité (CHANEM)
 Accueil Fiches Carrière Mutation et mobilité Mobilité : généralités (MOBGEN)
 Mobilité : généralités
 MOBGEN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. MOBILITE : GENERALITES
 II. DETACHEMENT
 III. INTEGRATION DIRECTE

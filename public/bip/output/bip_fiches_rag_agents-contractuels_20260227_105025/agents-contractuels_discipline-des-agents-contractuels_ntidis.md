@@ -12,10 +12,6 @@ Le conseil de discipline des agents contractuels (CCPDIS)
 Accueil Fiches Agents contractuels Discipline des agents contractuels Agents contractuels : procédure disciplinaire (NTIDIS)
 Agents contractuels : procédure disciplinaire
 NTIDIS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. LA SUSPENSION
 II. L’OUVERTURE DE LA PROCEDURE
 III. LA CONSULTATION DU CONSEIL DE DISCIPLINE

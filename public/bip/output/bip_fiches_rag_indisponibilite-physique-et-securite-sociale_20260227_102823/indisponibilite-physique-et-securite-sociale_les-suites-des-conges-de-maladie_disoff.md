@@ -13,10 +13,6 @@ La retraite pour invalidité (RETINV)
 Accueil Fiches Indisponibilité physique et sécurité sociale Les suites des congés de maladie Disponibilité d’office pour raisons de santé (DISOFF)
 Disponibilité d’office pour raisons de santé
 DISOFF
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. CONDITIONS D’OCTROI
 II. REMUNERATION
 III. FIN DE LA DISPONIBILITE

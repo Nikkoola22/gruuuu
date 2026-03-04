@@ -12,10 +12,6 @@ La réparation de l'accident de service et de la maladie professionnelle du fonc
 Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'allocation temporaire d'invalidité (ALTEIN)
 L'allocation temporaire d'invalidité
 ALTEIN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. CONDITIONS D’OCTROI
 II. PROCEDURE
 III. VERSEMENT, COTISATION, MONTANT, CUMUL

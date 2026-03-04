@@ -13,10 +13,6 @@ Autorisations d'absence pour mandat syndical (AUABSY)
 Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence concernant la famille (AUABFA)
 Autorisations d'absence concernant la famille
 AUABFA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Evénements familiaux
 II. Absences liées à la parentalité
 III. Décès d'un enfant

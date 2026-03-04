@@ -13,10 +13,6 @@ Retraite additionnelle de la fonction publique (READDI)
 Accueil Fiches Cessation de fonctions Retraite La retraite pour invalidité (RETINV)
 La retraite pour invalidité
 RETINV
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Conditions de la mise à la retraite pour invalidité
 II. Les étapes de la procédure
 III. Les prestations

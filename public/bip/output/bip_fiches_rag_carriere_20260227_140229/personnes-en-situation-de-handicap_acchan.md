@@ -13,10 +13,6 @@ Promotion par voie de détachement des agents en situation de handicap (expérim
 Accueil Fiches Personnes en situation de handicap Accompagnement des agents en situation de handicap (ACCHAN)
 Accompagnement des agents en situation de handicap
 ACCHAN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. ACCOMPAGNEMENT DANS L’EMPLOI ET FORMATION
 II. REFERENT HANDICAP
 III. PORTABILITE DES EQUIPEMENTS

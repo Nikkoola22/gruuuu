@@ -12,10 +12,6 @@ Accompagnement des agents en situation de handicap (ACCHAN)
 Accueil Fiches Personnes en situation de handicap Promotion par voie de détachement des agents en situation de handicap (expérimentation) (PROHAN)
 Promotion par voie de détachement des agents en situation de handicap (expérimentation)
 PROHAN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Présentation du dispositif
 II. Bénéficiaires
 III. Procédure à suivre

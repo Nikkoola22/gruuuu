@@ -11,10 +11,6 @@
 Accueil Fiches Congés et absences Jours fériés et ponts Jours fériés et ponts (JOFEPO)
 Jours fériés et ponts
 JOFEPO
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. LISTE DES JOURS FERIES
 II. PONT
 III. REMUNERATION

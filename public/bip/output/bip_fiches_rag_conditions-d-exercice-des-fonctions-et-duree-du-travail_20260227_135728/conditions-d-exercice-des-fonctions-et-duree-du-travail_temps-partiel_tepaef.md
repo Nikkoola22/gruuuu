@@ -13,10 +13,6 @@ Temps partiel thérapeutique (TEMTHE)
 Accueil Fiches Conditions d'exercice des fonctions et durée du travail Temps partiel Temps partiel : effets (TEPAEF)
 Temps partiel : effets
 TEPAEF
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. STAGE
 II. REMUNERATION
 III. REGLES DE CUMUL

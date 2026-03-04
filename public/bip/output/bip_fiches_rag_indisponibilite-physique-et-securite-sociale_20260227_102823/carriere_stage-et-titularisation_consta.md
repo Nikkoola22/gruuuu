@@ -13,10 +13,6 @@ Protection sociale des stagiaires (PROSTA)
 Accueil Fiches Carrière Stage et titularisation Les congés des fonctionnaires stagiaires (CONSTA)
 Les congés des fonctionnaires stagiaires
 CONSTA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Les congés avec traitement
 II. Les congés sans traitement
 III. Les effets des congés sur la date de fin de stage

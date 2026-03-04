@@ -11,10 +11,6 @@
 Accueil Fiches Agents contractuels Reclassement des agents contractuels Agents contractuels : reclassement (NTIREC)
 Agents contractuels : reclassement
 NTIREC
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. LE RECLASSEMENT POUR INAPTITUDE PHYSIQUE
 II. LE RECLASSEMENT DANS L’INTERET DU SERVICE
 Sur les principes généraux relatifs aux agents contractuels, -voir NTIGEN.

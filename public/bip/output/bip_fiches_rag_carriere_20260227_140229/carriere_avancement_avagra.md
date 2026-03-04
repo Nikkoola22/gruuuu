@@ -12,10 +12,6 @@ Avancement d'échelon (AVAECH)
 Accueil Fiches Carrière Avancement Avancement de grade (AVAGRA)
 Avancement de grade
 AVAGRA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPE
 II. FONCTIONNAIRES CONCERNES
 III. CONDITIONS

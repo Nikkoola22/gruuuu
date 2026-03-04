@@ -11,10 +11,6 @@
 Accueil Fiches Congés et absences Compte épargne temps Compte épargne-temps (COEPTE)
 Compte épargne-temps
 COEPTE
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. LE PRINCIPE DU COMPTE EPARGNE-TEMPS
 II. L’UTILISATION DES DROITS EPARGNES
 I. LE PRINCIPE DU COMPTE EPARGNE-TEMPS

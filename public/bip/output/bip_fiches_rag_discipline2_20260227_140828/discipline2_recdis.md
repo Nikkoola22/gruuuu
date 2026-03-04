@@ -13,10 +13,6 @@ La suspension (SUSPEN)
 Accueil Fiches Discipline Le recours disciplinaire (RECDIS)
 Le recours disciplinaire
 RECDIS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. LE RECOURS GRACIEUX
 II. LE RECOURS CONTENTIEUX
 Cette fiche présente les possibilités de recours qui s’offrent à l’agent et à l’autorité territoriale en matière disciplinaire ; à titre de complément, il convient de se référer principalement aux fiches suivantes :

@@ -13,10 +13,6 @@ Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions 
 Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : protection sociale (SONOCO)
 Fonctionnaires occupant un emploi à temps non complet : protection sociale
 SONOCO
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. RETRAITE
 II. REGIME DE SECURITE SOCIALE
 III. PROTECTION CONTRE LA MALADIE

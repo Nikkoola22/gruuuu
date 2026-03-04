@@ -12,10 +12,6 @@ Le recrutement de personnes en situation de handicap (RECHAN)
 Accueil Fiches Agents contractuels Catégories particulières d'agents publics Les collaborateurs de cabinet (COLCAB)
 Les collaborateurs de cabinet
 COLCAB
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Le cabinet de l'autorité territoriale
 II. Les conditions de recrutement
 III. Les conditions d'exercice des fonctions

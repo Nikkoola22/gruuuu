@@ -11,10 +11,6 @@
 Accueil Fiches Droits et obligations Droits et garanties Garanties de l'agent candidat ou titulaire d'un mandat électif Garanties accordées à l'agent candidat ou titulaire d'un mandat électif (GARELE)
 Garanties accordées à l'agent candidat ou titulaire d'un mandat électif
 GARELE
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. L’agent candidat à une élection
 II. L’agent titulaire d'un mandat local
 III. L’agent titulaire d'un mandat parlementaire

@@ -12,10 +12,6 @@ Cadres d'emplois de catégorie B (NES) : dispositions communes et échelles indi
 Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires (CATEGORIEC)
 Cadres d'emplois de catégorie C : dispositions communes et échelles indiciaires
 CATEGORIEC
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Classement
 II. Avancement
 III. Détachement, intégration, intégration directe

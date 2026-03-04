@@ -13,10 +13,6 @@ Agents contractuels : les congés de maladie (NTICO3)
 Accueil Fiches Agents contractuels Congés des agents contractuels Agents contractuels : les congés hors maladie (NTICO2)
 Agents contractuels : les congés hors maladie
 NTICO2
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Congés annuels
 II. Congés liés à l'arrivée d'un enfant au foyer
 III. Congé parental

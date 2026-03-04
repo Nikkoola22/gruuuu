@@ -13,10 +13,6 @@ Formation obligatoire des fonctionnaires (FOROBL)
 Accueil Fiches Droits et obligations Droits et garanties Formation Le compte personnel d’activité (CPF et CEC) (CPACPF)
 Le compte personnel d’activité (CPF et CEC)
 CPACPF
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Le compte personnel d'activité (CPA) : principes généraux
 II. Le compte personnel de formation (CPF)
 III. Le compte d'engagement citoyen (CEC)

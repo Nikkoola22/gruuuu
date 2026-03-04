@@ -12,10 +12,6 @@ Temps partiel : effets (TEPAEF)
 Accueil Fiches Conditions d'exercice des fonctions et durée du travail Temps partiel Service à temps partiel (TEMPAR)
 Service à temps partiel
 TEMPAR
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Bénéficiaires
 II. Organisation du service à temps partiel
 III. Suspension, modification et fin

@@ -13,10 +13,6 @@ Fin du stage (FINSTA)
 Accueil Fiches Carrière Stage et titularisation Protection sociale des stagiaires (PROSTA)
 Protection sociale des stagiaires
 PROSTA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Régime de sécurité sociale
 II. Régime de retraite
 Les stagiaires bénéficient d'un régime de sécurité sociale spécial prévu par le décr. n°77-812 du 13 juil. 1977. Ils ne dépendent donc pas du régime général de sécurité sociale, sous réserve des règles relatives aux stagiaires à temps non complet effectuant moins de 28 heures hebdomadaires de service.

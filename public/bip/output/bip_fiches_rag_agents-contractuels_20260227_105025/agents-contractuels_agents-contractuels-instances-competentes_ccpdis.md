@@ -12,10 +12,6 @@ Commissions consultatives paritaires : élections des représentants du personne
 Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Le conseil de discipline des agents contractuels (CCPDIS)
 Le conseil de discipline des agents contractuels
 CCPDIS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. ORGANISATION
 II. OUVERTURE DE LA PROCEDURE
 III. REGLES DE COMPOSITION

@@ -11,10 +11,6 @@
 Accueil Fiches Indisponibilité physique et sécurité sociale Cure thermale Cure thermale (CURTHE)
 Cure thermale
 CURTHE
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPE
 II. MODALITES D'OCTROI DU CONGE ANNUEL OU DE MALADIE
 III. REMUNERATION ET PRISE EN CHARGE DE CERTAINS FRAIS

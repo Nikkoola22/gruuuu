@@ -11,10 +11,6 @@
 Accueil Fiches Indisponibilité physique et sécurité sociale Projet de fin de carrière des sapeurs-pompiers Cessation des fonctions opérationnelles des sapeurs-pompiers professionnels (FINSAP)
 Cessation des fonctions opérationnelles des sapeurs-pompiers professionnels
 FINSAP
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. ELEMENTS GENERAUX DE PROCEDURE
 II. L'AFFECTATION A DES FONCTIONS NON OPERATIONNELLES
 III. LE RECLASSEMENT POUR RAISON OPERATIONNELLE

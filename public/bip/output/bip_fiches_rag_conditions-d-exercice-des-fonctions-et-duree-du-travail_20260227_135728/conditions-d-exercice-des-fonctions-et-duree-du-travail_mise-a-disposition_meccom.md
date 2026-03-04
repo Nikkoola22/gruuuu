@@ -12,10 +12,6 @@ Mise à disposition d'une organisation syndicale (DISSYN)
 Accueil Fiches Conditions d'exercice des fonctions et durée du travail Mise à disposition Mécénat de compétences (mise à disposition de fonctionnaires) (MECCOM)
 Mécénat de compétences (mise à disposition de fonctionnaires)
 MECCOM
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. EXPERIMENTATION DU MECENAT DE COMPETENCES DANS LA FONCTION PUBLIQUE
 II. LES ACTEURS CONCERNES PAR LE MECENAT DE COMPETENCES
 III. MISE EN OEUVRE DE LA MISE A DISPOSITION DANS LE CADRE D'UN MECENAT DE COMPETENCES

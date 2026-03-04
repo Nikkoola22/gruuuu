@@ -12,10 +12,6 @@ Fonctionnaires occupant un emploi à temps non complet : protection sociale (SON
 Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions (CENOCO)
 Fonctionnaires occupant un emploi à temps non complet : cessation de fonctions
 CENOCO
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. LICENCIEMENT POUR INSUFFISANCE PROFESSIONNELLE
 II. LICENCIEMENT POUR INAPTITUDE PHYSIQUE
 III. SUPPRESSION D’EMPLOI

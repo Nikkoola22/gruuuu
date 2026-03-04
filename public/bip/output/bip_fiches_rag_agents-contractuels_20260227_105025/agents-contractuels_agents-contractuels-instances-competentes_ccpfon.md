@@ -13,10 +13,6 @@ Commissions consultatives paritaires : élections des représentants du personne
 Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : fonctionnement (CCPFON)
 Commissions consultatives paritaires : fonctionnement
 CCPFON
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. CONVOCATION
 II. QUORUM
 III. ORGANISATION DE REUNIONS A DISTANCE EN CAS D'URGENCE OU DE CIRCONSTANCES PARTICULIERES

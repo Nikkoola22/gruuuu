@@ -11,10 +11,6 @@
 Accueil Fiches Secrétaire général de mairie Les secrétaires généraux de mairie (SEGEMA)
 Les secrétaires généraux de mairie
 SEGEMA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. La fonction de secrétaire général de mairie
 II. Formation
 III. Carrière

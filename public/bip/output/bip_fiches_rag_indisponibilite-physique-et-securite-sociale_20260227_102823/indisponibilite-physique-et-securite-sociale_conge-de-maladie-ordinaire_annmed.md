@@ -12,10 +12,6 @@ Le congé de maladie ordinaire du fonctionnaire (COMAOR)
 Accueil Fiches Indisponibilité physique et sécurité sociale Congé de maladie ordinaire L'année médicale (ANNMED)
 L'année médicale
 ANNMED
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPE
 II. EXEMPLES
 Sur le congé de maladie ordinaire, -voir COMAOR.

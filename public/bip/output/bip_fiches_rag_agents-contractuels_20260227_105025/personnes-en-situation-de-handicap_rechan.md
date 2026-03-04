@@ -12,10 +12,6 @@ L'obligation d'emploi des travailleurs en situation de handicap (OBLEMP)
 Accueil Fiches Personnes en situation de handicap Le recrutement de personnes en situation de handicap (RECHAN)
 Le recrutement de personnes en situation de handicap
 RECHAN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Le recrutement en qualité d'agent contractuel ayant vocation à être titularisé
 II. Les dérogations aux règles normales de déroulement des concours, des procédures de recrutement et des examens en faveur des candidats en situation de handicap
 III. Expérimentation portant sur la titularisation à l’issue d’un contrat d’apprentissage

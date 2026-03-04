@@ -12,10 +12,6 @@ La procédure disciplinaire (PRODIS)
 Accueil Fiches Discipline La faute disciplinaire (FAUDIS)
 La faute disciplinaire
 FAUDIS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. La caractérisation de la faute disciplinaire
 II. La gravité de la faute et le choix de la sanction
 Cette fiche définit la notion de « faute disciplinaire » et les critères qui peuvent permettre d’apprécier son degré de gravité.

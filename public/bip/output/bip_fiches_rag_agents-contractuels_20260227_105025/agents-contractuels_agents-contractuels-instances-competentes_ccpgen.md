@@ -12,10 +12,6 @@ Commissions consultatives paritaires : fonctionnement (CCPFON)
 Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : généralités (CCPGEN)
 Commissions consultatives paritaires : généralités
 CCPGEN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Organisation
 II. Compétences
 III. Composition

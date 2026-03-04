@@ -12,10 +12,6 @@ L'année médicale (ANNMED)
 Accueil Fiches Indisponibilité physique et sécurité sociale Congé de maladie ordinaire Le congé de maladie ordinaire du fonctionnaire (COMAOR)
 Le congé de maladie ordinaire du fonctionnaire
 COMAOR
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Ouverture des droits
 II. Procédure d'octroi
 III. Contrôle médical

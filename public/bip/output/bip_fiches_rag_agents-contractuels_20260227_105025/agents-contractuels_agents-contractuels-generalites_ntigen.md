@@ -12,10 +12,6 @@ Agents contractuels : définition (NTIDEF)
 Accueil Fiches Agents contractuels Agents contractuels : généralités Agents contractuels : généralités (NTIGEN)
 Agents contractuels : généralités
 NTIGEN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPES GENERAUX
 II. CONDITIONS D’EXERCICE DES FONCTIONS
 Cette fiche présente les principes généraux applicables aux agents contractuels de droit public des collectivités territoriales et de leurs établissements publics.

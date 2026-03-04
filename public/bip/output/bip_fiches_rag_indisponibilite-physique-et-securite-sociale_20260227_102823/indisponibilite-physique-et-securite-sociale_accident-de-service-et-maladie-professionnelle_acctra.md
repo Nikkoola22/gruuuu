@@ -12,10 +12,6 @@ Le congé pour invalidité temporaire imputable au service (CONITIS)
 Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'accident de trajet (ACCTRA)
 L'accident de trajet
 ACCTRA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. L'accident de trajet imputable au service : définition et preuve
 II. Les critères de l'accident de trajet
 III. Les cas d’exclusion de l'imputabilité au service de l'accident de trajet

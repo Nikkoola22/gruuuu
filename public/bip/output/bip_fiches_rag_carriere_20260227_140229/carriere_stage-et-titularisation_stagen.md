@@ -12,10 +12,6 @@ Stagiaires (STAGIA)
 Accueil Fiches Carrière Stage et titularisation Stage : généralités (STAGEN)
 Stage : généralités
 STAGEN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Nomination au stage
 II. Classement
 III. Durée du stage et prolongation

@@ -11,10 +11,6 @@
 Accueil Fiches Agents contractuels Formation des agents contractuels Formation des agents contractuels (NTIFOR)
 Formation des agents contractuels
 NTIFOR
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPE GENERAL
 II. LE COMPTE PERSONNEL DE FORMATION
 III. FORMATION PERSONNELLE

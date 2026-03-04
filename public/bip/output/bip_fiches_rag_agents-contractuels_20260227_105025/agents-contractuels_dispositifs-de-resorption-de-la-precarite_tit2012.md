@@ -12,10 +12,6 @@ Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001) (REEMPR)
 Accueil Fiches Agents contractuels Dispositifs de résorption de la précarité Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 2012 (TIT2012)
 Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 2012
 TIT2012
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPES GENERAUX
 II. AGENTS CONCERNES ET CONDITIONS EXIGEES
 III. CONDITIONS DE CANDIDATURE ET CADRES D’EMPLOIS OUVERTS

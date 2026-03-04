@@ -12,10 +12,6 @@ Le dispositif d’accès à l’emploi titulaire prévu par la loi du 12 mars 20
 Accueil Fiches Agents contractuels Dispositifs de résorption de la précarité Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001) (REEMPR)
 Résorption de l'emploi précaire (Loi n°2001-2 du 3 janvier 2001)
 REEMPR
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPE
 II. AGENTS CONCERNES
 III. MODALITES D'INTEGRATION

@@ -11,10 +11,6 @@
 Accueil Fiches Rémunération, autres avantages financiers, cotisations Protection sociale complémentaire La protection sociale complémentaire (PARTIC)
 La protection sociale complémentaire
 PARTIC
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. L'application progressive du dispositif
 II. Le principe de la participation de l'employeur à la PSC
 III. Les garanties minimales

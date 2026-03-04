@@ -13,10 +13,6 @@ La déclaration sociale nominative (DESONO)
 Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : généralités Le délai de carence (DELCAR)
 Le délai de carence
 DELCAR
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. CHAMP D’APPLICATION
 II. LES CONDITIONS D’APPLICATION
 Initialement, le jour de carence dans la fonction publique avait été institué par l’article 105 de la loi n°2011-1977 du 28 décembre 2011 de finances pour 2012, puis abrogé le 1er janvier 2014 par l’article 126 de la loi n°2013-1278 du 29 décembre 2013 de finances pour 2014.

@@ -12,10 +12,6 @@ Concours externe spécial d’accès à certaines écoles de service public (CON
 Accueil Fiches Accès à la fonction publique, recrutement Concours Le recours à la visioconférence dans les voies d’accès à la fonction publique (VISACC)
 Le recours à la visioconférence dans les voies d’accès à la fonction publique
 VISACC
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Les recrutements par concours et les recrutements d'agents contractuels
 II. Les recrutements par voie d'examens et de concours professionnels
 Les collectivités territoriales et leurs établissements publics peuvent recourir à la visioconférence pour l’organisation des voies d’accès à la fonction publique, dans les conditions fixées par :

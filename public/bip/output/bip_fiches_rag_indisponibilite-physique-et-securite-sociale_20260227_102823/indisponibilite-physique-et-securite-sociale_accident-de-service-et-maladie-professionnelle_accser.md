@@ -13,10 +13,6 @@ La maladie professionnelle du fonctionnaire et la maladie contractée en accompl
 Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle L'accident de service du fonctionnaire (ACCSER)
 L'accident de service du fonctionnaire
 ACCSER
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. La notion d'accident
 II. L’imputabilité au service d'un accident
 III. La faute personnelle ou toute autre circonstance particulière détachant l’accident du service

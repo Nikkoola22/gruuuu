@@ -12,10 +12,6 @@ Avancement d'échelon (AVAECH)
 Accueil Fiches Carrière Avancement Tableau annuel d'avancement (TABAVA)
 Tableau annuel d'avancement
 TABAVA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPES GENERAUX
 III. ETABLISSEMENT DU TABLEAU
 IV. PORTEE JURIDIQUE DU TABLEAU

@@ -13,10 +13,6 @@ Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO)
 Accueil Fiches Rémunération, autres avantages financiers, cotisations Rémunération : catégories particulières d'agents Rémunération des stagiaires (REMSTA)
 Rémunération des stagiaires
 REMSTA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. CADRES D'EMPLOIS DE CATEGORIE A
 II. CADRES D'EMPLOIS DE CATEGORIE B
 III. CADRES D'EMPLOIS DE CATEGORIE C

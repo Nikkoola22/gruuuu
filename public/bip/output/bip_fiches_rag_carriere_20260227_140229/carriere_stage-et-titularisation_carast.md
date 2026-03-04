@@ -13,10 +13,6 @@ Titularisation : généralités (TITGEN)
 Accueil Fiches Carrière Stage et titularisation Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST)
 Cas de radiation des stagiaires à l'initiative de la collectivité
 CARAST
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Licenciement pour insuffisance professionnelle
 II. Licenciement pour faute disciplinaire
 III. Radiation pour perte des droits civiques ou mention incompatible

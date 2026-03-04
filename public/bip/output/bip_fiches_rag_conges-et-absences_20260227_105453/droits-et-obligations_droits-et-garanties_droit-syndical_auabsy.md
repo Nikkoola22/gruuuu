@@ -13,10 +13,6 @@ Décharges d'activité de service pour activités syndicales (DECACT)
 Accueil Fiches Droits et obligations Droits et garanties Droit syndical Autorisations d'absence pour mandat syndical (AUABSY)
 Autorisations d'absence pour mandat syndical
 AUABSY
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Principe
 II. Autorisations d'absence pour assister aux congrès professionnels syndicaux fédéraux, confédéraux et internationaux et aux réunions des organismes directeurs
 III. Autorisations d'absence imputées sur le contingent du crédit de temps syndical

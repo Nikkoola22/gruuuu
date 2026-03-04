@@ -11,10 +11,6 @@
 Accueil Fiches Conditions d'exercice des fonctions et durée du travail Télétravail Le télétravail (TELTRA)
 Le télétravail
 TELTRA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. DEFINITION ET CHAMP D'APPLICATION
 II. MODALITES DE MISE EN OEUVRE
 III. PROCEDURE DE MISE EN OEUVRE

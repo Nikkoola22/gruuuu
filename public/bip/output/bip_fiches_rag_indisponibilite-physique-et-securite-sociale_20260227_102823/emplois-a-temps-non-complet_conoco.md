@@ -13,10 +13,6 @@ Fonctionnaires occupant un emploi à temps non complet : rémunération (RENOCO)
 Accueil Fiches Emplois à temps non complet Fonctionnaires occupant un emploi à temps non complet : congés (CONOCO)
 Fonctionnaires occupant un emploi à temps non complet : congés
 CONOCO
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. CONGES ANNUELS
 II. CONGES LIES A L'ARRIVEE D'UN ENFANT AU FOYER
 III. CONGES DE MALADIE

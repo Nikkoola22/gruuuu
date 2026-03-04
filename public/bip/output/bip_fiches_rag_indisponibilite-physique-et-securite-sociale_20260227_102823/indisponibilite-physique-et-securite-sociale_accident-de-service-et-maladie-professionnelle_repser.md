@@ -13,10 +13,6 @@ L'allocation temporaire d'invalidité (ALTEIN)
 Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire (REPSER)
 La réparation de l'accident de service et de la maladie professionnelle du fonctionnaire
 REPSER
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Le remboursement des frais médicaux
 II. L’allocation temporaire d'invalidité
 III. La retraite pour invalidité

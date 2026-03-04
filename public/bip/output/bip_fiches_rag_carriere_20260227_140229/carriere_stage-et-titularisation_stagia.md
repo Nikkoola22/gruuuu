@@ -13,10 +13,6 @@ Rémunération des stagiaires (REMSTA)
 Accueil Fiches Carrière Stage et titularisation Stagiaires (STAGIA)
 Stagiaires
 STAGIA
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Qu'est-ce qu'un fonctionnaire stagiaire ?
 II. Particularités de cette situation
 III. Formation

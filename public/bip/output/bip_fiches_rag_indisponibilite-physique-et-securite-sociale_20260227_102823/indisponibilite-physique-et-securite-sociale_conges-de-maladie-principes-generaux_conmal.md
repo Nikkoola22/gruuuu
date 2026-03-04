@@ -12,10 +12,6 @@ Droits et obligations durant les congés de maladie (MADROB)
 Accueil Fiches Indisponibilité physique et sécurité sociale Congés de maladie : principes généraux Congés de maladie dans la FPT : généralités (CONMAL)
 Congés de maladie dans la FPT : généralités
 CONMAL
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Typologie des congés
 II. Conditions d'octroi
 III. Le sort de l'agent à la fin d'un congé

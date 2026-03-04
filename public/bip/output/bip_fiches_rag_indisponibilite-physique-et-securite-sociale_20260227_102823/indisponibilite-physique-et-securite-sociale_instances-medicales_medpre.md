@@ -12,10 +12,6 @@ Le conseil médical supérieur (COMESU)
 Accueil Fiches Indisponibilité physique et sécurité sociale Instances médicales La médecine préventive (MEDPRE)
 La médecine préventive
 MEDPRE
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. MISE EN PLACE ET ORGANISATION
 II. MISSIONS
 En matière d’hygiène, de sécurité et de conditions de travail, il convient de se référer aux fiches suivantes :

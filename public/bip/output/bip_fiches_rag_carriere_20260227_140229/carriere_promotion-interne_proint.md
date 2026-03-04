@@ -12,10 +12,6 @@ Liste d'aptitude au titre de la promotion interne (LISAPT)
 Accueil Fiches Carrière Promotion interne Promotion interne (PROINT)
 Promotion interne
 PROINT
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPE
 II. MODALITES
 III. FONCTIONNAIRES CONCERNES

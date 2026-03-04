@@ -13,10 +13,6 @@ La consultation du conseil de discipline (CONDIS)
 Accueil Fiches Discipline Les sanctions disciplinaires (SANDIS)
 Les sanctions disciplinaires
 SANDIS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Sanctions du premier groupe
 II. Sanctions du deuxième groupe
 III. Sanctions du troisième groupe

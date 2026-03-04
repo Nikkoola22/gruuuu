@@ -12,10 +12,6 @@ Liste des cadres d'emplois de la FPT (LISCAD)
 Accueil Fiches Cadres d'emplois Cadres d'emplois : généralités Cadres d'emplois : généralités (CADEMP)
 Cadres d'emplois : généralités
 CADEMP
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. LA NOTION DE CADRE D'EMPLOIS
 II. LE GRADE
 III. LES CATEGORIES HIERARCHIQUES

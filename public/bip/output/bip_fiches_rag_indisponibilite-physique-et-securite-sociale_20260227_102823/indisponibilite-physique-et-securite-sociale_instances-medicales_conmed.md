@@ -12,10 +12,6 @@ Le conseil médical supérieur (COMESU)
 Accueil Fiches Indisponibilité physique et sécurité sociale Instances médicales Le conseil médical (CONMED)
 Le conseil médical
 CONMED
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Organisation et composition
 II. Les cas de saisine du conseil médical
 III. La procédure devant le conseil médical

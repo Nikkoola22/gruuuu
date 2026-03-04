@@ -13,10 +13,6 @@ Congé pour formation syndicale (COFOSY)
 Accueil Fiches Droits et obligations Droits et garanties Droit syndical Mise à disposition d'une organisation syndicale (DISSYN)
 Mise à disposition d'une organisation syndicale
 DISSYN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. DEFINITION
 II. CONTINGENT
 III. REPARTITION ENTRE LES ORGANISATIONS SYNDICALES

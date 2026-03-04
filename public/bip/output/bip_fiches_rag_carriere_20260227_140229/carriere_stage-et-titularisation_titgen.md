@@ -12,10 +12,6 @@ Cas de radiation des stagiaires à l'initiative de la collectivité (CARAST)
 Accueil Fiches Carrière Stage et titularisation Titularisation : généralités (TITGEN)
 Titularisation : généralités
 TITGEN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. DEFINITION
 II. MODALITES
 III. REFUS DE TITULARISATION

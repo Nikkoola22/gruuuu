@@ -13,10 +13,6 @@ Formation facultative des fonctionnaires (FORFAC)
 Accueil Fiches Droits et obligations Droits et garanties Formation Formation obligatoire des fonctionnaires (FOROBL)
 Formation obligatoire des fonctionnaires
 FOROBL
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PRINCIPES GENERAUX
 II. FORMATION D'INTEGRATION
 III. FORMATION DE PROFESSIONNALISATION

@@ -12,10 +12,6 @@ Congés de maladie dans la FPT : généralités (CONMAL)
 Accueil Fiches Indisponibilité physique et sécurité sociale Congés de maladie : principes généraux Droits et obligations durant les congés de maladie (MADROB)
 Droits et obligations durant les congés de maladie
 MADROB
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Rémunération
 II. Carrière
 III. Contrôle médical

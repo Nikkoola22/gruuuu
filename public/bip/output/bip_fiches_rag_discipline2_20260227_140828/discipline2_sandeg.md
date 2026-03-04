@@ -13,10 +13,6 @@ Agents contractuels : procédure disciplinaire (NTIDIS)
 Accueil Fiches Discipline Sanctions déguisées (SANDEG)
 Sanctions déguisées
 SANDEG
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. LA NOTION DE SANCTION DEGUISEE
 II. RECOURS
 III. EXEMPLES DE SANCTIONS DEGUISEES

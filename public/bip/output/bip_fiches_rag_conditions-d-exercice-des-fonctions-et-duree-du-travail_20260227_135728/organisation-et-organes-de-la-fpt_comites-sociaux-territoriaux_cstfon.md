@@ -13,10 +13,6 @@ Formations spécialisées des comités sociaux territoriaux : généralités (FS
 Accueil Fiches Organisation et organes de la FPT Comités sociaux territoriaux Comités sociaux territoriaux et formations spécialisées : fonctionnement (CSTFON)
 Comités sociaux territoriaux et formations spécialisées : fonctionnement
 CSTFON
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. PREPARATION DE LA SEANCE
 II. PRESIDENCE, SECRETARIAT, REGLEMENT INTERIEUR
 III. PARTICIPATION AUX SEANCES

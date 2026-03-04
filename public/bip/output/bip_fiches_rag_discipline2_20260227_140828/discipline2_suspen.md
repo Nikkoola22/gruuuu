@@ -13,10 +13,6 @@ Amnistie (AMNIST)
 Accueil Fiches Discipline La suspension (SUSPEN)
 La suspension
 SUSPEN
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Principe général
 II. Procédure
 III. Durée et fin de la suspension

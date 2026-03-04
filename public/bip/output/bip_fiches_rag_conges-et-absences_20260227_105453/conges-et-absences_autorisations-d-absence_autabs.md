@@ -12,10 +12,6 @@ Autorisations d'absence concernant la famille (AUABFA)
 Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence : généralités (AUTABS)
 Autorisations d'absence : généralités
 AUTABS
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Définition
 II. Différents types d'autorisations
 III. Incidence sur la situation du fonctionnaire

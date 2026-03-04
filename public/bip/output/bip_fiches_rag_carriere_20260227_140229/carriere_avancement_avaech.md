@@ -13,10 +13,6 @@ Tableau annuel d'avancement (TABAVA)
 Accueil Fiches Carrière Avancement Avancement d'échelon (AVAECH)
 Avancement d'échelon
 AVAECH
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. DEFINITION ET PROCEDURE
 II. L'ANCIENNETE VALABLE POUR L'AVANCEMENT
 III. LES DIFFERENTES MODALITES D'AVANCEMENT

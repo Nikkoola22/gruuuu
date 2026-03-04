@@ -13,10 +13,6 @@ Sanctions déguisées (SANDEG)
 Accueil Fiches Discipline Amnistie (AMNIST)
 Amnistie
 AMNIST
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. OBJET DE L'AMNISTIE
 II. CONDITIONS
 III. BENEFICIAIRES

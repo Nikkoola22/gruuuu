@@ -13,10 +13,6 @@ Le conseil de discipline des agents contractuels (CCPDIS)
 Accueil Fiches Agents contractuels Agents contractuels : instances compétentes Commissions consultatives paritaires : élections des représentants du personnel (CCPELE)
 Commissions consultatives paritaires : élections des représentants du personnel
 CCPELE
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. Principes généraux
 II. La liste des électeurs
 III. Les listes de candidats

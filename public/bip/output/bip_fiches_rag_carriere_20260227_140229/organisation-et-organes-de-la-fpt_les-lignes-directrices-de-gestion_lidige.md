@@ -12,10 +12,6 @@ Le rapport social unique et la base de données sociales (RSUBDS)
 Accueil Fiches Organisation et organes de la FPT Les lignes directrices de gestion Les lignes directrices de gestion (LIDIGE)
 Les lignes directrices de gestion
 LIDIGE
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. DEFINITION DES LIGNES DIRECTRICES DE GESTION
 II. ELABORATION DES LIGNES DIRECTRICES DE GESTION
 III. OPPOSABILITE DES LIGNES DIRECTRICES DE GESTION

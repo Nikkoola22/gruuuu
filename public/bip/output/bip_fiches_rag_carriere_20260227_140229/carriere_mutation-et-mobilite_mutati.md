@@ -12,10 +12,6 @@ Le changement d'emploi à l'intérieur de la même collectivité (CHANEM)
 Accueil Fiches Carrière Mutation et mobilité La mutation d'une collectivité à une autre (MUTATI)
 La mutation d'une collectivité à une autre
 MUTATI
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. DEFINITION
 II. LA PROCEDURE DE MUTATION
 III. LES CONDITIONS DE LA MUTATION

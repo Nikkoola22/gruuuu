@@ -13,10 +13,6 @@ La réparation de l'accident de service et de la maladie professionnelle du fonc
 Accueil Fiches Indisponibilité physique et sécurité sociale Accident de service et maladie professionnelle La maladie professionnelle du fonctionnaire et la maladie contractée en accomplissant un acte de dévouement dans un intérêt public (MALPRO)
 La maladie professionnelle du fonctionnaire et la maladie contractée en accomplissant un acte de dévouement dans un intérêt public
 MALPRO
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. La maladie professionnelle
 II. La maladie contractée en accomplissant un acte de dévouement dans un intérêt public
 Cette fiche définit les notions de maladie professionnelles applicables aux fonctionnaires qui relèvent du régime spécial de sécurité sociale :

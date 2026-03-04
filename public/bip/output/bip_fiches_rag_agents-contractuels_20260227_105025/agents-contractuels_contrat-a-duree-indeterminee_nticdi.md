@@ -11,10 +11,6 @@
 Accueil Fiches Agents contractuels Contrat à durée indéterminée Agents contractuels : le contrat à durée indéterminée (NTICDI)
 Agents contractuels : le contrat à durée indéterminée
 NTICDI
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. CONDITIONS POUR BENEFICIER D'UN CDI
 II. SITUATION DES AGENTS SOUS CDI
 Sur les principes généraux applicables aux agents contractuels, -voir NTIGEN.

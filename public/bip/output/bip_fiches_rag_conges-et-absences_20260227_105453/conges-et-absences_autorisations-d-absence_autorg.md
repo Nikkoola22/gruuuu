@@ -13,10 +13,6 @@ Autorisations d'absence diverses (AUABDI)
 Accueil Fiches Congés et absences Autorisations d'absence Autorisations d'absence : participation aux organismes statutaires et autres (AUTORG)
 Autorisations d'absence : participation aux organismes statutaires et autres
 AUTORG
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. ORGANISMES STATUTAIRES
 II. ORGANISMES MUTUALISTES
 III. CAISSES DE SECURITE SOCIALE ET D'ALLOCATIONS FAMILIALES

@@ -12,10 +12,6 @@ Comités sociaux territoriaux et formations spécialisées : fonctionnement (CST
 Accueil Fiches Hygiène et sécurité Le document unique d’évaluation des risques professionnels (DUERP)
 Le document unique d’évaluation des risques professionnels
 DUERP
-Télécharger
-Imprimer
-Ajouter
-S'abonner
 I. L’ETABLISSEMENT DU DOCUMENT UNIQUE D’EVALUATION DES RISQUES PROFESSIONNELS
 II. LA MISE EN ŒUVRE DES ACTIONS DE PREVENTION
 III. LA PUBLICITE ET LA CONSERVATION DU DUERP

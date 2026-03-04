@@ -531,6 +531,19 @@ Question d'un agent territorial : ${question}
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
 
+  const GENERIC_QUERY_TERMS = new Set([
+    'combien', 'temps', 'duree', 'dure', 'durer', 'duree', 'maximum', 'minimum', 'quand', 'comment',
+    'peut', 'etre', 'est', 'sont', 'dans', 'pour', 'avec', 'sans', 'quel', 'quelle', 'quels', 'quelles',
+  ])
+
+  const extraireMotsEntite = (motsCles: string[]): string[] => {
+    return Array.from(new Set(
+      motsCles
+        .map(m => normalizeForSearch(m).trim())
+        .filter(m => m.length >= 4 && !GENERIC_QUERY_TERMS.has(m)),
+    ))
+  }
+
   const construireExtraitPertinent = (contenu: string, motsCles: string[], maxLen = 2600): string => {
     if (!contenu) return ''
 
@@ -629,22 +642,48 @@ Question d'un agent territorial : ${question}
   const genererContexteBip = async (question: string): Promise<string> => {
     const motsCles = extraireMotsClesQuestion(question)
     if (motsCles.length === 0) return ""
+    const motsEntite = extraireMotsEntite(motsCles)
 
     try {
       const searchResult = await searchFichesByKeywordsAsync(motsCles)
       if (!searchResult.results || searchResult.results.length === 0) return ""
 
-      const topResults = [...searchResult.results]
+      const resultsFiltres = [...searchResult.results]
         .sort((a, b) => {
-          const aText = `${(a as { titre?: string; section?: string; content?: string }).titre || ''} ${(a as { titre?: string; section?: string; content?: string }).section || ''} ${(a as { titre?: string; section?: string; content?: string }).content || ''}`
-          const bText = `${(b as { titre?: string; section?: string; content?: string }).titre || ''} ${(b as { titre?: string; section?: string; content?: string }).section || ''} ${(b as { titre?: string; section?: string; content?: string }).content || ''}`
-          const aNorm = normalizeForSearch(aText)
-          const bNorm = normalizeForSearch(bText)
-          const aScore = motsCles.reduce((acc, kw) => acc + (aNorm.includes(normalizeForSearch(kw)) ? 1 : 0), 0)
-          const bScore = motsCles.reduce((acc, kw) => acc + (bNorm.includes(normalizeForSearch(kw)) ? 1 : 0), 0)
+          const aTitre = normalizeForSearch((a as { titre?: string }).titre || '')
+          const bTitre = normalizeForSearch((b as { titre?: string }).titre || '')
+          const aSection = normalizeForSearch((a as { section?: string }).section || '')
+          const bSection = normalizeForSearch((b as { section?: string }).section || '')
+          const aContent = normalizeForSearch((a as { content?: string }).content || '')
+          const bContent = normalizeForSearch((b as { content?: string }).content || '')
+
+          const scoreFor = (titre: string, section: string, content: string) => {
+            const keywordScore = motsCles.reduce((acc, kw) => {
+              const k = normalizeForSearch(kw)
+              return acc + (titre.includes(k) ? 4 : 0) + (section.includes(k) ? 2 : 0) + (content.includes(k) ? 1 : 0)
+            }, 0)
+
+            const entityBoost = motsEntite.reduce((acc, kw) => {
+              return acc + (titre.includes(kw) ? 8 : 0) + (section.includes(kw) ? 4 : 0)
+            }, 0)
+
+            return keywordScore + entityBoost
+          }
+
+          const aScore = scoreFor(aTitre, aSection, aContent)
+          const bScore = scoreFor(bTitre, bSection, bContent)
           return bScore - aScore
         })
-        .slice(0, 5)
+
+      const resultsEntite = motsEntite.length > 0
+        ? resultsFiltres.filter((result) => {
+            const titre = normalizeForSearch((result as { titre?: string }).titre || '')
+            const section = normalizeForSearch((result as { section?: string }).section || '')
+            return motsEntite.some(entite => titre.includes(entite) || section.includes(entite))
+          })
+        : []
+
+      const topResults = (resultsEntite.length > 0 ? resultsEntite : resultsFiltres).slice(0, 5)
 
       const blocs = await Promise.all(topResults.map(async (result, index) => {
         const titre = (result as { titre?: string; title?: string }).titre || (result as { titre?: string; title?: string }).title || "Fiche BIP"
@@ -667,6 +706,7 @@ Question d'un agent territorial : ${question}
   const genererReponseBipDeterministe = (question: string, bipContexte: string): string | null => {
     const motsCles = extraireMotsClesQuestion(question)
     if (motsCles.length === 0 || !bipContexte) return null
+    const motsEntite = extraireMotsEntite(motsCles)
 
     const normalizedKeywords = Array.from(new Set(
       motsCles
@@ -676,30 +716,33 @@ Question d'un agent territorial : ${question}
 
     if (normalizedKeywords.length === 0) return null
 
-    const lignes = bipContexte
-      .split('\n')
-      .map(l => l.trim())
-      .filter(l =>
-        l.length >= 40 &&
-        !l.startsWith('===') &&
-        !l.startsWith('### BIP') &&
-        !l.startsWith('Section:'),
-      )
+    const texteNettoye = bipContexte
+      .replace(/\bURL:\s*https?:\/\/\S+/gi, ' ')
+      .replace(/\bSection:\s*[^\n]+/gi, ' ')
+      .replace(/\bDate:\s*\S+/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
 
-    const scored = lignes.map((ligne) => {
+    const phrases = texteNettoye
+      .split(/(?<=[\.;!?])\s+/)
+      .map(p => p.trim())
+      .filter(p => p.length >= 40 && p.length <= 280)
+
+    const scored = phrases.map((ligne) => {
       const normalizedLine = normalizeForSearch(ligne)
       const keywordMatches = normalizedKeywords.filter(k => normalizedLine.includes(k)).length
-      const hasNumericSignal = /\d/.test(ligne)
-      const score = keywordMatches * 3 + (hasNumericSignal ? 1 : 0)
+      const entityMatches = motsEntite.filter(k => normalizedLine.includes(k)).length
+      const hasNumericSignal = /\d/.test(ligne) && /(an|ans|mois|jour|jours|semaine|semaines|annee|annees)/i.test(ligne)
+      const score = keywordMatches * 2 + entityMatches * 4 + (hasNumericSignal ? 3 : 0)
       return { ligne, score, keywordMatches }
     })
 
     const pertinentes = scored
-      .filter(item => item.keywordMatches >= 2 || item.score >= 4)
+      .filter(item => item.keywordMatches >= 2 || item.score >= 5)
       .sort((a, b) => b.score - a.score)
       .map(item => item.ligne)
 
-    const uniques = Array.from(new Set(pertinentes)).slice(0, 4)
+    const uniques = Array.from(new Set(pertinentes)).slice(0, 3)
     if (uniques.length === 0) return null
 
     return [

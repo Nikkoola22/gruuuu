@@ -819,7 +819,7 @@ ${bipContexte}
           />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 relative z-10">
-          <div className="flex items-center justify-between gap-5">
+          <div className="flex items-center justify-between gap-2 sm:gap-5">
             {/* Logo et texte à gauche */}
             <div className="flex items-center gap-3 group">
               <div className="relative logo-glow-ambient">
@@ -827,17 +827,17 @@ ${bipContexte}
                 <img
                   src={`${BASE_URL}logo-cfdt.jpg`}
                   alt="Logo CFDT"
-                  className="w-24 h-24 object-contain relative transition-transform duration-300 group-hover:scale-105"
+                  className="w-14 h-14 sm:w-24 sm:h-24 object-contain relative transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="space-y-1">
-                <h1 className="text-4xl font-light tracking-tight text-shimmer">Atlas</h1>
-                <p className="text-sm text-slate-300 font-light">Assistant syndical CFDT</p>
+                <h1 className="text-2xl sm:text-4xl font-light tracking-tight text-shimmer">Atlas</h1>
+                <p className="text-xs sm:text-sm text-slate-300 font-light">Assistant syndical CFDT</p>
               </div>
             </div>
             
-            {/* Texte centre */}
-            <div className="text-center flex-grow">
+            {/* Texte centre — masqué sur mobile */}
+            <div className="hidden sm:block text-center flex-grow">
               <h2 className="text-xl font-light text-slate-100 tracking-tight">Mairie de Gennevilliers</h2>
               <p className="text-sm text-slate-400 mt-1 font-light">Chatbot d'assistance pour les agents municipaux</p>
             </div>

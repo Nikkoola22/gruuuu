@@ -48,7 +48,7 @@ const Metiers: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       {/* Intro Section */}
       <section className="relative z-40 bg-slate-800/50 py-12 text-center border-b border-slate-700 glass-banner">
         <div className="max-w-3xl mx-auto px-6">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <h2 className="text-3xl font-bold text-white flex items-center gap-2">
               <Wrench className="w-8 h-8 text-cyan-400" />
               Vos métiers

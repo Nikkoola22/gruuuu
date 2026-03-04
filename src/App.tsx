@@ -1290,16 +1290,16 @@ ${bipContexte}
               )}
               {/* Boutons Oui/Non pour élargir la recherche */}
               {showExpandSearch && !chatState.isProcessing && (
-                <div className="flex justify-center gap-4 mt-4 mb-2">
+                <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 sm:gap-4 mt-4 mb-2">
                   <button
                     onClick={handleExpandSearch}
-                    className="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium flex items-center gap-2 btn-cta"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium flex items-center justify-center gap-2 btn-cta"
                   >
                     <span>✅ Oui, rechercher sur Légifrance</span>
                   </button>
                   <button
                     onClick={handleDeclineSearch}
-                    className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl font-medium flex items-center gap-2 glass-pill"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl font-medium flex items-center justify-center gap-2 glass-pill"
                   >
                     <span>❌ Non, retour à l'accueil</span>
                   </button>
@@ -1308,7 +1308,7 @@ ${bipContexte}
               <div ref={messagesEndRef} />
             </div>
             <div className="border-t border-purple-500/30 bg-gradient-to-r from-slate-800/80 to-purple-900/80 backdrop-blur-md p-4 glass-banner">
-              <div className="flex gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <input
                   ref={inputRef}
                   type="text"
@@ -1316,13 +1316,13 @@ ${bipContexte}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ex: Combien de jours de congés ? Comment utiliser mon CPF ? Télétravail possible ?"
-                  className="flex-1 px-4 py-3 border border-purple-500/30 rounded-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 outline-none transition-all duration-200 bg-slate-700/70 backdrop-blur-sm text-sm font-normal text-white placeholder-slate-300"
+                  className="flex-1 min-w-0 px-3 sm:px-4 py-3 border border-purple-500/30 rounded-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 outline-none transition-all duration-200 bg-slate-700/70 backdrop-blur-sm text-sm font-normal text-white placeholder-slate-300"
                   disabled={chatState.isProcessing}
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || chatState.isProcessing}
-                  className={`px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl font-semibold${inputValue.trim() && !chatState.isProcessing ? ' send-btn-pulse' : ''}`}
+                  className={`shrink-0 px-4 sm:px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl font-semibold${inputValue.trim() && !chatState.isProcessing ? ' send-btn-pulse' : ''}`}
                 >
                   <Send className="w-4 h-4" />
                   <span className="text-sm">Envoyer</span>

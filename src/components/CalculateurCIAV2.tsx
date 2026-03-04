@@ -653,7 +653,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                 </button>
 
                 {showDetail && (
-                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700/50 text-xs text-slate-400 font-mono space-y-2 glass-card">
+                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700/50 text-xs text-slate-400 font-mono space-y-2 break-words glass-card">
                     <p>📊 IFSE mensuel = {ifseMensuel}€ + ({weekendSaturdays}×{weekendRateSat}€ + {weekendSundays}×{weekendRateSun}€) = {ifseMensuelTotal}€</p>
                     <p>📊 IFSE annuel = {ifseMensuelTotal}€ × 12 = {resultat.ifseAnnuel.toFixed(2)}€</p>
                     <p>📊 Base CIA = {resultat.ifseAnnuel.toFixed(2)}€ × 10% = {resultat.base10Pourcent.toFixed(2)}€</p>

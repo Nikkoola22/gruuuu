@@ -544,7 +544,12 @@ Question d'un agent territorial : ${question}
     ))
   }
 
-  const construireExtraitPertinent = (contenu: string, motsCles: string[], maxLen = 2600): string => {
+  const construireExtraitPertinent = (
+    contenu: string,
+    motsCles: string[],
+    maxLen = 2600,
+    options?: { preferTemporalFacts?: boolean },
+  ): string => {
     if (!contenu) return ''
 
     const normalizedContent = normalizeForSearch(contenu)
@@ -615,7 +620,40 @@ Question d'un agent territorial : ${question}
       excerpt = candidate
     }
 
-    return excerpt || contenu.slice(0, maxLen)
+    const baseExcerpt = excerpt || contenu.slice(0, maxLen)
+
+    if (!options?.preferTemporalFacts) {
+      return baseExcerpt
+    }
+
+    const phrases = contenu
+      .split(/(?<=[\.;!?])\s+|\n+/)
+      .map((p) => p.trim())
+      .filter((p) => p.length >= 30 && p.length <= 320)
+
+    const temporalPatterns = /(duree|durée|renouvel|periode|période|delai|délai|an|ans|mois|jour|jours|semaine|semaines)/i
+
+    const scoredFacts = phrases
+      .map((phrase) => {
+        const normalized = normalizeForSearch(phrase)
+        const keywordHits = normalizedKeywords.filter((k) => normalized.includes(k)).length
+        const hasTemporal = temporalPatterns.test(phrase)
+        const hasNumber = /\d/.test(phrase)
+        const score = keywordHits * 3 + (hasTemporal ? 4 : 0) + (hasNumber ? 3 : 0)
+        return { phrase, score }
+      })
+      .filter((item) => item.score >= 6)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map((item) => item.phrase)
+
+    if (scoredFacts.length === 0) {
+      return baseExcerpt
+    }
+
+    const factsBlock = scoredFacts.join('\n')
+    const enriched = `Extraits factuels prioritaires:\n${factsBlock}\n\n${baseExcerpt}`
+    return enriched.slice(0, maxLen)
   }
 
   const chargerContenuBipComplet = async (localPath?: string): Promise<string | null> => {
@@ -643,6 +681,8 @@ Question d'un agent territorial : ${question}
     const motsCles = extraireMotsClesQuestion(question)
     if (motsCles.length === 0) return ""
     const motsEntite = extraireMotsEntite(motsCles)
+    const questionNormalized = normalizeForSearch(question)
+    const preferTemporalFacts = /(combien|duree|durée|dure|renouvel|periode|période|delai|délai|temps)/i.test(questionNormalized)
     const motsClesSpecifiques = Array.from(new Set(
       motsCles.filter((mot) => !GENERIC_QUERY_TERMS.has(normalizeForSearch(mot))),
     ))
@@ -700,7 +740,7 @@ Question d'un agent territorial : ${question}
         const contenuIndex = ((result as { content?: string }).content || "")
         const contenuComplet = await chargerContenuBipComplet(localPath)
         const source = contenuComplet || contenuIndex
-        const contenu = construireExtraitPertinent(source, termesExtrait, 2600)
+        const contenu = construireExtraitPertinent(source, termesExtrait, 2600, { preferTemporalFacts })
         return `### BIP ${index + 1} — ${titre}\nSection: ${section}\n${contenu}`
       }))
 
@@ -880,7 +920,8 @@ RÈGLES STRICTES :
 1. Réponds UNIQUEMENT à partir des fiches BIP ci-dessous
 2. Ne cherche JAMAIS sur internet, n'utilise JAMAIS tes connaissances externes
 3. Donne une réponse directe et précise quand l'information est présente
-4. Si l'information n'est pas présente dans les fiches BIP, réponds UNIQUEMENT :
+  4. Si des éléments factuels partiels sont présents (durées, délais, montants, conditions), réponds avec ces éléments au lieu de conclure à une absence d'information
+5. Si l'information n'est pas présente dans les fiches BIP, réponds UNIQUEMENT :
 "Je ne trouve pas cette information dans nos documents internes. Contactez la CFDT au 01 40 85 64 64."
 
 FICHES BIP :

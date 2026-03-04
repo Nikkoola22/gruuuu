@@ -26,3 +26,8 @@ dist-ssr
 
 # Exclude embedded repo
 copilot-cli/
+
+# Local temporary artifacts
+out.txt
+*.bak
+scripts/tmp_*.mjs

@@ -664,6 +664,51 @@ Question d'un agent territorial : ${question}
     }
   }
 
+  const genererReponseBipDeterministe = (question: string, bipContexte: string): string | null => {
+    const motsCles = extraireMotsClesQuestion(question)
+    if (motsCles.length === 0 || !bipContexte) return null
+
+    const normalizedKeywords = Array.from(new Set(
+      motsCles
+        .map(m => normalizeForSearch(m))
+        .filter(m => m.length >= 3),
+    ))
+
+    if (normalizedKeywords.length === 0) return null
+
+    const lignes = bipContexte
+      .split('\n')
+      .map(l => l.trim())
+      .filter(l =>
+        l.length >= 40 &&
+        !l.startsWith('===') &&
+        !l.startsWith('### BIP') &&
+        !l.startsWith('Section:'),
+      )
+
+    const scored = lignes.map((ligne) => {
+      const normalizedLine = normalizeForSearch(ligne)
+      const keywordMatches = normalizedKeywords.filter(k => normalizedLine.includes(k)).length
+      const hasNumericSignal = /\d/.test(ligne)
+      const score = keywordMatches * 3 + (hasNumericSignal ? 1 : 0)
+      return { ligne, score, keywordMatches }
+    })
+
+    const pertinentes = scored
+      .filter(item => item.keywordMatches >= 2 || item.score >= 4)
+      .sort((a, b) => b.score - a.score)
+      .map(item => item.ligne)
+
+    const uniques = Array.from(new Set(pertinentes)).slice(0, 4)
+    if (uniques.length === 0) return null
+
+    return [
+      '📌 **Informations trouvées dans les fiches internes BIP** :',
+      '',
+      ...uniques.map(ligne => `- ${ligne}`),
+    ].join('\n')
+  }
+
   const traiterQuestion = async (question: string) => {
     // ÉTAPE 1 : Identifier les sections pertinentes avec le sommaire léger
     const sommaire = genererSommaireTexte()
@@ -808,7 +853,17 @@ FICHES BIP :
 ${bipContexte}
     `
 
-    return await appelPerplexity(buildMessages(systemPromptBip))
+    const reponseBip = await appelPerplexity(buildMessages(systemPromptBip))
+    if (!isInternalNotFound(reponseBip)) {
+      return reponseBip
+    }
+
+    const reponseDeterministe = genererReponseBipDeterministe(question, bipContexte)
+    if (reponseDeterministe) {
+      return reponseDeterministe
+    }
+
+    return reponseBip
   }
 
   const handleSendMessage = async () => {

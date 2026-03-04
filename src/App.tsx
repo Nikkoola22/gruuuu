@@ -711,6 +711,38 @@ Question d'un agent territorial : ${question}
     }
   }
 
+  const extraireIndicesFactuelsBip = (question: string, bipContexte: string): string => {
+    if (!bipContexte) return ''
+
+    const motsCles = extraireMotsClesQuestion(question)
+    const motsEntite = extraireMotsEntite(motsCles)
+    const termes = Array.from(new Set([
+      ...motsEntite,
+      ...motsCles.filter((mot) => !GENERIC_QUERY_TERMS.has(normalizeForSearch(mot))),
+    ]))
+
+    const lignes = bipContexte
+      .split(/\n+/)
+      .map((l) => l.trim())
+      .filter((l) => l.length >= 30 && !/^###\s|^Section:/i.test(l))
+
+    const scored = lignes.map((ligne) => {
+      const normalized = normalizeForSearch(ligne)
+      const keywordHits = termes.filter((t) => normalized.includes(normalizeForSearch(t))).length
+      const hasDurationSignal = /(duree|renouvellement|an|ans|mois|jour|jours|semaine|semaines)/i.test(ligne)
+      const hasNumericSignal = /\d/.test(ligne)
+      const score = keywordHits * 4 + (hasDurationSignal ? 3 : 0) + (hasNumericSignal ? 2 : 0)
+      return { ligne, score }
+    })
+
+    return scored
+      .filter((item) => item.score >= 4)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 8)
+      .map((item) => `- ${item.ligne}`)
+      .join('\n')
+  }
+
   const traiterQuestion = async (question: string) => {
     // ÉTAPE 1 : Identifier les sections pertinentes avec le sommaire léger
     const sommaire = genererSommaireTexte()
@@ -856,6 +888,32 @@ ${bipContexte}
     `
 
     const reponseBip = await appelPerplexity(buildMessages(systemPromptBip))
+    if (!isInternalNotFound(reponseBip)) {
+      return reponseBip
+    }
+
+    const indicesFactuels = extraireIndicesFactuelsBip(question, bipContexte)
+    if (indicesFactuels) {
+      const systemPromptBipRenforce = `
+Tu es un assistant CFDT pour la Mairie de Gennevilliers.
+
+RÈGLES STRICTES :
+1. Réponds UNIQUEMENT à partir des indices factuels ci-dessous
+2. Si des durées chiffrées sont présentes, donne-les clairement
+3. N'invente rien, ne complète pas avec des connaissances externes
+4. Si malgré ces indices l'information manque, réponds UNIQUEMENT :
+"Je ne trouve pas cette information dans nos documents internes. Contactez la CFDT au 01 40 85 64 64."
+
+INDICES FACTUELS BIP :
+${indicesFactuels}
+      `
+
+      const reponseBipRenforcee = await appelPerplexity(buildMessages(systemPromptBipRenforce))
+      if (!isInternalNotFound(reponseBipRenforcee)) {
+        return reponseBipRenforcee
+      }
+    }
+
     return reponseBip
   }
 

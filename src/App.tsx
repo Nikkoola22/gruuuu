@@ -731,7 +731,9 @@ Question d'un agent territorial : ${question}
           })
         : []
 
-      const topResults = (resultsEntite.length > 0 ? resultsEntite : resultsFiltres).slice(0, 5)
+      const selectionSource = resultsEntite.length > 0 ? resultsEntite : resultsFiltres
+      const maxResults = preferTemporalFacts ? 8 : 5
+      const topResults = selectionSource.slice(0, maxResults)
 
       const blocs = await Promise.all(topResults.map(async (result, index) => {
         const titre = (result as { titre?: string; title?: string }).titre || (result as { titre?: string; title?: string }).title || "Fiche BIP"
@@ -764,7 +766,7 @@ Question d'un agent territorial : ${question}
     const lignes = bipContexte
       .split(/\n+/)
       .map((l) => l.trim())
-      .filter((l) => l.length >= 30 && !/^###\s|^Section:/i.test(l))
+      .filter((l) => l.length >= 20 && !/^###\s|^Section:/i.test(l))
 
     const scored = lignes.map((ligne) => {
       const normalized = normalizeForSearch(ligne)
@@ -775,12 +777,24 @@ Question d'un agent territorial : ${question}
       return { ligne, score }
     })
 
-    return scored
-      .filter((item) => item.score >= 4)
+    const lignesFactuelles = scored
+      .filter((item) => item.score >= 3)
       .sort((a, b) => b.score - a.score)
       .slice(0, 8)
-      .map((item) => `- ${item.ligne}`)
-      .join('\n')
+
+    const fenetresFactuelles = Array.from(
+      bipContexte.matchAll(/[^\n]{0,220}(?:duree|durée|renouvel|periode|période|delai|délai|ans?|mois|jours?|semaines?)[^\n]{0,260}/gi),
+    )
+      .map((m) => (m[0] || '').replace(/\s+/g, ' ').trim())
+      .filter((m) => m.length >= 40)
+      .slice(0, 6)
+
+    const uniques = Array.from(new Set([
+      ...lignesFactuelles.map((item) => item.ligne),
+      ...fenetresFactuelles,
+    ])).slice(0, 10)
+
+    return uniques.map((ligne) => `- ${ligne}`).join('\n')
   }
 
   const traiterQuestion = async (question: string) => {

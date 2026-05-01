@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
+import { isAllowedOrigin, sanitizeCompletionRequest, summarizeCompletionRequest } from './api/_security.js';
 
 // Charger .env (placeholders) puis .env.local (valeurs locales sensibles qui remplacent les placeholders)
 dotenv.config();
@@ -10,25 +11,20 @@ dotenv.config({ path: '.env.local', override: true });
 const app = express();
 const PORT = 3001;
 
-// Middleware CORS spécifique pour le développement
-const allowedOriginRegex = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
-
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOriginRegex.test(origin)) {
+    if (isAllowedOrigin(origin)) {
       callback(null, true);
       return;
     }
     callback(new Error('Not allowed by CORS'));
   },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
 }));
 
-// Augmenter la limite de taille des requêtes JSON (défaut: 100kb)
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(express.json({ limit: '256kb' }));
+app.use(express.urlencoded({ limit: '256kb', extended: true }));
 
 // --- RATE LIMITING: 150 requêtes par minute ---
 const limiter = rateLimit({
@@ -43,7 +39,13 @@ app.use('/api/', limiter);
 
 // Route pour les completions Perplexity
 app.post('/api/completions', async (req, res) => {
-  console.log('📝 Requête reçue:', JSON.stringify(req.body, null, 2));
+  const completionBody = sanitizeCompletionRequest(req.body);
+
+  if (!completionBody) {
+    return res.status(400).json({ error: 'Invalid completion payload' });
+  }
+
+  console.log('📝 Requête IA reçue:', summarizeCompletionRequest(completionBody));
   
   // Vérifier que la clé API existe
   if (!process.env.PERPLEXITY_API_KEY) {
@@ -52,7 +54,7 @@ app.post('/api/completions', async (req, res) => {
       id: 'fallback-no-api-key',
       object: 'chat.completion',
       created: Math.floor(Date.now() / 1000),
-      model: req.body?.model || 'fallback-local',
+      model: completionBody.model || 'fallback-local',
       choices: [
         {
           index: 0,
@@ -66,22 +68,18 @@ app.post('/api/completions', async (req, res) => {
     });
   }
   
-  console.log('🔑 Clé API trouvée:', process.env.PERPLEXITY_API_KEY.substring(0, 10) + '...');
-  
   try {
     const fetch = (await import('node-fetch')).default;
     
     // Modifier la requête pour limiter les recherches externes
     const modifiedBody = {
-      ...req.body,
+      ...completionBody,
       // Paramètres pour limiter les recherches web
       return_images: false,
       return_related_questions: false,
       max_tokens: 1000,
       temperature: 0.0 // Température très basse pour limiter la créativité
     };
-    
-    console.log('🚀 Envoi vers Perplexity:', JSON.stringify(modifiedBody, null, 2));
     
     // --- TIMEOUT: 30 secondes ---
     const controller = new AbortController();
@@ -116,13 +114,14 @@ app.post('/api/completions', async (req, res) => {
       // Pour les autres erreurs, essayer de parser le JSON si possible
       try {
         const errorJson = JSON.parse(text);
-        return res.status(response.status).json(errorJson);
+        return res.status(response.status).json({
+          error: errorJson.error || `Erreur API Perplexity (${response.status})`,
+          details: errorJson.message || response.statusText,
+        });
       } catch {
-        // Si ce n'est pas du JSON (comme du HTML), retourner un message d'erreur structuré
         return res.status(response.status).json({ 
           error: `Erreur API Perplexity (${response.status})`, 
           details: response.statusText,
-          raw_response: text.substring(0, 500) // Limiter la taille pour éviter les réponses trop longues
         });
       }
     }
@@ -138,7 +137,7 @@ app.post('/api/completions', async (req, res) => {
         id: 'fallback-timeout',
         object: 'chat.completion',
         created: Math.floor(Date.now() / 1000),
-        model: req.body?.model || 'fallback-local',
+        model: completionBody.model || 'fallback-local',
         choices: [
           {
             index: 0,
@@ -156,7 +155,7 @@ app.post('/api/completions', async (req, res) => {
       id: 'fallback-server-error',
       object: 'chat.completion',
       created: Math.floor(Date.now() / 1000),
-      model: req.body?.model || 'fallback-local',
+      model: completionBody.model || 'fallback-local',
       choices: [
         {
           index: 0,

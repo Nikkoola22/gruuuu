@@ -1,18 +1,12 @@
 import dotenv from 'dotenv';
+import { handleCors, sanitizeCompletionRequest, summarizeCompletionRequest } from './_security.js';
 
 // Support local runs (e.g. vercel dev) by loading .env and .env.local.
 dotenv.config();
 dotenv.config({ path: '.env.local', override: true });
 
 export default async function handler(req, res) {
-  // Ajouter les headers CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
+  if (!handleCors(req, res, ['POST', 'OPTIONS'])) {
     return;
   }
 
@@ -20,7 +14,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  console.log('📝 Requête reçue:', JSON.stringify(req.body, null, 2));
+  const completionBody = sanitizeCompletionRequest(req.body);
+
+  if (!completionBody) {
+    return res.status(400).json({ error: 'Invalid completion payload' });
+  }
+
+  console.log('📝 Requête IA reçue:', summarizeCompletionRequest(completionBody));
   
   // Vérifier que la clé API existe
   if (!process.env.PERPLEXITY_API_KEY) {
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       id: 'fallback-no-api-key',
       object: 'chat.completion',
       created: Math.floor(Date.now() / 1000),
-      model: req.body?.model || 'fallback-local',
+      model: completionBody.model || 'fallback-local',
       choices: [
         {
           index: 0,
@@ -43,13 +43,11 @@ export default async function handler(req, res) {
     });
   }
   
-  console.log('🔑 Clé API trouvée:', process.env.PERPLEXITY_API_KEY.substring(0, 10) + '...');
-  
   try {
     const fetch = (await import('node-fetch')).default;
     
     const modifiedBody = {
-      ...req.body,
+      ...completionBody,
       return_images: false,
       return_related_questions: false,
       max_tokens: 2000,
@@ -59,8 +57,6 @@ export default async function handler(req, res) {
       search_domain_filter: ["ville-gennevilliers.fr", "cfdt.fr"],
       pplx_model: "llama-3.1-sonar-large-32k-online"
     };
-    
-    console.log('🚀 Envoi vers Perplexity:', JSON.stringify(modifiedBody, null, 2));
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -81,7 +77,19 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const text = await response.text();
       console.error('❌ Erreur Perplexity:', text);
-      return res.status(response.status).send(text);
+
+      try {
+        const errorJson = JSON.parse(text);
+        return res.status(response.status).json({
+          error: errorJson.error || 'Perplexity API error',
+          details: errorJson.message || response.statusText,
+        });
+      } catch {
+        return res.status(response.status).json({
+          error: 'Perplexity API error',
+          details: response.statusText,
+        });
+      }
     }
 
     const data = await response.json();
@@ -95,7 +103,7 @@ export default async function handler(req, res) {
         id: 'fallback-timeout',
         object: 'chat.completion',
         created: Math.floor(Date.now() / 1000),
-        model: req.body?.model || 'fallback-local',
+        model: completionBody.model || 'fallback-local',
         choices: [
           {
             index: 0,
@@ -113,7 +121,7 @@ export default async function handler(req, res) {
       id: 'fallback-server-error',
       object: 'chat.completion',
       created: Math.floor(Date.now() / 1000),
-      model: req.body?.model || 'fallback-local',
+      model: completionBody.model || 'fallback-local',
       choices: [
         {
           index: 0,

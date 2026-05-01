@@ -1,3 +1,5 @@
+import { handleCors } from './_security.js';
+
 // Cache mémoire simple pour le flux RSS
 let rssCache = {
   data: null,
@@ -6,14 +8,7 @@ let rssCache = {
 };
 
 export default async function handler(req, res) {
-  // Ajouter les headers CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
+  if (!handleCors(req, res, ['GET', 'OPTIONS'])) {
     return;
   }
 

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { X, Settings, Users, FileText, Bell, Save, Trash2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { X, Settings, Users, FileText, Bell, Save, Trash2, BarChart3, RotateCcw } from "lucide-react";
+import { getWeeklyStats, resetAllWeeklyStats, resetWeeklyStat, STAT_DEFINITIONS, type StatKey } from "../lib/adminStats.ts";
 
 interface AdminPanelProps {
   onClose: () => void;
@@ -12,13 +13,28 @@ interface NewsItem {
   active: boolean;
 }
 
+interface WeeklyStatsState {
+  weekKey: string;
+  counters: Record<StatKey, number>;
+}
+
 const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
-  const [activeTab, setActiveTab] = useState<'news' | 'settings'>('news');
+  const [activeTab, setActiveTab] = useState<'news' | 'stats' | 'settings'>('news');
   const [newsItems, setNewsItems] = useState<NewsItem[]>([
     { id: 1, title: "Nouvelle convention collective", content: "La nouvelle convention a été signée...", active: true },
     { id: 2, title: "Assemblée générale", content: "L'AG aura lieu le 15 décembre...", active: true },
   ]);
   const [newNews, setNewNews] = useState({ title: "", content: "" });
+  const [statsState, setStatsState] = useState<WeeklyStatsState>(() => getWeeklyStats());
+
+  useEffect(() => {
+    if (activeTab === 'stats') {
+      setStatsState(getWeeklyStats());
+    }
+  }, [activeTab]);
+
+  const homeStats = STAT_DEFINITIONS.filter((item) => item.group === 'home');
+  const calculatorStats = STAT_DEFINITIONS.filter((item) => item.group === 'calculators');
 
   const handleAddNews = () => {
     if (newNews.title && newNews.content) {
@@ -38,6 +54,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     setNewsItems(newsItems.map(item => 
       item.id === id ? { ...item, active: !item.active } : item
     ));
+  };
+
+  const handleResetStat = (key: StatKey) => {
+    setStatsState(resetWeeklyStat(key));
+  };
+
+  const handleResetAllStats = () => {
+    setStatsState(resetAllWeeklyStats());
   };
 
   return (
@@ -72,6 +96,17 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           >
             <Bell className="w-5 h-5" />
             Actualités
+          </button>
+          <button
+            onClick={() => setActiveTab('stats')}
+            className={`flex-1 px-6 py-4 font-medium transition-colors flex items-center justify-center gap-2 ${
+              activeTab === 'stats'
+                ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <BarChart3 className="w-5 h-5" />
+            Statistiques
           </button>
           <button
             onClick={() => setActiveTab('settings')}
@@ -160,6 +195,79 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'stats' && (
+            <div className="space-y-6">
+              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 glass-card-light">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                      <BarChart3 className="w-5 h-5 text-purple-600" />
+                      Activations hebdomadaires
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Semaine en cours : <strong>{statsState.weekKey}</strong>
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleResetAllStats}
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm font-medium"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    Tout remettre à zéro
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 glass-card-light">
+                  <h4 className="font-semibold text-gray-800 mb-4">Page d'accueil</h4>
+                  <div className="space-y-3">
+                    {homeStats.map((item) => (
+                      <div key={item.key} className="flex items-center justify-between gap-4 p-4 bg-white rounded-xl border border-gray-200">
+                        <div>
+                          <p className="font-medium text-gray-800">{item.label}</p>
+                          <p className="text-sm text-gray-500">{statsState.counters[item.key]} activation(s) cette semaine</p>
+                        </div>
+                        <button
+                          onClick={() => handleResetStat(item.key)}
+                          className="shrink-0 inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-sm"
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                          Remettre à zéro
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 glass-card-light">
+                  <h4 className="font-semibold text-gray-800 mb-4">Calculateurs</h4>
+                  <div className="space-y-3">
+                    {calculatorStats.map((item) => (
+                      <div key={item.key} className="flex items-center justify-between gap-4 p-4 bg-white rounded-xl border border-gray-200">
+                        <div>
+                          <p className="font-medium text-gray-800">{item.label}</p>
+                          <p className="text-sm text-gray-500">{statsState.counters[item.key]} activation(s) cette semaine</p>
+                        </div>
+                        <button
+                          onClick={() => handleResetStat(item.key)}
+                          className="shrink-0 inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-sm"
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                          Remettre à zéro
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800 glass-card-light">
+                <strong>💡 Note :</strong> Les compteurs sont stockés localement par semaine et se réinitialisent automatiquement lorsqu'une nouvelle semaine commence.
               </div>
             </div>
           )}

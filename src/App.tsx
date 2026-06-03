@@ -6,6 +6,7 @@ import { infoItems } from "./data/info-data.ts"
 import { franceInfoRss } from "./data/rss-data.ts"
 import AdminPanel from "./components/AdminPanel.tsx"
 import AdminLogin from "./components/AdminLogin.tsx"
+import { incrementWeeklyStat } from "./lib/adminStats.ts"
 
 const CalculateurCIAV2 = lazy(() => import("./components/CalculateurCIAV2.tsx"))
 const CalculateurPrimesV2 = lazy(() => import("./components/CalculateurPrimesV2.tsx"))
@@ -198,6 +199,7 @@ function App() {
   const [showUsefulLinks, setShowUsefulLinks] = useState(false)
   const [lastQuestion, setLastQuestion] = useState<string>("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesListRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const newsMarqueeRef = useRef<HTMLDivElement>(null)
@@ -206,10 +208,18 @@ function App() {
 
   // --- EFFETS ---
   useEffect(() => {
-    if (chatState.currentView === "chat") {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    if (chatState.currentView !== "chat") return
+
+    const messageList = messagesListRef.current
+    if (!messageList) return
+
+    if (chatState.messages.length <= 1 && !chatState.isProcessing) {
+      messageList.scrollTo({ top: 0, behavior: "auto" })
+      return
     }
-  }, [chatState.messages, chatState.currentView])
+
+    messageList.scrollTo({ top: messageList.scrollHeight, behavior: "smooth" })
+  }, [chatState.messages, chatState.currentView, chatState.isProcessing])
 
   useEffect(() => {
     const sync = () => {
@@ -325,7 +335,32 @@ function App() {
   // --- FONCTIONS DE GESTION ---
   const handleInfoClick = (info: InfoItem) => setSelectedInfo(info)
 
+  const openCalculatorsLanding = () => {
+    incrementWeeklyStat('home_calculators')
+    setChatState({ ...chatState, currentView: 'calculators' })
+  }
+
+  const openMetiersView = () => {
+    incrementWeeklyStat('home_metiers')
+    setChatState({ ...chatState, currentView: 'metiers' })
+  }
+
+  const openCalculator = (calculator: 'primes' | 'cia' | '13eme') => {
+    const keyByCalculator = {
+      primes: 'calculator_primes',
+      cia: 'calculator_cia',
+      '13eme': 'calculator_13eme',
+    } as const
+
+    incrementWeeklyStat(keyByCalculator[calculator])
+    setActiveCalculator(calculator)
+  }
+
   const handleDomainSelection = (domainId: number) => {
+    if (domainId === 0) {
+      incrementWeeklyStat('home_question')
+    }
+
     setChatState({
       currentView: "chat",
       selectedDomain: domainId,
@@ -341,7 +376,7 @@ function App() {
 
     setTimeout(() => {
       if (chatContainerRef.current) {
-        const headerHeight = 200 // Approximate header height
+        const headerHeight = 24
         const chatPosition = chatContainerRef.current.offsetTop
         const scrollPosition = Math.max(0, chatPosition - headerHeight)
 
@@ -350,7 +385,6 @@ function App() {
           behavior: "smooth",
         })
       }
-      inputRef.current?.focus()
     }, 100)
   }
 
@@ -1199,7 +1233,7 @@ ${indicesFactuels}
                   </button>
 
                   <button
-                    onClick={() => setChatState({ ...chatState, currentView: 'calculators' })}
+                    onClick={openCalculatorsLanding}
                     className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 md:p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm md:w-80 h-auto md:h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple"
                   >
                     <div className="absolute inset-0 bg-black/20"></div>
@@ -1225,7 +1259,7 @@ ${indicesFactuels}
 
                   {/* Carte Grilles Indiciaires */}
                   <button
-                    onClick={() => setChatState({ ...chatState, currentView: 'metiers' })}
+                    onClick={openMetiersView}
                     className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-emerald-900/70 to-slate-800/70 backdrop-blur-md border border-emerald-500/30 rounded-2xl p-6 md:p-10 hover:border-green-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm md:w-80 h-auto md:h-96 transition-transform duration-150 glass-card animate-card-enter-3 card-border-sweep card-border-sweep-green btn-ripple"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
@@ -1438,7 +1472,7 @@ ${indicesFactuels}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Carte Primes IFSE */}
               <button
-                onClick={() => setActiveCalculator('primes')}
+                onClick={() => openCalculator('primes')}
                 className="group relative bg-gradient-to-br from-slate-800/80 to-cyan-900/50 backdrop-blur-md border border-cyan-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/20 hover:scale-105 hover:-translate-y-2 transition-transform duration-150 glass-card"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
@@ -1453,7 +1487,7 @@ ${indicesFactuels}
 
               {/* Carte CIA */}
               <button
-                onClick={() => setActiveCalculator('cia')}
+                onClick={() => openCalculator('cia')}
                 className="group relative bg-gradient-to-br from-slate-800/80 to-orange-900/50 backdrop-blur-md border border-orange-500/30 rounded-2xl p-8 shadow-xl transition-all duration-300 glass-card hover:scale-105 hover:shadow-2xl hover:border-orange-400/50"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-amber-500/10 rounded-2xl"></div>
@@ -1471,7 +1505,7 @@ ${indicesFactuels}
 
               {/* Carte 13ème Mois */}
               <button
-                onClick={() => setActiveCalculator('13eme')}
+                onClick={() => openCalculator('13eme')}
                 className="group relative bg-gradient-to-br from-slate-800/80 to-green-900/50 backdrop-blur-md border border-green-500/30 rounded-2xl p-8 shadow-xl transition-all duration-300 glass-card hover:scale-105 hover:shadow-2xl hover:border-green-400/50"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-emerald-500/10 rounded-2xl"></div>
@@ -1511,7 +1545,7 @@ ${indicesFactuels}
 
       <main className={
         chatState.currentView === "chat"
-            ? "fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 px-4 sm:px-6 lg:px-8 py-4"
+            ? "relative z-[60] max-w-5xl mx-auto overflow-y-auto overflow-x-hidden overscroll-contain bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 px-4 sm:px-6 lg:px-8 py-4"
           : "relative max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-2 z-10"
       }>
         {chatState.currentView === "chat" && (
@@ -1520,8 +1554,8 @@ ${indicesFactuels}
             className="bg-gradient-to-br from-slate-800/80 via-purple-900/80 to-slate-800/80 backdrop-blur-md border border-purple-500/30 rounded-2xl shadow-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 glass-card animate-chat-enter"
           >
             <div className="bg-gradient-to-r from-purple-600/70 via-pink-600/70 to-purple-600/70 backdrop-blur text-white p-6 glass-banner">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-3 min-w-0">
                   <Search className="w-7 h-7 text-pink-200" />
                   <div>
                     <h3 className="text-lg font-light tracking-tight">
@@ -1532,14 +1566,14 @@ ${indicesFactuels}
                 </div>
                 <button
                   onClick={returnToMenu}
-                  className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-all duration-200 backdrop-blur-sm font-light glass-pill"
+                  className="flex w-full items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-all duration-200 backdrop-blur-sm font-light glass-pill sm:w-auto"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  <span className="hidden sm:inline text-sm">Retour</span>
+                  <span className="text-sm">Retour au menu</span>
                 </button>
               </div>
             </div>
-            <div className="min-h-[400px] max-h-[700px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-slate-800/40 to-purple-900/40 glass-card">
+            <div ref={messagesListRef} className="min-h-[400px] max-h-[700px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-slate-800/40 to-purple-900/40 glass-card">
               {chatState.messages.map((message, index) => (
                 <div key={index} className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}>
                   <div

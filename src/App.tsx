@@ -195,6 +195,7 @@ function App() {
   const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | null>(null)
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
+  const [logoLoadError, setLogoLoadError] = useState(false)
   const [showExpandSearch, setShowExpandSearch] = useState(false)
   const [showUsefulLinks, setShowUsefulLinks] = useState(false)
   const [lastQuestion, setLastQuestion] = useState<string>("")
@@ -1172,11 +1173,18 @@ ${indicesFactuels}
             <div className="flex items-center gap-3 group">
               <div className="relative logo-glow-ambient">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <img
-                  src={`${BASE_URL}logo-cfdt.jpg`}
-                  alt="Logo CFDT"
-                  className="w-14 h-14 sm:w-24 sm:h-24 object-contain relative transition-transform duration-300 group-hover:scale-105"
-                />
+                {logoLoadError ? (
+                  <div className="w-14 h-14 sm:w-24 sm:h-24 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 border border-white/20 shadow-lg flex items-center justify-center relative transition-transform duration-300 group-hover:scale-105">
+                    <span className="text-white font-semibold tracking-wider text-xs sm:text-xl">CFDT</span>
+                  </div>
+                ) : (
+                  <img
+                    src={`${BASE_URL}logo-cfdt.jpg`}
+                    alt="Logo CFDT"
+                    className="w-14 h-14 sm:w-24 sm:h-24 object-contain relative transition-transform duration-300 group-hover:scale-105"
+                    onError={() => setLogoLoadError(true)}
+                  />
+                )}
               </div>
               <div className="space-y-1">
                 <h1 className="text-2xl sm:text-4xl font-light tracking-tight text-shimmer">Atlas</h1>

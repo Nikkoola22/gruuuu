@@ -1038,12 +1038,12 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 flex flex-col">
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-800/95 to-emerald-900/95 backdrop-blur-md py-6 border-b border-emerald-500/30 shadow-xl glass-banner">
-        <div className="px-6 flex items-center justify-between max-w-6xl mx-auto">
-          <div className="flex items-center gap-4">
+        <div className="px-4 sm:px-6 flex flex-col gap-4 max-w-6xl mx-auto sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4 min-w-0">
             <div className="p-4 bg-gradient-to-br from-emerald-500/80 to-green-500/80 rounded-2xl shadow-2xl">
               <Euro className="w-8 h-8 text-white" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h1 className="text-2xl sm:text-3xl font-light text-white">Calculateur 13ème Mois</h1>
               <p className="text-emerald-300/80 text-sm font-light mt-1">Simulation pas à pas</p>
             </div>
@@ -1051,10 +1051,10 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           {onClose && (
             <button
               onClick={onClose}
-              className="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-light transition-all duration-150 border border-red-500/50 glass-pill"
+              className="flex w-full items-center justify-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-light transition-all duration-150 border border-red-500/50 glass-pill sm:w-auto"
             >
               <ArrowLeft className="w-4 h-4" />
-              Retour
+              <span className="hidden sm:inline">Retour</span>
             </button>
           )}
         </div>
@@ -1062,8 +1062,8 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
 
       {/* Barre de progression */}
       <div className="bg-slate-800/50 border-b border-slate-700/50 py-4 px-6 glass-banner">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center justify-between">
+        <div className="max-w-3xl mx-auto overflow-x-auto pb-2">
+          <div className="flex items-center justify-between min-w-[520px]">
             {STEPS.map((step, index) => {
               const StepIcon = step.icon
               const isActive = currentStep === step.id
@@ -1112,7 +1112,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
       </div>
 
       {/* Contenu principal */}
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="max-w-2xl mx-auto">
           {/* Tip de l'étape */}
           {currentStep < 5 && (
@@ -1131,17 +1131,17 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           )}
 
           {/* Contenu de l'étape */}
-          <div className="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50 glass-card">
+          <div className="bg-slate-800/30 rounded-2xl p-4 sm:p-6 border border-slate-700/50 glass-card">
             {renderStep()}
           </div>
 
           {/* Navigation */}
           {currentStep < 5 && (
-            <div className="flex items-center justify-between mt-6">
+            <div className="flex flex-col-reverse items-stretch mt-6 gap-3 sm:flex-row sm:items-center sm:justify-between">
               <button
                 onClick={goPrev}
                 disabled={currentStep === 1}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-light transition-all duration-150 ${
+                className={`flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-light transition-all duration-150 sm:w-auto ${
                   currentStep === 1
                     ? 'text-slate-600 cursor-not-allowed'
                     : 'bg-slate-700/50 text-white hover:bg-slate-600/50'
@@ -1154,7 +1154,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               <button
                 onClick={goNext}
                 disabled={!canGoNext()}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-light transition-all duration-150 ${
+                className={`flex w-full items-center justify-center gap-2 px-6 py-2.5 rounded-lg font-light transition-all duration-150 sm:w-auto ${
                   canGoNext()
                     ? agentType === 'horaire'
                       ? 'bg-purple-500 text-white hover:bg-purple-600 shadow-lg shadow-purple-500/30'
@@ -1170,15 +1170,17 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         </div>
       </div>
 
-      {/* Badge flottant avec le total */}
+      {/* Récapitulatif du total */}
       {totalEstime > 0 && currentStep < 5 && (
-        <div className={`fixed bottom-6 right-6 px-5 py-3 rounded-2xl shadow-2xl border ${
-          agentType === 'horaire'
-            ? 'bg-purple-600/95 border-purple-400/30'
-            : 'bg-emerald-600/95 border-emerald-400/30'
-        } backdrop-blur-sm`}>
-          <p className="text-xs text-white/70 mb-0.5">13ème mois estimé</p>
-          <p className="text-xl font-light text-white">{formatEUR(totalEstime)}</p>
+        <div className="px-4 pb-4 sm:px-6 sm:pb-6">
+          <div className={`max-w-2xl mx-auto px-5 py-3 rounded-2xl shadow-2xl border backdrop-blur-sm ${
+            agentType === 'horaire'
+              ? 'bg-purple-600/95 border-purple-400/30'
+              : 'bg-emerald-600/95 border-emerald-400/30'
+          }`}>
+            <p className="text-xs text-white/70 mb-0.5">13ème mois estimé</p>
+            <p className="text-xl font-light text-white">{formatEUR(totalEstime)}</p>
+          </div>
         </div>
       )}
     </div>

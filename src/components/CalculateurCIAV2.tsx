@@ -203,12 +203,12 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-950/30 to-slate-900 flex flex-col">
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-800/95 to-orange-900/95 backdrop-blur-md py-4 border-b border-orange-500/30 shadow-xl glass-banner">
-        <div className="px-4 sm:px-6 flex items-center justify-between max-w-4xl mx-auto">
-          <div className="flex items-center gap-3">
+        <div className="px-4 sm:px-6 flex flex-col gap-4 max-w-4xl mx-auto sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3 min-w-0">
             <div className={`p-3 bg-gradient-to-br ${stepColor.bg} rounded-xl shadow-lg`}>
               <Euro className="w-6 h-6 text-white" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h1 className="text-xl sm:text-2xl font-semibold text-white">Calculateur CIA</h1>
               <p className="text-orange-300/80 text-xs sm:text-sm">Complément Indemnitaire Annuel</p>
             </div>
@@ -216,7 +216,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
           {onClose && (
             <button
               onClick={onClose}
-              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all border border-red-500/50 glass-pill"
+              className="flex w-full items-center justify-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all border border-red-500/50 glass-pill sm:w-auto"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Retour</span>
@@ -227,8 +227,8 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
 
       {/* Barre de progression */}
       <div className="bg-slate-800/50 border-b border-slate-700/30 py-3 px-4 glass-banner">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
+        <div className="max-w-4xl mx-auto overflow-x-auto pb-2">
+          <div className="flex items-center justify-between mb-2 min-w-[480px]">
             {STEPS.map((step, idx) => {
               const status = getStepStatus(step.id)
               const Icon = step.icon
@@ -278,8 +278,8 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
 
       {/* Récapitulatif flottant */}
       {resultat.ciaFinal > 0 && currentStep < 5 && (
-        <div className="fixed bottom-4 right-4 z-50 animate-in slide-in-from-right duration-500">
-          <div className="bg-gradient-to-br from-orange-900/95 to-amber-900/95 backdrop-blur-md rounded-xl p-4 shadow-2xl border border-orange-500/30 glass-card">
+        <div className="px-4 pt-4 sm:px-6 animate-in slide-in-from-right duration-500">
+          <div className="max-w-2xl mx-auto bg-gradient-to-br from-orange-900/95 to-amber-900/95 backdrop-blur-md rounded-xl p-4 shadow-2xl border border-orange-500/30 glass-card">
             <div className="flex items-center gap-3">
               <Sparkles className="w-5 h-5 text-orange-400" />
               <div>
@@ -695,11 +695,11 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
 
           {/* Boutons de navigation */}
           {currentStep < 5 && (
-            <div className="flex justify-between mt-6 gap-4">
+            <div className="flex flex-col-reverse mt-6 gap-3 sm:flex-row sm:justify-between sm:gap-4">
               <button
                 onClick={goPrev}
                 disabled={!canGoPrev()}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all glass-pill ${
+                className={`flex w-full items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all glass-pill sm:w-auto ${
                   canGoPrev()
                     ? 'bg-slate-700 hover:bg-slate-600 text-white'
                     : 'bg-slate-800 text-slate-600 cursor-not-allowed'
@@ -712,7 +712,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
               <button
                 onClick={goNext}
                 disabled={!canGoNext() && currentStep !== 2 && currentStep !== 4}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all glass-pill ${
+                className={`flex w-full items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all glass-pill sm:w-auto ${
                   canGoNext() || currentStep === 2 || currentStep === 4
                     ? `bg-gradient-to-r ${stepColor.bg} hover:opacity-90 text-white shadow-lg`
                     : 'bg-slate-800 text-slate-600 cursor-not-allowed'

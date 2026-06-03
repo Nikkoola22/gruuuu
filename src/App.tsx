@@ -1163,42 +1163,8 @@ ${indicesFactuels}
         </div>
       </header>
 
-      {/* Bandeau NEWS FPT - Pleine largeur sous le header */}
-      <section className="relative bg-gradient-to-r from-orange-600/90 via-red-600/90 to-pink-600/90 text-white overflow-hidden w-full shadow-lg border-b border-orange-400/30 z-10 glass-banner marquee-pausable banner-top-streak">
-      <div className="relative h-16 flex items-center overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-32 flex items-center justify-center bg-gradient-to-r from-orange-700 to-red-700 z-20 shadow-lg glass-pill news-pill-glow">
-          <span className="text-base font-light tracking-wide text-white">NEWS:</span>
-        </div>
-        <div ref={newsMarqueeRef} className="marquee-track animate-marquee pl-36">
-          <div className="marquee-group">
-            {infoItems.map((info, index) => (
-              <React.Fragment key={`news-a-${info.id}-${index}`}>
-                <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
-                <button
-                  onClick={() => handleInfoClick(info)}
-                  className="text-lg font-light mx-4 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
-                >
-                  {info.title}
-                </button>
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="marquee-group">
-            {infoItems.map((info, index) => (
-              <React.Fragment key={`news-b-${info.id}-${index}`}>
-                <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
-                <button
-                  onClick={() => handleInfoClick(info)}
-                  className="text-lg font-light mx-4 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
-                >
-                  {info.title}
-                </button>
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-        </div>
-      </section>
+      {/* --- BANDEAU RSS DÉFILANT / ACTU --- */}
+      <RssBandeau rssItems={rssItems} rssLoading={rssLoading} marqueeRef={rssMarqueeRef} />
 
       <main className="relative max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 z-10">
         {chatState.currentView === "menu" && (
@@ -1206,19 +1172,6 @@ ${indicesFactuels}
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
               {/* Colonne principale - pleine largeur */}
               <div className="lg:col-span-1">
-                {selectedInfo && (
-                  <section className="info-detail bg-gradient-to-br from-slate-800/80 via-purple-900/80 to-slate-800/80 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-purple-500/30 mb-8 max-w-4xl mx-auto hover:shadow-2xl transition-shadow glass-card">
-                    <h3 className="text-3xl font-light bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent mb-4">{selectedInfo.title}</h3>
-                    <p className="text-slate-200 leading-relaxed">{selectedInfo.content}</p>
-                    <button
-                      onClick={() => setSelectedInfo(null)}
-                      className="mt-6 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-xl transition-all duration-200"
-                    >
-                      Fermer
-                    </button>
-                  </section>
-                )}
-
                 <div className="flex flex-col md:flex-row justify-center items-center mb-1 gap-8">
                   <button
                     onClick={() => handleDomainSelection(0)}
@@ -1233,7 +1186,7 @@ ${indicesFactuels}
                         </div>
                       </div>
                       <h4 className="text-2xl font-light tracking-tight text-white card-title-purple">
-                        Recherche Unifiée
+                        J&apos;ai une question
                       </h4>
                       <p className="text-center text-slate-300 font-light text-sm">
                         Temps de travail, formation, télétravail - Recherche dans tous les documents
@@ -1500,9 +1453,8 @@ ${indicesFactuels}
 
               {/* Carte CIA */}
               <button
-                onClick={(e) => e.preventDefault()}
-                disabled
-                className="group relative bg-gradient-to-br from-slate-800/80 to-orange-900/50 backdrop-blur-md border border-orange-500/30 rounded-2xl p-8 shadow-xl transition-transform duration-150 glass-card opacity-50 cursor-not-allowed pointer-events-none"
+                onClick={() => setActiveCalculator('cia')}
+                className="group relative bg-gradient-to-br from-slate-800/80 to-orange-900/50 backdrop-blur-md border border-orange-500/30 rounded-2xl p-8 shadow-xl transition-all duration-300 glass-card hover:scale-105 hover:shadow-2xl hover:border-orange-400/50"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-amber-500/10 rounded-2xl"></div>
                 <div className="relative z-10 flex flex-col items-center gap-6">
@@ -1512,16 +1464,15 @@ ${indicesFactuels}
                   <h4 className="text-2xl font-light text-white">CIA</h4>
                   <p className="text-center text-slate-400 font-light text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
                   <div className="flex items-center gap-2 text-orange-300/90">
-                    <span className="font-light text-sm">Bientôt disponible</span>
+                    <span className="font-light text-sm">Ouvrir le calculateur</span>
                   </div>
                 </div>
               </button>
 
               {/* Carte 13ème Mois */}
               <button
-                onClick={(e) => e.preventDefault()}
-                disabled
-                className="group relative bg-gradient-to-br from-slate-800/80 to-green-900/50 backdrop-blur-md border border-green-500/30 rounded-2xl p-8 shadow-xl transition-transform duration-150 glass-card opacity-50 cursor-not-allowed pointer-events-none"
+                onClick={() => setActiveCalculator('13eme')}
+                className="group relative bg-gradient-to-br from-slate-800/80 to-green-900/50 backdrop-blur-md border border-green-500/30 rounded-2xl p-8 shadow-xl transition-all duration-300 glass-card hover:scale-105 hover:shadow-2xl hover:border-green-400/50"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-emerald-500/10 rounded-2xl"></div>
                 <div className="relative z-10 flex flex-col items-center gap-6">
@@ -1531,7 +1482,7 @@ ${indicesFactuels}
                   <h4 className="text-2xl font-light text-white">13ème Mois</h4>
                   <p className="text-center text-slate-400 font-light text-sm">Calculez votre prime de 13ème mois selon votre situation</p>
                   <div className="flex items-center gap-2 text-green-300/90">
-                    <span className="font-light text-sm">Bientôt disponible</span>
+                    <span className="font-light text-sm">Ouvrir le calculateur</span>
                   </div>
                 </div>
               </button>
@@ -1659,8 +1610,59 @@ ${indicesFactuels}
 
       </main>
 
-      {/* --- BANDEAU RSS DÉFILANT --- */}
-      <RssBandeau rssItems={rssItems} rssLoading={rssLoading} marqueeRef={rssMarqueeRef} />
+      {chatState.currentView === "menu" && selectedInfo && (
+        <section className="relative z-10 px-4 sm:px-6 lg:px-8 pb-6">
+          <div className="max-w-full mx-auto">
+            <section className="info-detail bg-gradient-to-br from-slate-800/80 via-purple-900/80 to-slate-800/80 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-purple-500/30 max-w-4xl mx-auto hover:shadow-2xl transition-shadow glass-card">
+              <h3 className="text-3xl font-light bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent mb-4">{selectedInfo.title}</h3>
+              <p className="text-slate-200 leading-relaxed">{selectedInfo.content}</p>
+              <button
+                onClick={() => setSelectedInfo(null)}
+                className="mt-6 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-xl transition-all duration-200"
+              >
+                Fermer
+              </button>
+            </section>
+          </div>
+        </section>
+      )}
+
+      {/* Bandeau NEWS FPT */}
+      <section className="relative bg-gradient-to-r from-orange-600/90 via-red-600/90 to-pink-600/90 text-white overflow-hidden w-full shadow-lg border-b border-orange-400/30 z-10 glass-banner marquee-pausable banner-top-streak">
+      <div className="relative h-16 flex items-center overflow-hidden">
+        <div className="absolute left-0 top-0 h-full w-32 flex items-center justify-center bg-gradient-to-r from-orange-700 to-red-700 z-20 shadow-lg glass-pill news-pill-glow">
+          <span className="text-base font-light tracking-wide text-white">NEWS:</span>
+        </div>
+        <div ref={newsMarqueeRef} className="marquee-track animate-marquee pl-36">
+          <div className="marquee-group">
+            {infoItems.map((info, index) => (
+              <React.Fragment key={`news-a-${info.id}-${index}`}>
+                <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
+                <button
+                  onClick={() => handleInfoClick(info)}
+                  className="text-lg font-light mx-4 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
+                >
+                  {info.title}
+                </button>
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="marquee-group">
+            {infoItems.map((info, index) => (
+              <React.Fragment key={`news-b-${info.id}-${index}`}>
+                <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
+                <button
+                  onClick={() => handleInfoClick(info)}
+                  className="text-lg font-light mx-4 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
+                >
+                  {info.title}
+                </button>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+        </div>
+      </section>
 
       <footer 
         className="relative text-slate-400 text-center py-3 mt-0 z-10 border-t border-purple-500/20 glass-banner footer-glass"

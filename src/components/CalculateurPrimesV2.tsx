@@ -452,12 +452,12 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(216,180,254,0.22),_transparent_28%),linear-gradient(135deg,_rgb(58,28,113)_0%,_rgb(91,33,182)_48%,_rgb(76,29,149)_100%)] flex flex-col">
       {/* Header */}
       <div className="bg-gradient-to-r from-violet-950/90 via-purple-900/90 to-fuchsia-950/90 backdrop-blur-md py-4 border-b border-purple-200/15 shadow-xl glass-banner">
-        <div className="px-4 sm:px-6 flex items-center justify-between max-w-4xl mx-auto">
-          <div className="flex items-center gap-3">
+        <div className="px-4 sm:px-6 flex flex-col gap-4 max-w-4xl mx-auto sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3 min-w-0">
             <div className={`p-3 bg-gradient-to-br ${stepColor.bg} rounded-xl shadow-lg`}>
               <TrendingUp className="w-6 h-6 text-white" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h1 className="text-xl sm:text-2xl font-semibold text-white">Calculateur de Primes</h1>
               <p className="text-purple-100/75 text-xs sm:text-sm">Estimez vos primes RIFSEEP en quelques clics</p>
             </div>
@@ -465,7 +465,7 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
           {onClose && (
             <button
               onClick={onClose}
-              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all border border-red-500/50 glass-pill"
+              className="flex w-full items-center justify-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all border border-red-500/50 glass-pill sm:w-auto"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Retour</span>
@@ -476,8 +476,8 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
 
       {/* Barre de progression */}
       <div className="bg-purple-950/30 border-b border-purple-200/10 py-3 px-4 glass-banner">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
+        <div className="max-w-4xl mx-auto overflow-x-auto pb-2">
+          <div className="flex items-center justify-between mb-2 min-w-[560px]">
             {STEPS.map((step, idx) => {
               const status = getStepStatus(step.id)
               const Icon = step.icon
@@ -1121,11 +1121,11 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
 
           {/* Boutons de navigation */}
           {currentStep < 6 && (
-            <div ref={navigationSectionRef} className="flex justify-between mt-6 gap-4">
+            <div ref={navigationSectionRef} className="flex flex-col-reverse mt-6 gap-3 sm:flex-row sm:justify-between sm:gap-4">
               <button
                 onClick={goPrev}
                 disabled={!canGoPrev()}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+                className={`flex w-full items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all sm:w-auto ${
                   canGoPrev()
                     ? 'bg-slate-700 hover:bg-slate-600 text-white'
                     : 'bg-slate-700 text-slate-500 cursor-not-allowed'
@@ -1138,7 +1138,7 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
               <button
                 onClick={goNext}
                 disabled={!canGoNext()}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+                className={`flex w-full items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all sm:w-auto ${
                   canGoNext()
                     ? `bg-gradient-to-r ${stepColor.bg} hover:opacity-90 text-white shadow-lg`
                     : 'bg-slate-700 text-slate-500 cursor-not-allowed'

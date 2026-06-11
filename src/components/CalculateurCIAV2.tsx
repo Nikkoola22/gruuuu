@@ -110,9 +110,9 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
     
     // Deuxième moitié (Absences)
     let tauxAbsence = 0
-    if (joursAbsenceN1 < 5) {
+    if (joursAbsenceN1 < 6) {
       tauxAbsence = 100
-    } else if (joursAbsenceN1 <= 10) {
+    } else if (joursAbsenceN1 <= 11) {
       tauxAbsence = 50
     } else {
       tauxAbsence = 0
@@ -556,22 +556,22 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                   <p className="text-sm text-slate-400 font-medium">Barème appliqué :</p>
                   <div className="grid grid-cols-3 gap-2">
                     <div className={`p-3 rounded-lg text-center transition-all glass-card ${
-                      joursAbsenceN1 < 5 ? 'bg-green-500/20 border-2 border-green-400 ring-2 ring-green-400/50' : 'bg-slate-700/30 border border-slate-600/30'
+                      joursAbsenceN1 < 6 ? 'bg-green-500/20 border-2 border-green-400 ring-2 ring-green-400/50' : 'bg-slate-700/30 border border-slate-600/30'
                     }`}>
-                      <p className={`font-bold ${joursAbsenceN1 < 5 ? 'text-green-400' : 'text-slate-400'}`}>100%</p>
-                      <p className="text-xs text-slate-400">&lt; 5 jours</p>
+                      <p className={`font-bold ${joursAbsenceN1 < 6 ? 'text-green-400' : 'text-slate-400'}`}>100%</p>
+                      <p className="text-xs text-slate-400">&lt; 6 jours</p>
                     </div>
                     <div className={`p-3 rounded-lg text-center transition-all glass-card ${
-                      joursAbsenceN1 >= 5 && joursAbsenceN1 <= 10 ? 'bg-amber-500/20 border-2 border-amber-400 ring-2 ring-amber-400/50' : 'bg-slate-700/30 border border-slate-600/30'
+                      joursAbsenceN1 >= 6 && joursAbsenceN1 <= 11 ? 'bg-amber-500/20 border-2 border-amber-400 ring-2 ring-amber-400/50' : 'bg-slate-700/30 border border-slate-600/30'
                     }`}>
-                      <p className={`font-bold ${joursAbsenceN1 >= 5 && joursAbsenceN1 <= 10 ? 'text-amber-400' : 'text-slate-400'}`}>50%</p>
-                      <p className="text-xs text-slate-400">5-10 jours</p>
+                      <p className={`font-bold ${joursAbsenceN1 >= 6 && joursAbsenceN1 <= 11 ? 'text-amber-400' : 'text-slate-400'}`}>50%</p>
+                      <p className="text-xs text-slate-400">6-11 jours</p>
                     </div>
                     <div className={`p-3 rounded-lg text-center transition-all glass-card ${
-                      joursAbsenceN1 > 10 ? 'bg-red-500/20 border-2 border-red-400 ring-2 ring-red-400/50' : 'bg-slate-700/30 border border-slate-600/30'
+                      joursAbsenceN1 > 11 ? 'bg-red-500/20 border-2 border-red-400 ring-2 ring-red-400/50' : 'bg-slate-700/30 border border-slate-600/30'
                     }`}>
-                      <p className={`font-bold ${joursAbsenceN1 > 10 ? 'text-red-400' : 'text-slate-400'}`}>0%</p>
-                      <p className="text-xs text-slate-400">&gt; 10 jours</p>
+                      <p className={`font-bold ${joursAbsenceN1 > 11 ? 'text-red-400' : 'text-slate-400'}`}>0%</p>
+                      <p className="text-xs text-slate-400">&gt; 11 jours</p>
                     </div>
                   </div>
                 </div>

@@ -53,7 +53,7 @@ const STEPS = [
     icon: CalendarDays,
     color: 'purple',
     description: 'Vos jours d\'absence de l\'année précédente impactent la seconde moitié du CIA (50%).',
-    tip: "⚠️ Attention : si vous êtes arrêté du vendredi matin au mardi soir, il faut compter le week-end, donc 5 jours !"
+    tip: "⚠️ Attention : si vous êtes arrêté pour maladie (MO, AT) du vendredi matin au mardi soir, il faut compter le week-end, donc 5 jours ! (règles Sécurité sociale)"
   },
   { 
     id: 5, 
@@ -319,7 +319,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             {showTip && (
               <div className="mt-4 p-3 bg-slate-700/30 rounded-lg border border-slate-600/30 flex items-start gap-3 glass-card">
                 <Info className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
-                <p className="text-xs sm:text-sm text-slate-300">{currentStepData.tip}</p>
+                <p className={currentStep === 4 ? 'text-sm sm:text-base font-bold text-slate-200' : 'text-xs sm:text-sm text-slate-300'}>{currentStepData.tip}</p>
                 <button onClick={() => setShowTip(false)} className="text-slate-500 hover:text-slate-300 text-xs">✕</button>
               </div>
             )}

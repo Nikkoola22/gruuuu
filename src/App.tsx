@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, lazy, Suspense } from "rea
 import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator, TrendingUp, DollarSign, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, Scale, Landmark, GraduationCap, Coins } from "lucide-react"
 
 // --- IMPORTATIONS DES DONNÉES ---
+import { searchFAQ } from "./data/FAQdata.ts"
 import { infoItems } from "./data/info-data.ts"
 import { franceInfoRss } from "./data/rss-data.ts"
 import AdminPanel from "./components/AdminPanel.tsx"
@@ -887,6 +888,17 @@ Question d'un agent territorial : ${question}
     return uniques.map((ligne) => `- ${ligne}`).join('\n')
   }
 
+  const genererContexteFAQ = (question: string): string => {
+    const faqMatches = searchFAQ(question).slice(0, 3)
+    if (faqMatches.length === 0) {
+      return ''
+    }
+
+    return faqMatches
+      .map((item, index) => `FAQ ${index + 1} — ${item.question}\n${item.answer}`)
+      .join('\n\n')
+  }
+
   const traiterQuestion = async (question: string) => {
     const {
       sommaireUnifie,
@@ -898,6 +910,7 @@ Question d'un agent territorial : ${question}
     } = await loadSearchDeps()
 
     const idsLocaux = rechercherAvecPriorite(question, 4).map(section => section.id)
+    const faqContexte = genererContexteFAQ(question)
 
     let idsFinals = idsLocaux
 
@@ -969,6 +982,10 @@ PROTOCOLE TÉLÉTRAVAIL :\n${typeof teletravailData === 'string' ? teletravailDa
       contenuCible = await chargerContenuSections(idsFinals)
     }
 
+    if (faqContexte) {
+      contenuCible = `${contenuCible}\n\n=== FAQ INTERNES PERTINENTES ===\n${faqContexte}`.trim()
+    }
+
     const systemPromptSommaire = `
 Tu es un assistant CFDT pour la Mairie de Gennevilliers.
 
@@ -1023,6 +1040,13 @@ ${contenuCible}
     const reponseCore = await appelPerplexity(buildMessages(systemPromptSommaire))
     if (!isInternalNotFound(reponseCore)) {
       return reponseCore
+    }
+
+    if (faqContexte) {
+      const [faqFallback] = searchFAQ(question)
+      if (faqFallback) {
+        return faqFallback.answer
+      }
     }
 
     const bipContexte = await genererContexteBip(question)

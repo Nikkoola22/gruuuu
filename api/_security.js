@@ -9,6 +9,26 @@ const MAX_MESSAGES = 20;
 const MAX_MESSAGE_LENGTH = 4000;
 const MAX_MODEL_LENGTH = 64;
 
+const getRequestOriginCandidates = (req) => {
+  if (!req || !req.headers) {
+    return [];
+  }
+
+  const forwardedHost = req.headers['x-forwarded-host'];
+  const host = forwardedHost || req.headers.host;
+
+  if (!host) {
+    return [];
+  }
+
+  const forwardedProto = req.headers['x-forwarded-proto'];
+  const protocol = typeof forwardedProto === 'string' && forwardedProto.length > 0
+    ? forwardedProto.split(',')[0].trim()
+    : 'https';
+
+  return [`${protocol}://${host}`];
+};
+
 const getEnvAllowedOrigins = () => {
   const extraOrigins = process.env.ALLOWED_ORIGINS;
 
@@ -22,12 +42,13 @@ const getEnvAllowedOrigins = () => {
     .filter(Boolean);
 };
 
-export const isAllowedOrigin = (origin) => {
+export const isAllowedOrigin = (origin, req) => {
   if (!origin) {
     return true;
   }
 
   return LOCAL_ALLOWED_ORIGIN_REGEX.test(origin)
+    || getRequestOriginCandidates(req).includes(origin)
     || STATIC_ALLOWED_ORIGINS.has(origin)
     || getEnvAllowedOrigins().includes(origin);
 };
@@ -36,7 +57,7 @@ export const handleCors = (req, res, methods) => {
   const requestOrigin = req.headers.origin;
 
   if (requestOrigin) {
-    if (!isAllowedOrigin(requestOrigin)) {
+    if (!isAllowedOrigin(requestOrigin, req)) {
       res.status(403).json({ error: 'Origin not allowed' });
       return false;
     }

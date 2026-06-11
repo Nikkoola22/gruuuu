@@ -4,7 +4,7 @@ export interface SectionIndex {
   id: string;
   titre: string;
   motsCles: string[];
-  source: 'temps' | 'formation' | 'teletravail' | 'bip';
+  source: 'temps' | 'formation' | 'teletravail' | 'rifseep' | 'bip';
   chapitre?: number;
   article?: number;
   resume?: string;
@@ -17,55 +17,17 @@ export interface SectionIndex {
 
 export const sommaireUnifie: SectionIndex[] = [
 // (Suppression des objets orphelins, doublons, et correction de la structure du tableau)
-      {
-        id: 'teletravail_materiel',
-        titre: 'Matériel et sécurité',
-        motsCles: ['télétravail', 'matériel', 'sécurité', 'technologies', 'kit ergonomique', 'dysfonctionnement'],
-        source: 'teletravail',
-        resume: 'Matériel fourni, sécurité, dysfonctionnement, kit ergonomique.'
-      },
-      {
-        id: 'teletravail_lieu',
-        titre: 'Lieu du télétravail',
-        motsCles: ['télétravail', 'lieu', 'domicile', 'espace public', 'confidentialité', 'adresse déclarée'],
-        source: 'teletravail',
-        resume: 'Lieu d’exercice, domicile, espace public, confidentialité, déclaration.'
-      },
-      {
-        id: 'teletravail_horaires',
-        titre: 'Horaires et rythme',
-        motsCles: ['télétravail', 'horaires', 'rythme', 'temps de travail', 'plages fixes', 'égalité de traitement'],
-        source: 'teletravail',
-        resume: 'Respect des horaires, rythme, égalité de charge de travail.'
-      },
-      {
-        id: 'teletravail_couts',
-        titre: 'Prise en charge des coûts',
-        motsCles: ['télétravail', 'coûts', 'indemnisation', 'frais', 'transports', 'prise en charge'],
-        source: 'teletravail',
-        resume: 'Aucune indemnisation, prise en charge limitée des frais de transport.'
-      },
-      {
-        id: 'teletravail_situations_particulieres',
-        titre: 'Situations particulières',
-        motsCles: ['télétravail', 'handicap', 'femmes enceintes', 'proches aidants', 'dérogation', 'maintien en emploi'],
-        source: 'teletravail',
-        resume: 'Dérogations pour handicap, femmes enceintes, proches aidants, maintien en emploi.'
-      },
-      {
-        id: 'teletravail_exceptionnel',
-        titre: 'Télétravail en circonstances exceptionnelles',
-        motsCles: ['télétravail', 'circonstances exceptionnelles', 'pandémie', 'catastrophe', 'continuité du service'],
-        source: 'teletravail',
-        resume: 'Télétravail contraint en cas de circonstances exceptionnelles, continuité du service.'
-      },
-      {
-        id: 'teletravail_reversibilite',
-        titre: 'Réversibilité et fin du télétravail',
-        motsCles: ['réversibilité', 'fin', 'arrêt', 'préavis', '1 mois', '2 mois', 'adaptation'],
-        source: 'teletravail',
-        resume: 'Fin possible à tout moment : 1 mois préavis pendant adaptation, 2 mois après'
-      },
+
+  // ============================================
+  // RIFSEEP / PRIMES
+  // ============================================
+  {
+    id: 'rifseep_ifse_cia',
+    titre: 'RIFSEEP, IFSE et CIA',
+    motsCles: ['RIFSEEP', 'IFSE', 'IFSE 1', 'IFSE 2', 'CIA', 'complément indemnitaire annuel', 'indemnité de fonctions', 'sujétions', 'expertise', 'engagement professionnel', 'prime', 'primes', 'régime indemnitaire'],
+    source: 'rifseep',
+    resume: 'Régime indemnitaire des agents : IFSE 1 selon les fonctions, IFSE 2 selon direction/service/métier, CIA comme part variable annuelle liée à l engagement professionnel.'
+  },
     // CHAPITRE 4 : ABSENCES POUR MALADIES ET ACCIDENTS
     {
       id: 'temps_ch4_art1',
@@ -430,11 +392,11 @@ export const sommaireUnifie: SectionIndex[] = [
   // Chapitre 4 : Maladies et accidents
   {
     id: 'temps_ch4_maladie',
-    titre: 'Congé maladie',
-    motsCles: ['maladie', 'arrêt', 'carence', '48h', 'contrôle', 'contre-visite', 'CMO'],
+    titre: 'Congé maladie ordinaire et jour de carence',
+    motsCles: ['maladie', 'arrêt', 'carence', 'jour de carence', 'règles', '48h', 'contrôle', 'contre-visite', 'CMO', 'maladie ordinaire', 'congé maladie ordinaire'],
     source: 'temps',
     chapitre: 4,
-    resume: 'Transmission sous 48h, 1 jour de carence, contre-visite possible'
+    resume: 'Règles du congé maladie ordinaire (CMO) : transmission sous 48h, 1 jour de carence, contre-visite possible'
   },
   {
     id: 'temps_ch4_accident',
@@ -446,11 +408,11 @@ export const sommaireUnifie: SectionIndex[] = [
   },
   {
     id: 'temps_ch4_remuneration',
-    titre: 'Prise en charge rémunération maladie',
-    motsCles: ['rémunération', 'plein traitement', 'demi-traitement', 'CLM', 'CLD', 'grave maladie', 'CNRACL', 'IRCANTEC', 'longue maladie', 'congé longue maladie', 'durée', 'ans'],
+    titre: 'Rémunération en congé maladie',
+    motsCles: ['rémunération', 'paye', 'payer', 'paie', 'salaire', 'plein traitement', 'demi-traitement', 'CLM', 'CLD', 'grave maladie', 'CNRACL', 'IRCANTEC', 'longue maladie', 'congé longue maladie', 'durée', 'ans', 'maladie ordinaire', 'CMO', '3 mois', '9 mois'],
     source: 'temps',
     chapitre: 4,
-    resume: 'Maladie ordinaire: 3 mois à 90% + 9 mois demi, CLM/CLD: 1-3 ans plein'
+    resume: 'En maladie ordinaire : 3 mois à 90% puis 9 mois à demi-traitement. CLM/CLD : 1 à 3 ans selon le cas.'
   },
   {
     id: 'temps_ch4_clm_details',
@@ -587,18 +549,25 @@ export const sommaireUnifie: SectionIndex[] = [
     id: 'teletravail_principes',
     titre: 'Principes du télétravail',
     motsCles: [
-      'télétravail', 'principes', 'volontariat', 'réversibilité', 'confiance', 'déconnexion',
+      'télétravail', 'principes', 'conditions', 'conditions du télétravail', 'modalités', 'règles', 'volontariat', 'réversibilité', 'confiance', 'déconnexion',
       'organisation du travail', 'management participatif', 'autonomie', 'responsabilisation', 'conditions de travail', 'bien-être', 'flexibilité', 'continuité du service public', 'protection des agents', 'plan de continuité', 'mode de travail', 'règles', 'obligations', 'droit', 'loi 2012-347', 'décret 2016-151', 'accord cadre', 'fonction publique', 'collectivité', 'employeur public'
     ],
     source: 'teletravail',
-    resume: 'Volontaire, réversible, droit à la déconnexion, management par confiance, organisation du travail, autonomie, responsabilisation, continuité du service public, protection des agents, plan de continuité, mode de travail, règles, obligations, droit, loi, décret, accord cadre, fonction publique, collectivité, employeur public'
+    resume: 'Conditions générales et principes du télétravail : volontariat, réversibilité, droit à la déconnexion, organisation du travail, autonomie, responsabilités, obligations et cadre réglementaire'
   },
   {
     id: 'teletravail_eligibilite',
     titre: 'Éligibilité au télétravail',
-    motsCles: ['éligibilité', 'métiers', 'compatible', 'exclus', 'catégorie A', 'catégorie B', 'catégorie C'],
+    motsCles: ['éligibilité', 'conditions d accès', 'conditions', 'métiers', 'compatible', 'exclus', 'catégorie A', 'catégorie B', 'catégorie C'],
     source: 'teletravail',
     resume: 'Ouvert à tous si fonctions compatibles, exclus: contact public, voie publique, confidentialité'
+  },
+  {
+    id: 'rifseep_ifse_cia',
+    titre: 'RIFSEEP, IFSE et CIA',
+    motsCles: ['RIFSEEP', 'IFSE', 'IFSE 1', 'IFSE 2', 'CIA', 'complément indemnitaire annuel', 'indemnité de fonctions', 'sujétions', 'expertise', 'engagement professionnel', 'prime', 'primes', 'régime indemnitaire'],
+    source: 'rifseep',
+    resume: 'Régime indemnitaire des agents : IFSE 1 selon les fonctions, IFSE 2 selon direction, service et métier, CIA comme part variable annuelle liée à l engagement professionnel.'
   },
   {
     id: 'teletravail_quotite',
@@ -669,6 +638,40 @@ export const sommaireUnifie: SectionIndex[] = [
  * @param allowedSources - Filtrer par source (ex: ['temps', 'formation', 'teletravail'])
  */
 export function rechercherDansSommaire(question: string, maxResults = 3, allowedSources?: string[]): SectionIndex[] {
+  const normalizeSearchText = (value: string) =>
+    value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+  const SEARCH_EQUIVALENTS: Record<string, string[]> = {
+    'artt': ['rtt', 'reduction temps travail'],
+    'cap': ['commission administrative paritaire'],
+    'cet': ['compte epargne temps'],
+    'cia': ['complement indemnitaire annuel', 'rifseep', 'prime'],
+    'cld': ['conge longue duree'],
+    'clm': ['conge longue maladie'],
+    'cpf': ['compte personnel de formation'],
+    'heures sup': ['heures supplementaires'],
+    'ifse': ['rifseep', 'indemnite de fonctions', 'prime'],
+    'jour de carence': ['carence'],
+    'maladie ordinaire': ['cmo', 'conge maladie ordinaire'],
+    'pacs': ['mariage'],
+    'rtt': ['artt', 'reduction temps travail'],
+    'teletravail': ['conditions du teletravail', 'principes du teletravail'],
+    'teletravail mobile': ['forfait teletravail'],
+    'vae': ['validation des acquis de l experience'],
+  };
+
+  const SPECIAL_REQUIREMENTS: Array<{ when: string[]; requireAnyOf: string[]; penalty: number }> = [
+    { when: ['carence'], requireAnyOf: ['carence'], penalty: 40 },
+    { when: ['cia'], requireAnyOf: ['cia', 'complement indemnitaire annuel', 'rifseep'], penalty: 60 },
+    { when: ['ifse'], requireAnyOf: ['ifse', 'rifseep', 'indemnite de fonctions'], penalty: 50 },
+    { when: ['maladie', 'ordinaire'], requireAnyOf: ['ordinaire', 'cmo', 'maladie ordinaire'], penalty: 35 },
+  ];
+
+  const LOW_SIGNAL_TERMS = new Set([
+    'agent', 'agents', 'an', 'ans', 'demande', 'droit', 'droits', 'faire', 'fonctionne', 'fonctionnent', 'jour', 'jours',
+    'mettre', 'mois', 'peux', 'peut', 'pose', 'poser', 'prendre', 'question', 'semaines', 'semaine', 'temps', 'utiliser',
+  ]);
+
   // Détecter les acronymes (mots en MAJUSCULES 2-5 lettres) dans la question originale
   const acronymsDetected = new Set<string>();
   question.split(/\s+/).forEach(word => {
@@ -679,7 +682,7 @@ export function rechercherDansSommaire(question: string, maxResults = 3, allowed
     }
   });
   
-  const qNorm = question.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const qNorm = normalizeSearchText(question);
   
   const STOP_WORDS = new Set([
       'le', 'la', 'les', 'un', 'une', 'des', 'du', 'de', 'au', 'aux',
@@ -703,20 +706,48 @@ export function rechercherDansSommaire(question: string, maxResults = 3, allowed
     .split(/\s+/)
     .filter(word => word.length > 2 && (!STOP_WORDS.has(word) || acronymsDetected.has(word)));
 
+  const queryVariants = new Set<string>([qNorm.trim()]);
+  Object.entries(SEARCH_EQUIVALENTS).forEach(([term, variants]) => {
+    if (qNorm.includes(term)) {
+      variants.forEach((variant) => queryVariants.add(normalizeSearchText(variant)));
+    }
+  });
+  queryWords.forEach((word) => {
+    const variants = SEARCH_EQUIVALENTS[word];
+    if (variants) {
+      variants.forEach((variant) => queryVariants.add(normalizeSearchText(variant)));
+    }
+  });
+
   const queryStems = queryWords.map(stem);
+  const focusWords = Array.from(new Set(
+    queryWords.filter((word) => acronymsDetected.has(word) || (word.length >= 4 && !LOW_SIGNAL_TERMS.has(word))),
+  ));
+  const focusStems = focusWords.map(stem);
 
   // Calculer un score pour chaque section
   const sectionsToScore = allowedSources ? sommaireUnifie.filter(s => allowedSources.includes(s.source)) : sommaireUnifie;
   const scored = sectionsToScore.map(section => {
     let score = 0;
     
-    const titreNorm = section.titre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const resumeNorm = section.resume ? section.resume.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
-    const motsClesNorm = section.motsCles.map(m => m.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+    const titreNorm = normalizeSearchText(section.titre);
+    const resumeNorm = section.resume ? normalizeSearchText(section.resume) : '';
+    const motsClesNorm = section.motsCles.map(m => normalizeSearchText(m));
+    const texteCombine = `${titreNorm} ${motsClesNorm.join(' ')} ${resumeNorm}`;
     
     // 1. Détection des expressions complètes (très fort)
     if (titreNorm.includes(qNorm)) score += 50;
     if (resumeNorm.includes(qNorm)) score += 20;
+
+    queryVariants.forEach((variant) => {
+      if (!variant || variant.length < 4 || variant === qNorm) {
+        return;
+      }
+
+      if (titreNorm.includes(variant)) score += 28;
+      if (resumeNorm.includes(variant)) score += 10;
+      if (motsClesNorm.some((motCle) => motCle.includes(variant))) score += 18;
+    });
 
     for (const mcNorm of motsClesNorm) {
       if (qNorm.includes(mcNorm)) {
@@ -728,46 +759,81 @@ export function rechercherDansSommaire(question: string, maxResults = 3, allowed
     // 2. Évaluer chaque mot significatif (racine)
     for (let i = 0; i < queryWords.length; i++) {
       const qStem = queryStems[i];
+      const qWord = queryWords[i];
+      const isLowSignal = LOW_SIGNAL_TERMS.has(qWord);
+      const titleWeight = isLowSignal ? 5 : 15;
+      const keywordWeight = isLowSignal ? 4 : 15;
+      const resumeWeight = isLowSignal ? 2 : 5;
 
       const isMatch = (text: string) => text.includes(qStem);
       const isExactMatch = (text: string) => new RegExp(`\\b${qStem}[a-z]*\\b`).test(text);
 
       // Titre
       if (isMatch(titreNorm)) {
-        score += 15;
-        if (isExactMatch(titreNorm)) score += 10;
+        score += titleWeight;
+        if (isExactMatch(titreNorm)) score += isLowSignal ? 3 : 10;
       }
       
       // Keywords
       for (const mcNorm of motsClesNorm) {
         if (isMatch(mcNorm)) {
-          score += 15;
-          if (isExactMatch(mcNorm)) score += 8;
+          score += keywordWeight;
+          if (isExactMatch(mcNorm)) score += isLowSignal ? 2 : 8;
           break; // Un seul match keyword suffit par mot de la question
         }
       }
 
       // Resume
       if (isMatch(resumeNorm)) {
-        score += 5;
-        if (isExactMatch(resumeNorm)) score += 3;
+        score += resumeWeight;
+        if (isExactMatch(resumeNorm)) score += isLowSignal ? 1 : 3;
+      }
+
+      if (acronymsDetected.has(qWord) && isExactMatch(texteCombine)) {
+        score += 18;
       }
     }
 
     // 3. Multiplicateur de couverture (Boost densité)
     // Favorise la section qui matche le PLUS GRAND NOMBRE de mots différents de la question
     let matchesCount = 0;
-    const texteCombine = titreNorm + " " + motsClesNorm.join(' ') + " " + resumeNorm;
     
     for (const qStem of queryStems) {
       if (texteCombine.includes(qStem)) {
         matchesCount++;
       }
     }
+
+    const focusMatches = focusStems.filter((qStem) => texteCombine.includes(qStem)).length;
     
     // Si la doc contient plusieurs mots différents exigés par la question, le score explose
     if (matchesCount > 1) {
        score += (matchesCount * matchesCount * 10);
+    }
+
+    if (focusMatches > 1) {
+      score += focusMatches * focusMatches * 14;
+    }
+
+    if (focusStems.length > 0 && focusMatches === 0) {
+      score = Math.floor(score * 0.2);
+    }
+
+    SPECIAL_REQUIREMENTS.forEach(({ when, requireAnyOf, penalty }) => {
+      const shouldApply = when.every((term) => qNorm.includes(term));
+      if (shouldApply && !requireAnyOf.some((term) => texteCombine.includes(term))) {
+        score -= penalty;
+      }
+    });
+
+    if (qNorm.includes('teletravail') && (qNorm.includes('condition') || qNorm.includes('conditions'))) {
+      const matchesGeneralTeletravail = ['conditions', 'eligibilite', 'principes', 'regles', 'modalites']
+        .some((term) => texteCombine.includes(term));
+      const isExceptionalOnly = texteCombine.includes('exceptionnel') || texteCombine.includes('pandemie') || texteCombine.includes('crise');
+
+      if (isExceptionalOnly && !matchesGeneralTeletravail) {
+        score -= 25;
+      }
     }
     
     return { section, score };
@@ -787,7 +853,7 @@ export function rechercherDansSommaire(question: string, maxResults = 3, allowed
  */
 export function rechercherAvecPriorite(question: string, maxResults = 3): SectionIndex[] {
   // Phase 1 : Chercher dans les sources prioritaires
-  const prioritySources = ['temps', 'formation', 'teletravail'];
+  const prioritySources = ['temps', 'formation', 'teletravail', 'rifseep'];
   const priorityResults = rechercherDansSommaire(question, maxResults, prioritySources);
   
   // Si on a trouvé au moins une section prioritaire, ne pas interroger BIP

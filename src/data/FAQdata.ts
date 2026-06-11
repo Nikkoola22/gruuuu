@@ -257,10 +257,72 @@ export const getFAQByCategory = (category: string): FAQItem[] => {
   return faqData.filter(item => item.category === category);
 };
 
+const FAQ_STOP_WORDS = new Set([
+  'alors', 'avec', 'avoir', 'comment', 'combien', 'dans', 'des', 'donc', 'elle', 'elles', 'entre', 'est', 'etre',
+  'il', 'ils', 'je', 'la', 'le', 'les', 'leur', 'leurs', 'mais', 'mes', 'mon', 'nous', 'notre', 'ou', 'par',
+  'pas', 'plus', 'pour', 'puis', 'que', 'quel', 'quelle', 'quels', 'quelles', 'qui', 'quoi', 'ses', 'son',
+  'sur', 'tes', 'ton', 'tous', 'tout', 'tu', 'une', 'vos', 'votre', 'vous', 'peux', 'peut', 'mettre', 'poser'
+]);
+
+const normalizeFAQSearch = (value: string): string =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const tokenizeFAQSearch = (value: string): string[] =>
+  normalizeFAQSearch(value)
+    .split(' ')
+    .filter((token) => token.length >= 3 && !FAQ_STOP_WORDS.has(token));
+
+const scoreFAQMatch = (item: FAQItem, query: string): number => {
+  const normalizedQuery = normalizeFAQSearch(query);
+  if (!normalizedQuery) {
+    return 0;
+  }
+
+  const normalizedQuestion = normalizeFAQSearch(item.question);
+  const normalizedAnswer = normalizeFAQSearch(item.answer);
+  const queryTokens = Array.from(new Set(tokenizeFAQSearch(query)));
+  const questionTokens = new Set(tokenizeFAQSearch(item.question));
+  const answerTokens = new Set(tokenizeFAQSearch(item.answer));
+
+  let score = 0;
+
+  if (normalizedQuestion.includes(normalizedQuery)) {
+    score += 20;
+  }
+
+  if (normalizedQuery.includes(normalizedQuestion)) {
+    score += 12;
+  }
+
+  queryTokens.forEach((token) => {
+    if (questionTokens.has(token)) {
+      score += 4;
+      return;
+    }
+
+    if (answerTokens.has(token)) {
+      score += 2;
+    }
+  });
+
+  if (queryTokens.length > 0) {
+    const overlapRatio = queryTokens.filter((token) => questionTokens.has(token)).length / queryTokens.length;
+    score += Math.round(overlapRatio * 6);
+  }
+
+  return score;
+};
+
 export const searchFAQ = (query: string): FAQItem[] => {
-  const searchTerm = query.toLowerCase();
-  return faqData.filter(item => 
-    item.question.toLowerCase().includes(searchTerm) || 
-    item.answer.toLowerCase().includes(searchTerm)
-  );
+  return [...faqData]
+    .map((item) => ({ item, score: scoreFAQMatch(item, query) }))
+    .filter(({ score }) => score >= 4)
+    .sort((a, b) => b.score - a.score)
+    .map(({ item }) => item);
 };

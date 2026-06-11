@@ -55,6 +55,7 @@ const ViewLoader = () => (
 type SearchDeps = {
   chapitres: Record<number, string>
   formation: string
+  rifseepData: string
   teletravailData: unknown
   sommaireUnifie: Array<{
     id: string
@@ -75,12 +76,14 @@ const loadSearchDeps = async (): Promise<SearchDeps> => {
     searchDepsPromise = Promise.all([
       import("./data/temps.ts"),
       import("./data/formation.ts"),
+      import("./data/rifseep-data.ts"),
       import("./data/teletravail.ts"),
       import("./data/sommaireUnifie.ts"),
       import("./utils/ficheSearch.ts"),
-    ]).then(([tempsModule, formationModule, teletravailModule, sommaireModule, ficheSearchModule]) => ({
+    ]).then(([tempsModule, formationModule, rifseepModule, teletravailModule, sommaireModule, ficheSearchModule]) => ({
       chapitres: tempsModule.chapitres as Record<number, string>,
       formation: formationModule.formation as string,
+      rifseepData: rifseepModule.rifseepData as string,
       teletravailData: teletravailModule.teletravailData,
       sommaireUnifie: sommaireModule.sommaireUnifie,
       rechercherAvecPriorite: sommaireModule.rechercherAvecPriorite,
@@ -533,9 +536,10 @@ Question d'un agent territorial : ${question}
   }
 
   const chargerContenuSections = async (sectionIds: string[]): Promise<string> => {
-    const { sommaireUnifie, chapitres, formation, teletravailData } = await loadSearchDeps()
+    const { sommaireUnifie, chapitres, formation, rifseepData, teletravailData } = await loadSearchDeps()
     const chapitresACharger = new Set<number>()
     let chargerFormation = false
+    let chargerRifseep = false
     let chargerTeletravail = false
 
     sectionIds.forEach(id => {
@@ -545,6 +549,8 @@ Question d'un agent territorial : ${question}
           chapitresACharger.add(section.chapitre)
         } else if (section.source === 'formation') {
           chargerFormation = true
+        } else if (section.source === 'rifseep') {
+          chargerRifseep = true
         } else if (section.source === 'teletravail') {
           chargerTeletravail = true
         }
@@ -560,6 +566,9 @@ Question d'un agent territorial : ${question}
     }
     if (chargerFormation) {
       contenu += `\n\n=== RÈGLEMENT FORMATION ===\n${formation || ''}`
+    }
+    if (chargerRifseep) {
+      contenu += `\n\n=== RIFSEEP ET PRIMES ===\n${rifseepData || ''}`
     }
     if (chargerTeletravail) {
       contenu += `\n\n=== PROTOCOLE TÉLÉTRAVAIL ===\n${typeof teletravailData === 'string' ? teletravailData : JSON.stringify(teletravailData)}`
@@ -884,12 +893,18 @@ Question d'un agent territorial : ${question}
       rechercherAvecPriorite,
       chapitres,
       formation,
+      rifseepData,
       teletravailData,
     } = await loadSearchDeps()
 
-    // ÉTAPE 1 : Identifier les sections pertinentes avec le sommaire léger
-    const sommaire = await genererSommaireTexte()
-    const identificationPrompt = `Tu es un assistant qui identifie les sections pertinentes pour répondre à une question.
+    const idsLocaux = rechercherAvecPriorite(question, 4).map(section => section.id)
+
+    let idsFinals = idsLocaux
+
+    if (idsFinals.length === 0) {
+      // ÉTAPE 1 : Identifier les sections pertinentes avec le sommaire léger
+      const sommaire = await genererSommaireTexte()
+      const identificationPrompt = `Tu es un assistant qui identifie les sections pertinentes pour répondre à une question.
 
 SOMMAIRE DES DOCUMENTS DISPONIBLES :
 ${sommaire}
@@ -904,35 +919,32 @@ RÈGLES :
 
 IDs des sections pertinentes :`
 
-    const identificationResponse = await appelPerplexity([
-      { role: "user", content: identificationPrompt }
-    ])
+      const identificationResponse = await appelPerplexity([
+        { role: "user", content: identificationPrompt }
+      ])
 
-    // Parser la réponse pour extraire les IDs (tolérant à la ponctuation et au texte parasite)
-    const responseClean = identificationResponse
-      .toLowerCase()
-      .replace(/["']/g, '')
-      .replace(/\[/g, '')
-      .replace(/\]/g, '')
-      .trim()
+      // Parser la réponse pour extraire les IDs (tolérant à la ponctuation et au texte parasite)
+      const responseClean = identificationResponse
+        .toLowerCase()
+        .replace(/["']/g, '')
+        .replace(/\[/g, '')
+        .replace(/\]/g, '')
+        .trim()
 
-    // Extraire les IDs valides avec correspondance exacte sur tokens (évite les faux positifs type "bip_c")
-    const knownIds = sommaireUnifie.map(s => s.id)
-    const knownIdsSet = new Set(knownIds.map(id => id.toLowerCase()))
-    const tokens: string[] = Array.from(new Set<string>(
-      responseClean
-        .split(/[^a-z0-9_:-]+/g)
-        .map((token: string) => token.trim())
-        .filter(Boolean),
-    ))
+      // Extraire les IDs valides avec correspondance exacte sur tokens (évite les faux positifs type "bip_c")
+      const knownIds = sommaireUnifie.map(s => s.id)
+      const knownIdsSet = new Set(knownIds.map(id => id.toLowerCase()))
+      const tokens: string[] = Array.from(new Set<string>(
+        responseClean
+          .split(/[^a-z0-9_:-]+/g)
+          .map((token: string) => token.trim())
+          .filter(Boolean),
+      ))
 
-    const idsExtraits = (responseClean === 'aucune' || responseClean.includes('aucune section'))
-      ? []
-      : tokens.filter((token: string) => knownIdsSet.has(token))
-
-    // Fallback déterministe local si le modèle n'a pas renvoyé d'IDs exploitables
-    const idsLocaux = rechercherAvecPriorite(question, 4).map(section => section.id)
-    const idsFinals = Array.from(new Set([...idsExtraits, ...idsLocaux]))
+      idsFinals = (responseClean === 'aucune' || responseClean.includes('aucune section'))
+        ? []
+        : tokens.filter((token: string) => knownIdsSet.has(token))
+    }
     
     // Si aucun ID valide trouvé, fallback sur recherche complète (1 chapitre)
     let contenuCible: string
@@ -948,6 +960,8 @@ CHAPITRE 3 - AUTORISATIONS SPÉCIALES D'ABSENCE :\n${(chapitres as Record<number
 CHAPITRE 4 - LES ABSENCES POUR MALADIES ET ACCIDENTS :\n${(chapitres as Record<number, string>)[4] || ''}
 
 RÈGLEMENT FORMATION :\n${formation || ''}
+
+RIFSEEP ET PRIMES :\n${rifseepData || ''}
 
 PROTOCOLE TÉLÉTRAVAIL :\n${typeof teletravailData === 'string' ? teletravailData : JSON.stringify(teletravailData)}`
     } else {

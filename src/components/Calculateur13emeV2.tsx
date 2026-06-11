@@ -966,6 +966,9 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                       <div>
                         <strong>Total par échéance:</strong> {formatEUR(partFixe + partVariable)}
                       </div>
+                      <div>
+                        <strong>Soit environ :</strong> {formatEUR(partFixe + partVariable)} x 0.82 = {formatEUR((partFixe + partVariable) * 0.82)} net
+                      </div>
                     </div>
                   </div>
                 );

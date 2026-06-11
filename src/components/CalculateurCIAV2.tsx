@@ -34,8 +34,8 @@ const STEPS = [
     subtitle: 'Samedis et dimanches',
     icon: CalendarDays,
     color: 'amber',
-    description: 'Les jours de week-end travaillés sont comptabilisés séparément pour le calcul du CIA.',
-    tip: '💡 Le taux standard est de 40€ par samedi et 40€ par dimanche travaillé'
+    description: 'Indiquez le nombre exact de samedis et dimanches travaillés de janvier à décembre de l\'année N-1, avec le taux appliqué.',
+    tip: '💡 Saisissez ici le total exact des week-ends travaillés sur l\'année N-1, de janvier à décembre'
   },
   { 
     id: 3, 
@@ -81,8 +81,10 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
   const [showDetail, setShowDetail] = useState(false)
 
   // Calculs
-  const weekendTotalMensuel = (weekendSaturdays * weekendRateSat) + (weekendSundays * weekendRateSun)
+  const weekendTotalAnnuel = (weekendSaturdays * weekendRateSat) + (weekendSundays * weekendRateSun)
+  const weekendTotalMensuel = weekendTotalAnnuel / 12
   const ifseMensuelTotal = ifseMensuel + weekendTotalMensuel
+  const hasWeekendSelection = weekendSaturdays > 0 || weekendSundays > 0
 
   const resultat = useMemo(() => {
     if (ifseMensuelTotal <= 0) {
@@ -133,7 +135,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
   // Progression
   const getStepStatus = (stepId: number) => {
     if (stepId === 1) return ifseMensuel > 0 ? 'completed' : currentStep === 1 ? 'active' : 'pending'
-    if (stepId === 2) return (weekendSaturdays > 0 || weekendSundays > 0) ? 'completed' : currentStep === 2 ? 'active' : 'pending'
+    if (stepId === 2) return hasWeekendSelection ? 'completed' : currentStep === 2 ? 'active' : 'pending'
     if (stepId === 3) return tauxEvaluation !== null ? 'completed' : currentStep === 3 ? 'active' : 'pending'
     if (stepId === 4) return currentStep > 4 ? 'completed' : currentStep === 4 ? 'active' : 'pending'
     if (stepId === 5) return currentStep === 5 ? 'active' : 'pending'
@@ -368,97 +370,97 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             {currentStep === 2 && (
               <div className="space-y-6 animate-in fade-in duration-500">
                 <p className="text-sm text-slate-400 mb-4">
-                  Indiquez le nombre moyen de samedis et dimanches que vous travaillez par mois :
+                  Indiquez le nombre exact de samedis et dimanches travaillés de janvier à décembre de l'année N-1, avec le taux appliqué.
                 </p>
 
                 {/* Samedis */}
                 <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl glass-card">
                   <label className="text-sm text-amber-300 block font-medium mb-3">
-                    📅 Samedis travaillés par mois
+                    📅 Samedis travaillés de janvier à décembre en N-1
                   </label>
-                  <div className="flex items-center gap-2 mb-3">
-                    {[0, 1, 2, 3, 4, 5].map(n => (
-                      <button
-                        key={n}
-                        onClick={() => setWeekendSaturdays(n)}
-                        className={`w-10 h-10 rounded-lg font-bold transition-all glass-pill ${
-                          weekendSaturdays === n
-                            ? 'bg-amber-500 text-white shadow-lg'
-                            : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700'
-                        }`}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-slate-400">Taux par samedi :</span>
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <input
+                      type="number"
+                      min="0"
+                      max="53"
+                      value={weekendSaturdays || ''}
+                      onChange={(e) => setWeekendSaturdays(Number(e.target.value) || 0)}
+                      placeholder="Ex: 18"
+                      className="w-full sm:max-w-[160px] px-4 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 outline-none transition-all glass-pill"
+                    />
                     <select
                       value={weekendRateSat}
                       onChange={(e) => setWeekendRateSat(Number(e.target.value))}
-                      className="px-3 py-1 bg-slate-700/50 border border-slate-600/30 rounded-lg text-white text-sm glass-pill"
+                      className="px-3 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-sm glass-pill"
                     >
                       {[40, 60, 80].map(rate => (
                         <option key={rate} value={rate}>{rate}€</option>
                       ))}
                     </select>
                     {weekendSaturdays > 0 && (
-                      <span className="text-amber-300 text-sm ml-auto">
-                        = {weekendSaturdays * weekendRateSat}€/mois
+                      <span className="text-amber-300 text-sm sm:ml-auto">
+                        = {weekendSaturdays * weekendRateSat}€/an
                       </span>
                     )}
                   </div>
+                  <p className="text-xs text-slate-500 mt-2">
+                    Saisissez le total exact des samedis travaillés entre janvier et décembre de l'année N-1.
+                  </p>
                 </div>
 
                 {/* Dimanches */}
                 <div className="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl glass-card">
                   <label className="text-sm text-purple-300 block font-medium mb-3">
-                    📅 Dimanches travaillés par mois
+                    📅 Dimanches travaillés de janvier à décembre en N-1
                   </label>
-                  <div className="flex items-center gap-2 mb-3">
-                    {[0, 1, 2, 3, 4, 5].map(n => (
-                      <button
-                        key={n}
-                        onClick={() => setWeekendSundays(n)}
-                        className={`w-10 h-10 rounded-lg font-bold transition-all glass-pill ${
-                          weekendSundays === n
-                            ? 'bg-purple-500 text-white shadow-lg'
-                            : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700'
-                        }`}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-slate-400">Taux par dimanche :</span>
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <input
+                      type="number"
+                      min="0"
+                      max="53"
+                      value={weekendSundays || ''}
+                      onChange={(e) => setWeekendSundays(Number(e.target.value) || 0)}
+                      placeholder="Ex: 12"
+                      className="w-full sm:max-w-[160px] px-4 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 outline-none transition-all glass-pill"
+                    />
                     <select
                       value={weekendRateSun}
                       onChange={(e) => setWeekendRateSun(Number(e.target.value))}
-                      className="px-3 py-1 bg-slate-700/50 border border-slate-600/30 rounded-lg text-white text-sm glass-pill"
+                      className="px-3 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-sm glass-pill"
                     >
                       {[40, 60, 80].map(rate => (
                         <option key={rate} value={rate}>{rate}€</option>
                       ))}
                     </select>
                     {weekendSundays > 0 && (
-                      <span className="text-purple-300 text-sm ml-auto">
-                        = {weekendSundays * weekendRateSun}€/mois
+                      <span className="text-purple-300 text-sm sm:ml-auto">
+                        = {weekendSundays * weekendRateSun}€/an
                       </span>
                     )}
                   </div>
+                  <p className="text-xs text-slate-500 mt-2">
+                    Saisissez le total exact des dimanches travaillés entre janvier et décembre de l'année N-1.
+                  </p>
                 </div>
 
                 {/* Récapitulatif week-ends */}
                 {weekendTotalMensuel > 0 && (
                   <div className="p-4 bg-gradient-to-r from-amber-500/10 to-purple-500/10 border border-slate-600/30 rounded-xl glass-card">
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-300">Total week-ends :</span>
-                      <span className="text-xl font-bold text-white">{weekendTotalMensuel}€/mois</span>
+                      <span className="text-slate-300">Période retenue :</span>
+                      <span className="text-xl font-bold text-white">Janvier à décembre N-1</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 text-sm">
-                      <span className="text-slate-400">IFSE total (base + week-ends) :</span>
-                      <span className="text-orange-300 font-semibold">{ifseMensuelTotal}€/mois</span>
+                      <span className="text-slate-400">Total week-ends annuel :</span>
+                      <span className="text-orange-300 font-semibold">{weekendTotalAnnuel.toFixed(2)}€/an</span>
+                    </div>
+                    <div className="flex justify-between items-center mt-2 text-sm">
+                      <span className="text-slate-400">Équivalent mensuel ajouté à l'IFSE :</span>
+                      <span className="text-orange-300 font-semibold">{weekendTotalMensuel.toFixed(2)}€/mois</span>
+                    </div>
+                    <div className="flex justify-between items-center mt-2 text-sm">
+                      <span className="text-slate-400">IFSE total (base + équivalent week-ends) :</span>
+                      <span className="text-orange-300 font-semibold">{ifseMensuelTotal.toFixed(2)}€/mois</span>
                     </div>
                   </div>
                 )}
@@ -602,9 +604,9 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                   <div className="flex justify-between items-center p-4 bg-orange-500/10 rounded-xl border border-orange-500/30 glass-card">
                     <div>
                       <p className="text-orange-300 font-medium">IFSE mensuel total</p>
-                      <p className="text-xs text-slate-400">Base {ifseMensuel}€ + Week-ends {weekendTotalMensuel}€</p>
+                      <p className="text-xs text-slate-400">Base {ifseMensuel}€ + Équivalent week-ends {weekendTotalMensuel.toFixed(2)}€</p>
                     </div>
-                    <span className="text-xl font-bold text-orange-300">{ifseMensuelTotal}€</span>
+                    <span className="text-xl font-bold text-orange-300">{ifseMensuelTotal.toFixed(2)}€</span>
                   </div>
 
                   <div className="flex justify-between items-center p-4 bg-slate-700/30 rounded-xl border border-slate-600/30 glass-card">
@@ -654,8 +656,10 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
 
                 {showDetail && (
                   <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700/50 text-xs text-slate-400 font-mono space-y-2 break-words glass-card">
-                    <p>📊 IFSE mensuel = {ifseMensuel}€ + ({weekendSaturdays}×{weekendRateSat}€ + {weekendSundays}×{weekendRateSun}€) = {ifseMensuelTotal}€</p>
-                    <p>📊 IFSE annuel = {ifseMensuelTotal}€ × 12 = {resultat.ifseAnnuel.toFixed(2)}€</p>
+                    <p>📊 Période week-ends = janvier à décembre de l'année N-1</p>
+                    <p>📊 Total week-ends annuel = ({weekendSaturdays}×{weekendRateSat}€) + ({weekendSundays}×{weekendRateSun}€) = {weekendTotalAnnuel.toFixed(2)}€</p>
+                    <p>📊 IFSE mensuel = {ifseMensuel}€ + {weekendTotalMensuel.toFixed(2)}€ = {ifseMensuelTotal.toFixed(2)}€</p>
+                    <p>📊 IFSE annuel = {ifseMensuelTotal.toFixed(2)}€ × 12 = {resultat.ifseAnnuel.toFixed(2)}€</p>
                     <p>📊 Base CIA = {resultat.ifseAnnuel.toFixed(2)}€ × 10% = {resultat.base10Pourcent.toFixed(2)}€</p>
                     <p className="border-t border-slate-700 pt-2">
                       ➜ Part évaluation = {(resultat.base10Pourcent/2).toFixed(2)}€ × {tauxEvaluation}% = {resultat.ciaEvaluation.toFixed(2)}€

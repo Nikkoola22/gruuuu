@@ -62,7 +62,7 @@ const STEPS = [
     icon: Calculator,
     color: 'green',
     description: 'Récapitulatif complet de votre Complément Indemnitaire Annuel.',
-    tip: '🎉 Le CIA est versé une fois par an, généralement en décembre'
+    tip: '🎉 Le CIA est versé une fois par an, généralement en mai/juin'
   }
 ]
 

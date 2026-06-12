@@ -657,7 +657,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                     <p className="text-orange-300/70 text-sm mb-1">CIA ANNUEL ESTIMÉ</p>
                     <p className="text-5xl font-bold text-orange-300">{resultat.ciaFinal.toFixed(0)}€</p>
                     <p className="text-slate-400 text-sm mt-2">
-                      Soit environ <strong className="text-orange-300">{(resultat.ciaFinal / 12).toFixed(2)}€</strong> par mois
+                      payé fin mai/juin
                     </p>
                   </div>
                 </div>

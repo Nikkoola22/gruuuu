@@ -439,7 +439,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         {[
           { id: 'permanent', label: 'Agent permanent', desc: 'Versement en Juin, Novembre et Décembre' },
           { id: 'medecin', label: 'Médecin', desc: 'Versement en Juin et Novembre (50%/50%)' },
-          { id: 'assistante', label: 'Assistante maternelle', desc: 'Calcul spécifique (rubrique 7587)' },
+          { id: 'assistante', label: 'Assistante maternelle', desc: 'Calcul spécifique (rubrique)' },
         ].map(profile => (
           <button
             key={profile.id}
@@ -533,7 +533,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         <div className="space-y-4">
           <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
             <label className="block text-sm font-medium text-emerald-300 mb-3">
-              Montant rubrique 7587
+              Montant de la rubrique
             </label>
             <div className="relative">
               <input
@@ -546,7 +546,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">€</span>
             </div>
-            <p className="text-xs text-slate-400 mt-2">Le 13ème mois = rubrique 7587 / 2 (proratisé)</p>
+            <p className="text-xs text-slate-400 mt-2">Le 13ème mois = rubrique / 2 (proratisé)</p>
           </div>
         </div>
       ) : (
@@ -958,10 +958,10 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                     </div>
                     <div className="mt-2 text-xs text-slate-300 space-y-1">
                       <div>
-                        <strong>Rubrique 7447 (Compl. rémunération TIT):</strong> {formatEUR(partFixe)}
+                        <strong>Compl. rémunération TIT:</strong> {formatEUR(partFixe)}
                       </div>
                       <div>
-                        <strong>Rubrique 8445 (Prime semestrielle TIT):</strong> {formatEUR(partVariable)}
+                        <strong>Prime semestrielle TIT:</strong> {formatEUR(partVariable)}
                       </div>
                       <div>
                         <strong>Total par échéance:</strong> {formatEUR(partFixe + partVariable)}

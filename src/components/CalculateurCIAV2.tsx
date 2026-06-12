@@ -203,6 +203,15 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-950/30 to-slate-900 flex flex-col">
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes fast-blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.25; }
+        }
+        .animate-fast-blink {
+          animation: fast-blink 0.8s ease-in-out infinite;
+        }
+      `}} />
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-800/95 to-orange-900/95 backdrop-blur-md py-4 border-b border-orange-500/30 shadow-xl glass-banner">
         <div className="px-4 sm:px-6 flex flex-col gap-4 max-w-4xl mx-auto sm:flex-row sm:items-center sm:justify-between">
@@ -319,7 +328,15 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             {showTip && (
               <div className="mt-4 p-3 bg-slate-700/30 rounded-lg border border-slate-600/30 flex items-start gap-3 glass-card">
                 <Info className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
-                <p className={currentStep === 4 ? 'text-sm sm:text-base font-bold text-slate-200' : 'text-xs sm:text-sm text-slate-300'}>{currentStepData.tip}</p>
+                <p className={
+                  currentStep === 2
+                    ? 'text-sm sm:text-base md:text-lg font-bold text-orange-400 animate-fast-blink'
+                    : currentStep === 4
+                      ? 'text-sm sm:text-base font-bold text-slate-200'
+                      : 'text-xs sm:text-sm text-slate-300'
+                }>
+                  {currentStepData.tip}
+                </p>
                 <button onClick={() => setShowTip(false)} className="text-slate-500 hover:text-slate-300 text-xs">✕</button>
               </div>
             )}

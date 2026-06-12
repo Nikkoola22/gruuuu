@@ -28,7 +28,7 @@ type HorairePeriode = 'juin' | 'novembre'
 // Constantes
 const HOURS_CAP = 910
 const HOURS_MIN = 455
-const SMIC_MENSUEL = 1801.8
+const SMIC_MENSUEL = 1867.06
 const INDICE_POINT_VALUE = 4.92278
 const IR_RATE = 0.03
 

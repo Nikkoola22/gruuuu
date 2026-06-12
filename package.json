@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://nikkoola22.github.io/new-unifed-",
+  "homepage": "https://nikkoola22.github.io/gruuuu/",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run dev:app\"",
     "dev:app": "vite",

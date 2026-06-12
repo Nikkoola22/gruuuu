@@ -40,7 +40,7 @@ Si vous n'avez pas encore de clé API :
 ## 📍 URLs de Déploiement
 
 - **Vercel (Production)** : https://new-unifed.vercel.app
-- **GitHub Pages** : https://nikkoola22.github.io/new-unifed-/
+- **GitHub Pages** : https://nikkoola22.github.io/gruuuu/
 - **Local** : http://localhost:5173 ou http://localhost:5174
 
 ## 🚀 Commandes de Déploiement

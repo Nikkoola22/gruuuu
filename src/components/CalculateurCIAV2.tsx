@@ -39,12 +39,12 @@ const STEPS = [
   },
   { 
     id: 3, 
-    title: 'Évaluation annuelle', 
+    title: "Évaluation annuelle de l'année dernière (N-1)", 
     subtitle: 'Votre note de performance',
     icon: BarChart3,
     color: 'cyan',
     description: 'Votre taux d\'évaluation détermine la première moitié de votre CIA (50%).',
-    tip: '💡 Très satisfaisant = 100% | Satisfaisant = 75% | À consolider = 25% | Non évalué = 0%'
+    tip: '💡 Très satisfaisant = 100% | Satisfaisant = 70% | À consolider = 50% | Non évalué = 0%'
   },
   { 
     id: 4, 
@@ -196,8 +196,8 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
   // Options d'évaluation
   const evaluationOptions = [
     { value: 100, label: 'Très satisfaisant', color: 'green', desc: '100% de la première moitié' },
-    { value: 75, label: 'Satisfaisant', color: 'cyan', desc: '75% de la première moitié' },
-    { value: 25, label: 'À consolider', color: 'amber', desc: '25% de la première moitié' },
+    { value: 70, label: 'Satisfaisant', color: 'cyan', desc: '70% de la première moitié' },
+    { value: 50, label: 'À consolider', color: 'amber', desc: '50% de la première moitié' },
     { value: 0, label: 'Non évalué', color: 'slate', desc: '0% de la première moitié' },
   ]
 
@@ -477,7 +477,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             {currentStep === 3 && (
               <div className="space-y-4 animate-in fade-in duration-500">
                 <p className="text-sm text-slate-400 mb-4">
-                  Sélectionnez votre niveau d'évaluation annuelle :
+                  Sélectionnez votre niveau d'évaluation annuelle de l'année dernière (N-1) :
                 </p>
                 
                 <div className="space-y-3">
@@ -507,8 +507,8 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                         </div>
                         <span className={`text-lg font-bold ${
                           option.value === 100 ? 'text-green-400' :
-                          option.value === 75 ? 'text-cyan-400' :
-                          option.value === 25 ? 'text-amber-400' : 'text-slate-400'
+                          option.value === 70 ? 'text-cyan-400' :
+                          option.value === 50 ? 'text-amber-400' : 'text-slate-400'
                         }`}>
                           {option.value}%
                         </span>

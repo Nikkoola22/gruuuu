@@ -103,7 +103,7 @@ const INTENT_RULES: IntentRule[] = [
     targetSections: ['conditions-d-exercice-des-fonctions-et-duree-du-travail'],
   },
   {
-    triggerKeywords: ['carriere', 'avancement', 'promotion', 'titularisation', 'mobilite'],
+    triggerKeywords: ['carriere', 'avancement', 'promotion', 'titularisation', 'mobilite', 'medaille', 'médaille', 'honneur'],
     targetSections: ['carriere'],
   },
   {

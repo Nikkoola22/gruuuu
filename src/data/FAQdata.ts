@@ -248,6 +248,12 @@ Les agents en arrêt ne peuvent pas participer aux formations sauf cas particuli
 
 Pour le CPF, le troisième rejet d'une formation de même nature ne peut être prononcé qu'après avis de l'instance paritaire compétente. Pour les formations relevant du socle de connaissances de base (ex : communication en français, calcul…), l'employeur ne peut pas s'y opposer durablement, seulement demander un report d'un an maximum en raison des nécessités de service. `,
     category: 'formation'
+  },
+  {
+    id: 29,
+    question: "Quand ai-je droit à la médaille du travail (médaille d'honneur) ?",
+    answer: "Dans la fonction publique, elle s'appelle la **Médaille d'honneur régionale, départementale et communale**. Elle récompense l'ancienneté et la qualité des services rendus : \n- **Argent** : 20 ans de services \n- **Vermeil** : 30 ans de services \n- **Or** : 35 ans de services \n\nLes années passées dans le secteur privé, les services militaires, ou certaines autres périodes peuvent parfois être prises en compte sous conditions. La démarche se fait souvent par constitution d'un dossier auprès de la Direction des Ressources Humaines ou de la préfecture.",
+    category: 'general'
   }
 ];
 

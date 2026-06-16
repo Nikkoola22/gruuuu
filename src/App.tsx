@@ -1553,7 +1553,7 @@ ${indicesFactuels}
                         >
                           <div className="absolute inset-0 bg-blue-500/10 group-hover:bg-transparent transition-colors duration-300 z-10 pointer-events-none rounded-xl"></div>
                           <img 
-                            src={`${BASE_URL}journal 2026.png`} 
+                            src={`${BASE_URL}journal-2026.png`} 
                             alt="Journal CFDT" 
                             className="w-full flex-grow min-h-[16rem] object-contain transform group-hover:scale-105 transition-transform duration-500 rounded-t-xl bg-slate-900/20" 
                           />

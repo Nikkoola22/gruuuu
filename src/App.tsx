@@ -1300,34 +1300,6 @@ ${indicesFactuels}
                     </div>
                   </button>
 
-                  <button
-                    onClick={openCalculatorsLanding}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 md:p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple"
-                  >
-                    <div className="absolute inset-0 bg-black/20"></div>
-                    <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
-                      <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-blue-400/30 to-cyan-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <Calculator className="w-12 h-12 md:w-16 md:h-16 text-white" />
-                        </div>
-                      </div>
-                      <h4 className="text-2xl text-white card-title-blue">
-                        <span className="relative inline-block z-10">
-                          <span className="relative z-20 text-white font-black tracking-tight">Calculateurs</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 opacity-90 -skew-x-12 -rotate-2 z-0 rounded-sm shadow-[0_0_10px_rgba(6,182,212,0.5)]"></span>
-                        </span>
-                      </h4>
-                      <p className="text-center text-slate-300 font-light text-sm">
-                        Primes IFSE - Calcul CIA - Outils de simulation
-                      </p>
-                      <div className="flex items-center gap-2 text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <span className="font-light text-sm">Accéder aux calculateurs</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    </div>
-                  </button>
-
                   {/* Carte Grilles Indiciaires */}
                   <button
                     onClick={openMetiersView}
@@ -1352,6 +1324,34 @@ ${indicesFactuels}
                       </p>
                       <div className="flex items-center gap-2 text-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                         <span className="font-light text-sm">Voir les grilles</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={openCalculatorsLanding}
+                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 md:p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple"
+                  >
+                    <div className="absolute inset-0 bg-black/20"></div>
+                    <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
+                      <div className="relative">
+                        <span className="absolute -inset-3 bg-gradient-to-br from-blue-400/30 to-cyan-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
+                          <Calculator className="w-12 h-12 md:w-16 md:h-16 text-white" />
+                        </div>
+                      </div>
+                      <h4 className="text-2xl text-white card-title-blue">
+                        <span className="relative inline-block z-10">
+                          <span className="relative z-20 text-white font-black tracking-tight">Calculateurs</span>
+                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 opacity-90 -skew-x-12 -rotate-2 z-0 rounded-sm shadow-[0_0_10px_rgba(6,182,212,0.5)]"></span>
+                        </span>
+                      </h4>
+                      <p className="text-center text-slate-300 font-light text-sm">
+                        Primes IFSE - Calcul CIA - Outils de simulation
+                      </p>
+                      <div className="flex items-center gap-2 text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                        <span className="font-light text-sm">Accéder aux calculateurs</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
@@ -1750,21 +1750,6 @@ ${indicesFactuels}
                 <p className="text-slate-400 font-light">Cliquez sur une icône pour accéder au calculateur</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Carte Primes IFSE */}
-                <button
-                  onClick={() => openCalculator('primes')}
-                  className="group relative bg-gradient-to-br from-slate-800/80 to-cyan-900/50 backdrop-blur-md border border-cyan-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/20 hover:scale-105 hover:-translate-y-2 transition-transform duration-150 glass-card"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
-                  <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-cyan-500/80 to-blue-500/80 rounded-2xl shadow-2xl group-hover:scale-110 transition-transform duration-150">
-                      <TrendingUp className="w-16 h-16 text-white" />
-                    </div>
-                    <h4 className="text-2xl font-light text-white group-hover:text-cyan-200 transition-colors duration-100">Primes IFSE</h4>
-                    <p className="text-center text-slate-400 font-light text-sm">Calculez vos primes IFSE 1 et IFSE 2 selon votre grade et direction</p>
-                  </div>
-                </button>
-
                 {/* Carte CIA */}
                 <button
                   onClick={() => openCalculator('cia')}
@@ -1798,6 +1783,21 @@ ${indicesFactuels}
                     <div className="flex items-center gap-2 text-green-300/90">
                       <span className="font-light text-sm">Ouvrir le calculateur</span>
                     </div>
+                  </div>
+                </button>
+
+                {/* Carte Primes IFSE */}
+                <button
+                  onClick={() => openCalculator('primes')}
+                  className="group relative bg-gradient-to-br from-slate-800/80 to-cyan-900/50 backdrop-blur-md border border-cyan-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/20 hover:scale-105 hover:-translate-y-2 transition-transform duration-150 glass-card"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
+                  <div className="relative z-10 flex flex-col items-center gap-6">
+                    <div className="p-6 bg-gradient-to-br from-cyan-500/80 to-blue-500/80 rounded-2xl shadow-2xl group-hover:scale-110 transition-transform duration-150">
+                      <TrendingUp className="w-16 h-16 text-white" />
+                    </div>
+                    <h4 className="text-2xl font-light text-white group-hover:text-cyan-200 transition-colors duration-100">Primes IFSE</h4>
+                    <p className="text-center text-slate-400 font-light text-sm">Calculez vos primes IFSE 1 et IFSE 2 selon votre grade et direction</p>
                   </div>
                 </button>
               </div>

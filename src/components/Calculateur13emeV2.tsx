@@ -901,36 +901,6 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           </p>
         </div>
 
-        {/* Total principal */}
-        <div className={`bg-gradient-to-br from-${accentColor}-500/20 to-${accentColor}-600/10 rounded-2xl p-6 border border-${accentColor}-500/30 glass-card`}>
-          <p className={`text-xs uppercase tracking-wider text-${accentColor}-300 mb-2`}>Total estimé</p>
-          <p className="text-5xl font-light text-white">{formatEUR(result.total)}</p>
-
-          <div className="grid grid-cols-2 gap-4 mt-6">
-            <div className="bg-slate-900/30 rounded-xl p-4 glass-card">
-              <p className="text-xs text-slate-400">Complément de rémunération</p>
-              <p className={`text-lg font-medium text-${accentColor}-300`}>{formatEUR(result.compRem)}</p>
-            </div>
-            <div className="bg-slate-900/30 rounded-xl p-4 glass-card">
-              <p className="text-xs text-slate-400">Prime semestrielle</p>
-              <p className={`text-lg font-medium text-${accentColor}-300`}>{formatEUR(result.primeSem)}</p>
-            </div>
-          </div>
-
-          {/* Détail des deux composants */}
-          <div className="mt-6 bg-slate-900/20 rounded-xl p-4 border border-slate-700/30 glass-card">
-            <p className="text-sm text-white mb-2 font-medium">Détail des composants :</p>
-            <ul className="text-xs text-slate-300 space-y-1">
-              <li>
-                <strong>Complément de rémunération :</strong> Ce montant correspond à la part fixe, généralement basée sur le SMIC ou la base indiciaire, proratisée selon votre temps de travail et votre ancienneté.
-              </li>
-              <li>
-                <strong>Prime semestrielle :</strong> Ce montant correspond à la part variable, calculée selon votre base indiciaire ou autres critères spécifiques au profil.
-              </li>
-            </ul>
-          </div>
-        </div>
-
         {/* Ventilation */}
         <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
           <p className="text-sm font-medium text-white mb-4 flex items-center gap-2">
@@ -984,6 +954,36 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                 </div>
               ))
             )}
+          </div>
+        </div>
+
+        {/* Total principal */}
+        <div className={`bg-gradient-to-br from-${accentColor}-500/20 to-${accentColor}-600/10 rounded-2xl p-6 border border-${accentColor}-500/30 glass-card`}>
+          <p className={`text-xs uppercase tracking-wider text-${accentColor}-300 mb-2`}>Total estimé</p>
+          <p className="text-5xl font-light text-white">{formatEUR(result.total)}</p>
+
+          <div className="grid grid-cols-2 gap-4 mt-6">
+            <div className="bg-slate-900/30 rounded-xl p-4 glass-card">
+              <p className="text-xs text-slate-400">Complément de rémunération</p>
+              <p className={`text-lg font-medium text-${accentColor}-300`}>{formatEUR(result.compRem)}</p>
+            </div>
+            <div className="bg-slate-900/30 rounded-xl p-4 glass-card">
+              <p className="text-xs text-slate-400">Prime semestrielle</p>
+              <p className={`text-lg font-medium text-${accentColor}-300`}>{formatEUR(result.primeSem)}</p>
+            </div>
+          </div>
+
+          {/* Détail des deux composants */}
+          <div className="mt-6 bg-slate-900/20 rounded-xl p-4 border border-slate-700/30 glass-card">
+            <p className="text-sm text-white mb-2 font-medium">Détail des composants :</p>
+            <ul className="text-xs text-slate-300 space-y-1">
+              <li>
+                <strong>Complément de rémunération :</strong> Ce montant correspond à la part fixe, généralement basée sur le SMIC ou la base indiciaire, proratisée selon votre temps de travail et votre ancienneté.
+              </li>
+              <li>
+                <strong>Prime semestrielle :</strong> Ce montant correspond à la part variable, calculée selon votre base indiciaire ou autres critères spécifiques au profil.
+              </li>
+            </ul>
           </div>
         </div>
 

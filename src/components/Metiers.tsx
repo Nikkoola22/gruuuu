@@ -26,7 +26,7 @@ const MetierCard: React.FC<MetierCardProps & { onClose: () => void }> = ({ icon,
   };
 
   return (
-    <div className="group bg-white rounded-2xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-400 cursor-pointer glass-card-light"
+    <div className="group bg-white dark:bg-slate-800 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-400 cursor-pointer glass-card-light"
       onClick={handleNavigate}
     >
       <div className="text-6xl mb-6 w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform">
@@ -44,12 +44,12 @@ const MetierCard: React.FC<MetierCardProps & { onClose: () => void }> = ({ icon,
 
 const Metiers: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
-    <div className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50">
+    <div className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50 dark:bg-slate-900">
       {/* Intro Section */}
-      <section className="relative z-40 bg-white/95 backdrop-blur-md py-12 text-center border-b border-slate-200 shadow-sm glass-banner">
+      <section className="relative z-40 bg-white dark:bg-slate-800/95 dark:bg-slate-900/95 backdrop-blur-md py-12 text-center border-b border-slate-200 shadow-sm glass-banner">
         <div className="max-w-3xl mx-auto px-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <h2 className="text-3xl font-bold text-slate-800 flex items-center gap-2">
+            <h2 className="text-3xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
               <Wrench className="w-8 h-8 text-cyan-600" />
               Vos métiers
             </h2>
@@ -66,7 +66,7 @@ const Metiers: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               Retour
             </button>
           </div>
-          <p className="text-slate-600 text-lg leading-relaxed font-medium">
+          <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed font-medium">
             Retrouvez l'actualité qui vous concerne en sélectionnant ci-dessous votre métier, votre filière ou mission. Accédez aux grilles indiciaires et aux informations spécifiques à votre domaine d'activité.
           </p>
         </div>

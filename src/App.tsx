@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, lazy, Suspense } from "react"
-import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator, TrendingUp, DollarSign, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, Scale, Landmark, GraduationCap, Coins, Gamepad2, FileText, Clock, Home } from "lucide-react"
+import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator, TrendingUp, DollarSign, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, Scale, Landmark, GraduationCap, Coins, Gamepad2, FileText, Clock, Home, Eye } from "lucide-react"
 
 // --- IMPORTATIONS DES DONNÉES ---
 import { searchFAQ } from "./data/FAQdata.ts"
@@ -177,6 +177,25 @@ function App() {
     isProcessing: false,
   })
   const [inputValue, setInputValue] = useState("")
+
+  // --- THEME STATE ---
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('theme')
+    return (saved === 'dark' || saved === 'light') ? saved : 'light'
+  })
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+  }
   const [selectedInfo, setSelectedInfo] = useState<InfoItem | null>(null)
   const [rssItems, setRssItems] = useState<RssItem[]>([])
   const [rssLoading, setRssLoading] = useState(false)
@@ -1178,25 +1197,28 @@ ${indicesFactuels}
 
   return (
     <div
-      className="min-h-screen relative overflow-x-hidden"
+      className="min-h-screen relative overflow-x-hidden dark:bg-slate-950"
       style={{
-        background: 'linear-gradient(135deg, #fdfbf7 0%, #f4f0ea 50%, #fef3c7 80%, #ffedd5 100%)',
+        background: theme === 'dark' ? undefined : 'linear-gradient(135deg, #fdfbf7 0%, #f4f0ea 50%, #fef3c7 80%, #ffedd5 100%)',
       }}
     >
+      {/* Dark mode background gradient */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-blue-950 to-slate-950 opacity-0 dark:opacity-100 pointer-events-none z-0 transition-opacity duration-300"></div>
+
       {/* Background image with transparency */}
       <div
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0 pointer-events-none"
-        style={{ backgroundImage: `url('${BASE_URL}unnamed.jpg')`, opacity: 0.15 }}
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0 pointer-events-none opacity-15 dark:opacity-5 transition-opacity duration-300"
+        style={{ backgroundImage: `url('${BASE_URL}unnamed.jpg')` }}
       ></div>
 
       {/* Subtle overlay for better text readability */}
-      <div className="fixed inset-0 bg-white/40 z-0 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-white/40 dark:bg-transparent z-0 pointer-events-none transition-colors duration-300"></div>
 
       {/* Couches de fond supplémentaires — supprimées (GPU layers plein écran) */}
 
       {/* HEADER PROFESSIONNEL */}
-      <header className="relative bg-gradient-to-r from-white/95 via-slate-50/90 to-white/95 shadow-lg z-10 bg-cover bg-center glass-banner header-bottom-glow" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-slate-50/80 to-white/80 z-0"></div>
+      <header className="relative bg-gradient-to-r from-white/95 via-slate-50/90 to-white/95 dark:from-slate-900/95 dark:via-blue-950/90 dark:to-slate-900/95 shadow-lg dark:shadow-blue-900/20 z-10 bg-cover bg-center glass-banner header-bottom-glow" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-slate-50/80 to-white/80 dark:from-slate-900/80 dark:via-blue-900/80 dark:to-slate-900/80 z-0 transition-colors duration-300"></div>
         {/* Scan line traversant le header */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
           <div
@@ -1228,7 +1250,7 @@ ${indicesFactuels}
                 )}
               </div>
               <div className="flex flex-col justify-center">
-                <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-slate-800 via-slate-600 to-slate-900 drop-shadow-sm">
+                <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-slate-800 via-slate-600 to-slate-900 dark:from-white dark:via-blue-100 dark:to-white drop-shadow-sm transition-colors duration-300">
                   ATLAS
                 </h1>
                 <div className="flex items-center gap-2 mt-1">
@@ -1244,19 +1266,26 @@ ${indicesFactuels}
             <div className="hidden sm:flex flex-col items-center justify-center flex-grow">
               <div className="relative group/mairie inline-flex items-center justify-center">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-full blur-xl opacity-0 group-hover/mairie:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative flex items-center gap-3 px-6 py-2 rounded-full bg-white/60 border border-slate-200/50 backdrop-blur-md shadow-sm">
+                <div className="relative flex items-center gap-3 px-6 py-2 rounded-full bg-white/60 dark:bg-slate-800/60 border border-slate-200/50 dark:border-slate-700/50 backdrop-blur-md shadow-sm transition-colors duration-300">
                   <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]"></div>
-                  <h2 className="text-sm md:text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-500 uppercase tracking-[0.2em]">
+                  <h2 className="text-sm md:text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-500 dark:from-slate-200 dark:to-white uppercase tracking-[0.2em] transition-colors duration-300">
                     Mairie de Gennevilliers
                   </h2>
                   <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.5)]"></div>
                 </div>
               </div>
-              <p className="text-xs text-slate-500 mt-2 font-medium tracking-wide">Chatbot d'assistance pour les agents municipaux</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 font-medium dark:font-normal tracking-wide transition-colors duration-300">Chatbot d'assistance pour les agents municipaux</p>
             </div>
 
-            {/* Contact à droite */}
+            {/* Contact à droite et Theme Toggle */}
             <div className="flex items-center gap-4 text-right">
+              <button
+                onClick={toggleTheme}
+                className="p-2 sm:p-3 rounded-full bg-white/60 hover:bg-white/90 border border-slate-200 shadow-sm transition-all duration-200"
+                title="Basculer le thème"
+              >
+                <Eye className="w-5 h-5 sm:w-6 sm:h-6 text-slate-700 dark:text-slate-900" />
+              </button>
             </div>
           </div>
         </div>
@@ -1274,26 +1303,26 @@ ${indicesFactuels}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-1 items-stretch justify-items-center">
                   <button
                     onClick={() => handleDomainSelection(0)}
-                    className="group relative overflow-hidden bg-white/70 backdrop-blur-md border border-purple-200 rounded-2xl p-6 md:p-10 hover:border-purple-300 hover:shadow-xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-1 btn-ripple"
+                    className="group relative overflow-hidden bg-white/70 dark:bg-slate-800/80 backdrop-blur-md border border-purple-200 dark:border-purple-500/20 rounded-2xl p-6 md:p-10 hover:border-purple-300 dark:hover:border-purple-400/50 hover:shadow-xl dark:hover:shadow-purple-500/10 hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-1 btn-ripple"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-100/40 via-transparent to-pink-100/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-100/40 dark:from-purple-900/40 via-transparent to-pink-100/40 dark:to-pink-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-purple-200 to-pink-200 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-100 to-pink-100 backdrop-blur rounded-2xl shadow-sm border border-purple-200 icon-box-spring">
-                          <Search className="w-12 h-12 md:w-16 md:h-16 text-purple-600" />
+                        <span className="absolute -inset-3 bg-gradient-to-br from-purple-200 dark:from-purple-500/30 to-pink-200 dark:to-pink-500/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-100 dark:from-slate-900/80 to-pink-100 dark:to-slate-800/80 backdrop-blur rounded-2xl shadow-sm border border-purple-200 dark:border-purple-500/30 icon-box-spring">
+                          <Search className="w-12 h-12 md:w-16 md:h-16 text-purple-600 dark:text-purple-400" />
                         </div>
                       </div>
-                      <h4 className="text-2xl text-slate-800">
+                      <h4 className="text-2xl text-slate-800 dark:text-white">
                         <span className="relative inline-block z-10">
                           <span className="relative z-20 font-black tracking-tight">J&apos;ai une question</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-purple-300 via-pink-200 to-purple-200 opacity-60 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
+                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-purple-300 dark:from-purple-600 via-pink-200 dark:via-pink-500 to-purple-200 dark:to-purple-500 opacity-60 dark:opacity-90 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
                         </span>
                       </h4>
-                      <p className="text-center text-slate-600 font-medium text-sm">
+                      <p className="text-center text-slate-600 dark:text-slate-300 font-medium dark:font-light text-sm">
                         Temps de travail, formation, télétravail - Recherche dans tous les documents
                       </p>
-                      <div className="flex items-center gap-2 text-purple-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                      <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                         <span className="font-medium text-sm">Accéder à l&apos;assistant</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
@@ -1303,26 +1332,26 @@ ${indicesFactuels}
                   {/* Carte Grilles Indiciaires */}
                   <button
                     onClick={openMetiersView}
-                    className="group relative overflow-hidden bg-white/70 backdrop-blur-md border border-emerald-200 rounded-2xl p-6 md:p-10 hover:border-emerald-300 hover:shadow-xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-3 btn-ripple"
+                    className="group relative overflow-hidden bg-white/70 dark:bg-slate-800/80 backdrop-blur-md border border-emerald-200 dark:border-emerald-500/20 rounded-2xl p-6 md:p-10 hover:border-emerald-300 dark:hover:border-emerald-400/50 hover:shadow-xl dark:hover:shadow-emerald-500/10 hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-3 btn-ripple"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-100/40 via-transparent to-green-100/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-100/40 dark:from-emerald-900/40 via-transparent to-green-100/40 dark:to-green-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-emerald-200 to-green-200 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-emerald-100 to-green-100 backdrop-blur rounded-2xl shadow-sm border border-emerald-200 icon-box-spring">
-                          <LayoutGrid className="w-12 h-12 md:w-16 md:h-16 text-emerald-600" />
+                        <span className="absolute -inset-3 bg-gradient-to-br from-emerald-200 dark:from-emerald-500/30 to-green-200 dark:to-green-500/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-emerald-100 dark:from-slate-900/80 to-green-100 dark:to-slate-800/80 backdrop-blur rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-500/30 icon-box-spring">
+                          <LayoutGrid className="w-12 h-12 md:w-16 md:h-16 text-emerald-600 dark:text-emerald-400" />
                         </div>
                       </div>
-                      <h4 className="text-2xl text-slate-800">
+                      <h4 className="text-2xl text-slate-800 dark:text-white">
                         <span className="relative inline-block z-10">
                           <span className="relative z-20 font-black tracking-tight">Grilles Indiciaires</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-emerald-300 via-green-200 to-emerald-200 opacity-60 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
+                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-emerald-300 dark:from-emerald-600 via-green-200 dark:via-green-500 to-emerald-200 dark:to-emerald-500 opacity-60 dark:opacity-90 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
                         </span>
                       </h4>
-                      <p className="text-center text-slate-600 font-medium text-sm">
+                      <p className="text-center text-slate-600 dark:text-slate-300 font-medium dark:font-light text-sm">
                         Filières, métiers et grilles de rémunération FPT
                       </p>
-                      <div className="flex items-center gap-2 text-emerald-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                      <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                         <span className="font-medium text-sm">Voir les grilles</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
@@ -1331,61 +1360,31 @@ ${indicesFactuels}
 
                   <button
                     onClick={openCalculatorsLanding}
-                    className="group relative overflow-hidden bg-white/70 backdrop-blur-md border border-blue-200 rounded-2xl p-6 md:p-10 hover:border-cyan-300 hover:shadow-xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-2 btn-ripple"
+                    className="group relative overflow-hidden bg-white/70 dark:bg-slate-800/80 backdrop-blur-md border border-blue-200 dark:border-blue-500/20 rounded-2xl p-6 md:p-10 hover:border-cyan-300 dark:hover:border-cyan-400/50 hover:shadow-xl dark:hover:shadow-blue-500/10 hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-2 btn-ripple"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-transparent to-cyan-100/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 dark:from-blue-900/40 via-transparent to-cyan-100/40 dark:to-cyan-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-blue-200 to-cyan-200 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-blue-100 to-cyan-100 backdrop-blur rounded-2xl shadow-sm border border-blue-200 icon-box-spring">
-                          <Calculator className="w-12 h-12 md:w-16 md:h-16 text-blue-600" />
+                        <span className="absolute -inset-3 bg-gradient-to-br from-blue-200 dark:from-blue-500/30 to-cyan-200 dark:to-cyan-500/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-blue-100 dark:from-slate-900/80 to-cyan-100 dark:to-slate-800/80 backdrop-blur rounded-2xl shadow-sm border border-blue-200 dark:border-blue-500/30 icon-box-spring">
+                          <Calculator className="w-12 h-12 md:w-16 md:h-16 text-blue-600 dark:text-blue-400" />
                         </div>
                       </div>
-                      <h4 className="text-2xl text-slate-800">
+                      <h4 className="text-2xl text-slate-800 dark:text-white">
                         <span className="relative inline-block z-10">
                           <span className="relative z-20 font-black tracking-tight">Calculateurs</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-200 opacity-60 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
+                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-blue-300 dark:from-blue-600 via-cyan-200 dark:via-cyan-500 to-blue-200 dark:to-blue-500 opacity-60 dark:opacity-90 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
                         </span>
                       </h4>
-                      <p className="text-center text-slate-600 font-medium text-sm">
+                      <p className="text-center text-slate-600 dark:text-slate-300 font-medium dark:font-light text-sm">
                         Estimez vos primes (IFSE 1 & 2, CIA) et votre 13ème mois
                       </p>
-                      <div className="flex items-center gap-2 text-cyan-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                      <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                         <span className="font-medium text-sm">Lancer une simulation</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
                   </button>
-
-                  {/* Carte Espace Jeux désactivée 
-                  <button
-                    onClick={() => setChatState({ ...chatState, currentView: 'jeux' })}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-rose-900/70 to-slate-800/70 backdrop-blur-md border border-pink-500/30 rounded-2xl p-6 md:p-10 hover:border-pink-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-4 card-border-sweep card-border-sweep-orange btn-ripple"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 via-transparent to-rose-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
-                    <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
-                      <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-pink-400/30 to-rose-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-pink-500/80 to-rose-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <Gamepad2 className="w-12 h-12 md:w-16 md:h-16 text-white" />
-                        </div>
-                      </div>
-                      <h4 className="text-2xl text-white">
-                        <span className="relative inline-block z-10">
-                          <span className="relative z-20 text-white font-black tracking-tight">Espace Jeux</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 opacity-90 -skew-x-12 -rotate-2 -z-10 rounded-sm shadow-[0_0_10px_rgba(244,63,94,0.5)]"></span>
-                        </span>
-                      </h4>
-                      <p className="text-center text-slate-300 font-light text-sm">
-                        La Roulette QVT &amp; Idée du jour — Boostez votre bien-être
-                      </p>
-                      <div className="flex items-center gap-2 text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <span className="font-light text-sm">Lancer le jeu</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    </div>
-                  </button>
-                  */}
                 </div>
 
                 {/* --- SECTION ACTUALITÉS & À LIRE --- */}
@@ -1719,9 +1718,9 @@ ${indicesFactuels}
 
       {/* --- SECTION CALCULATEURS FULL-WIDTH --- */}
       {chatState.currentView === 'calculators' && (
-        <section className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50">
+        <section className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-950 dark:to-slate-900">
           {/* Header */}
-          <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm z-30 glass-banner">
+          <div className="sticky top-0 bg-white/95 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700/50 shadow-sm z-30 glass-banner">
             <div className="max-w-6xl mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <button
@@ -1732,12 +1731,12 @@ ${indicesFactuels}
                       setChatState({ ...chatState, currentView: 'menu' })
                     }
                   }}
-                  className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-700 px-4 py-2 rounded-lg transition-colors duration-100 font-medium border border-red-200"
+                  className="flex items-center gap-2 bg-red-50 dark:bg-red-600/10 hover:bg-red-100 dark:hover:bg-red-600/20 text-red-700 dark:text-red-400 px-4 py-2 rounded-lg transition-colors duration-100 font-medium border border-red-200 dark:border-red-500/20"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>{activeCalculator ? 'Retour aux calculateurs' : 'Retour au menu'}</span>
                 </button>
-                <h2 className="text-xl font-bold text-slate-800">Calculateurs CFDT</h2>
+                <h2 className="text-xl font-bold text-slate-800 dark:text-white">Calculateurs CFDT</h2>
               </div>
             </div>
           </div>
@@ -1746,23 +1745,23 @@ ${indicesFactuels}
           {!activeCalculator && (
             <div className="max-w-6xl mx-auto px-4 py-12 calc-landing-enter">
               <div className="text-center mb-12">
-                <h3 className="text-3xl font-bold text-slate-800 mb-4">Choisissez un calculateur</h3>
-                <p className="text-slate-500 font-medium">Cliquez sur une icône pour accéder au calculateur</p>
+                <h3 className="text-3xl font-bold text-slate-800 dark:text-white mb-4">Choisissez un calculateur</h3>
+                <p className="text-slate-500 dark:text-slate-400 font-medium dark:font-normal">Cliquez sur une icône pour accéder au calculateur</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Carte CIA */}
                 <button
                   onClick={() => openCalculator('cia')}
-                  className="group relative bg-white backdrop-blur-md border border-orange-200 rounded-2xl p-8 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg hover:border-orange-300"
+                  className="group relative bg-white dark:bg-slate-800/80 backdrop-blur-md border border-orange-200 dark:border-orange-500/20 rounded-2xl p-8 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg dark:hover:shadow-orange-500/10 hover:border-orange-300 dark:hover:border-orange-500/40"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-amber-50/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 dark:from-orange-500/5 via-transparent to-amber-50/50 dark:to-amber-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-orange-100 to-amber-100 rounded-2xl shadow-sm border border-orange-200">
-                      <Calculator className="w-16 h-16 text-orange-600" />
+                    <div className="p-6 bg-gradient-to-br from-orange-100 dark:from-slate-900/80 to-amber-100 dark:to-slate-800/80 rounded-2xl shadow-sm border border-orange-200 dark:border-orange-500/30">
+                      <Calculator className="w-16 h-16 text-orange-600 dark:text-orange-400" />
                     </div>
-                    <h4 className="text-2xl font-bold text-slate-800">CIA</h4>
-                    <p className="text-center text-slate-500 font-medium text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
-                    <div className="flex items-center gap-2 text-orange-600 font-bold">
+                    <h4 className="text-2xl font-bold text-slate-800 dark:text-white">CIA</h4>
+                    <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
+                    <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold dark:font-semibold">
                       <span className="text-sm">Ouvrir le calculateur</span>
                     </div>
                   </div>
@@ -1771,16 +1770,16 @@ ${indicesFactuels}
                 {/* Carte 13ème Mois */}
                 <button
                   onClick={() => openCalculator('13eme')}
-                  className="group relative bg-white backdrop-blur-md border border-emerald-200 rounded-2xl p-8 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg hover:border-emerald-300"
+                  className="group relative bg-white dark:bg-slate-800/80 backdrop-blur-md border border-emerald-200 dark:border-emerald-500/20 rounded-2xl p-8 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg dark:hover:shadow-emerald-500/10 hover:border-emerald-300 dark:hover:border-emerald-500/40"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-green-50/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 dark:from-emerald-500/5 via-transparent to-green-50/50 dark:to-green-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl shadow-sm border border-emerald-200">
-                      <DollarSign className="w-16 h-16 text-emerald-600" />
+                    <div className="p-6 bg-gradient-to-br from-emerald-100 dark:from-slate-900/80 to-green-100 dark:to-slate-800/80 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-500/30">
+                      <DollarSign className="w-16 h-16 text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <h4 className="text-2xl font-bold text-slate-800">13ème Mois</h4>
-                    <p className="text-center text-slate-500 font-medium text-sm">Calculez votre prime de 13ème mois selon votre situation</p>
-                    <div className="flex items-center gap-2 text-emerald-600 font-bold">
+                    <h4 className="text-2xl font-bold text-slate-800 dark:text-white">13ème Mois</h4>
+                    <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">Calculez votre prime de 13ème mois selon votre situation</p>
+                    <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold dark:font-semibold">
                       <span className="text-sm">Ouvrir le calculateur</span>
                     </div>
                   </div>
@@ -1789,16 +1788,16 @@ ${indicesFactuels}
                 {/* Carte Primes IFSE */}
                 <button
                   onClick={() => openCalculator('primes')}
-                  className="group relative bg-white backdrop-blur-md border border-cyan-200 rounded-2xl p-8 shadow-sm hover:shadow-lg hover:border-cyan-300 hover:scale-105 hover:-translate-y-2 transition-transform duration-150"
+                  className="group relative bg-white dark:bg-slate-800/80 backdrop-blur-md border border-cyan-200 dark:border-cyan-500/20 rounded-2xl p-8 shadow-sm hover:shadow-lg dark:hover:shadow-cyan-500/10 hover:border-cyan-300 dark:hover:border-cyan-500/40 hover:scale-105 hover:-translate-y-2 transition-transform duration-150"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/50 via-transparent to-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/50 dark:from-cyan-500/5 via-transparent to-blue-50/50 dark:to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
                   <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl shadow-sm border border-cyan-200 group-hover:scale-110 transition-transform duration-150">
-                      <TrendingUp className="w-16 h-16 text-cyan-600" />
+                    <div className="p-6 bg-gradient-to-br from-cyan-100 dark:from-slate-900/80 to-blue-100 dark:to-slate-800/80 rounded-2xl shadow-sm border border-cyan-200 dark:border-cyan-500/30">
+                      <TrendingUp className="w-16 h-16 text-cyan-600 dark:text-cyan-400" />
                     </div>
-                    <h4 className="text-2xl font-bold text-slate-800 group-hover:text-cyan-700 transition-colors duration-100">Primes IFSE</h4>
-                    <p className="text-center text-slate-500 font-medium text-sm">Calculez vos primes IFSE 1 et IFSE 2 selon votre grade et direction</p>
-                    <div className="flex items-center gap-2 text-cyan-600 font-bold">
+                    <h4 className="text-2xl font-bold text-slate-800 dark:text-white">Primes IFSE</h4>
+                    <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">Estimez vos primes mensuelles avec l'IFSE</p>
+                    <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-bold dark:font-semibold">
                       <span className="text-sm">Ouvrir le calculateur</span>
                     </div>
                   </div>

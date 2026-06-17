@@ -1185,6 +1185,7 @@ ${indicesFactuels}
     return (
       <Suspense fallback={<ViewLoader />}>
         <LandingPage
+          theme={theme}
           onEnter={() => setShowLanding(false)}
           onQuizz={() => {
             setShowLanding(false)

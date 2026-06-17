@@ -6,9 +6,10 @@ import { ShapeGeometry } from 'three'
 interface Props {
   onEnter: () => void
   onQuizz: () => void
+  theme?: 'light' | 'dark'
 }
 
-export default function LandingPage({ onEnter, onQuizz }: Props) {
+export default function LandingPage({ onEnter, onQuizz, theme = 'dark' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const cardTlRef = useRef<HTMLDivElement>(null)
   const cardBrRef = useRef<HTMLDivElement>(null)
@@ -49,28 +50,33 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
     }
     canvas.addEventListener('pointermove', handlePointerMove)
 
+    // Theme-specific colors
+    const isLight = theme === 'light'
+    const bgColor = isLight ? 0xffffff : 0x040009
+    
+    // Vibrant and highly saturated colors for light mode
+    const emissivePalette = isLight 
+      ? [0xff0055, 0xff5500, 0xffaa00, 0x00cc44, 0x0077ff, 0xaa00ff] 
+      : [0xFF1C74, 0xCC0055, 0xFF00BB, 0xAA00DD, 0xFF4499, 0xDD0088]
+
+    const edgeColor = isLight ? 0x000000 : 0xFF5599
+    const textColor = isLight ? 0x111827 : 0xffffff
+
     const mkMat = (emissive: number, opacity: number) =>
       new THREE.MeshPhysicalMaterial({
-        color: 0x040009,
+        color: isLight ? 0x000000 : bgColor,
         emissive: new THREE.Color(emissive),
-        emissiveIntensity: 0.9,
-        metalness: 0.88,
-        roughness: 0.06,
+        emissiveIntensity: isLight ? 1.5 : 0.9,
+        metalness: isLight ? 0.2 : 0.88,
+        roughness: isLight ? 0.1 : 0.06,
         transparent: true,
         opacity,
         side: THREE.DoubleSide,
       })
 
-    const mats = [
-      mkMat(0xFF1C74, 0.80),
-      mkMat(0xCC0055, 0.85),
-      mkMat(0xFF00BB, 0.76),
-      mkMat(0xAA00DD, 0.78),
-      mkMat(0xFF4499, 0.82),
-      mkMat(0xDD0088, 0.80),
-    ]
+    const mats = emissivePalette.map((c, i) => mkMat(c, 0.75 + (i % 3) * 0.05))
 
-    const edgeBaseMat = new THREE.LineBasicMaterial({ color: 0xFF5599, transparent: true, opacity: 0.48 })
+    const edgeBaseMat = new THREE.LineBasicMaterial({ color: edgeColor, transparent: true, opacity: isLight ? 0.6 : 0.48 })
 
     const defs: Array<[[number, number, number], [number, number, number], [number, number, number]]> = [
       [[1.44, 2.04, 0.88], [ 0.00,  0.00,  0.00], [0.00,  0.00,  0.00]],
@@ -107,7 +113,7 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
         const textGeo = new ShapeGeometry(shapes)
         textGeo.center()
         const textMat = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
+          color: textColor,
           transparent: true,
           opacity: 0.92,
           side: THREE.DoubleSide,
@@ -145,7 +151,11 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
       }
     })
 
-    const lightDefs: Array<[number, number, number, [number, number, number]]> = [
+    const lightDefs: Array<[number, number, number, [number, number, number]]> = isLight ? [
+      [0xffffff, 8, 20, [ 0.0,  0.0,  4.0]],
+      [0xffb3ba, 5, 16, [ 3.5,  2.0,  0.0]],
+      [0xbae1ff, 4, 14, [-3.5, -1.0,  0.0]],
+    ] : [
       [0xFF1C74, 12, 20, [ 0.0,  0.0,  4.0]],
       [0xFF00CC,  8, 16, [ 3.5,  2.0,  0.0]],
       [0x8800BB,  6, 14, [-3.5, -1.0,  0.0]],
@@ -159,7 +169,7 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
       light.position.set(...p)
       scene.add(light)
     })
-    scene.add(new THREE.AmbientLight(0x0D000A, 1.5))
+    scene.add(new THREE.AmbientLight(isLight ? 0xffffff : 0x0D000A, isLight ? 1.0 : 1.5))
 
 
     let t = 0
@@ -193,13 +203,17 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
       clearTimeout(t2)
       renderer.dispose()
     }
-  }, [])
+  }, [theme])
+
+  const isLight = theme === 'light'
 
   return (
     <div style={{
       position: 'fixed',
       inset: 0,
-      background: 'linear-gradient(135deg, #1a0022 0%, #2a0033 40%, #3a0055 80%, #FF1C74 100%)',
+      background: isLight 
+        ? 'linear-gradient(135deg, #fdfbf7 0%, #f4f0ea 40%, #fef3c7 80%, #ffedd5 100%)' 
+        : 'linear-gradient(135deg, #1a0022 0%, #2a0033 40%, #3a0055 80%, #FF1C74 100%)',
       fontFamily: "'Outfit', sans-serif",
       overflow: 'hidden',
     }}>
@@ -252,12 +266,15 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
         position: 'absolute', top: '50%', left: '50%',
         transform: 'translate(-50%,-50%)',
         width: 700, height: 700, borderRadius: '50%',
-        background: 'radial-gradient(ellipse at center, rgba(200,0,100,0.20) 0%, rgba(110,0,160,0.09) 42%, transparent 68%)',
+        background: isLight 
+          ? 'radial-gradient(ellipse at center, rgba(253,164,175,0.4) 0%, rgba(186,230,253,0.2) 42%, transparent 68%)'
+          : 'radial-gradient(ellipse at center, rgba(200,0,100,0.20) 0%, rgba(110,0,160,0.09) 42%, transparent 68%)',
         filter: 'blur(18px)', pointerEvents: 'none', zIndex: 1,
       }} />
 
       {/* Grid */}
       <div style={{
+        display: isLight ? 'none' : 'block',
         position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
         backgroundImage: 'linear-gradient(rgba(255,28,116,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,28,116,0.028) 1px, transparent 1px)',
         backgroundSize: '70px 70px',
@@ -268,15 +285,15 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
         position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100,
         height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 44px',
-        background: 'rgba(2,1,4,0.62)',
+        background: isLight ? 'rgba(255,255,255,0.62)' : 'rgba(2,1,4,0.62)',
         backdropFilter: 'blur(24px) saturate(180%)',
-        borderBottom: '1px solid rgba(255,28,116,0.22)',
+        borderBottom: isLight ? '1px solid rgba(0,0,0,0.05)' : '1px solid rgba(255,28,116,0.22)',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 'clamp(14px, 4vw, 17px)', letterSpacing: '0.03em', color: '#F2EAF6' }}>
-          <svg width="26" height="26" viewBox="0 0 28 28" fill="none" style={{ filter: 'drop-shadow(0 0 10px rgba(255,28,116,0.85))' }}>
-            <path d="M14 2L2 10L14 26L26 10L14 2Z" fill="rgba(255,28,116,0.14)" stroke="#FF1C74" strokeWidth="1.5" strokeLinejoin="round"/>
-            <path d="M14 2L9 10L14 26L19 10L14 2Z" fill="rgba(255,28,116,0.1)" stroke="#FF1C74" strokeWidth="0.75" strokeLinejoin="round"/>
-            <line x1="2" y1="10" x2="26" y2="10" stroke="#FF1C74" strokeWidth="0.75" strokeOpacity="0.45"/>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 'clamp(14px, 4vw, 17px)', letterSpacing: '0.03em', color: isLight ? '#334155' : '#F2EAF6' }}>
+          <svg width="26" height="26" viewBox="0 0 28 28" fill="none" style={{ filter: isLight ? 'none' : 'drop-shadow(0 0 10px rgba(255,28,116,0.85))' }}>
+            <path d="M14 2L2 10L14 26L26 10L14 2Z" fill={isLight ? "rgba(244,114,182,0.2)" : "rgba(255,28,116,0.14)"} stroke={isLight ? "#ec4899" : "#FF1C74"} strokeWidth="1.5" strokeLinejoin="round"/>
+            <path d="M14 2L9 10L14 26L19 10L14 2Z" fill={isLight ? "rgba(244,114,182,0.15)" : "rgba(255,28,116,0.1)"} stroke={isLight ? "#ec4899" : "#FF1C74"} strokeWidth="0.75" strokeLinejoin="round"/>
+            <line x1="2" y1="10" x2="26" y2="10" stroke={isLight ? "#ec4899" : "#FF1C74"} strokeWidth="0.75" strokeOpacity="0.45"/>
           </svg>
           Atlas
         </div>
@@ -296,31 +313,32 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
           onClick={onQuizz}
           style={{
             padding: 'clamp(6px, 2vw, 8px) clamp(16px, 4vw, 20px)', borderRadius: 100, border: 'none',
-            background: 'linear-gradient(135deg, #FF1C74, #CC0055)',
+            background: isLight ? 'linear-gradient(135deg, #f472b6, #db2777)' : 'linear-gradient(135deg, #FF1C74, #CC0055)',
             color: '#fff', fontFamily: "'Outfit', sans-serif",
             fontSize: 'clamp(11px, 2.5vw, 13px)', fontWeight: 600, letterSpacing: '0.025em',
             cursor: 'pointer',
-            boxShadow: '0 0 22px rgba(255,28,116,0.38)',
+            boxShadow: isLight ? '0 0 16px rgba(244,114,182,0.3)' : '0 0 22px rgba(255,28,116,0.38)',
             transition: 'box-shadow 0.2s, transform 0.15s',
           }}
         >
-          QUIZZ
+          FAQ
         </button>
       </nav>
 
       {/* Stat card — top left */}
       <div ref={cardTlRef} className="lp-card lp-card-tl" style={{
         position: 'absolute', top: 'clamp(20px, 5vh, 94px)', left: 'clamp(12px, 3vw, 44px)', zIndex: 30,
-        background: 'rgba(5,1,10,0.72)',
+        background: isLight ? 'rgba(255,255,255,0.75)' : 'rgba(5,1,10,0.72)',
         backdropFilter: 'blur(20px) saturate(200%)',
-        border: '1px solid rgba(255,28,116,0.22)',
+        border: isLight ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(255,28,116,0.22)',
+        boxShadow: isLight ? '0 4px 20px rgba(0,0,0,0.03)' : 'none',
         borderRadius: 18, padding: 'clamp(16px, 3vw, 20px)', minWidth: 'clamp(160px, 80vw, 228px)',
       }}>
-        <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 'clamp(20px, 5vw, 28px)', lineHeight: 1, letterSpacing: '-0.02em', background: 'linear-gradient(135deg, #FF88BB, #FF1C74)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+        <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 'clamp(20px, 5vw, 28px)', lineHeight: 1, letterSpacing: '-0.02em', background: isLight ? 'linear-gradient(135deg, #f472b6, #db2777)' : 'linear-gradient(135deg, #FF88BB, #FF1C74)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           Mise à jour
         </div>
-        <div style={{ width: 30, height: 1, background: 'rgba(255,28,116,0.4)', margin: '12px 0' }} />
-        <div style={{ fontSize: 'clamp(9px, 2vw, 11px)', fontWeight: 400, color: 'rgba(242,234,246,0.48)', lineHeight: 1.5, maxWidth: 175, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+        <div style={{ width: 30, height: 1, background: isLight ? 'rgba(244,114,182,0.4)' : 'rgba(255,28,116,0.4)', margin: '12px 0' }} />
+        <div style={{ fontSize: 'clamp(9px, 2vw, 11px)', fontWeight: 500, color: isLight ? '#64748b' : 'rgba(242,234,246,0.48)', lineHeight: 1.5, maxWidth: 175, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
           Alternative Investments Intelligence
         </div>
       </div>
@@ -328,16 +346,17 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
       {/* Stat card — bottom right */}
       <div ref={cardBrRef} className="lp-card lp-card-br" style={{
         position: 'absolute', bottom: 'clamp(20px, 10vh, 138px)', right: 'clamp(12px, 3vw, 44px)', zIndex: 30,
-        background: 'rgba(5,1,10,0.72)',
+        background: isLight ? 'rgba(255,255,255,0.75)' : 'rgba(5,1,10,0.72)',
         backdropFilter: 'blur(20px) saturate(200%)',
-        border: '1px solid rgba(255,28,116,0.22)',
+        border: isLight ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(255,28,116,0.22)',
+        boxShadow: isLight ? '0 4px 20px rgba(0,0,0,0.03)' : 'none',
         borderRadius: 18, padding: 'clamp(16px, 3vw, 20px)', minWidth: 'clamp(160px, 80vw, 228px)',
       }}>
-        <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 'clamp(20px, 5vw, 28px)', lineHeight: 1, letterSpacing: '-0.02em', background: 'linear-gradient(135deg, #FF88BB, #FF1C74)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+        <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 'clamp(20px, 5vw, 28px)', lineHeight: 1, letterSpacing: '-0.02em', background: isLight ? 'linear-gradient(135deg, #f472b6, #db2777)' : 'linear-gradient(135deg, #FF88BB, #FF1C74)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           Docs Internes
         </div>
-        <div style={{ width: 30, height: 1, background: 'rgba(255,28,116,0.4)', margin: '12px 0' }} />
-        <div style={{ fontSize: 'clamp(9px, 2vw, 11px)', fontWeight: 400, color: 'rgba(242,234,246,0.48)', lineHeight: 1.5, maxWidth: 175, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+        <div style={{ width: 30, height: 1, background: isLight ? 'rgba(244,114,182,0.4)' : 'rgba(255,28,116,0.4)', margin: '12px 0' }} />
+        <div style={{ fontSize: 'clamp(9px, 2vw, 11px)', fontWeight: 500, color: isLight ? '#64748b' : 'rgba(242,234,246,0.48)', lineHeight: 1.5, maxWidth: 175, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
           Assets backed by the vault at launch
         </div>
       </div>
@@ -347,19 +366,19 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 7,
           padding: '5px 14px 5px 10px', borderRadius: 100,
-          background: 'rgba(255,28,116,0.10)',
-          border: '1px solid rgba(255,28,116,0.30)',
-          fontSize: 'clamp(9px, 2vw, 10.5px)', fontWeight: 500, color: '#FF77AA',
+          background: isLight ? 'rgba(244,114,182,0.10)' : 'rgba(255,28,116,0.10)',
+          border: isLight ? '1px solid rgba(244,114,182,0.3)' : '1px solid rgba(255,28,116,0.30)',
+          fontSize: 'clamp(9px, 2vw, 10.5px)', fontWeight: 500, color: isLight ? '#db2777' : '#FF77AA',
           letterSpacing: '0.07em', textTransform: 'uppercase' as const,
           marginBottom: 14,
         }}>
-          <span className="lp-badge-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF1C74', display: 'inline-block' }} />
+          <span className="lp-badge-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: isLight ? '#db2777' : '#FF1C74', display: 'inline-block' }} />
           AI-Syndicale
         </div>
         <div style={{
           fontFamily: "'Syne', sans-serif", fontWeight: 800,
           fontSize: 'clamp(40px, 12vw, 98px)', lineHeight: 0.9, letterSpacing: '-0.04em',
-          background: 'linear-gradient(165deg, #FFFFFF 22%, rgba(255,110,160,0.72) 100%)',
+          background: isLight ? 'linear-gradient(165deg, #1e293b 22%, #db2777 100%)' : 'linear-gradient(165deg, #FFFFFF 22%, rgba(255,110,160,0.72) 100%)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
         }}>
           Atlas
@@ -367,8 +386,8 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
       </div>
 
       {/* Hero — bottom right */}
-      <div className="lp-hero-right" style={{ position: 'absolute', bottom: 'clamp(20px, 5vh, 50px)', right: 'clamp(12px, 3vw, 44px)', zIndex: 40, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-        <p style={{ fontSize: 'clamp(12px, 3vw, 14px)', fontWeight: 300, color: 'rgba(242,234,246,0.48)', lineHeight: 1.65, letterSpacing: '0.01em', marginBottom: 20 }}>
+      <div className="lp-hero-right" style={{ position: 'absolute', bottom: 'clamp(20px, 5vh, 50px)', right: 'clamp(12px, 3vw, 44px)', zIndex: 40, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <p style={{ fontSize: 'clamp(12px, 3vw, 14px)', fontWeight: 500, color: isLight ? '#64748b' : 'rgba(242,234,246,0.48)', lineHeight: 1.65, letterSpacing: '0.01em', marginBottom: 20 }}>
           Votre syndicat CFDT,<br />De GENNEVILLIERS
         </p>
         <button
@@ -376,18 +395,21 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
           onClick={onEnter}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 9,
-            padding: 'clamp(10px, 2.5vw, 13px) clamp(20px, 4vw, 26px)', borderRadius: 12, border: '2px solid #00FFFF',
-            background: 'linear-gradient(135deg, #1a0033 0%, #003044 100%)',
-            color: '#00FFFF', fontFamily: "'Outfit', sans-serif",
+            padding: 'clamp(10px, 2.5vw, 13px) clamp(20px, 4vw, 26px)', borderRadius: 12, 
+            border: isLight ? '2px solid #38bdf8' : '2px solid #00FFFF',
+            background: isLight ? 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)' : 'linear-gradient(135deg, #1a0033 0%, #003044 100%)',
+            color: isLight ? '#0284c7' : '#00FFFF', fontFamily: "'Outfit', sans-serif",
             fontSize: 'clamp(13px, 3vw, 15px)', fontWeight: 700, letterSpacing: '0.02em',
             cursor: 'pointer',
-            boxShadow: '0 0 0 2px rgba(0,255,255,0.2), 0 0 20px rgba(0,255,255,0.55), inset 0 1px 0 rgba(255,255,255,0.08)',
+            boxShadow: isLight 
+              ? '0 0 0 2px rgba(56,189,248,0.2), 0 0 20px rgba(56,189,248,0.4), inset 0 1px 0 rgba(255,255,255,0.6)'
+              : '0 0 0 2px rgba(0,255,255,0.2), 0 0 20px rgba(0,255,255,0.55), inset 0 1px 0 rgba(255,255,255,0.08)',
             transition: 'transform 0.2s, box-shadow 0.2s',
           }}
         >
           Entrée
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-            <path d="M2.5 7.5H12.5M12.5 7.5L8.5 3.5M12.5 7.5L8.5 11.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M2.5 7.5H12.5M12.5 7.5L8.5 3.5M12.5 7.5L8.5 11.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
       </div>
@@ -395,7 +417,9 @@ export default function LandingPage({ onEnter, onQuizz }: Props) {
       {/* Edge line */}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, height: 1,
-        background: 'linear-gradient(90deg, transparent, rgba(255,28,116,0.22) 30%, rgba(255,28,116,0.22) 70%, transparent)',
+        background: isLight
+          ? 'linear-gradient(90deg, transparent, rgba(244,114,182,0.3) 30%, rgba(244,114,182,0.3) 70%, transparent)'
+          : 'linear-gradient(90deg, transparent, rgba(255,28,116,0.22) 30%, rgba(255,28,116,0.22) 70%, transparent)',
         zIndex: 100, pointerEvents: 'none',
       }} />
     </div>

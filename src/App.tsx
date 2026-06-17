@@ -1271,7 +1271,7 @@ ${indicesFactuels}
             <div className="grid grid-cols-1 gap-8">
               {/* Colonne principale - pleine largeur */}
               <div className="lg:col-span-1">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-1 items-stretch justify-items-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-1 items-stretch justify-items-center">
                   <button
                     onClick={() => handleDomainSelection(0)}
                     className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-purple-900/70 to-slate-800/70 backdrop-blur-md border border-purple-500/30 rounded-2xl p-6 md:p-10 hover:border-pink-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-1 card-border-sweep btn-ripple"
@@ -1357,7 +1357,7 @@ ${indicesFactuels}
                     </div>
                   </button>
 
-                  {/* Carte Espace Jeux */}
+                  {/* Carte Espace Jeux désactivée 
                   <button
                     onClick={() => setChatState({ ...chatState, currentView: 'jeux' })}
                     className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-rose-900/70 to-slate-800/70 backdrop-blur-md border border-pink-500/30 rounded-2xl p-6 md:p-10 hover:border-pink-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-4 card-border-sweep card-border-sweep-orange btn-ripple"
@@ -1385,6 +1385,7 @@ ${indicesFactuels}
                       </div>
                     </div>
                   </button>
+                  */}
                 </div>
 
                 {/* --- SECTION ACTUALITÉS & À LIRE --- */}

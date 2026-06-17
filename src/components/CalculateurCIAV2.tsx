@@ -654,7 +654,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                 {/* Total */}
                 <div className="p-6 bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-2xl border-2 border-orange-400/50 shadow-xl glass-card">
                   <div className="text-center">
-                    <p className="text-orange-300/70 text-sm mb-1">CIA ANNUEL ESTIMÉ</p>
+                    <p className="text-orange-300/70 text-sm mb-1">CIA BRUT ANNUEL ESTIMÉ</p>
                     <p className="text-5xl font-bold text-orange-300">{resultat.ciaFinal.toFixed(0)}€</p>
                     <p className="text-slate-400 text-sm mt-2">
                       payé fin mai/juin

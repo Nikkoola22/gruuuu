@@ -44,13 +44,13 @@ const MetierCard: React.FC<MetierCardProps & { onClose: () => void }> = ({ icon,
 
 const Metiers: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
-    <div className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+    <div className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50">
       {/* Intro Section */}
-      <section className="relative z-40 bg-slate-800/50 py-12 text-center border-b border-slate-700 glass-banner">
+      <section className="relative z-40 bg-white/95 backdrop-blur-md py-12 text-center border-b border-slate-200 shadow-sm glass-banner">
         <div className="max-w-3xl mx-auto px-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <h2 className="text-3xl font-bold text-white flex items-center gap-2">
-              <Wrench className="w-8 h-8 text-cyan-400" />
+            <h2 className="text-3xl font-bold text-slate-800 flex items-center gap-2">
+              <Wrench className="w-8 h-8 text-cyan-600" />
               Vos métiers
             </h2>
             <button
@@ -60,13 +60,13 @@ const Metiers: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 event.stopPropagation();
                 onClose();
               }}
-              className="relative z-50 pointer-events-auto flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold transition-all text-sm glass-pill"
+              className="relative z-50 pointer-events-auto flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-full font-medium transition-all text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
               Retour
             </button>
           </div>
-          <p className="text-slate-300 text-lg leading-relaxed">
+          <p className="text-slate-600 text-lg leading-relaxed font-medium">
             Retrouvez l'actualité qui vous concerne en sélectionnant ci-dessous votre métier, votre filière ou mission. Accédez aux grilles indiciaires et aux informations spécifiques à votre domaine d'activité.
           </p>
         </div>

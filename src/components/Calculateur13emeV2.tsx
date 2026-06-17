@@ -367,8 +367,8 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
   const renderStepType = () => (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-xl font-light text-white mb-2">Quel est votre mode de rémunération ?</h2>
-        <p className="text-emerald-300/70 text-sm">Cela détermine le mode de calcul de votre 13ème mois</p>
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Quel est votre mode de rémunération ?</h2>
+        <p className="text-slate-500 text-sm font-medium">Cela détermine le mode de calcul de votre 13ème mois</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -376,24 +376,24 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           onClick={() => setAgentType('indiciaire')}
           className={`p-6 rounded-2xl border-2 transition-all duration-200 text-left ${
             agentType === 'indiciaire'
-              ? 'border-emerald-400 bg-emerald-500/20 shadow-lg shadow-emerald-500/20'
-              : 'border-slate-600/50 bg-slate-800/30 hover:border-emerald-500/50 hover:bg-slate-800/50'
+              ? 'border-emerald-300 bg-emerald-50 shadow-md ring-1 ring-emerald-200'
+              : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-sm'
           }`}
         >
           <div className="flex items-start gap-4">
-            <div className={`p-3 rounded-xl ${agentType === 'indiciaire' ? 'bg-emerald-500/30' : 'bg-slate-700/50'}`}>
-              <Briefcase className={`w-6 h-6 ${agentType === 'indiciaire' ? 'text-emerald-300' : 'text-slate-400'}`} />
+            <div className={`p-3 rounded-xl ${agentType === 'indiciaire' ? 'bg-emerald-100' : 'bg-slate-100 border border-slate-200'}`}>
+              <Briefcase className={`w-6 h-6 ${agentType === 'indiciaire' ? 'text-emerald-600' : 'text-slate-500'}`} />
             </div>
             <div className="flex-1">
-              <h3 className={`font-medium mb-1 ${agentType === 'indiciaire' ? 'text-emerald-300' : 'text-white'}`}>
+              <h3 className={`font-semibold mb-1 ${agentType === 'indiciaire' ? 'text-emerald-800' : 'text-slate-800'}`}>
                 Indiciaire
               </h3>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-600">
                 Agent sur emploi permanent rémunéré sur indice
               </p>
             </div>
             {agentType === 'indiciaire' && (
-              <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+              <CheckCircle2 className="w-6 h-6 text-emerald-500" />
             )}
           </div>
         </button>
@@ -402,24 +402,24 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           onClick={() => setAgentType('horaire')}
           className={`p-6 rounded-2xl border-2 transition-all duration-200 text-left ${
             agentType === 'horaire'
-              ? 'border-purple-400 bg-purple-500/20 shadow-lg shadow-purple-500/20'
-              : 'border-slate-600/50 bg-slate-800/30 hover:border-purple-500/50 hover:bg-slate-800/50'
+              ? 'border-purple-300 bg-purple-50 shadow-md ring-1 ring-purple-200'
+              : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-sm'
           }`}
         >
           <div className="flex items-start gap-4">
-            <div className={`p-3 rounded-xl ${agentType === 'horaire' ? 'bg-purple-500/30' : 'bg-slate-700/50'}`}>
-              <Clock className={`w-6 h-6 ${agentType === 'horaire' ? 'text-purple-300' : 'text-slate-400'}`} />
+            <div className={`p-3 rounded-xl ${agentType === 'horaire' ? 'bg-purple-100' : 'bg-slate-100 border border-slate-200'}`}>
+              <Clock className={`w-6 h-6 ${agentType === 'horaire' ? 'text-purple-600' : 'text-slate-500'}`} />
             </div>
             <div className="flex-1">
-              <h3 className={`font-medium mb-1 ${agentType === 'horaire' ? 'text-purple-300' : 'text-white'}`}>
+              <h3 className={`font-semibold mb-1 ${agentType === 'horaire' ? 'text-purple-800' : 'text-slate-800'}`}>
                 Horaire
               </h3>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-600">
                 Animateurs, écoles, crèches, vacataires...
               </p>
             </div>
             {agentType === 'horaire' && (
-              <CheckCircle2 className="w-6 h-6 text-purple-400" />
+              <CheckCircle2 className="w-6 h-6 text-purple-500" />
             )}
           </div>
         </button>
@@ -431,8 +431,8 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
   const renderStepProfile = () => (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-xl font-light text-white mb-2">Quel est votre profil ?</h2>
-        <p className="text-emerald-300/70 text-sm">Le profil détermine le calendrier de versement</p>
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Quel est votre profil ?</h2>
+        <p className="text-slate-500 text-sm font-medium">Le profil détermine le calendrier de versement</p>
       </div>
 
       <div className="space-y-3">
@@ -446,19 +446,19 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
             onClick={() => setIndiciaireProfile(profile.id as IndiciaireProfile)}
             className={`w-full p-5 rounded-xl border-2 transition-all duration-200 text-left ${
               indiciaireProfile === profile.id
-                ? 'border-emerald-400 bg-emerald-500/20'
-                : 'border-slate-600/50 bg-slate-800/30 hover:border-emerald-500/50'
+                ? 'border-emerald-300 bg-emerald-50 shadow-sm ring-1 ring-emerald-200'
+                : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-sm'
             }`}
           >
             <div className="flex items-center justify-between">
               <div>
-                <h3 className={`font-medium ${indiciaireProfile === profile.id ? 'text-emerald-300' : 'text-white'}`}>
+                <h3 className={`font-semibold ${indiciaireProfile === profile.id ? 'text-emerald-800' : 'text-slate-800'}`}>
                   {profile.label}
                 </h3>
-                <p className="text-sm text-slate-400 mt-1">{profile.desc}</p>
+                <p className="text-sm text-slate-500 mt-1">{profile.desc}</p>
               </div>
               {indiciaireProfile === profile.id && (
-                <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                <CheckCircle2 className="w-6 h-6 text-emerald-500" />
               )}
             </div>
           </button>
@@ -471,8 +471,8 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
   const renderStepHoraireMode = () => (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-xl font-light text-white mb-2">Mode de calcul</h2>
-        <p className="text-purple-300/70 text-sm">Comment êtes-vous rémunéré(e) ?</p>
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Mode de calcul</h2>
+        <p className="text-slate-500 text-sm font-medium">Comment êtes-vous rémunéré(e) ?</p>
       </div>
 
       <div className="space-y-3">
@@ -480,19 +480,19 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           onClick={() => setHoraireBaseType('indice')}
           className={`w-full p-5 rounded-xl border-2 transition-all duration-200 text-left ${
             horaireBaseType === 'indice'
-              ? 'border-purple-400 bg-purple-500/20'
-              : 'border-slate-600/50 bg-slate-800/30 hover:border-purple-500/50'
+              ? 'border-purple-300 bg-purple-50 shadow-sm ring-1 ring-purple-200'
+              : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-sm'
           }`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className={`font-medium ${horaireBaseType === 'indice' ? 'text-purple-300' : 'text-white'}`}>
+              <h3 className={`font-semibold ${horaireBaseType === 'indice' ? 'text-purple-800' : 'text-slate-800'}`}>
                 En référence à un indice
               </h3>
-              <p className="text-sm text-slate-400 mt-1">Ex: indice 366</p>
+              <p className="text-sm text-slate-500 mt-1">Ex: indice 366</p>
             </div>
             {horaireBaseType === 'indice' && (
-              <CheckCircle2 className="w-6 h-6 text-purple-400" />
+              <CheckCircle2 className="w-6 h-6 text-purple-500" />
             )}
           </div>
         </button>
@@ -501,19 +501,19 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           onClick={() => setHoraireBaseType('taux')}
           className={`w-full p-5 rounded-xl border-2 transition-all duration-200 text-left ${
             horaireBaseType === 'taux'
-              ? 'border-purple-400 bg-purple-500/20'
-              : 'border-slate-600/50 bg-slate-800/30 hover:border-purple-500/50'
+              ? 'border-purple-300 bg-purple-50 shadow-sm ring-1 ring-purple-200'
+              : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-sm'
           }`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className={`font-medium ${horaireBaseType === 'taux' ? 'text-purple-300' : 'text-white'}`}>
+              <h3 className={`font-semibold ${horaireBaseType === 'taux' ? 'text-purple-800' : 'text-slate-800'}`}>
                 Sur la base d'un taux horaire
               </h3>
-              <p className="text-sm text-slate-400 mt-1">Ex: 11,50 €/h</p>
+              <p className="text-sm text-slate-500 mt-1">Ex: 11,50 €/h</p>
             </div>
             {horaireBaseType === 'taux' && (
-              <CheckCircle2 className="w-6 h-6 text-purple-400" />
+              <CheckCircle2 className="w-6 h-6 text-purple-500" />
             )}
           </div>
         </button>
@@ -525,14 +525,14 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
   const renderStepDonnees = () => (
     <div className="space-y-6">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-light text-white mb-2">Vos données indiciaires</h2>
-        <p className="text-emerald-300/70 text-sm">Retrouvez ces informations sur votre fiche de paie</p>
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Vos données indiciaires</h2>
+        <p className="text-slate-500 font-medium text-sm">Retrouvez ces informations sur votre fiche de paie</p>
       </div>
 
       {indiciaireProfile === 'assistante' ? (
         <div className="space-y-4">
-          <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-            <label className="block text-sm font-medium text-emerald-300 mb-3">
+          <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+            <label className="block text-sm font-medium text-emerald-800 mb-3">
               Montant de la rubrique
             </label>
             <div className="relative">
@@ -541,20 +541,20 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                 inputMode="decimal"
                 value={rubrique7587}
                 onChange={(e) => setRubrique7587(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white text-lg font-light focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none glass-pill"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-medium text-lg focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400 outline-none transition-all"
                 placeholder="Montant brut"
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">€</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">€</span>
             </div>
-            <p className="text-xs text-slate-400 mt-2">Le 13ème mois = rubrique / 2 (proratisé)</p>
+            <p className="text-xs text-slate-500 font-medium mt-2">Le 13ème mois = rubrique / 2 (proratisé)</p>
           </div>
         </div>
       ) : (
         <div className="space-y-5">
           {/* Indice Majoré */}
-          <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-            <label className="block text-sm font-medium text-emerald-300 mb-3 flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 bg-emerald-500/30 rounded-full text-xs">1</span>
+          <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+            <label className="block text-sm font-medium text-emerald-800 mb-3 flex items-center gap-2">
+              <span className="flex items-center justify-center w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full text-xs">1</span>
               Indice Majoré (IM)
             </label>
             <input
@@ -562,20 +562,20 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               inputMode="decimal"
               value={im}
               onChange={(e) => setIm(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white text-lg font-light focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none glass-pill"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-medium text-lg focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400 outline-none transition-all"
               placeholder="ex: 366"
             />
             {indiciaireTI > 0 && (
-              <p className="text-sm text-emerald-400 mt-2">
+              <p className="text-sm text-emerald-600 font-medium mt-2">
                 = {formatEUR(indiciaireTI)} (TI mensuel)
               </p>
             )}
           </div>
 
           {/* NBI */}
-          <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-            <label className="block text-sm font-medium text-emerald-300 mb-3 flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 bg-emerald-500/30 rounded-full text-xs">2</span>
+          <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+            <label className="block text-sm font-medium text-emerald-800 mb-3 flex items-center gap-2">
+              <span className="flex items-center justify-center w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full text-xs">2</span>
               Nouvelle Bonification Indiciaire (NBI)
             </label>
             <input
@@ -583,11 +583,11 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               inputMode="decimal"
               value={nbi}
               onChange={(e) => setNbi(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white text-lg font-light focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none glass-pill"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-medium text-lg focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400 outline-none transition-all"
               placeholder="ex: 10 (0 si aucune)"
             />
             {indiciaireNBIValue > 0 && (
-              <p className="text-sm text-emerald-400 mt-2">
+              <p className="text-sm text-emerald-600 font-medium mt-2">
                 = {formatEUR(indiciaireNBIValue)}
               </p>
             )}
@@ -595,24 +595,24 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
 
           {/* Récapitulatif */}
           {indiciaireTI > 0 && (
-            <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/30 glass-card">
-              <p className="text-sm font-medium text-emerald-300 mb-3">📊 Récapitulatif mensuel</p>
+            <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200 shadow-sm">
+              <p className="text-sm font-medium text-emerald-800 mb-3">📊 Récapitulatif mensuel</p>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-slate-300">
+                <div className="flex justify-between text-slate-600 font-medium">
                   <span>Traitement indiciaire (TI)</span>
-                  <span className="text-emerald-400">{formatEUR(indiciaireTI)}</span>
+                  <span className="text-emerald-700">{formatEUR(indiciaireTI)}</span>
                 </div>
-                <div className="flex justify-between text-slate-300">
+                <div className="flex justify-between text-slate-600 font-medium">
                   <span>NBI</span>
-                  <span className="text-emerald-400">{formatEUR(indiciaireNBIValue)}</span>
+                  <span className="text-emerald-700">{formatEUR(indiciaireNBIValue)}</span>
                 </div>
-                <div className="flex justify-between text-slate-300">
+                <div className="flex justify-between text-slate-600 font-medium">
                   <span>Indemnité résidence (3%)</span>
-                  <span className="text-emerald-400">{formatEUR(indiciaireIRValue)}</span>
+                  <span className="text-emerald-700">{formatEUR(indiciaireIRValue)}</span>
                 </div>
-                <div className="border-t border-emerald-500/30 pt-2 mt-2 flex justify-between font-medium">
-                  <span className="text-white">Total base</span>
-                  <span className="text-emerald-300">{formatEUR(indiciaireTI + indiciaireNBIValue + indiciaireIRValue)}</span>
+                <div className="border-t border-emerald-200 pt-2 mt-2 flex justify-between font-bold">
+                  <span className="text-slate-800">Total base</span>
+                  <span className="text-emerald-700">{formatEUR(indiciaireTI + indiciaireNBIValue + indiciaireIRValue)}</span>
                 </div>
               </div>
             </div>
@@ -626,49 +626,49 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
   const renderStepPeriode = () => (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-xl font-light text-white mb-2">Période de versement</h2>
-        <p className="text-purple-300/70 text-sm">Chaque période correspond à 6 mois de travail</p>
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Période de versement</h2>
+        <p className="text-slate-500 font-medium text-sm">Chaque période correspond à 6 mois de travail</p>
       </div>
 
       <div className="space-y-3">
         <button
           onClick={() => setHorairePeriode('juin')}
-            className={`w-full p-5 rounded-xl border-2 transition-all duration-200 text-left glass-card ${
+            className={`w-full p-5 rounded-xl border-2 transition-all duration-200 text-left ${
             horairePeriode === 'juin'
-              ? 'border-purple-400 bg-purple-500/20'
-              : 'border-slate-600/50 bg-slate-800/30 hover:border-purple-500/50'
+              ? 'border-purple-300 bg-purple-50 shadow-sm ring-1 ring-purple-200'
+              : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-sm'
           }`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className={`font-medium ${horairePeriode === 'juin' ? 'text-purple-300' : 'text-white'}`}>
+              <h3 className={`font-semibold ${horairePeriode === 'juin' ? 'text-purple-800' : 'text-slate-800'}`}>
                 Versement de Juin
               </h3>
-              <p className="text-sm text-slate-400 mt-1">Heures de Novembre à Avril</p>
+              <p className="text-sm text-slate-500 font-medium mt-1">Heures de Novembre à Avril</p>
             </div>
             {horairePeriode === 'juin' && (
-              <CheckCircle2 className="w-6 h-6 text-purple-400" />
+              <CheckCircle2 className="w-6 h-6 text-purple-500" />
             )}
           </div>
         </button>
 
         <button
           onClick={() => setHorairePeriode('novembre')}
-            className={`w-full p-5 rounded-xl border-2 transition-all duration-200 text-left glass-card ${
+            className={`w-full p-5 rounded-xl border-2 transition-all duration-200 text-left ${
             horairePeriode === 'novembre'
-              ? 'border-purple-400 bg-purple-500/20'
-              : 'border-slate-600/50 bg-slate-800/30 hover:border-purple-500/50'
+              ? 'border-purple-300 bg-purple-50 shadow-sm ring-1 ring-purple-200'
+              : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 shadow-sm'
           }`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className={`font-medium ${horairePeriode === 'novembre' ? 'text-purple-300' : 'text-white'}`}>
+              <h3 className={`font-semibold ${horairePeriode === 'novembre' ? 'text-purple-800' : 'text-slate-800'}`}>
                 Versement de Novembre
               </h3>
-              <p className="text-sm text-slate-400 mt-1">Heures de Mai à Octobre</p>
+              <p className="text-sm text-slate-500 font-medium mt-1">Heures de Mai à Octobre</p>
             </div>
             {horairePeriode === 'novembre' && (
-              <CheckCircle2 className="w-6 h-6 text-purple-400" />
+              <CheckCircle2 className="w-6 h-6 text-purple-500" />
             )}
           </div>
         </button>
@@ -680,14 +680,14 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
   const renderStepTemps = () => (
     <div className="space-y-6">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-light text-white mb-2">Temps de travail et ancienneté</h2>
-        <p className="text-emerald-300/70 text-sm">Ces éléments proratisent votre 13ème mois</p>
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Temps de travail et ancienneté</h2>
+        <p className="text-slate-500 font-medium text-sm">Ces éléments proratisent votre 13ème mois</p>
       </div>
 
       <div className="space-y-5">
         {/* Temps de travail */}
-        <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-          <label className="block text-sm font-medium text-emerald-300 mb-4">
+        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+          <label className="block text-sm font-medium text-emerald-800 mb-4">
             Temps de travail
           </label>
           <input
@@ -700,7 +700,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           />
           <div className="flex justify-between items-center mt-3">
             <span className="text-xs text-slate-500">50%</span>
-            <span className="px-4 py-1.5 bg-emerald-500/20 text-emerald-300 font-medium rounded-full text-sm">
+            <span className="px-4 py-1.5 bg-emerald-100 text-emerald-700 font-medium rounded-full text-sm">
               {tempsEmploi}%
             </span>
             <span className="text-xs text-slate-500">100%</span>
@@ -708,30 +708,30 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         </div>
 
         {/* Mois travaillés */}
-        <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-          <label className="block text-sm font-medium text-emerald-300 mb-3">
+        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+          <label className="block text-sm font-medium text-emerald-800 mb-3">
             Mois travaillés sur l'année
           </label>
           <div className="flex items-center gap-4">
             <button
               onClick={() => setMonthsWorked(prev => Math.max(0, prev - 1))}
-              className="w-12 h-12 rounded-lg bg-slate-700/50 text-white hover:bg-slate-600/50 transition-colors text-xl font-light glass-pill"
+              className="w-12 h-12 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors text-xl font-medium border border-slate-200"
             >
               -
             </button>
             <div className="flex-1 text-center">
-              <span className="text-4xl font-light text-white">{monthsWorked}</span>
-              <span className="text-lg text-slate-400 ml-1">/ 12</span>
+              <span className="text-4xl font-light text-slate-800">{monthsWorked}</span>
+              <span className="text-lg text-slate-500 font-medium ml-1">/ 12</span>
             </div>
             <button
               onClick={() => setMonthsWorked(prev => Math.min(12, prev + 1))}
-              className="w-12 h-12 rounded-lg bg-slate-700/50 text-white hover:bg-slate-600/50 transition-colors text-xl font-light glass-pill"
+              className="w-12 h-12 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors text-xl font-medium border border-slate-200"
             >
               +
             </button>
           </div>
           {monthsWorked < 3 && (
-            <p className="text-xs text-amber-400 mt-3 flex items-center gap-1">
+            <p className="text-xs text-amber-600 font-medium mt-3 flex items-center gap-1">
               <Info className="w-3 h-3" />
               Minimum 3 mois requis pour être éligible
             </p>
@@ -739,8 +739,8 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         </div>
 
         {/* Prorata calculé */}
-        <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/30">
-          <p className="text-sm text-emerald-300 flex items-center gap-2">
+        <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200 shadow-sm">
+          <p className="text-sm text-emerald-800 flex items-center gap-2">
             <BarChart3 className="w-4 h-4" />
             Prorata appliqué : <strong>{((tempsEmploi / 100) * (monthsWorked / 12) * 100).toFixed(1)}%</strong>
           </p>
@@ -753,14 +753,14 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
   const renderStepHeures = () => (
     <div className="space-y-6">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-light text-white mb-2">Heures travaillées</h2>
-        <p className="text-purple-300/70 text-sm">Sur la période {horairePeriode === 'juin' ? 'Nov → Avril' : 'Mai → Octobre'}</p>
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Heures travaillées</h2>
+        <p className="text-slate-500 font-medium text-sm">Sur la période {horairePeriode === 'juin' ? 'Nov → Avril' : 'Mai → Octobre'}</p>
       </div>
 
       <div className="space-y-5">
         {/* Heures */}
-        <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-          <label className="block text-sm font-medium text-purple-300 mb-3">
+        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+          <label className="block text-sm font-medium text-purple-800 mb-3">
             Nombre d'heures rémunérées
           </label>
           <input
@@ -768,20 +768,20 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
             min={0}
             value={horaireHours}
             onChange={(e) => setHoraireHours(Math.max(0, Number(e.target.value) || 0))}
-            className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white text-lg font-light focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none glass-pill"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-medium text-lg focus:bg-white focus:ring-2 focus:ring-purple-500/30 focus:border-purple-400 outline-none transition-all"
           />
-          <div className="flex justify-between mt-3 text-xs text-slate-400">
+          <div className="flex justify-between mt-3 text-xs text-slate-500 font-medium">
             <span>Minimum : {HOURS_MIN}h</span>
             <span>Maximum : {HOURS_CAP}h</span>
           </div>
           {horaireHours < HOURS_MIN && (
-            <p className="text-xs text-amber-400 mt-2 flex items-center gap-1">
+            <p className="text-xs text-amber-600 font-medium mt-2 flex items-center gap-1">
               <Info className="w-3 h-3" />
               Minimum {HOURS_MIN}h requis pour être éligible
             </p>
           )}
           {horaireHours > HOURS_CAP && (
-            <p className="text-xs text-blue-400 mt-2 flex items-center gap-1">
+            <p className="text-xs text-blue-600 font-medium mt-2 flex items-center gap-1">
               <Info className="w-3 h-3" />
               Plafonné à {HOURS_CAP}h pour le calcul
             </p>
@@ -790,8 +790,8 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
 
         {/* Indice ou Taux */}
         {horaireBaseType === 'indice' ? (
-          <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-            <label className="block text-sm font-medium text-purple-300 mb-3">
+          <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+            <label className="block text-sm font-medium text-purple-800 mb-3">
               Indice majoré (IM)
             </label>
             <input
@@ -799,11 +799,11 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               inputMode="decimal"
               value={horaireIM}
               onChange={(e) => setHoraireIM(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white text-lg font-light focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none glass-pill"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-medium text-lg focus:bg-white focus:ring-2 focus:ring-purple-500/30 focus:border-purple-400 outline-none transition-all"
               placeholder="ex: 366"
             />
             {horaireTI > 0 && (
-              <div className="mt-3 text-sm text-purple-400 space-y-1">
+              <div className="mt-3 text-sm text-purple-700 font-medium space-y-1">
                 <p>TI mensuel : {formatEUR(horaireTI)}</p>
                 <p>IR (3%) : {formatEUR(horaireIRValue)}</p>
               </div>
@@ -811,8 +811,8 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-              <label className="block text-sm font-medium text-purple-300 mb-3">
+            <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+              <label className="block text-sm font-medium text-purple-800 mb-3">
                 Taux horaire brut (€/h)
               </label>
               <div className="relative">
@@ -821,15 +821,15 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                   inputMode="decimal"
                   value={horaireTaux}
                   onChange={(e) => setHoraireTaux(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white text-lg font-light focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none glass-pill"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-medium text-lg focus:bg-white focus:ring-2 focus:ring-purple-500/30 focus:border-purple-400 outline-none transition-all"
                   placeholder="ex: 11,50"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">€/h</span>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">€/h</span>
               </div>
             </div>
 
-            <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-              <label className="block text-sm font-medium text-purple-300 mb-3">
+            <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+              <label className="block text-sm font-medium text-purple-800 mb-3">
                 Majoration congés payés
               </label>
               <input
@@ -842,7 +842,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               />
               <div className="flex justify-between items-center mt-3">
                 <span className="text-xs text-slate-500">0%</span>
-                <span className="px-4 py-1.5 bg-purple-500/20 text-purple-300 font-medium rounded-full text-sm">
+                <span className="px-4 py-1.5 bg-purple-100 text-purple-700 font-medium rounded-full text-sm">
                   +{horaireConges}%
                 </span>
                 <span className="text-xs text-slate-500">15%</span>
@@ -853,11 +853,11 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
 
         {/* Ratio calculé */}
         {horaireHours >= HOURS_MIN && (
-          <div className="bg-purple-500/10 rounded-xl p-4 border border-purple-500/30 glass-card">
-            <p className="text-sm text-purple-300 flex items-center gap-2">
+          <div className="bg-purple-50 rounded-xl p-4 border border-purple-200 shadow-sm">
+            <p className="text-sm text-purple-800 flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Ratio heures : <strong>{((Math.min(horaireHours, HOURS_CAP) / HOURS_CAP) * 100).toFixed(1)}%</strong>
-              <span className="text-slate-400 text-xs">
+              <span className="text-slate-500 text-xs">
                 ({Math.min(horaireHours, HOURS_CAP)}h / {HOURS_CAP}h)
               </span>
             </p>
@@ -872,16 +872,16 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
     if (!result) {
       return (
         <div className="text-center py-12">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-500/20 flex items-center justify-center">
-            <HelpCircle className="w-8 h-8 text-amber-400" />
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-100 flex items-center justify-center">
+            <HelpCircle className="w-8 h-8 text-amber-600" />
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">Données insuffisantes</h3>
-          <p className="text-slate-400 text-sm">
+          <h3 className="text-lg font-bold text-slate-800 mb-2">Données insuffisantes</h3>
+          <p className="text-slate-500 font-medium text-sm">
             Veuillez compléter les étapes précédentes pour obtenir votre estimation.
           </p>
           <button
             onClick={() => setCurrentStep(1)}
-            className="mt-6 px-6 py-2 bg-slate-700/50 text-white rounded-lg hover:bg-slate-600/50 transition-colors glass-pill"
+            className="mt-6 px-6 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 font-medium transition-colors border border-slate-200"
           >
             Recommencer
           </button>
@@ -894,17 +894,17 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
     return (
       <div className="space-y-6">
         <div className="text-center mb-6">
-          <Sparkles className={`w-12 h-12 mx-auto mb-4 text-${accentColor}-400`} />
-          <h2 className="text-xl font-light text-white mb-2">Votre 13ème mois estimé</h2>
-          <p className={`text-${accentColor}-300/70 text-sm`}>
+          <Sparkles className={`w-12 h-12 mx-auto mb-4 text-${accentColor}-500`} />
+          <h2 className="text-xl font-bold text-slate-800 mb-2">Votre 13ème mois estimé</h2>
+          <p className={`text-${accentColor}-600 font-medium text-sm`}>
             {agentType === 'indiciaire' ? `Profil : ${indiciaireProfile}` : `Mode : ${horaireBaseType}`}
           </p>
         </div>
 
         {/* Ventilation */}
-        <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-600/30 glass-card">
-          <p className="text-sm font-medium text-white mb-4 flex items-center gap-2">
-            <CalendarDays className="w-4 h-4 text-slate-400" />
+        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+          <p className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <CalendarDays className="w-4 h-4 text-slate-500" />
             Ventilation par échéance (montants en BRUT)
           </p>
           <div className="space-y-3">
@@ -918,15 +918,15 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                 const partFixe = result.compRem * item.ratio;
                 const partVariable = result.primeSem * item.ratio;
                 return (
-                  <div key={index} className="bg-slate-900/30 rounded-lg p-3 glass-card">
+                  <div key={index} className="bg-slate-50 rounded-lg p-3 border border-slate-200 shadow-sm">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-white font-medium">{item.month}</p>
-                        <p className="text-xs text-slate-400">{item.note || `${(item.ratio * 100).toFixed(0)}%`}</p>
+                        <p className="text-slate-800 font-bold">{item.month}</p>
+                        <p className="text-xs text-slate-500 font-medium">{item.note || `${(item.ratio * 100).toFixed(0)}%`}</p>
                       </div>
-                      <p className={`text-lg font-medium text-${accentColor}-400`}>{formatEUR(totalPart)}</p>
+                      <p className={`text-lg font-bold text-${accentColor}-600`}>{formatEUR(totalPart)}</p>
                     </div>
-                    <div className="mt-2 text-xs text-slate-300 space-y-1">
+                    <div className="mt-2 text-xs text-slate-600 space-y-1">
                       <div>
                         <strong>Compl. rémunération TIT:</strong> {formatEUR(partFixe)}
                       </div>
@@ -945,12 +945,12 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               })
             ) : (
               result.breakdown.map((item: { month: string; ratio: number; amount: number; note?: string }, index: number) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-slate-900/30 rounded-lg glass-card">
+                <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 shadow-sm">
                   <div>
-                    <p className="text-white font-medium">{item.month}</p>
-                    <p className="text-xs text-slate-400">{item.note || `${(item.ratio * 100).toFixed(0)}%`}</p>
+                    <p className="text-slate-800 font-bold">{item.month}</p>
+                    <p className="text-xs text-slate-500 font-medium">{item.note || `${(item.ratio * 100).toFixed(0)}%`}</p>
                   </div>
-                  <p className={`text-lg font-medium text-${accentColor}-400`}>{formatEUR(item.amount)}</p>
+                  <p className={`text-lg font-bold text-${accentColor}-600`}>{formatEUR(item.amount)}</p>
                 </div>
               ))
             )}
@@ -958,25 +958,25 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         </div>
 
         {/* Total principal */}
-        <div className={`bg-gradient-to-br from-${accentColor}-500/20 to-${accentColor}-600/10 rounded-2xl p-6 border border-${accentColor}-500/30 glass-card`}>
-          <p className={`text-xs uppercase tracking-wider text-${accentColor}-300 mb-2`}>Total estimé</p>
-          <p className="text-5xl font-light text-white">{formatEUR(result.total)}</p>
+        <div className={`bg-${accentColor}-50 rounded-2xl p-6 border border-${accentColor}-200 shadow-sm`}>
+          <p className={`text-xs uppercase tracking-wider text-${accentColor}-800 font-bold mb-2`}>Total estimé</p>
+          <p className={`text-5xl font-bold text-${accentColor}-700`}>{formatEUR(result.total)}</p>
 
           <div className="grid grid-cols-2 gap-4 mt-6">
-            <div className="bg-slate-900/30 rounded-xl p-4 glass-card">
-              <p className="text-xs text-slate-400">Complément de rémunération</p>
-              <p className={`text-lg font-medium text-${accentColor}-300`}>{formatEUR(result.compRem)}</p>
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <p className="text-xs text-slate-500 font-medium">Complément de rémunération</p>
+              <p className={`text-lg font-bold text-${accentColor}-700`}>{formatEUR(result.compRem)}</p>
             </div>
-            <div className="bg-slate-900/30 rounded-xl p-4 glass-card">
-              <p className="text-xs text-slate-400">Prime semestrielle</p>
-              <p className={`text-lg font-medium text-${accentColor}-300`}>{formatEUR(result.primeSem)}</p>
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <p className="text-xs text-slate-500 font-medium">Prime semestrielle</p>
+              <p className={`text-lg font-bold text-${accentColor}-700`}>{formatEUR(result.primeSem)}</p>
             </div>
           </div>
 
           {/* Détail des deux composants */}
-          <div className="mt-6 bg-slate-900/20 rounded-xl p-4 border border-slate-700/30 glass-card">
-            <p className="text-sm text-white mb-2 font-medium">Détail des composants :</p>
-            <ul className="text-xs text-slate-300 space-y-1">
+          <div className="mt-6 bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm">
+            <p className="text-sm text-slate-800 font-bold mb-2">Détail des composants :</p>
+            <ul className="text-xs text-slate-600 font-medium space-y-1">
               <li>
                 <strong>Complément de rémunération :</strong> Ce montant correspond à la part fixe, généralement basée sur le SMIC ou la base indiciaire, proratisée selon votre temps de travail et votre ancienneté.
               </li>
@@ -989,12 +989,12 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
 
         {/* Détails du calcul */}
         {result.context && (
-          <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/30 glass-card">
-            <p className="text-sm font-medium text-blue-300 mb-2 flex items-center gap-2">
+          <div className="bg-blue-50 rounded-xl p-4 border border-blue-200 shadow-sm">
+            <p className="text-sm font-bold text-blue-800 mb-2 flex items-center gap-2">
               <Info className="w-4 h-4" />
               Détails du calcul
             </p>
-            <div className="text-xs text-blue-200/80 space-y-1">
+            <div className="text-xs text-blue-700 font-medium space-y-1">
               {agentType === 'indiciaire' && 'baseMensuelle' in result.context ? (
                 <>
                   <p>• Base mensuelle : {formatEUR(result.context.baseMensuelle)}</p>
@@ -1014,12 +1014,12 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         )}
 
         {/* Avertissement */}
-        <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/30">
-          <p className="text-sm text-amber-300 flex items-start gap-2">
+        <div className="bg-amber-50 rounded-xl p-4 border border-amber-200 shadow-sm">
+          <p className="text-sm text-amber-800 font-bold flex items-start gap-2">
             <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
             <span>
               <strong>Simulateur informatif uniquement</strong><br />
-              <span className="text-amber-200/70 text-xs">
+              <span className="text-amber-700 font-medium text-xs">
                 Seuls les collègues de la GCR effectuent le calcul officiel.
               </span>
             </span>
@@ -1029,7 +1029,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         {/* Bouton nouvelle simulation */}
         <button
           onClick={handleReset}
-          className="w-full py-3 bg-slate-700/50 text-white rounded-xl hover:bg-slate-600/50 transition-colors font-light"
+          className="w-full py-3 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200 transition-colors font-medium border border-slate-200"
         >
           ↻ Nouvelle simulation
         </button>
@@ -1038,23 +1038,23 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-800/95 to-emerald-900/95 backdrop-blur-md py-6 border-b border-emerald-500/30 shadow-xl glass-banner">
+      <div className="bg-white/95 backdrop-blur-md py-6 border-b border-slate-200 shadow-sm glass-banner">
         <div className="px-4 sm:px-6 flex flex-col gap-4 max-w-6xl mx-auto sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="p-4 bg-gradient-to-br from-emerald-500/80 to-green-500/80 rounded-2xl shadow-2xl">
-              <Euro className="w-8 h-8 text-white" />
-            </div>
+          <div className="flex items-center justify-between w-full sm:w-auto gap-4 min-w-0">
             <div className="min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-light text-white">Calculateur 13ème Mois</h1>
-              <p className="text-emerald-300/80 text-sm font-light mt-1">Simulation pas à pas</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">Calculateur 13ème Mois</h1>
+              <p className="text-emerald-600 text-sm font-medium mt-1">Simulation pas à pas</p>
+            </div>
+            <div className="p-4 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-2xl shadow-md flex-shrink-0">
+              <Euro className="w-8 h-8 text-white" />
             </div>
           </div>
           {onClose && (
             <button
               onClick={onClose}
-              className="flex w-full items-center justify-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-light transition-all duration-150 border border-red-500/50 glass-pill sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 px-5 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg font-medium transition-all duration-150 border border-red-200 shadow-sm glass-pill sm:w-auto"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Retour</span>
@@ -1064,7 +1064,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
       </div>
 
       {/* Barre de progression */}
-      <div className="bg-slate-800/50 border-b border-slate-700/50 py-4 px-6 glass-banner">
+      <div className="bg-white border-b border-slate-200 py-4 px-6 glass-banner">
         <div className="max-w-3xl mx-auto overflow-x-auto pb-2">
           <div className="flex items-center justify-between min-w-[520px]">
             {STEPS.map((step, index) => {
@@ -1084,10 +1084,10 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                   >
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
                       isActive 
-                        ? `bg-${accentColor}-500 text-white shadow-lg shadow-${accentColor}-500/30`
+                        ? `bg-${accentColor}-500 text-white shadow-md shadow-${accentColor}-500/30`
                         : isCompleted
-                          ? `bg-${accentColor}-500/30 text-${accentColor}-300`
-                          : 'bg-slate-700/50 text-slate-500'
+                          ? `bg-${accentColor}-100 text-${accentColor}-600`
+                          : 'bg-slate-100 text-slate-400 border border-slate-200'
                     }`}>
                       {isCompleted ? (
                         <CheckCircle2 className="w-5 h-5" />
@@ -1095,8 +1095,8 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                         <StepIcon className="w-5 h-5" />
                       )}
                     </div>
-                    <span className={`text-xs font-light hidden sm:block ${
-                      isActive ? 'text-white' : isCompleted ? 'text-slate-400' : 'text-slate-600'
+                    <span className={`text-xs hidden sm:block ${
+                      isActive ? `text-${accentColor}-700 font-bold` : isCompleted ? 'text-slate-500 font-medium' : 'text-slate-400 font-medium'
                     }`}>
                       {step.title}
                     </span>
@@ -1104,7 +1104,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
                   
                   {index < STEPS.length - 1 && (
                     <div className={`w-8 sm:w-16 h-0.5 mx-1 sm:mx-2 transition-all duration-200 ${
-                      currentStep > step.id ? `bg-${accentColor}-500/50` : 'bg-slate-700/50'
+                      currentStep > step.id ? `bg-${accentColor}-400` : 'bg-slate-200'
                     }`} />
                   )}
                 </div>
@@ -1119,13 +1119,13 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
         <div className="max-w-2xl mx-auto">
           {/* Tip de l'étape */}
           {currentStep < 5 && (
-            <div className={`mb-6 p-4 rounded-xl border glass-card ${
+            <div className={`mb-6 p-4 rounded-xl border glass-card shadow-sm ${
               agentType === 'horaire' 
-                ? 'bg-purple-500/10 border-purple-500/30' 
-                : 'bg-emerald-500/10 border-emerald-500/30'
+                ? 'bg-purple-50 border-purple-200' 
+                : 'bg-emerald-50 border-emerald-200'
             }`}>
-              <p className={`text-sm flex items-start gap-2 ${
-                agentType === 'horaire' ? 'text-purple-300' : 'text-emerald-300'
+              <p className={`text-sm font-medium flex items-start gap-2 ${
+                agentType === 'horaire' ? 'text-purple-800' : 'text-emerald-800'
               }`}>
                 <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <span>{getTip(currentStep, agentType)}</span>
@@ -1134,7 +1134,7 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
           )}
 
           {/* Contenu de l'étape */}
-          <div className="bg-slate-800/30 rounded-2xl p-4 sm:p-6 border border-slate-700/50 glass-card">
+          <div className="bg-white/70 rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm glass-card">
             {renderStep()}
           </div>
 
@@ -1144,10 +1144,10 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               <button
                 onClick={goPrev}
                 disabled={currentStep === 1}
-                className={`flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-light transition-all duration-150 sm:w-auto ${
+                className={`flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all duration-150 sm:w-auto shadow-sm ${
                   currentStep === 1
-                    ? 'text-slate-600 cursor-not-allowed'
-                    : 'bg-slate-700/50 text-white hover:bg-slate-600/50'
+                    ? 'text-slate-400 bg-slate-100 border border-slate-200 cursor-not-allowed'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                 }`}
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -1157,12 +1157,12 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
               <button
                 onClick={goNext}
                 disabled={!canGoNext()}
-                className={`flex w-full items-center justify-center gap-2 px-6 py-2.5 rounded-lg font-light transition-all duration-150 sm:w-auto ${
+                className={`flex w-full items-center justify-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all duration-150 sm:w-auto shadow-sm ${
                   canGoNext()
                     ? agentType === 'horaire'
-                      ? 'bg-purple-500 text-white hover:bg-purple-600 shadow-lg shadow-purple-500/30'
-                      : 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/30'
-                    : 'bg-slate-700/30 text-slate-500 cursor-not-allowed'
+                      ? 'bg-purple-500 text-white hover:bg-purple-600'
+                      : 'bg-emerald-500 text-white hover:bg-emerald-600'
+                    : 'bg-slate-100 border border-slate-200 text-slate-400 cursor-not-allowed'
                 }`}
               >
                 {currentStep === 4 ? 'Voir le résultat' : 'Suivant'}
@@ -1175,14 +1175,14 @@ export default function Calculateur13emeV2({ onClose }: Calculateur13emeProps) {
 
       {/* Récapitulatif du total */}
       {totalEstime > 0 && currentStep < 5 && (
-        <div className="px-4 pb-4 sm:px-6 sm:pb-6">
-          <div className={`max-w-2xl mx-auto px-5 py-3 rounded-2xl shadow-2xl border backdrop-blur-sm ${
+        <div className="px-4 pb-4 sm:px-6 sm:pb-6 animate-in slide-in-from-bottom duration-500">
+          <div className={`max-w-2xl mx-auto px-5 py-3 rounded-2xl shadow-sm border bg-white/90 backdrop-blur-md ${
             agentType === 'horaire'
-              ? 'bg-purple-600/95 border-purple-400/30'
-              : 'bg-emerald-600/95 border-emerald-400/30'
+              ? 'border-purple-200'
+              : 'border-emerald-200'
           }`}>
-            <p className="text-xs text-white/70 mb-0.5">13ème mois estimé</p>
-            <p className="text-xl font-light text-white">{formatEUR(totalEstime)}</p>
+            <p className="text-xs text-slate-500 font-medium mb-0.5">13ème mois estimé</p>
+            <p className={`text-xl font-bold ${agentType === 'horaire' ? 'text-purple-700' : 'text-emerald-700'}`}>{formatEUR(totalEstime)}</p>
           </div>
         </div>
       )}

@@ -202,7 +202,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-950/30 to-slate-900 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes fast-blink {
           0%, 100% { opacity: 1; }
@@ -213,21 +213,21 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
         }
       `}} />
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-800/95 to-orange-900/95 backdrop-blur-md py-4 border-b border-orange-500/30 shadow-xl glass-banner">
+      <div className="bg-white/95 backdrop-blur-md py-4 border-b border-slate-200 shadow-sm glass-banner">
         <div className="px-4 sm:px-6 flex flex-col gap-4 max-w-4xl mx-auto sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className={`p-3 bg-gradient-to-br ${stepColor.bg} rounded-xl shadow-lg`}>
-              <Euro className="w-6 h-6 text-white" />
-            </div>
+          <div className="flex items-center justify-between w-full sm:w-auto gap-3 min-w-0">
             <div className="min-w-0">
-              <h1 className="text-xl sm:text-2xl font-semibold text-white">Calculateur CIA</h1>
-              <p className="text-orange-300/80 text-xs sm:text-sm">Complément Indemnitaire Annuel</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Calculateur CIA</h1>
+              <p className="text-orange-600 text-xs sm:text-sm font-medium">Complément Indemnitaire Annuel</p>
+            </div>
+            <div className={`p-3 bg-gradient-to-br ${stepColor.bg} rounded-xl shadow-md flex-shrink-0`}>
+              <Euro className="w-6 h-6 text-white" />
             </div>
           </div>
           {onClose && (
             <button
               onClick={onClose}
-              className="flex w-full items-center justify-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all border border-red-500/50 glass-pill sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg transition-all border border-red-200 glass-pill sm:w-auto font-medium"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Retour</span>
@@ -237,7 +237,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
       </div>
 
       {/* Barre de progression */}
-      <div className="bg-slate-800/50 border-b border-slate-700/30 py-3 px-4 glass-banner">
+      <div className="bg-white border-b border-slate-200 py-3 px-4 glass-banner">
         <div className="max-w-4xl mx-auto overflow-x-auto pb-2">
           <div className="flex items-center justify-between mb-2 min-w-[480px]">
             {STEPS.map((step, idx) => {
@@ -258,10 +258,10 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                   >
                     <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                       status === 'completed' 
-                        ? 'bg-green-500 text-white shadow-lg shadow-green-500/30' 
+                        ? 'bg-green-500 text-white shadow-md shadow-green-500/30' 
                         : status === 'active'
-                          ? `bg-gradient-to-br ${getStepColor(step.color).bg} text-white shadow-lg animate-pulse`
-                          : 'bg-slate-700 text-slate-400'
+                          ? `bg-gradient-to-br ${getStepColor(step.color).bg} text-white shadow-md animate-pulse`
+                          : 'bg-slate-100 text-slate-500 border border-slate-200'
                     }`}>
                       {status === 'completed' ? (
                         <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -270,14 +270,14 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                       )}
                     </div>
                     <span className={`text-[10px] sm:text-xs mt-1 font-medium hidden sm:block ${
-                      status === 'active' ? getStepColor(step.color).text : 'text-slate-500'
+                      status === 'active' ? getStepColor(step.color).text.replace('300', '700') : 'text-slate-400'
                     }`}>
                       {step.title}
                     </span>
                   </button>
                   {idx < STEPS.length - 1 && (
                     <div className={`w-4 sm:w-8 h-0.5 mx-1 sm:mx-2 transition-all duration-500 ${
-                      getStepStatus(STEPS[idx + 1].id) !== 'pending' ? 'bg-green-500' : 'bg-slate-700'
+                      getStepStatus(STEPS[idx + 1].id) !== 'pending' ? 'bg-green-500' : 'bg-slate-200'
                     }`} />
                   )}
                 </div>
@@ -290,12 +290,12 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
       {/* Récapitulatif flottant */}
       {resultat.ciaFinal > 0 && currentStep < 5 && (
         <div className="px-4 pt-4 sm:px-6 animate-in slide-in-from-right duration-500">
-          <div className="max-w-2xl mx-auto bg-gradient-to-br from-orange-900/95 to-amber-900/95 backdrop-blur-md rounded-xl p-4 shadow-2xl border border-orange-500/30 glass-card">
+          <div className="max-w-2xl mx-auto bg-white/90 backdrop-blur-md rounded-xl p-4 shadow-sm border border-orange-200 glass-card">
             <div className="flex items-center gap-3">
-              <Sparkles className="w-5 h-5 text-orange-400" />
+              <Sparkles className="w-5 h-5 text-orange-500" />
               <div>
-                <p className="text-xs text-orange-300/70">CIA estimé</p>
-                <p className="text-xl font-bold text-orange-300">{resultat.ciaFinal.toFixed(0)}€<span className="text-sm font-normal">/an</span></p>
+                <p className="text-xs text-orange-800/70 font-medium">CIA estimé</p>
+                <p className="text-xl font-bold text-orange-700">{resultat.ciaFinal.toFixed(0)}€<span className="text-sm font-medium text-orange-600/70">/an</span></p>
               </div>
             </div>
           </div>
@@ -307,75 +307,75 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
         <div className="max-w-2xl mx-auto">
           
           {/* En-tête de l'étape */}
-          <div className={`mb-6 p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 border ${stepColor.border} shadow-xl glass-card`}>
+          <div className={`mb-6 p-4 sm:p-6 rounded-2xl bg-white/80 border border-slate-200 shadow-sm glass-card`}>
             <div className="flex items-start gap-4">
-              <div className={`p-3 rounded-xl bg-gradient-to-br ${stepColor.bg} shadow-lg`}>
+              <div className={`p-3 rounded-xl bg-gradient-to-br ${stepColor.bg} shadow-md`}>
                 <StepIcon className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-slate-500 text-sm">Étape {currentStep}/5</span>
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${stepColor.text} bg-slate-700/50`}>
+                  <span className="text-slate-500 font-medium text-sm">Étape {currentStep}/5</span>
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${stepColor.text.replace('300','700')} bg-slate-100 border border-slate-200`}>
                     {currentStepData.subtitle}
                   </span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{currentStepData.title}</h2>
-                <p className="text-slate-400 text-sm">{currentStepData.description}</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">{currentStepData.title}</h2>
+                <p className="text-slate-600 text-sm">{currentStepData.description}</p>
               </div>
             </div>
             
             {/* Tip */}
             {showTip && (
-              <div className="mt-4 p-3 bg-slate-700/30 rounded-lg border border-slate-600/30 flex items-start gap-3 glass-card">
-                <Info className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+              <div className="mt-4 p-3 bg-amber-50/80 rounded-lg border border-amber-200/60 flex items-start gap-3 glass-card shadow-sm">
+                <Info className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
                 <p className={
                   currentStep === 2
-                    ? 'text-sm sm:text-base md:text-lg font-bold text-orange-400 animate-fast-blink'
+                    ? 'text-sm sm:text-base md:text-lg font-bold text-orange-600 animate-fast-blink'
                     : currentStep === 4
-                      ? 'text-sm sm:text-base font-bold text-slate-200'
-                      : 'text-xs sm:text-sm text-slate-300'
+                      ? 'text-sm sm:text-base font-bold text-amber-800'
+                      : 'text-xs sm:text-sm text-amber-700/90 font-medium'
                 }>
                   {currentStepData.tip}
                 </p>
-                <button onClick={() => setShowTip(false)} className="text-slate-500 hover:text-slate-300 text-xs">✕</button>
+                <button onClick={() => setShowTip(false)} className="text-amber-700/50 hover:text-amber-700 text-xs transition-colors">✕</button>
               </div>
             )}
           </div>
 
           {/* Contenu de l'étape */}
-          <div className={`p-4 sm:p-6 rounded-2xl bg-slate-800/50 border border-slate-700/50 shadow-lg ring-2 ${stepColor.ring} transition-all duration-500 glass-card`}>
+          <div className={`p-4 sm:p-6 rounded-2xl bg-white/70 border border-slate-200 shadow-md ring-2 ring-transparent transition-all duration-500 glass-card`}>
             
             {/* ÉTAPE 1: IFSE Mensuel */}
             {currentStep === 1 && (
               <div className="space-y-6 animate-in fade-in duration-500">
                 <div>
-                  <label className="text-sm text-slate-400 block font-medium mb-3">
+                  <label className="text-sm text-slate-700 block font-semibold mb-3">
                     Montant de votre IFSE mensuel (en €)
                   </label>
                   <div className="flex items-center gap-3">
-                    <Euro className="w-6 h-6 text-orange-400" />
+                    <Euro className="w-6 h-6 text-orange-500" />
                     <input
                       type="number"
                       value={ifseMensuel || ''}
                       onChange={(e) => setIfseMensuel(Number(e.target.value) || 0)}
                       placeholder="Ex: 250"
-                      className="flex-1 px-4 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-lg focus:border-orange-400 focus:ring-2 focus:ring-orange-400/30 outline-none transition-all glass-pill"
+                      className="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-lg focus:border-orange-400 focus:ring-2 focus:ring-orange-400/30 outline-none transition-all shadow-sm glass-pill"
                     />
-                    <span className="text-slate-400">€/mois</span>
+                    <span className="text-slate-600 font-medium">€/mois</span>
                   </div>
-                  <p className="text-xs text-slate-500 mt-2">Consultez votre fiche de paie pour ce montant</p>
+                  <p className="text-xs text-slate-500 mt-2 font-medium">Consultez votre fiche de paie pour ce montant</p>
                 </div>
 
                 {ifseMensuel > 0 && (
-                  <div className="p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl glass-card">
+                  <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl glass-card shadow-sm">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-400">IFSE mensuel saisi</p>
-                        <p className="text-lg font-semibold text-white">{ifseMensuel}€/mois</p>
+                        <p className="text-sm text-slate-600 font-medium">IFSE mensuel saisi</p>
+                        <p className="text-lg font-bold text-slate-800">{ifseMensuel}€/mois</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-slate-400">Soit par an</p>
-                        <p className="text-xl font-bold text-orange-300">{(ifseMensuel * 12).toLocaleString('fr-FR')}€</p>
+                        <p className="text-sm text-slate-600 font-medium">Soit par an</p>
+                        <p className="text-xl font-bold text-orange-700">{(ifseMensuel * 12).toLocaleString('fr-FR')}€</p>
                       </div>
                     </div>
                   </div>
@@ -386,13 +386,13 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             {/* ÉTAPE 2: Week-ends */}
             {currentStep === 2 && (
               <div className="space-y-6 animate-in fade-in duration-500">
-                <p className="text-sm text-slate-400 mb-4">
+                <p className="text-sm text-slate-600 font-medium mb-4">
                   Indiquez le nombre exact de samedis et dimanches travaillés de janvier à décembre de l'année N-1, avec le taux appliqué.
                 </p>
 
                 {/* Samedis */}
-                <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl glass-card">
-                  <label className="text-sm text-amber-300 block font-medium mb-3">
+                <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl glass-card shadow-sm">
+                  <label className="text-sm text-amber-800 block font-semibold mb-3">
                     📅 Samedis travaillés de janvier à décembre en N-1
                   </label>
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -403,31 +403,31 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                       value={weekendSaturdays || ''}
                       onChange={(e) => setWeekendSaturdays(Number(e.target.value) || 0)}
                       placeholder="Ex: 18"
-                      className="w-full sm:max-w-[160px] px-4 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 outline-none transition-all glass-pill"
+                      className="w-full sm:max-w-[160px] px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 outline-none transition-all glass-pill shadow-sm"
                     />
                     <select
                       value={weekendRateSat}
                       onChange={(e) => setWeekendRateSat(Number(e.target.value))}
-                      className="px-3 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-sm glass-pill"
+                      className="px-3 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-sm glass-pill shadow-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 outline-none"
                     >
                       {[40, 60, 80].map(rate => (
                         <option key={rate} value={rate}>{rate}€</option>
                       ))}
                     </select>
                     {weekendSaturdays > 0 && (
-                      <span className="text-amber-300 text-sm sm:ml-auto">
+                      <span className="text-amber-700 font-bold text-sm sm:ml-auto">
                         = {weekendSaturdays * weekendRateSat}€/an
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-2">
+                  <p className="text-xs text-slate-600 font-medium mt-2">
                     Saisissez le total exact des samedis travaillés entre janvier et décembre de l'année N-1.
                   </p>
                 </div>
 
                 {/* Dimanches */}
-                <div className="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl glass-card">
-                  <label className="text-sm text-purple-300 block font-medium mb-3">
+                <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl glass-card shadow-sm">
+                  <label className="text-sm text-purple-800 block font-semibold mb-3">
                     📅 Dimanches travaillés de janvier à décembre en N-1
                   </label>
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -438,53 +438,53 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                       value={weekendSundays || ''}
                       onChange={(e) => setWeekendSundays(Number(e.target.value) || 0)}
                       placeholder="Ex: 12"
-                      className="w-full sm:max-w-[160px] px-4 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 outline-none transition-all glass-pill"
+                      className="w-full sm:max-w-[160px] px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 outline-none transition-all glass-pill shadow-sm"
                     />
                     <select
                       value={weekendRateSun}
                       onChange={(e) => setWeekendRateSun(Number(e.target.value))}
-                      className="px-3 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-sm glass-pill"
+                      className="px-3 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-sm glass-pill shadow-sm focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 outline-none"
                     >
                       {[40, 60, 80].map(rate => (
                         <option key={rate} value={rate}>{rate}€</option>
                       ))}
                     </select>
                     {weekendSundays > 0 && (
-                      <span className="text-purple-300 text-sm sm:ml-auto">
+                      <span className="text-purple-700 font-bold text-sm sm:ml-auto">
                         = {weekendSundays * weekendRateSun}€/an
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-2">
+                  <p className="text-xs text-slate-600 font-medium mt-2">
                     Saisissez le total exact des dimanches travaillés entre janvier et décembre de l'année N-1.
                   </p>
                 </div>
 
                 {/* Récapitulatif week-ends */}
                 {weekendTotalMensuel > 0 && (
-                  <div className="p-4 bg-gradient-to-r from-amber-500/10 to-purple-500/10 border border-slate-600/30 rounded-xl glass-card">
+                  <div className="p-4 bg-gradient-to-r from-amber-50 to-purple-50 border border-slate-200 rounded-xl glass-card shadow-sm">
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-300">Période retenue :</span>
-                      <span className="text-xl font-bold text-white">Janvier à décembre N-1</span>
+                      <span className="text-slate-600 font-medium">Période retenue :</span>
+                      <span className="text-xl font-bold text-slate-800">Janvier à décembre N-1</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 text-sm">
-                      <span className="text-slate-400">Total week-ends annuel :</span>
-                      <span className="text-orange-300 font-semibold">{weekendTotalAnnuel.toFixed(2)}€/an</span>
+                      <span className="text-slate-600">Total week-ends annuel :</span>
+                      <span className="text-orange-700 font-semibold">{weekendTotalAnnuel.toFixed(2)}€/an</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 text-sm">
-                      <span className="text-slate-400">Équivalent mensuel ajouté à l'IFSE :</span>
-                      <span className="text-orange-300 font-semibold">{weekendTotalMensuel.toFixed(2)}€/mois</span>
+                      <span className="text-slate-600">Équivalent mensuel ajouté à l'IFSE :</span>
+                      <span className="text-orange-700 font-semibold">{weekendTotalMensuel.toFixed(2)}€/mois</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 text-sm">
-                      <span className="text-slate-400">IFSE total (base + équivalent week-ends) :</span>
-                      <span className="text-orange-300 font-semibold">{ifseMensuelTotal.toFixed(2)}€/mois</span>
+                      <span className="text-slate-600">IFSE total (base + équivalent week-ends) :</span>
+                      <span className="text-orange-700 font-semibold">{ifseMensuelTotal.toFixed(2)}€/mois</span>
                     </div>
                   </div>
                 )}
 
                 {weekendTotalMensuel === 0 && (
-                  <div className="p-4 bg-slate-700/30 rounded-lg text-center glass-card">
-                    <p className="text-slate-400 text-sm">Vous ne travaillez pas les week-ends ? Passez à l'étape suivante.</p>
+                  <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center glass-card">
+                    <p className="text-slate-500 font-medium text-sm">Vous ne travaillez pas les week-ends ? Passez à l'étape suivante.</p>
                   </div>
                 )}
               </div>
@@ -493,7 +493,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             {/* ÉTAPE 3: Évaluation */}
             {currentStep === 3 && (
               <div className="space-y-4 animate-in fade-in duration-500">
-                <p className="text-sm text-slate-400 mb-4">
+                <p className="text-sm text-slate-600 font-medium mb-4">
                   Sélectionnez votre niveau d'évaluation annuelle de l'année dernière (N-1) :
                 </p>
                 
@@ -504,28 +504,28 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                       onClick={() => setTauxEvaluation(option.value)}
                       className={`w-full p-4 rounded-xl text-left transition-all border glass-card ${
                         tauxEvaluation === option.value
-                          ? `bg-${option.color}-500/20 border-${option.color}-400/60 shadow-lg ring-2 ring-${option.color}-400/50`
-                          : 'bg-slate-700/30 border-slate-600/20 hover:bg-slate-700/50'
+                          ? `bg-${option.color}-50 border-${option.color}-300 shadow-md ring-1 ring-${option.color}-200`
+                          : 'bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-sm'
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
                             tauxEvaluation === option.value 
-                              ? `bg-${option.color}-500 border-${option.color}-400` 
-                              : 'border-slate-500'
+                              ? `bg-${option.color}-500 border-${option.color}-500` 
+                              : 'border-slate-300'
                           }`}>
                             {tauxEvaluation === option.value && <span className="text-white text-sm">✓</span>}
                           </div>
                           <div>
-                            <p className="text-white font-medium">{option.label}</p>
-                            <p className="text-xs text-slate-400">{option.desc}</p>
+                            <p className="text-slate-800 font-semibold">{option.label}</p>
+                            <p className="text-xs text-slate-500 font-medium">{option.desc}</p>
                           </div>
                         </div>
                         <span className={`text-lg font-bold ${
-                          option.value === 100 ? 'text-green-400' :
-                          option.value === 70 ? 'text-cyan-400' :
-                          option.value === 50 ? 'text-amber-400' : 'text-slate-400'
+                          option.value === 100 ? 'text-green-600' :
+                          option.value === 70 ? 'text-cyan-600' :
+                          option.value === 50 ? 'text-amber-600' : 'text-slate-500'
                         }`}>
                           {option.value}%
                         </span>
@@ -535,13 +535,13 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                 </div>
 
                 {tauxEvaluation !== null && (
-                  <div className="p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl mt-4 glass-card">
+                  <div className="p-4 bg-cyan-50 border border-cyan-200 shadow-sm rounded-xl mt-4 glass-card">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-400">Part évaluation du CIA</p>
+                        <p className="text-sm text-slate-700 font-medium">Part évaluation du CIA</p>
                         <p className="text-xs text-slate-500">(50% de la base × {tauxEvaluation}%)</p>
                       </div>
-                      <span className="text-xl font-bold text-cyan-300">
+                      <span className="text-xl font-bold text-cyan-700">
                         {resultat.ciaEvaluation.toFixed(2)}€
                       </span>
                     </div>
@@ -554,7 +554,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             {currentStep === 4 && (
               <div className="space-y-6 animate-in fade-in duration-500">
                 <div>
-                  <label className="text-sm text-slate-400 block font-medium mb-3">
+                  <label className="text-sm text-slate-700 block font-semibold mb-3">
                     Nombre de jours d'absence en N-1 (année précédente)
                   </label>
                   <input
@@ -564,42 +564,42 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                     value={joursAbsenceN1 || ''}
                     onChange={(e) => setJoursAbsenceN1(Number(e.target.value) || 0)}
                     placeholder="Ex: 3"
-                    className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white text-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 outline-none transition-all glass-pill"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-lg focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 outline-none transition-all shadow-sm glass-pill"
                   />
                 </div>
 
                 {/* Barème visuel */}
                 <div className="space-y-2">
-                  <p className="text-sm text-slate-400 font-medium">Barème appliqué :</p>
+                  <p className="text-sm text-slate-700 font-medium">Barème appliqué :</p>
                   <div className="grid grid-cols-3 gap-2">
                     <div className={`p-3 rounded-lg text-center transition-all glass-card ${
-                      joursAbsenceN1 < 6 ? 'bg-green-500/20 border-2 border-green-400 ring-2 ring-green-400/50' : 'bg-slate-700/30 border border-slate-600/30'
+                      joursAbsenceN1 < 6 ? 'bg-green-50 border-2 border-green-400 ring-1 ring-green-200' : 'bg-slate-50 border border-slate-200'
                     }`}>
-                      <p className={`font-bold ${joursAbsenceN1 < 6 ? 'text-green-400' : 'text-slate-400'}`}>100%</p>
-                      <p className="text-xs text-slate-400">&lt; 6 jours</p>
+                      <p className={`font-bold ${joursAbsenceN1 < 6 ? 'text-green-700' : 'text-slate-500'}`}>100%</p>
+                      <p className="text-xs text-slate-600 font-medium">&lt; 6 jours</p>
                     </div>
                     <div className={`p-3 rounded-lg text-center transition-all glass-card ${
-                      joursAbsenceN1 >= 6 && joursAbsenceN1 <= 11 ? 'bg-amber-500/20 border-2 border-amber-400 ring-2 ring-amber-400/50' : 'bg-slate-700/30 border border-slate-600/30'
+                      joursAbsenceN1 >= 6 && joursAbsenceN1 <= 11 ? 'bg-amber-50 border-2 border-amber-400 ring-1 ring-amber-200' : 'bg-slate-50 border border-slate-200'
                     }`}>
-                      <p className={`font-bold ${joursAbsenceN1 >= 6 && joursAbsenceN1 <= 11 ? 'text-amber-400' : 'text-slate-400'}`}>50%</p>
-                      <p className="text-xs text-slate-400">6-11 jours</p>
+                      <p className={`font-bold ${joursAbsenceN1 >= 6 && joursAbsenceN1 <= 11 ? 'text-amber-700' : 'text-slate-500'}`}>50%</p>
+                      <p className="text-xs text-slate-600 font-medium">6-11 jours</p>
                     </div>
                     <div className={`p-3 rounded-lg text-center transition-all glass-card ${
-                      joursAbsenceN1 > 11 ? 'bg-red-500/20 border-2 border-red-400 ring-2 ring-red-400/50' : 'bg-slate-700/30 border border-slate-600/30'
+                      joursAbsenceN1 > 11 ? 'bg-red-50 border-2 border-red-400 ring-1 ring-red-200' : 'bg-slate-50 border border-slate-200'
                     }`}>
-                      <p className={`font-bold ${joursAbsenceN1 > 11 ? 'text-red-400' : 'text-slate-400'}`}>0%</p>
-                      <p className="text-xs text-slate-400">&gt; 11 jours</p>
+                      <p className={`font-bold ${joursAbsenceN1 > 11 ? 'text-red-700' : 'text-slate-500'}`}>0%</p>
+                      <p className="text-xs text-slate-600 font-medium">&gt; 11 jours</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl glass-card">
+                <div className="p-4 bg-purple-50 border border-purple-200 shadow-sm rounded-xl glass-card">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-slate-400">Part absences du CIA</p>
+                      <p className="text-sm text-slate-700 font-medium">Part absences du CIA</p>
                       <p className="text-xs text-slate-500">(50% de la base × {resultat.tauxAbsence}%)</p>
                     </div>
-                    <span className="text-xl font-bold text-purple-300">
+                    <span className="text-xl font-bold text-purple-700">
                       {resultat.ciaAbsence.toFixed(2)}€
                     </span>
                   </div>
@@ -611,52 +611,52 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             {currentStep === 5 && (
               <div className="space-y-6 animate-in fade-in duration-500">
                 <div className="text-center mb-6">
-                  <Sparkles className="w-12 h-12 text-orange-400 mx-auto mb-3" />
-                  <h3 className="text-2xl font-bold text-white">Votre CIA estimé</h3>
-                  <p className="text-slate-400">Complément Indemnitaire Annuel</p>
+                  <Sparkles className="w-12 h-12 text-orange-500 mx-auto mb-3" />
+                  <h3 className="text-2xl font-bold text-slate-800">Votre CIA estimé</h3>
+                  <p className="text-slate-600 font-medium">Complément Indemnitaire Annuel</p>
                 </div>
 
                 {/* Détail du calcul */}
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center p-4 bg-orange-500/10 rounded-xl border border-orange-500/30 glass-card">
+                  <div className="flex justify-between items-center p-4 bg-orange-50 rounded-xl border border-orange-200 shadow-sm glass-card">
                     <div>
-                      <p className="text-orange-300 font-medium">IFSE mensuel total</p>
-                      <p className="text-xs text-slate-400">Base {ifseMensuel}€ + Équivalent week-ends {weekendTotalMensuel.toFixed(2)}€</p>
+                      <p className="text-orange-800 font-semibold">IFSE mensuel total</p>
+                      <p className="text-xs text-slate-600">Base {ifseMensuel}€ + Équivalent week-ends {weekendTotalMensuel.toFixed(2)}€</p>
                     </div>
-                    <span className="text-xl font-bold text-orange-300">{ifseMensuelTotal.toFixed(2)}€</span>
+                    <span className="text-xl font-bold text-orange-700">{ifseMensuelTotal.toFixed(2)}€</span>
                   </div>
 
-                  <div className="flex justify-between items-center p-4 bg-slate-700/30 rounded-xl border border-slate-600/30 glass-card">
+                  <div className="flex justify-between items-center p-4 bg-slate-50 rounded-xl border border-slate-200 shadow-sm glass-card">
                     <div>
-                      <p className="text-slate-300 font-medium">Base CIA (10% IFSE annuel)</p>
-                      <p className="text-xs text-slate-400">{resultat.ifseAnnuel.toFixed(0)}€ × 10%</p>
+                      <p className="text-slate-700 font-semibold">Base CIA (10% IFSE annuel)</p>
+                      <p className="text-xs text-slate-500">{resultat.ifseAnnuel.toFixed(0)}€ × 10%</p>
                     </div>
-                    <span className="text-lg font-bold text-slate-300">{resultat.base10Pourcent.toFixed(2)}€</span>
+                    <span className="text-lg font-bold text-slate-800">{resultat.base10Pourcent.toFixed(2)}€</span>
                   </div>
 
-                  <div className="flex justify-between items-center p-4 bg-cyan-500/10 rounded-xl border border-cyan-500/30 glass-card">
+                  <div className="flex justify-between items-center p-4 bg-cyan-50 rounded-xl border border-cyan-200 shadow-sm glass-card">
                     <div>
-                      <p className="text-cyan-300 font-medium">Part Évaluation (50%)</p>
-                      <p className="text-xs text-slate-400">Taux {tauxEvaluation}%</p>
+                      <p className="text-cyan-800 font-semibold">Part Évaluation (50%)</p>
+                      <p className="text-xs text-slate-600">Taux {tauxEvaluation}%</p>
                     </div>
-                    <span className="text-xl font-bold text-cyan-300">{resultat.ciaEvaluation.toFixed(2)}€</span>
+                    <span className="text-xl font-bold text-cyan-700">{resultat.ciaEvaluation.toFixed(2)}€</span>
                   </div>
 
-                  <div className="flex justify-between items-center p-4 bg-purple-500/10 rounded-xl border border-purple-500/30 glass-card">
+                  <div className="flex justify-between items-center p-4 bg-purple-50 rounded-xl border border-purple-200 shadow-sm glass-card">
                     <div>
-                      <p className="text-purple-300 font-medium">Part Absences (50%)</p>
-                      <p className="text-xs text-slate-400">{joursAbsenceN1} jours → {resultat.tauxAbsence}%</p>
+                      <p className="text-purple-800 font-semibold">Part Absences (50%)</p>
+                      <p className="text-xs text-slate-600">{joursAbsenceN1} jours → {resultat.tauxAbsence}%</p>
                     </div>
-                    <span className="text-xl font-bold text-purple-300">{resultat.ciaAbsence.toFixed(2)}€</span>
+                    <span className="text-xl font-bold text-purple-700">{resultat.ciaAbsence.toFixed(2)}€</span>
                   </div>
                 </div>
 
                 {/* Total */}
-                <div className="p-6 bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-2xl border-2 border-orange-400/50 shadow-xl glass-card">
+                <div className="p-6 bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border-2 border-orange-200 shadow-md glass-card">
                   <div className="text-center">
-                    <p className="text-orange-300/70 text-sm mb-1">CIA BRUT ANNUEL ESTIMÉ</p>
-                    <p className="text-5xl font-bold text-orange-300">{resultat.ciaFinal.toFixed(0)}€</p>
-                    <p className="text-slate-400 text-sm mt-2">
+                    <p className="text-orange-800/70 text-sm mb-1 font-semibold">CIA BRUT ANNUEL ESTIMÉ</p>
+                    <p className="text-5xl font-bold text-orange-600">{resultat.ciaFinal.toFixed(0)}€</p>
+                    <p className="text-slate-500 text-sm mt-2 font-medium">
                       payé fin mai/juin
                     </p>
                   </div>
@@ -665,26 +665,26 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                 {/* Détail complet (toggle) */}
                 <button
                   onClick={() => setShowDetail(!showDetail)}
-                  className="w-full flex items-center justify-center gap-2 text-sm text-slate-400 hover:text-slate-300 py-2"
+                  className="w-full flex items-center justify-center gap-2 text-sm text-slate-500 hover:text-slate-700 font-medium py-2 transition-colors"
                 >
                   <FileText className="w-4 h-4" />
                   {showDetail ? 'Masquer' : 'Voir'} le détail du calcul
                 </button>
 
                 {showDetail && (
-                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700/50 text-xs text-slate-400 font-mono space-y-2 break-words glass-card">
+                  <div className="p-4 bg-slate-100 rounded-xl border border-slate-200 text-xs text-slate-600 font-mono space-y-2 break-words glass-card shadow-inner">
                     <p>📊 Période week-ends = janvier à décembre de l'année N-1</p>
                     <p>📊 Total week-ends annuel = ({weekendSaturdays}×{weekendRateSat}€) + ({weekendSundays}×{weekendRateSun}€) = {weekendTotalAnnuel.toFixed(2)}€</p>
                     <p>📊 IFSE mensuel = {ifseMensuel}€ + {weekendTotalMensuel.toFixed(2)}€ = {ifseMensuelTotal.toFixed(2)}€</p>
                     <p>📊 IFSE annuel = {ifseMensuelTotal.toFixed(2)}€ × 12 = {resultat.ifseAnnuel.toFixed(2)}€</p>
                     <p>📊 Base CIA = {resultat.ifseAnnuel.toFixed(2)}€ × 10% = {resultat.base10Pourcent.toFixed(2)}€</p>
-                    <p className="border-t border-slate-700 pt-2">
+                    <p className="border-t border-slate-300 pt-2 mt-2">
                       ➜ Part évaluation = {(resultat.base10Pourcent/2).toFixed(2)}€ × {tauxEvaluation}% = {resultat.ciaEvaluation.toFixed(2)}€
                     </p>
                     <p>
                       ➜ Part absences = {(resultat.base10Pourcent/2).toFixed(2)}€ × {resultat.tauxAbsence}% = {resultat.ciaAbsence.toFixed(2)}€
                     </p>
-                    <p className="border-t border-slate-700 pt-2 text-orange-300">
+                    <p className="border-t border-slate-300 pt-2 mt-2 text-orange-700 font-bold">
                       ✅ CIA TOTAL = {resultat.ciaEvaluation.toFixed(2)}€ + {resultat.ciaAbsence.toFixed(2)}€ = {resultat.ciaFinal.toFixed(2)}€
                     </p>
                   </div>
@@ -693,21 +693,21 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                 <div className="flex gap-3">
                   <button
                     onClick={resetCalculator}
-                    className="flex-1 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-all glass-pill"
+                    className="flex-1 px-6 py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-medium transition-all shadow-sm glass-pill"
                   >
                     Recommencer
                   </button>
                   {onClose && (
                     <button
                       onClick={onClose}
-                      className="flex-1 px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white rounded-xl font-medium transition-all glass-pill"
+                      className="flex-1 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-medium transition-all shadow-sm glass-pill"
                     >
                       Terminer
                     </button>
                   )}
                 </div>
 
-                <p className="text-xs text-slate-500 text-center mt-4">
+                <p className="text-xs text-slate-500 font-medium text-center mt-4">
                   ⚠️ Ce calcul est indicatif. Le montant final dépend des décisions de votre administration.
                 </p>
               </div>
@@ -722,8 +722,8 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                 disabled={!canGoPrev()}
                 className={`flex w-full items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all glass-pill sm:w-auto ${
                   canGoPrev()
-                    ? 'bg-slate-700 hover:bg-slate-600 text-white'
-                    : 'bg-slate-800 text-slate-600 cursor-not-allowed'
+                    ? 'bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm'
+                    : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                 }`}
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -735,8 +735,8 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
                 disabled={!canGoNext() && currentStep !== 2 && currentStep !== 4}
                 className={`flex w-full items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all glass-pill sm:w-auto ${
                   canGoNext() || currentStep === 2 || currentStep === 4
-                    ? `bg-gradient-to-r ${stepColor.bg} hover:opacity-90 text-white shadow-lg`
-                    : 'bg-slate-800 text-slate-600 cursor-not-allowed'
+                    ? `bg-gradient-to-r ${stepColor.bg} hover:opacity-90 text-white shadow-md`
+                    : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                 }`}
               >
                 {currentStep === 4 ? 'Voir le résultat' : 'Suivant'}
@@ -750,7 +750,7 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
             <div className="text-center mt-4">
               <button
                 onClick={goNext}
-                className="text-sm text-slate-500 hover:text-slate-300 transition-colors"
+                className="text-sm text-slate-500 hover:text-slate-700 font-medium transition-colors"
               >
                 Passer cette étape →
               </button>

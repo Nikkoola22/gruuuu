@@ -1180,23 +1180,23 @@ ${indicesFactuels}
     <div
       className="min-h-screen relative overflow-x-hidden"
       style={{
-        background: 'linear-gradient(135deg, #1a0022 0%, #2a0033 40%, #3a0055 80%, #FF1C74 100%)',
+        background: 'linear-gradient(135deg, #fdfbf7 0%, #f4f0ea 50%, #fef3c7 80%, #ffedd5 100%)',
       }}
     >
       {/* Background image with transparency */}
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0 pointer-events-none"
-        style={{ backgroundImage: `url('${BASE_URL}unnamed.jpg')`, opacity: 0.3 }}
+        style={{ backgroundImage: `url('${BASE_URL}unnamed.jpg')`, opacity: 0.15 }}
       ></div>
 
       {/* Subtle overlay for better text readability */}
-      <div className="fixed inset-0 bg-black/20 z-0 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-white/40 z-0 pointer-events-none"></div>
 
       {/* Couches de fond supplémentaires — supprimées (GPU layers plein écran) */}
 
       {/* HEADER PROFESSIONNEL */}
-      <header className="relative bg-gradient-to-r from-slate-900/95 via-purple-900/90 to-slate-900/95 shadow-lg z-10 bg-cover bg-center glass-banner header-bottom-glow" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-purple-900/80 to-slate-900/80 z-0"></div>
+      <header className="relative bg-gradient-to-r from-white/95 via-slate-50/90 to-white/95 shadow-lg z-10 bg-cover bg-center glass-banner header-bottom-glow" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-slate-50/80 to-white/80 z-0"></div>
         {/* Scan line traversant le header */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
           <div
@@ -1228,12 +1228,12 @@ ${indicesFactuels}
                 )}
               </div>
               <div className="flex flex-col justify-center">
-                <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-100 to-slate-400 drop-shadow-md">
+                <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-slate-800 via-slate-600 to-slate-900 drop-shadow-sm">
                   ATLAS
                 </h1>
                 <div className="flex items-center gap-2 mt-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]"></div>
-                  <p className="text-[10px] sm:text-xs text-orange-100/90 font-semibold tracking-[0.25em] sm:tracking-[0.3em] uppercase">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]"></div>
+                  <p className="text-[10px] sm:text-xs text-orange-600 font-semibold tracking-[0.25em] sm:tracking-[0.3em] uppercase">
                     Assistant syndical CFDT
                   </p>
                 </div>
@@ -1243,16 +1243,16 @@ ${indicesFactuels}
             {/* Texte centre — masqué sur mobile */}
             <div className="hidden sm:flex flex-col items-center justify-center flex-grow">
               <div className="relative group/mairie inline-flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-full blur-xl opacity-0 group-hover/mairie:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative flex items-center gap-3 px-6 py-2 rounded-full bg-slate-800/40 border border-slate-700/50 backdrop-blur-md shadow-inner">
-                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></div>
-                  <h2 className="text-sm md:text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-100 to-slate-300 uppercase tracking-[0.2em]">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-full blur-xl opacity-0 group-hover/mairie:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative flex items-center gap-3 px-6 py-2 rounded-full bg-white/60 border border-slate-200/50 backdrop-blur-md shadow-sm">
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]"></div>
+                  <h2 className="text-sm md:text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-500 uppercase tracking-[0.2em]">
                     Mairie de Gennevilliers
                   </h2>
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.5)]"></div>
                 </div>
               </div>
-              <p className="text-xs text-slate-400 mt-2 font-light tracking-wide">Chatbot d'assistance pour les agents municipaux</p>
+              <p className="text-xs text-slate-500 mt-2 font-medium tracking-wide">Chatbot d'assistance pour les agents municipaux</p>
             </div>
 
             {/* Contact à droite */}
@@ -1274,27 +1274,27 @@ ${indicesFactuels}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-1 items-stretch justify-items-center">
                   <button
                     onClick={() => handleDomainSelection(0)}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-purple-900/70 to-slate-800/70 backdrop-blur-md border border-purple-500/30 rounded-2xl p-6 md:p-10 hover:border-pink-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-1 card-border-sweep btn-ripple"
+                    className="group relative overflow-hidden bg-white/70 backdrop-blur-md border border-purple-200 rounded-2xl p-6 md:p-10 hover:border-purple-300 hover:shadow-xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-1 btn-ripple"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-100/40 via-transparent to-pink-100/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-500/80 to-pink-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <Search className="w-12 h-12 md:w-16 md:h-16 text-white" />
+                        <span className="absolute -inset-3 bg-gradient-to-br from-purple-200 to-pink-200 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-100 to-pink-100 backdrop-blur rounded-2xl shadow-sm border border-purple-200 icon-box-spring">
+                          <Search className="w-12 h-12 md:w-16 md:h-16 text-purple-600" />
                         </div>
                       </div>
-                      <h4 className="text-2xl text-white card-title-purple">
+                      <h4 className="text-2xl text-slate-800">
                         <span className="relative inline-block z-10">
-                          <span className="relative z-20 text-white font-black tracking-tight">J&apos;ai une question</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-500 opacity-90 -skew-x-12 -rotate-2 z-0 rounded-sm shadow-[0_0_10px_rgba(236,72,153,0.5)]"></span>
+                          <span className="relative z-20 font-black tracking-tight">J&apos;ai une question</span>
+                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-purple-300 via-pink-200 to-purple-200 opacity-60 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
                         </span>
                       </h4>
-                      <p className="text-center text-slate-300 font-light text-sm">
+                      <p className="text-center text-slate-600 font-medium text-sm">
                         Temps de travail, formation, télétravail - Recherche dans tous les documents
                       </p>
-                      <div className="flex items-center gap-2 text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <span className="font-light text-sm">Accéder à l&apos;assistant</span>
+                      <div className="flex items-center gap-2 text-purple-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                        <span className="font-medium text-sm">Accéder à l&apos;assistant</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
@@ -1303,27 +1303,27 @@ ${indicesFactuels}
                   {/* Carte Grilles Indiciaires */}
                   <button
                     onClick={openMetiersView}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-emerald-900/70 to-slate-800/70 backdrop-blur-md border border-emerald-500/30 rounded-2xl p-6 md:p-10 hover:border-green-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-3 card-border-sweep card-border-sweep-green btn-ripple"
+                    className="group relative overflow-hidden bg-white/70 backdrop-blur-md border border-emerald-200 rounded-2xl p-6 md:p-10 hover:border-emerald-300 hover:shadow-xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-3 btn-ripple"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-100/40 via-transparent to-green-100/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-emerald-400/30 to-green-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-emerald-500/80 to-green-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <LayoutGrid className="w-12 h-12 md:w-16 md:h-16 text-white" />
+                        <span className="absolute -inset-3 bg-gradient-to-br from-emerald-200 to-green-200 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-emerald-100 to-green-100 backdrop-blur rounded-2xl shadow-sm border border-emerald-200 icon-box-spring">
+                          <LayoutGrid className="w-12 h-12 md:w-16 md:h-16 text-emerald-600" />
                         </div>
                       </div>
-                      <h4 className="text-2xl text-white card-title-green">
+                      <h4 className="text-2xl text-slate-800">
                         <span className="relative inline-block z-10">
-                          <span className="relative z-20 text-white font-black tracking-tight">Grilles Indiciaires</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-emerald-600 via-green-500 to-emerald-500 opacity-90 -skew-x-12 -rotate-2 z-0 rounded-sm shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
+                          <span className="relative z-20 font-black tracking-tight">Grilles Indiciaires</span>
+                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-emerald-300 via-green-200 to-emerald-200 opacity-60 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
                         </span>
                       </h4>
-                      <p className="text-center text-slate-300 font-light text-sm">
+                      <p className="text-center text-slate-600 font-medium text-sm">
                         Filières, métiers et grilles de rémunération FPT
                       </p>
-                      <div className="flex items-center gap-2 text-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <span className="font-light text-sm">Voir les grilles</span>
+                      <div className="flex items-center gap-2 text-emerald-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                        <span className="font-medium text-sm">Voir les grilles</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
@@ -1331,27 +1331,27 @@ ${indicesFactuels}
 
                   <button
                     onClick={openCalculatorsLanding}
-                    className="group relative overflow-hidden bg-gradient-to-br from-slate-800/70 via-blue-900/70 to-slate-800/70 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 md:p-10 hover:border-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-2 card-border-sweep btn-ripple"
+                    className="group relative overflow-hidden bg-white/70 backdrop-blur-md border border-blue-200 rounded-2xl p-6 md:p-10 hover:border-cyan-300 hover:shadow-xl hover:-translate-y-1 w-full max-w-sm h-96 transition-transform duration-150 glass-card animate-card-enter-2 btn-ripple"
                   >
-                    <div className="absolute inset-0 bg-black/20"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-transparent to-cyan-100/40 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></div>
                     <div className="relative z-10 flex flex-col items-center gap-6 h-full justify-between">
                       <div className="relative">
-                        <span className="absolute -inset-3 bg-gradient-to-br from-blue-400/30 to-cyan-400/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
-                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-blue-500/80 to-cyan-500/80 backdrop-blur rounded-2xl shadow-2xl icon-box-spring">
-                          <Calculator className="w-12 h-12 md:w-16 md:h-16 text-white" />
+                        <span className="absolute -inset-3 bg-gradient-to-br from-blue-200 to-cyan-200 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg group-hover:scale-110 transition-opacity duration-150"></span>
+                        <div className="relative p-4 md:p-6 bg-gradient-to-br from-blue-100 to-cyan-100 backdrop-blur rounded-2xl shadow-sm border border-blue-200 icon-box-spring">
+                          <Calculator className="w-12 h-12 md:w-16 md:h-16 text-blue-600" />
                         </div>
                       </div>
-                      <h4 className="text-2xl text-white card-title-blue">
+                      <h4 className="text-2xl text-slate-800">
                         <span className="relative inline-block z-10">
-                          <span className="relative z-20 text-white font-black tracking-tight">Calculateurs</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 opacity-90 -skew-x-12 -rotate-2 z-0 rounded-sm shadow-[0_0_10px_rgba(6,182,212,0.5)]"></span>
+                          <span className="relative z-20 font-black tracking-tight">Calculateurs</span>
+                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-200 opacity-60 -skew-x-12 -rotate-2 -z-10 rounded-sm"></span>
                         </span>
                       </h4>
-                      <p className="text-center text-slate-300 font-light text-sm">
-                        Primes IFSE - Calcul CIA - Outils de simulation
+                      <p className="text-center text-slate-600 font-medium text-sm">
+                        Estimez vos primes (IFSE 1 & 2, CIA) et votre 13ème mois
                       </p>
-                      <div className="flex items-center gap-2 text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <span className="font-light text-sm">Accéder aux calculateurs</span>
+                      <div className="flex items-center gap-2 text-cyan-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                        <span className="font-medium text-sm">Lancer une simulation</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
@@ -1370,10 +1370,10 @@ ${indicesFactuels}
                           <Gamepad2 className="w-12 h-12 md:w-16 md:h-16 text-white" />
                         </div>
                       </div>
-                      <h4 className="text-2xl text-white card-title-orange">
+                      <h4 className="text-2xl text-white">
                         <span className="relative inline-block z-10">
                           <span className="relative z-20 text-white font-black tracking-tight">Espace Jeux</span>
-                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 opacity-90 -skew-x-12 -rotate-2 z-0 rounded-sm shadow-[0_0_10px_rgba(244,63,94,0.5)]"></span>
+                          <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 opacity-90 -skew-x-12 -rotate-2 -z-10 rounded-sm shadow-[0_0_10px_rgba(244,63,94,0.5)]"></span>
                         </span>
                       </h4>
                       <p className="text-center text-slate-300 font-light text-sm">
@@ -1393,31 +1393,31 @@ ${indicesFactuels}
                   <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     
                     {/* Colonne Gauche : Actualités */}
-                    <div className="lg:col-span-3 bg-gradient-to-br from-slate-800/90 via-blue-900/40 to-slate-800/90 backdrop-blur-xl rounded-3xl p-8 border border-blue-500/30 shadow-2xl shadow-blue-900/20">
+                    <div className="lg:col-span-3 bg-gradient-to-br from-white/90 via-blue-50/40 to-white/90 backdrop-blur-xl rounded-3xl p-8 border border-blue-200 shadow-xl shadow-blue-100/50">
                       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8 justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="p-2.5 bg-blue-500/20 rounded-xl border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                            <Newspaper className="w-6 h-6 text-blue-400" />
+                          <div className="p-2.5 bg-blue-100/50 rounded-xl border border-blue-200 shadow-sm">
+                            <Newspaper className="w-6 h-6 text-blue-500" />
                           </div>
-                          <h3 className="text-2xl font-bold text-white tracking-wide">
+                          <h3 className="text-2xl font-bold text-slate-800 tracking-wide">
                             Actualités
                             <span className="relative inline-block ml-2 z-10">
-                              <span className="relative z-20 text-white font-black tracking-tight">Syndicales & Statutaires</span>
-                              <span className="absolute bottom-1 left-[-2%] w-[104%] h-3.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 opacity-90 -skew-x-12 -rotate-2 z-0 rounded-sm shadow-[0_0_10px_rgba(6,182,212,0.5)]"></span>
+                              <span className="relative z-20 text-slate-800 font-black tracking-tight">Syndicales & Statutaires</span>
+                              <span className="absolute bottom-1 left-[-2%] w-[104%] h-3.5 bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-300 opacity-60 -skew-x-12 -rotate-2 z-0 rounded-sm"></span>
                             </span>
                           </h3>
                         </div>
                         <button
                           onClick={() => setChatState({ ...chatState, currentView: 'actualites' })}
-                          className="ml-auto text-xs text-slate-400 hover:text-blue-300 transition-colors duration-150 underline underline-offset-2"
+                          className="ml-auto text-xs text-slate-500 hover:text-blue-600 transition-colors duration-150 underline underline-offset-2 font-medium"
                         >
                           Voir toutes les actualités →
                         </button>
                       </div>
 
                       {/* --- ACTUALITÉ STATUTAIRE CIG --- */}
-                      <div className="flex flex-col md:flex-row gap-6 mb-8 border-b border-slate-700/50 pb-8 group/card">
-                        <div className="relative w-full md:w-64 h-40 overflow-hidden rounded-xl shrink-0 border border-slate-700 bg-slate-900/50">
+                      <div className="flex flex-col md:flex-row gap-6 mb-8 border-b border-slate-200/80 pb-8 group/card">
+                        <div className="relative w-full md:w-64 h-40 overflow-hidden rounded-xl shrink-0 border border-slate-200 bg-slate-100/50">
                           <img src="https://www.cig929394.fr/wp-content/uploads/2026/06/Emplois-superieurs-480x252.jpg" alt="Réforme encadrement" className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300" />
                           <span className="absolute top-2 left-2 inline-block text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-900/80 backdrop-blur text-red-300 border border-red-500/30">
                             Statutaire
@@ -1425,18 +1425,18 @@ ${indicesFactuels}
                         </div>
                         <div className="flex flex-col justify-between">
                           <div>
-                            <h4 className="text-lg font-bold text-white mt-1 hover:text-blue-300 transition-colors leading-snug">
+                            <h4 className="text-lg font-bold text-slate-800 mt-1 hover:text-blue-600 transition-colors leading-snug">
                               <a href="https://www.cig929394.fr/actualites/reforme-de-lencadrement-superieur-au-1er-juillet-2026/" target="_blank" rel="noopener noreferrer">
                                 Réforme de l'encadrement supérieur au 1er juillet 2026
                               </a>
                             </h4>
-                            <p className="text-sm text-slate-300 font-light mt-2 leading-relaxed">
+                            <p className="text-sm text-slate-600 font-medium mt-2 leading-relaxed">
                               Retrouvez les détails de la réforme de l'encadrement supérieur de la fonction publique territoriale applicable au 1er juillet 2026 sur le site du CIG Petite Couronne.
                             </p>
                           </div>
-                          <div className="mt-4 flex items-center justify-between text-xs text-slate-400">
-                            <span>CIG Petite Couronne</span>
-                            <a href="https://www.cig929394.fr/actualites/" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                          <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
+                            <span className="font-medium">CIG Petite Couronne</span>
+                            <a href="https://www.cig929394.fr/actualites/" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
                               Toutes les actus CIG
                             </a>
                           </div>
@@ -1444,8 +1444,8 @@ ${indicesFactuels}
                       </div>
 
                       {/* --- ACTUALITÉS CFDT INTERCO --- */}
-                      <h4 className="text-md font-semibold text-white mb-4 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                      <h4 className="text-md font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-blue-400"></span>
                         En direct de la CFDT Interco
                       </h4>
 
@@ -1463,7 +1463,7 @@ ${indicesFactuels}
                                 intercoCarouselRef.current.scrollBy({ left: -280, behavior: 'smooth' })
                               }
                             }}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-9 h-9 rounded-full bg-slate-800/90 border border-slate-600/50 flex items-center justify-center text-white shadow-lg opacity-0 group-hover/carousel:opacity-100 hover:bg-slate-700 transition-all duration-150"
+                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-9 h-9 rounded-full bg-white/90 border border-slate-200 flex items-center justify-center text-slate-700 shadow-lg opacity-0 group-hover/carousel:opacity-100 hover:bg-slate-50 transition-all duration-150"
                           >
                             <ChevronLeft className="w-5 h-5" />
                           </button>
@@ -1474,13 +1474,13 @@ ${indicesFactuels}
                                 intercoCarouselRef.current.scrollBy({ left: 280, behavior: 'smooth' })
                               }
                             }}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-9 h-9 rounded-full bg-slate-800/90 border border-slate-600/50 flex items-center justify-center text-white shadow-lg opacity-0 group-hover/carousel:opacity-100 hover:bg-slate-700 transition-all duration-150"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-9 h-9 rounded-full bg-white/90 border border-slate-200 flex items-center justify-center text-slate-700 shadow-lg opacity-0 group-hover/carousel:opacity-100 hover:bg-slate-50 transition-all duration-150"
                           >
                             <ChevronRight className="w-5 h-5" />
                           </button>
 
-                          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-900/80 to-transparent z-[1] pointer-events-none rounded-l-2xl" />
-                          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-900/80 to-transparent z-[1] pointer-events-none rounded-r-2xl" />
+                          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/80 to-transparent z-[1] pointer-events-none rounded-l-2xl" />
+                          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/80 to-transparent z-[1] pointer-events-none rounded-r-2xl" />
 
                           <div
                             ref={intercoCarouselRef}
@@ -1495,9 +1495,9 @@ ${indicesFactuels}
                                   href={article.link}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="group/card flex-none w-64 flex flex-col bg-gradient-to-br from-slate-800/80 via-blue-950/60 to-slate-800/80 backdrop-blur-md border border-blue-500/20 rounded-2xl overflow-hidden hover:border-blue-400/50 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-150 glass-card"
+                                  className="group/card flex-none w-64 flex flex-col bg-white/80 border border-blue-200/60 rounded-2xl overflow-hidden hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all duration-150 glass-card shadow-sm"
                                 >
-                                  <div className="relative w-full h-32 overflow-hidden bg-slate-900/50 flex-shrink-0">
+                                  <div className="relative w-full h-32 overflow-hidden bg-slate-100/50 flex-shrink-0 border-b border-slate-100">
                                     <img
                                       src={article.imageUrl || `${BASE_URL}logo-cfdt.jpg`}
                                       alt={article.title}
@@ -1509,19 +1509,19 @@ ${indicesFactuels}
                                       }}
                                     />
                                     {article.category && (
-                                      <span className="absolute top-2 left-2 inline-block text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-900/80 backdrop-blur text-blue-300 border border-blue-500/30">
+                                      <span className="absolute top-2 left-2 inline-block text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/90 backdrop-blur text-blue-600 border border-blue-200/50 shadow-sm">
                                         {article.category}
                                       </span>
                                     )}
                                   </div>
 
                                   <div className="p-4 flex flex-col justify-between flex-grow">
-                                    <p className="text-white font-light text-sm leading-snug group-hover/card:text-blue-200 transition-colors duration-150 line-clamp-3">
+                                    <p className="text-slate-700 font-medium text-sm leading-snug group-hover/card:text-blue-600 transition-colors duration-150 line-clamp-3">
                                       {article.title}
                                     </p>
-                                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-700/40">
-                                      <span className="text-xs text-slate-400 font-light">{date}</span>
-                                      <span className="text-xs text-blue-400 flex items-center gap-1 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150">
+                                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
+                                      <span className="text-xs text-slate-500 font-medium">{date}</span>
+                                      <span className="text-xs text-blue-500 font-semibold flex items-center gap-1 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150">
                                         Lire <ArrowRight className="w-3 h-3" />
                                       </span>
                                     </div>
@@ -1535,37 +1535,37 @@ ${indicesFactuels}
                     </div>
 
                     {/* Colonne Droite : À Lire (Journal) */}
-                    <div className="lg:col-span-1 bg-gradient-to-br from-slate-800/80 via-blue-950/60 to-slate-800/80 rounded-3xl p-6 border border-blue-500/20 glass-card flex flex-col h-full hover:border-blue-400/50 transition-all duration-300">
+                    <div className="lg:col-span-1 bg-white/80 rounded-3xl p-6 border border-blue-200 glass-card flex flex-col h-full hover:border-blue-300 hover:shadow-xl transition-all duration-300 shadow-lg shadow-blue-100/50">
                       <div className="flex items-center gap-3 mb-6">
-                        <h3 className="text-2xl font-bold text-white tracking-wide">
+                        <h3 className="text-2xl font-bold text-slate-800 tracking-wide">
                           <span className="relative inline-block z-10">
-                            <span className="relative z-20 text-white font-black tracking-tight">À lire</span>
-                            <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 opacity-90 -skew-x-12 -rotate-2 z-0 rounded-sm shadow-[0_0_10px_rgba(6,182,212,0.5)]"></span>
+                            <span className="relative z-20 text-slate-800 font-black tracking-tight">À lire</span>
+                            <span className="absolute bottom-1.5 left-[-4%] w-[108%] h-3.5 bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-300 opacity-60 -skew-x-12 -rotate-2 z-0 rounded-sm"></span>
                           </span>
                         </h3>
                       </div>
                       
-                      <div className="group overflow-hidden rounded-xl shadow-lg relative flex-grow bg-slate-900/50 flex flex-col">
+                      <div className="group overflow-hidden rounded-xl shadow-md relative flex-grow bg-slate-50 flex flex-col border border-slate-100">
                         <a 
                           href="https://intranet.ville-gennevilliers.fr/Statics/media/syndicats/cfdt/journaux/journal-gennevilliers-printemps-2026.pdf"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex flex-col h-full"
                         >
-                          <div className="absolute inset-0 bg-blue-500/10 group-hover:bg-transparent transition-colors duration-300 z-10 pointer-events-none rounded-xl"></div>
+                          <div className="absolute inset-0 bg-blue-100/10 group-hover:bg-transparent transition-colors duration-300 z-10 pointer-events-none rounded-xl"></div>
                           <img 
                             src={`${BASE_URL}journal-2026.png`} 
                             alt="Journal CFDT" 
-                            className="w-full flex-grow min-h-[16rem] object-contain transform group-hover:scale-105 transition-transform duration-500 rounded-t-xl bg-slate-900/20" 
+                            className="w-full flex-grow min-h-[16rem] object-contain transform group-hover:scale-105 transition-transform duration-500 rounded-t-xl bg-slate-100" 
                           />
-                          <div className="p-4 flex flex-col shrink-0">
+                          <div className="p-4 flex flex-col shrink-0 bg-white">
                             <div>
-                              <h4 className="text-white text-base font-bold mb-1">Le Journal CFDT</h4>
-                              <p className="text-slate-300 text-xs leading-relaxed line-clamp-2">
+                              <h4 className="text-slate-800 text-base font-bold mb-1">Le Journal CFDT</h4>
+                              <p className="text-slate-600 text-xs leading-relaxed line-clamp-2">
                                 Découvrez la dernière édition de notre journal d'information syndicale.
                               </p>
                             </div>
-                            <div className="mt-3 flex items-center justify-center gap-2 w-full bg-blue-600/90 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-150 text-sm">
+                            <div className="mt-3 flex items-center justify-center gap-2 w-full bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold py-2 px-4 rounded-lg transition-colors duration-150 text-sm">
                               Télécharger PDF <ArrowRight className="w-4 h-4" />
                             </div>
                           </div>
@@ -1576,16 +1576,16 @@ ${indicesFactuels}
                 </div>
 
                 {/* --- NOUVELLE SECTION : DOCUMENTS DE RÉFÉRENCE --- */}
-                <div className="mt-8 mb-8 relative bg-gradient-to-br from-blue-500 via-teal-400 to-emerald-500 rounded-2xl p-5 md:p-6 shadow-[0_15px_40px_rgba(20,184,166,0.3)] overflow-hidden group/section">
+                <div className="mt-8 mb-8 relative bg-gradient-to-br from-blue-100 via-teal-50 to-emerald-100 border border-teal-200 rounded-2xl p-5 md:p-6 shadow-xl shadow-teal-100/50 overflow-hidden group/section">
                   {/* Effet de lueur en arrière-plan */}
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-3xl bg-white/20 pointer-events-none rounded-full blur-3xl"></div>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-3xl bg-white/40 pointer-events-none rounded-full blur-3xl"></div>
                   
                   <div className="relative z-10 flex items-center gap-3 mb-5">
-                    <FileText className="w-5 h-5 text-white drop-shadow-md" />
+                    <FileText className="w-5 h-5 text-teal-600 drop-shadow-sm" />
                     <h3 className="text-xl font-bold tracking-wide">
                       <span className="relative inline-block z-10">
-                        <span className="relative z-20 text-white font-black tracking-tight drop-shadow-md">Documents de Référence</span>
-                        <span className="absolute bottom-1 left-[-2%] w-[104%] h-2.5 bg-white/30 -skew-x-12 -rotate-1 z-0 rounded-sm"></span>
+                        <span className="relative z-20 text-slate-800 font-black tracking-tight drop-shadow-sm">Documents de Référence</span>
+                        <span className="absolute bottom-1 left-[-2%] w-[104%] h-2.5 bg-white/60 -skew-x-12 -rotate-1 z-0 rounded-sm border border-white/50"></span>
                       </span>
                     </h3>
                   </div>
@@ -1645,7 +1645,7 @@ ${indicesFactuels}
                   <div className="flex flex-wrap justify-center items-center gap-4">
                     <button
                       onClick={() => setChatState({ ...chatState, currentView: 'faq' })}
-                      className="group flex items-center gap-3 bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-600 text-slate-900 font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-150 hover:scale-105 btn-cta animate-cta-enter btn-shine"
+                      className="group flex items-center gap-3 bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-200 hover:from-amber-200 hover:via-yellow-200 hover:to-amber-300 text-amber-900 border border-amber-300 font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-amber-200/50 transition-all duration-150 hover:scale-105 btn-cta animate-cta-enter"
                     >
                       <HelpCircle className="w-6 h-6" />
                       <span className="text-lg">Questions Fréquentes</span>
@@ -1654,7 +1654,7 @@ ${indicesFactuels}
 
                     <button
                       onClick={() => setShowUsefulLinks((prev) => !prev)}
-                      className="group flex items-center gap-3 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-600 hover:from-blue-600 hover:via-indigo-600 hover:to-blue-700 text-white font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-150 hover:scale-105 btn-cta animate-cta-enter btn-shine"
+                      className="group flex items-center gap-3 bg-gradient-to-r from-blue-100 via-indigo-50 to-blue-200 hover:from-blue-200 hover:via-indigo-100 hover:to-blue-300 text-blue-900 border border-blue-300 font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:shadow-blue-200/50 transition-all duration-150 hover:scale-105 btn-cta animate-cta-enter"
                     >
                       <Link2 className="w-6 h-6" />
                       <span className="text-lg">Liens utiles</span>
@@ -1719,9 +1719,9 @@ ${indicesFactuels}
 
       {/* --- SECTION CALCULATEURS FULL-WIDTH --- */}
       {chatState.currentView === 'calculators' && (
-        <section className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+        <section className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50">
           {/* Header */}
-          <div className="sticky top-0 bg-gradient-to-r from-slate-800/95 to-blue-900/95 backdrop-blur-md border-b border-blue-500/30 z-30">
+          <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm z-30 glass-banner">
             <div className="max-w-6xl mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <button
@@ -1732,12 +1732,12 @@ ${indicesFactuels}
                       setChatState({ ...chatState, currentView: 'menu' })
                     }
                   }}
-                  className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-100 font-light"
+                  className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-700 px-4 py-2 rounded-lg transition-colors duration-100 font-medium border border-red-200"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>{activeCalculator ? 'Retour aux calculateurs' : 'Retour au menu'}</span>
                 </button>
-                <h2 className="text-xl font-light text-white">Calculateurs CFDT</h2>
+                <h2 className="text-xl font-bold text-slate-800">Calculateurs CFDT</h2>
               </div>
             </div>
           </div>
@@ -1746,24 +1746,24 @@ ${indicesFactuels}
           {!activeCalculator && (
             <div className="max-w-6xl mx-auto px-4 py-12 calc-landing-enter">
               <div className="text-center mb-12">
-                <h3 className="text-3xl font-light text-white mb-4">Choisissez un calculateur</h3>
-                <p className="text-slate-400 font-light">Cliquez sur une icône pour accéder au calculateur</p>
+                <h3 className="text-3xl font-bold text-slate-800 mb-4">Choisissez un calculateur</h3>
+                <p className="text-slate-500 font-medium">Cliquez sur une icône pour accéder au calculateur</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Carte CIA */}
                 <button
                   onClick={() => openCalculator('cia')}
-                  className="group relative bg-gradient-to-br from-slate-800/80 to-orange-900/50 backdrop-blur-md border border-orange-500/30 rounded-2xl p-8 shadow-xl transition-all duration-300 glass-card hover:scale-105 hover:shadow-2xl hover:border-orange-400/50"
+                  className="group relative bg-white backdrop-blur-md border border-orange-200 rounded-2xl p-8 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg hover:border-orange-300"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-amber-500/10 rounded-2xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-amber-50/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-orange-500/80 to-amber-500/80 rounded-2xl shadow-2xl">
-                      <Calculator className="w-16 h-16 text-white" />
+                    <div className="p-6 bg-gradient-to-br from-orange-100 to-amber-100 rounded-2xl shadow-sm border border-orange-200">
+                      <Calculator className="w-16 h-16 text-orange-600" />
                     </div>
-                    <h4 className="text-2xl font-light text-white">CIA</h4>
-                    <p className="text-center text-slate-400 font-light text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
-                    <div className="flex items-center gap-2 text-orange-300/90">
-                      <span className="font-light text-sm">Ouvrir le calculateur</span>
+                    <h4 className="text-2xl font-bold text-slate-800">CIA</h4>
+                    <p className="text-center text-slate-500 font-medium text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
+                    <div className="flex items-center gap-2 text-orange-600 font-bold">
+                      <span className="text-sm">Ouvrir le calculateur</span>
                     </div>
                   </div>
                 </button>
@@ -1771,17 +1771,17 @@ ${indicesFactuels}
                 {/* Carte 13ème Mois */}
                 <button
                   onClick={() => openCalculator('13eme')}
-                  className="group relative bg-gradient-to-br from-slate-800/80 to-green-900/50 backdrop-blur-md border border-green-500/30 rounded-2xl p-8 shadow-xl transition-all duration-300 glass-card hover:scale-105 hover:shadow-2xl hover:border-green-400/50"
+                  className="group relative bg-white backdrop-blur-md border border-emerald-200 rounded-2xl p-8 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg hover:border-emerald-300"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-emerald-500/10 rounded-2xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-green-50/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-green-500/80 to-emerald-500/80 rounded-2xl shadow-2xl">
-                      <DollarSign className="w-16 h-16 text-white" />
+                    <div className="p-6 bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl shadow-sm border border-emerald-200">
+                      <DollarSign className="w-16 h-16 text-emerald-600" />
                     </div>
-                    <h4 className="text-2xl font-light text-white">13ème Mois</h4>
-                    <p className="text-center text-slate-400 font-light text-sm">Calculez votre prime de 13ème mois selon votre situation</p>
-                    <div className="flex items-center gap-2 text-green-300/90">
-                      <span className="font-light text-sm">Ouvrir le calculateur</span>
+                    <h4 className="text-2xl font-bold text-slate-800">13ème Mois</h4>
+                    <p className="text-center text-slate-500 font-medium text-sm">Calculez votre prime de 13ème mois selon votre situation</p>
+                    <div className="flex items-center gap-2 text-emerald-600 font-bold">
+                      <span className="text-sm">Ouvrir le calculateur</span>
                     </div>
                   </div>
                 </button>
@@ -1789,15 +1789,18 @@ ${indicesFactuels}
                 {/* Carte Primes IFSE */}
                 <button
                   onClick={() => openCalculator('primes')}
-                  className="group relative bg-gradient-to-br from-slate-800/80 to-cyan-900/50 backdrop-blur-md border border-cyan-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/20 hover:scale-105 hover:-translate-y-2 transition-transform duration-150 glass-card"
+                  className="group relative bg-white backdrop-blur-md border border-cyan-200 rounded-2xl p-8 shadow-sm hover:shadow-lg hover:border-cyan-300 hover:scale-105 hover:-translate-y-2 transition-transform duration-150"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/50 via-transparent to-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
                   <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-cyan-500/80 to-blue-500/80 rounded-2xl shadow-2xl group-hover:scale-110 transition-transform duration-150">
-                      <TrendingUp className="w-16 h-16 text-white" />
+                    <div className="p-6 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl shadow-sm border border-cyan-200 group-hover:scale-110 transition-transform duration-150">
+                      <TrendingUp className="w-16 h-16 text-cyan-600" />
                     </div>
-                    <h4 className="text-2xl font-light text-white group-hover:text-cyan-200 transition-colors duration-100">Primes IFSE</h4>
-                    <p className="text-center text-slate-400 font-light text-sm">Calculez vos primes IFSE 1 et IFSE 2 selon votre grade et direction</p>
+                    <h4 className="text-2xl font-bold text-slate-800 group-hover:text-cyan-700 transition-colors duration-100">Primes IFSE</h4>
+                    <p className="text-center text-slate-500 font-medium text-sm">Calculez vos primes IFSE 1 et IFSE 2 selon votre grade et direction</p>
+                    <div className="flex items-center gap-2 text-cyan-600 font-bold">
+                      <span className="text-sm">Ouvrir le calculateur</span>
+                    </div>
                   </div>
                 </button>
               </div>
@@ -1825,7 +1828,7 @@ ${indicesFactuels}
 
       <main className={
         chatState.currentView === "chat"
-          ? "relative z-[60] max-w-5xl mx-auto overflow-y-auto overflow-x-hidden overscroll-contain bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 px-4 sm:px-6 lg:px-8 py-4"
+          ? "relative z-[60] max-w-5xl mx-auto overflow-y-auto overflow-x-hidden overscroll-contain bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4 sm:px-6 lg:px-8 py-4"
           : "relative max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-2 z-10"
       }>
         {chatState.currentView === "chat" && (

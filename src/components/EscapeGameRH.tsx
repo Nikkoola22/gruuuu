@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { 
   Key, LockKeyhole, ArrowLeft,
   RotateCcw, 
@@ -180,16 +180,12 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
   const currentScenario = SCENARIOS[currentScenarioIndex];
   const maxScenarios = SCENARIOS.length;
 
-  // Scroll automatique au niveau de la fenêtre des dossiers à chaque nouveau dossier
+  // Scroll automatique au niveau de la fenêtre des dossiers à chaque nouveau dossier (sauf au tout début)
   useEffect(() => {
-    if (gameState === "playing" && selectedChoiceIndex === null) {
+    if (gameState === "playing" && selectedChoiceIndex === null && currentScenarioIndex > 0) {
       const timer = setTimeout(() => {
-        if (dossierRef.current) {
-          dossierRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-      }, 60);
+        dossierRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
       return () => clearTimeout(timer);
     }
   }, [currentScenarioIndex, gameState, selectedChoiceIndex]);
@@ -199,35 +195,35 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
     if (gameState === "playing" && selectedChoiceIndex !== null) {
       const timer = setTimeout(() => {
         feedbackRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }, 100);
+      }, 50);
       return () => clearTimeout(timer);
     }
   }, [selectedChoiceIndex, gameState]);
 
-  const handleStart = () => {
+  const handleStart = useCallback(() => {
     setScore(0);
     setCurrentScenarioIndex(0);
     setSelectedChoiceIndex(null);
     setUserChoices([]);
     setGameState("playing");
-  };
+  }, []);
 
-  const handleChoiceSelect = (choiceIndex: number) => {
+  const handleChoiceSelect = useCallback((choiceIndex: number) => {
     if (selectedChoiceIndex !== null) return; // Un seul choix autorisé
     setSelectedChoiceIndex(choiceIndex);
     const chosenChoice = currentScenario.choices[choiceIndex];
     setScore((prev) => prev + chosenChoice.score);
     setUserChoices((prev) => [...prev, choiceIndex]);
-  };
+  }, [selectedChoiceIndex, currentScenario]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentScenarioIndex + 1 < maxScenarios) {
       setCurrentScenarioIndex((prev) => prev + 1);
       setSelectedChoiceIndex(null);
     } else {
       setGameState("results");
     }
-  };
+  }, [currentScenarioIndex, maxScenarios]);
 
   const getResultsFeedback = () => {
     const percent = (score / (maxScenarios * 2)) * 100;
@@ -256,18 +252,24 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 font-sans min-h-screen flex flex-col justify-between relative overflow-hidden bg-gradient-to-b from-indigo-950 via-purple-900 to-indigo-950">
+    <div 
+      className="max-w-6xl mx-auto px-4 py-8 font-sans min-h-screen flex flex-col justify-between relative overflow-hidden text-white"
+      style={{
+        background: 'linear-gradient(180deg, #1e1b4b 0%, #3b0764 50%, #1e1b4b 100%)'
+      }}
+    >
       
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40 mix-blend-screen">
-        <div className="absolute top-0 right-10 w-96 h-96 bg-pink-500 rounded-full blur-[100px] animate-[pulse_4s_infinite]"></div>
-        <div className="absolute bottom-10 left-10 w-80 h-80 bg-cyan-400 rounded-full blur-[90px] animate-[pulse_5s_infinite]"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500 rounded-full blur-[150px] animate-[pulse_3s_infinite]"></div>
-      </div>
+      {/* Decorative background elements (Ultra-performant GPU radial gradients sans aucun blur CPU-bound) */}
+      <div 
+        className="absolute inset-0 pointer-events-none overflow-hidden opacity-35"
+        style={{
+          background: 'radial-gradient(circle at 85% 15%, rgba(236, 72, 153, 0.4) 0%, transparent 45%), radial-gradient(circle at 15% 85%, rgba(34, 211, 238, 0.3) 0%, transparent 45%), radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.25) 0%, transparent 55%)'
+        }}
+      />
 
       {/* HEADER BAR */}
       <div className="relative z-10 w-full max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8 bg-white/10 backdrop-blur-md border-4 border-slate-900 p-4 rounded-3xl shadow-[6px_6px_0px_#1e1b4b]">
+        <div className="flex justify-between items-center mb-8 bg-white/10 backdrop-blur-sm border-4 border-slate-900 p-4 rounded-3xl shadow-[6px_6px_0px_#1e1b4b]">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-pink-500 text-white shadow-inner border-2 border-slate-900 rotate-[-5deg]">
               <LockKeyhole className="w-6 h-6" />
@@ -281,8 +283,9 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
           </div>
           
           <button
+            type="button"
             onClick={onClose}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-150 group shrink-0 cursor-pointer"
             title="Quitter la mission"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -297,10 +300,10 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
             {gameState === "welcome" && (
               <motion.div 
                 key="welcome"
-                initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                exit={{ opacity: 0, scale: 1.1, rotate: 2 }}
-                transition={{ type: "spring", bounce: 0.5 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
                 className="w-full bg-white border-4 border-slate-900 rounded-[2.5rem] p-8 shadow-[12px_12px_0px_#4c1d95] relative overflow-hidden text-slate-900"
               >
                 {/* Top Secret Badge */}
@@ -347,8 +350,9 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
 
                 <div className="flex justify-center">
                   <button
+                    type="button"
                     onClick={handleStart}
-                    className="px-10 py-5 bg-indigo-500 text-white rounded-full font-black text-xl border-4 border-slate-900 shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 transition-all flex items-center gap-3 uppercase hover:bg-indigo-400 group"
+                    className="px-10 py-5 bg-indigo-500 text-white rounded-full font-black text-xl border-4 border-slate-900 shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 transition-colors duration-150 flex items-center gap-3 uppercase hover:bg-indigo-400 group cursor-pointer"
                   >
                     Démarrer l'enquête
                     <ArrowRight className="w-7 h-7 group-hover:translate-x-1 transition-transform" />
@@ -361,10 +365,10 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
             {gameState === "playing" && (
               <motion.div 
                 key="playing"
-                initial={{ opacity: 0, scale: 0.9, y: 50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 1.1, y: -50 }}
-                transition={{ type: "spring", bounce: 0.4 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
                 className="w-full flex flex-col gap-6"
               >
                 {/* PROGRESS BAR & DOSSIER HEADER */}
@@ -377,7 +381,7 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
                   </div>
                   <div className="w-full h-5 bg-slate-100 rounded-full border-4 border-slate-900 overflow-hidden relative">
                     <div 
-                      className="absolute top-0 left-0 h-full bg-gradient-to-r from-pink-500 to-indigo-500 transition-all duration-500 ease-out"
+                      className="absolute top-0 left-0 h-full bg-gradient-to-r from-pink-500 to-indigo-500 transition-all duration-300 ease-out"
                       style={{ width: `${((currentScenarioIndex + (selectedChoiceIndex !== null ? 1 : 0)) / maxScenarios) * 100}%` }}
                     ></div>
                   </div>
@@ -436,9 +440,10 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
                     return (
                       <button
                         key={index}
+                        type="button"
                         disabled={hasAnswered}
                         onClick={() => handleChoiceSelect(index)}
-                        className={`w-full p-4 sm:p-5 rounded-2xl border-4 transition-all text-left flex items-start gap-4 ${borderStyle}`}
+                        className={`w-full p-4 sm:p-5 rounded-2xl border-4 text-left flex items-start gap-4 select-none transition-colors duration-150 ${borderStyle}`}
                       >
                         <div className={`w-12 h-12 rounded-xl border-4 flex items-center justify-center text-lg shrink-0 font-black ${badgeStyle}`}>
                           {hasAnswered && isSelected ? (
@@ -473,10 +478,10 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
                   {selectedChoiceIndex !== null && (
                     <motion.div
                       ref={feedbackRef}
-                      initial={{ opacity: 0, scale: 0.5, y: 20 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.5 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
                       className={`rounded-3xl p-6 sm:p-8 border-4 border-slate-900 text-left shadow-[8px_8px_0px_rgba(0,0,0,1)] relative overflow-hidden scroll-mt-6 ${
                         currentScenario.choices[selectedChoiceIndex].type === "bon"
                           ? "bg-emerald-100"
@@ -520,8 +525,9 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
 
                       <div className="flex justify-end">
                         <button
+                          type="button"
                           onClick={handleNext}
-                          className="px-8 py-4 bg-indigo-500 text-white rounded-2xl font-black text-lg border-4 border-slate-900 shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 transition-all flex items-center gap-3 uppercase tracking-wider hover:bg-indigo-400 group"
+                          className="px-8 py-4 bg-indigo-500 text-white rounded-2xl font-black text-lg border-4 border-slate-900 shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 transition-colors duration-150 flex items-center gap-3 uppercase tracking-wider hover:bg-indigo-400 group cursor-pointer"
                         >
                           <span>{currentScenarioIndex + 1 >= maxScenarios ? "Ouvrir le coffre final" : "Dossier Suivant"}</span>
                           <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
@@ -538,8 +544,9 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
             {gameState === "results" && (
               <motion.div 
                 key="results"
-                initial={{ opacity: 0, scale: 0.8, rotate: 2 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
                 className="w-full bg-white border-4 border-slate-900 rounded-[3rem] p-8 sm:p-10 text-center shadow-[12px_12px_0px_#0ea5e9] relative overflow-hidden flex flex-col gap-8 text-slate-900"
               >
                 <div>
@@ -642,15 +649,17 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
                 {/* Action buttons */}
                 <div className="flex flex-col sm:flex-row justify-center gap-5 mt-6">
                   <button
+                    type="button"
                     onClick={handleStart}
-                    className="px-8 py-5 bg-yellow-400 text-slate-900 rounded-2xl font-black text-base uppercase shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 border-4 border-slate-900 transition-all flex items-center justify-center gap-3"
+                    className="px-8 py-5 bg-yellow-400 text-slate-900 rounded-2xl font-black text-base uppercase shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 border-4 border-slate-900 transition-colors duration-150 flex items-center justify-center gap-3 cursor-pointer"
                   >
                     <RotateCcw className="w-6 h-6" />
                     Rejouer la mission
                   </button>
                   <button
+                    type="button"
                     onClick={onClose}
-                    className="px-8 py-5 bg-rose-500 text-white rounded-2xl font-black text-base uppercase shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 border-4 border-slate-900 transition-all flex items-center justify-center gap-3"
+                    className="px-8 py-5 bg-rose-500 text-white rounded-2xl font-black text-base uppercase shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 border-4 border-slate-900 transition-colors duration-150 flex items-center justify-center gap-3 cursor-pointer"
                   >
                     <ArrowLeft className="w-6 h-6" />
                     Retour aux jeux

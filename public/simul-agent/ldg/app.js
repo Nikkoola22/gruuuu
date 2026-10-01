@@ -101,22 +101,95 @@ document.addEventListener('DOMContentLoaded', () => {
       const opt = document.createElement('option');
       opt.value = i;
       opt.textContent = `${i} an${i > 1 ? 's' : ''} (${i} pt${i > 1 ? 's' : ''})`;
-      if (i === 10) opt.selected = true;
       selectLdg3Years.appendChild(opt);
     }
 
-    // LDG 5 Days: 0 to 15 days
+    // LDG 5 Days: 'Choisir' par défaut, puis 0 à 15 jours
     selectLdg5Days.innerHTML = '';
+    const optChoisir5 = document.createElement('option');
+    optChoisir5.value = '';
+    optChoisir5.textContent = 'Choisir';
+    optChoisir5.selected = true;
+    selectLdg5Days.appendChild(optChoisir5);
+
     for (let i = 0; i <= 15; i++) {
       const opt = document.createElement('option');
       opt.value = i;
       opt.textContent = `${i} jour${i > 1 ? 's' : ''} de formation (${i} pt${i > 1 ? 's' : ''})`;
-      if (i === 6) opt.selected = true;
       selectLdg5Days.appendChild(opt);
     }
   }
 
   initDynamicOptions();
+
+  // Application de l'ancienneté (Ligne 3) calculée automatiquement selon les données de l'Étape 3
+  function applySeniorityFromProfile() {
+    let applied = false;
+    let urlParams = null;
+    try {
+      urlParams = new URLSearchParams(window.location.search);
+    } catch (e) {}
+
+    // 1. Calcul à partir de la date de nomination / entrée dans le cadre (Étape 3)
+    let dateStr = urlParams ? urlParams.get('startDate') : null;
+    if (!dateStr) {
+      try {
+        const stored = localStorage.getItem('cfdt_current_profile');
+        if (stored) {
+          const p = JSON.parse(stored);
+          dateStr = p.dateEntreeCadreEmploi || p.dateNominationGradeActuel || p.dateEntreeFonctionPublique;
+        }
+      } catch (e) {}
+    }
+
+    if (dateStr) {
+      const parts = dateStr.split('-').map(Number);
+      if (parts.length >= 3 && !isNaN(parts[0])) {
+        const [sYear, sMonth, sDay] = parts;
+        // Arrêté au 1er janvier 2027 (Date officielle de la session LDG-PI 2027)
+        let y = 2027 - sYear;
+        let m = 0 - (sMonth - 1);
+        let d = 1 - sDay;
+        if (d < 0) m -= 1;
+        if (m < 0) {
+          y -= 1;
+          m += 12;
+        }
+        y = Math.max(0, Math.min(45, y));
+        m = Math.max(0, Math.min(11, m));
+        selectLdg3Years.value = String(y);
+        if (selectLdg3Months.options[m]) {
+          selectLdg3Months.selectedIndex = m;
+        }
+        applied = true;
+      }
+    }
+
+    // 2. Paramètres explicites years & months dans l'URL si présents
+    if (urlParams) {
+      if (urlParams.has('years')) {
+        const y = parseInt(urlParams.get('years'), 10);
+        if (!isNaN(y) && y >= 0 && y <= 45) {
+          selectLdg3Years.value = String(y);
+          applied = true;
+        }
+      }
+      if (urlParams.has('months')) {
+        const m = parseInt(urlParams.get('months'), 10);
+        if (!isNaN(m) && m >= 0 && m <= 11) {
+          if (selectLdg3Months.options[m]) {
+            selectLdg3Months.selectedIndex = m;
+            applied = true;
+          }
+        }
+      }
+    }
+
+    if (!applied) {
+      selectLdg3Years.value = '0';
+      selectLdg3Months.value = '0';
+    }
+  }
 
   // Pre-populate values from URL parameters if passed from career simulator
   try {
@@ -133,15 +206,11 @@ document.addEventListener('DOMContentLoaded', () => {
         selectAccessWay.value = w;
       }
     }
-    if (urlParams.has('years')) {
-      const y = parseInt(urlParams.get('years'), 10);
-      if (!isNaN(y) && y >= 0 && y <= 45) {
-        selectLdg3Years.value = String(y);
-      }
-    }
   } catch (err) {
     console.warn("URL params parsing error:", err);
   }
+
+  applySeniorityFromProfile();
 
   // Helper pour calculer les plafonds théoriques selon le profil
   function getMaxScores(category, accessWay, examValue) {
@@ -198,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (!hasStrat) {
         const opt = new Option("Niveau Stratégique : Pilotage direct avec DGS/DGA, direction plusieurs services (30 pts)", "30");
-        selectLdg2Hierarchy.add(opt, 0);
+        selectLdg2Hierarchy.add(opt, 1);
       }
     } else if (cat === 'B') {
       categoryHintText.textContent = "Pour les agents C visant un cadre d'emplois B (Rédacteur, Technicien, Animateur...).";
@@ -529,26 +598,25 @@ document.addEventListener('DOMContentLoaded', () => {
     crepCriteriaContainer.style.opacity = '1';
     crepCriteriaContainer.style.pointerEvents = 'auto';
 
-    // Set default CREP selects
-    const defaults = ['9', '6', '9', '6', '9'];
-    crepSelects.forEach((sel, idx) => {
-      sel.value = defaults[idx] || '6';
+    // Set default CREP selects to Choisir (subtotal 0)
+    crepSelects.forEach((sel) => {
+      sel.value = '';
     });
 
-    selectLdg2Hierarchy.value = '25';
-    selectLdg2Seniority.value = '2';
-    selectLdg2Team.value = '0';
+    selectLdg2Hierarchy.value = '';
+    selectLdg2Seniority.value = '';
+    selectLdg2Team.value = '';
 
-    selectLdg3Years.value = '10';
-    selectLdg3Months.value = '0';
+    // Restaure l'ancienneté calculée d'après l'Étape 3
+    applySeniorityFromProfile();
 
-    selectLdg4Concours.value = '15';
-    selectLdg4Exam.value = '10';
+    selectLdg4Concours.value = '';
+    selectLdg4Exam.value = '';
 
-    selectLdg5Days.value = '6';
-    selectLdg5Prep.value = '2';
+    selectLdg5Days.value = '';
+    selectLdg5Prep.value = '';
 
-    selectLdg6Diploma.value = '2';
+    selectLdg6Diploma.value = '';
 
     handleProfileChange();
   }
@@ -607,6 +675,8 @@ document.addEventListener('DOMContentLoaded', () => {
       l1Details = "Promotion au choix sans quota réglementaire (aucun point barème CIG)";
     } else if (checkSyndicalLdg1.checked) {
       l1Details = "Forfait mandat syndical >= 70% sans CREP ces 2 dernières années";
+    } else if (subtotalLdg1.textContent === '0') {
+      l1Details = "Non renseigné (Choisir)";
     } else {
       l1Details = `Croix de votre entretien professionnel (CREP) transformées en points (${subtotalLdg1.textContent}/${maxScores.max1} pts)`;
     }
@@ -620,11 +690,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let l2Details = '';
     if (cat === 'C' || maxScores.max2 === 0) {
       l2Details = "Non prise en compte pour ce cadre d'emplois / voie";
+    } else if (!selectLdg2Hierarchy.value) {
+      l2Details = "Non renseigné (Choisir)";
     } else {
       const hierText = selectLdg2Hierarchy.options[selectLdg2Hierarchy.selectedIndex]?.text.split('(')[0] || '';
-      const senText = selectLdg2Seniority.value === '2' ? 'Plus de 3 ans dans la fonction' : 'Moins de 3 ans';
+      const senText = selectLdg2Seniority.value === '2' ? 'Plus de 3 ans dans la fonction' : (selectLdg2Seniority.value === '0' ? 'Moins de 3 ans' : 'Ancienneté non renseignée');
       l2Details = `${hierText.trim()} • ${senText}`;
-      if (selectLdg2Team.value !== '0' && parseInt(selectLdg2Hierarchy.value, 10) > 15) {
+      if (selectLdg2Team.value && selectLdg2Team.value !== '0' && parseInt(selectLdg2Hierarchy.value, 10) > 15) {
         l2Details += ` • Évalue et encadre une équipe (${selectLdg2Team.options[selectLdg2Team.selectedIndex]?.text})`;
       }
       checklistItems.add("Fiche de poste à jour détaillée et signée (positionnement, encadrement, missions).");
@@ -640,9 +712,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       const years = selectLdg3Years.value;
       const months = selectLdg3Months.options[selectLdg3Months.selectedIndex]?.text.split('(')[0] || '';
-      l3Details = `${years} an(s) et ${months.trim()} dans la catégorie actuelle (calcul arrêté au 01/01/2027)`;
+      l3Details = `${years} an(s) et ${months.trim()} dans la catégorie actuelle (calculé automatiquement au 01/01/2027)`;
     }
-    appendRecapRow("Ligne 3 : Ancienneté dans la Catégorie", l3Details, subtotalLdg3.textContent, `${maxScores.max3} pts`);
+    appendRecapRow("Ligne 3 : Ancienneté dans la Catégorie (calculé automatiquement)", l3Details, subtotalLdg3.textContent, `${maxScores.max3} pts`);
     if (cat !== 'C' || way !== 'choix') {
       checklistItems.add("Arrêté de nomination en qualité de stagiaire ou de titulaire dans la catégorie actuelle (avec reprise de services éventuelle).");
     } else {
@@ -653,9 +725,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let l4Details = '';
     if (cat === 'C' && way === 'choix') {
       l4Details = "Promotion au choix sans quota réglementaire (aucun point barème CIG)";
+    } else if (!selectLdg4Concours.value && !selectLdg4Exam.value) {
+      l4Details = "Non renseigné (Choisir)";
     } else {
-      const concText = selectLdg4Concours.value === '15' ? 'Recruté sur concours (+15 pts)' : 'Sans concours';
-      const examText = selectLdg4Exam.options[selectLdg4Exam.selectedIndex]?.text.split('(')[0] || '';
+      const concText = selectLdg4Concours.value === '15' ? 'Recruté sur concours (+15 pts)' : (selectLdg4Concours.value === '0' ? 'Sans concours' : 'Concours non renseigné');
+      const examText = selectLdg4Exam.value ? (selectLdg4Exam.options[selectLdg4Exam.selectedIndex]?.text.split('(')[0] || '') : 'Examen non renseigné';
       l4Details = `${concText} • ${examText.trim()}`;
     }
     appendRecapRow("Ligne 4 : Concours et Examens Professionnels", l4Details, subtotalLdg4.textContent, `${maxScores.max4} pts`);
@@ -663,7 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (selectLdg4Concours.value === '15') {
         checklistItems.add("Arrêté de nomination mentionnant le visa du concours + attestation de réussite au concours ou liste d'aptitude.");
       }
-      if (selectLdg4Exam.value !== '0') {
+      if (selectLdg4Exam.value !== '0' && selectLdg4Exam.value !== '') {
         checklistItems.add("Attestation officielle de réussite à l'examen professionnel ou arrêté de nomination correspondant.");
       }
     }
@@ -672,9 +746,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let l5Details = '';
     if (cat === 'C' || maxScores.max5 === 0) {
       l5Details = "Non applicable selon votre profil / voie";
+    } else if (!selectLdg5Days.value && !selectLdg5Prep.value) {
+      l5Details = "Non renseigné (Choisir)";
     } else {
-      const daysText = `${selectLdg5Days.value} jour(s) de formation hors FSO (${cat === 'A' ? '2022-2026' : '2017-2026'})`;
-      const prepText = selectLdg5Prep.value === '2' ? 'Avec préparation concours/examen (2022-2026)' : 'Sans prépa concours';
+      const daysText = selectLdg5Days.value !== '' ? `${selectLdg5Days.value} jour(s) de formation hors FSO (${cat === 'A' ? '2022-2026' : '2017-2026'})` : 'Jours de formation non renseignés';
+      const prepText = selectLdg5Prep.value === '2' ? 'Avec préparation concours/examen (2022-2026)' : (selectLdg5Prep.value === '0' ? 'Sans prépa concours' : 'Préparation non renseignée');
       l5Details = `${daysText} • ${prepText}`;
       checklistItems.add("<strong>Pensez à transmettre toutes vos attestations à la DCRH</strong> (attestations de présence CNFPT ou d'organismes de formation externes indiquant la durée, hors jours FSO).");
       if (selectLdg5Prep.value === '2') {
@@ -687,9 +763,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let l6Details = '';
     if (cat === 'C' || maxScores.max6 === 0) {
       l6Details = "Non prise en compte pour ce cadre d'emplois";
+    } else if (!selectLdg6Diploma.value) {
+      l6Details = "Non renseigné (Choisir)";
     } else {
       l6Details = selectLdg6Diploma.options[selectLdg6Diploma.selectedIndex]?.text || 'Aucun';
-      if (selectLdg6Diploma.value !== '0') {
+      if (selectLdg6Diploma.value !== '0' && selectLdg6Diploma.value !== '') {
         checklistItems.add("<strong>À transmettre à la GCR :</strong> Copie du diplôme le plus élevé certifié au RNCP ou attestation officielle de réussite.");
       }
     }
@@ -921,61 +999,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialisation de la bulle d'information Ligne 2
   initLdg2InfoBubble();
 
-  // =========================================================
-  // MEMENTORH DRAWER LOGIC
-  // =========================================================
-  const btnOpenMementoDrawer = document.getElementById('btnOpenMementoDrawer');
-  const btnCloseMementoDrawer = document.getElementById('btnCloseMementoDrawer');
-  const mementoDrawerOverlay = document.getElementById('mementoDrawerOverlay');
-  const mementoDrawer = document.getElementById('mementoDrawer');
-  
-  const btnRoleGestionnaire = document.getElementById('btnRoleGestionnaire');
-  const btnRoleAgent = document.getElementById('btnRoleAgent');
-  const gestionnaireOnlyElements = document.querySelectorAll('[data-vue-only="gestionnaire"]');
 
-  function openMementoDrawer() {
-    mementoDrawerOverlay.classList.remove('hidden');
-    mementoDrawer.classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
-  }
-
-  function closeMementoDrawer() {
-    mementoDrawerOverlay.classList.add('hidden');
-    mementoDrawer.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-
-  if (btnOpenMementoDrawer) {
-    btnOpenMementoDrawer.addEventListener('click', openMementoDrawer);
-  }
-  
-  if (btnCloseMementoDrawer) {
-    btnCloseMementoDrawer.addEventListener('click', closeMementoDrawer);
-  }
-  
-  if (mementoDrawerOverlay) {
-    mementoDrawerOverlay.addEventListener('click', closeMementoDrawer);
-  }
-
-  function setMementoRole(role) {
-    if (role === 'gestionnaire') {
-      btnRoleGestionnaire.classList.add('active');
-      btnRoleAgent.classList.remove('active');
-      gestionnaireOnlyElements.forEach(el => el.classList.remove('vue-hidden'));
-    } else {
-      btnRoleAgent.classList.add('active');
-      btnRoleGestionnaire.classList.remove('active');
-      gestionnaireOnlyElements.forEach(el => el.classList.add('vue-hidden'));
-    }
-  }
-
-  if (btnRoleGestionnaire) {
-    btnRoleGestionnaire.addEventListener('click', () => setMementoRole('gestionnaire'));
-  }
-  
-  if (btnRoleAgent) {
-    btnRoleAgent.addEventListener('click', () => setMementoRole('agent'));
-  }
 
   // Initial calculation
   handleProfileChange();

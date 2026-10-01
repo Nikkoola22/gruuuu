@@ -118,37 +118,48 @@ export const fptCadres: FptCadre[] = [
   }
 ];
 
+import { CADRES_EMPLOIS } from "../data/gradesData";
+
 // Dictionnaire de base pour les grilles indiciaires.
 // Format: Record<Grade, Record<Echelon, { ib: string, im: string }>>
-// À compléter et mettre à jour avec les valeurs réelles.
+// Complété dynamiquement par les grilles complètes officielles de CADRES_EMPLOIS.
 export const grillesIndiciaires: Record<string, Record<string, { ib: string, im: string }>> = {
   "Adjoint administratif": {
-    "1er échelon": { ib: "367", im: "361" },
-    "2ème échelon": { ib: "368", im: "362" },
-    "3ème échelon": { ib: "370", im: "363" },
-    "4ème échelon": { ib: "371", im: "364" },
-    "5ème échelon": { ib: "374", im: "365" },
-    "6ème échelon": { ib: "378", im: "366" },
-    "7ème échelon": { ib: "381", im: "368" },
-    "8ème échelon": { ib: "387", im: "370" },
-    "9ème échelon": { ib: "397", im: "373" },
-    "10ème échelon": { ib: "413", im: "375" },
-    "11ème échelon": { ib: "430", im: "380" },
+    "1er échelon": { ib: "367", im: "366" },
+    "2ème échelon": { ib: "368", im: "367" },
+    "3ème échelon": { ib: "370", im: "368" },
+    "4ème échelon": { ib: "371", im: "369" },
+    "5ème échelon": { ib: "374", im: "370" },
+    "6ème échelon": { ib: "378", im: "371" },
+    "7ème échelon": { ib: "381", im: "372" },
+    "8ème échelon": { ib: "387", im: "373" },
+    "9ème échelon": { ib: "401", im: "376" },
+    "10ème échelon": { ib: "419", im: "377" },
+    "11ème échelon": { ib: "432", im: "387" },
   },
   "Rédacteur": {
-    "1er échelon": { ib: "372", im: "365" },
-    "2ème échelon": { ib: "379", im: "367" },
-    "3ème échelon": { ib: "388", im: "370" },
-    "4ème échelon": { ib: "397", im: "373" },
-    "5ème échelon": { ib: "415", im: "376" },
-    "6ème échelon": { ib: "431", im: "381" },
-    "7ème échelon": { ib: "452", im: "396" },
-    "8ème échelon": { ib: "478", im: "415" },
-    "9ème échelon": { ib: "500", im: "431" },
-    "10ème échelon": { ib: "513", im: "441" },
-    "11ème échelon": { ib: "538", im: "457" },
-    "12ème échelon": { ib: "563", im: "477" },
-    "13ème échelon": { ib: "597", im: "503" },
+    "1er échelon": { ib: "389", im: "373" },
+    "2ème échelon": { ib: "399", im: "375" },
+    "3ème échelon": { ib: "415", im: "376" },
+    "4ème échelon": { ib: "429", im: "380" },
+    "5ème échelon": { ib: "444", im: "395" },
+    "6ème échelon": { ib: "461", im: "409" },
+    "7ème échelon": { ib: "484", im: "424" },
+    "8ème échelon": { ib: "513", im: "446" },
+    "9ème échelon": { ib: "542", im: "466" },
+    "10ème échelon": { ib: "576", im: "491" },
+    "11ème échelon": { ib: "604", im: "513" },
+    "12ème échelon": { ib: "638", im: "538" },
+    "13ème échelon": { ib: "675", im: "567" },
+  },
+  "Directeur territorial": {
+    "1er échelon": { ib: "801", im: "663" },
+    "2ème échelon": { ib: "850", im: "700" },
+    "3ème échelon": { ib: "901", im: "739" },
+    "4ème échelon": { ib: "966", im: "789" },
+    "5ème échelon": { ib: "1015", im: "826" },
+    "6ème échelon": { ib: "1027", im: "835" },
+    "7ème échelon": { ib: "1027", im: "835" },
   }
 };
 
@@ -159,9 +170,62 @@ export const echelonsList = [
   "11ème échelon", "12ème échelon", "13ème échelon"
 ];
 
+function normalizeGradeName(str: string): string {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\(.*?\)/g, "")
+    .replace(/\bterritorial(e|s|es)?\b/g, "")
+    .replace(/[^a-z0-9]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export const getIndicesForGradeAndEchelon = (grade: string, echelon: string): { ib: string, im: string } | null => {
+  if (!grade || !echelon) return null;
+
+  // 1. Direct match dans grillesIndiciaires
   if (grillesIndiciaires[grade] && grillesIndiciaires[grade][echelon]) {
     return grillesIndiciaires[grade][echelon];
   }
-  return null; // Retourne null si non trouvé dans la base de données
+
+  // 2. Extraction du numéro d'échelon ("1er échelon" -> 1, "2ème échelon" -> 2)
+  const echNum = parseInt(echelon.replace(/\D/g, ''), 10);
+  if (isNaN(echNum)) return null;
+
+  const targetNorm = normalizeGradeName(grade);
+
+  // 3. Recherche exacte normalisée dans CADRES_EMPLOIS
+  for (const cadre of CADRES_EMPLOIS) {
+    for (const g of cadre.grades) {
+      if (normalizeGradeName(g.nom) === targetNorm) {
+        const foundEch = g.echelons.find(e => e.numero === echNum);
+        if (foundEch) {
+          return {
+            ib: String(foundEch.indiceBrut),
+            im: String(foundEch.indiceMajore)
+          };
+        }
+      }
+    }
+  }
+
+  // 4. Recherche par préfixe ou inclusion dans CADRES_EMPLOIS
+  for (const cadre of CADRES_EMPLOIS) {
+    for (const g of cadre.grades) {
+      const gNorm = normalizeGradeName(g.nom);
+      if (gNorm.startsWith(targetNorm) || targetNorm.startsWith(gNorm) || gNorm.includes(targetNorm) || targetNorm.includes(gNorm)) {
+        const foundEch = g.echelons.find(e => e.numero === echNum);
+        if (foundEch) {
+          return {
+            ib: String(foundEch.indiceBrut),
+            im: String(foundEch.indiceMajore)
+          };
+        }
+      }
+    }
+  }
+
+  return null;
 };

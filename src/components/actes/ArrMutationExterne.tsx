@@ -10,6 +10,7 @@ export const ArrMutationExterne: React.FC = () => {
   const [villeSignature, setVilleSignature] = useState("Gennevilliers");
   const [dateArrete, setDateArrete] = useState("");
   const [chargeExecution, setChargeExecution] = useState("La directrice générale des services");
+  const [numeroArrete, setNumeroArrete] = useState("");
 
   // 2. AGENT
   const [civilite, setCivilite] = useState("Monsieur");
@@ -123,6 +124,10 @@ export const ArrMutationExterne: React.FC = () => {
               <Building className="w-4 h-4 text-slate-400" /> Collectivité d'accueil
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Numéro d'arrêté</label>
+                <input type="text" value={numeroArrete} onChange={(e) => handleInputChange(setNumeroArrete, e.target.value)} placeholder="Ex: 2026-AR-042" className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white" />
+              </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Titre de l'autorité</label>
                 <input type="text" value={titreAutorite} onChange={(e) => handleInputChange(setTitreAutorite, e.target.value)} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white" />
@@ -262,7 +267,7 @@ export const ArrMutationExterne: React.FC = () => {
                   <p className="text-xs">{renderField(departement, "DÉPARTEMENT")}</p>
                 </div>
                 <div className="w-1/2 text-right">
-                  <p>Arrêté n° {renderField("", "NUMÉRO")}</p>
+                  <p>Arrêté n° {renderField(numeroArrete, "NUMÉRO")}</p>
                 </div>
               </div>
 

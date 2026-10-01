@@ -210,10 +210,11 @@
                 <div class="select-wrapper">
                   <select class="form-select select-score" data-ldg="1" data-criterion="c1"
                     aria-label="Résultats professionnels">
+                    <option value="" selected>Choisir</option>
                     <option value="0">Très insuffisant (0 pt)</option>
                     <option value="3">Insuffisant (3 pts)</option>
                     <option value="6">À améliorer (6 pts)</option>
-                    <option value="9" selected>Satisfaisant (9 pts)</option>
+                    <option value="9">Satisfaisant (9 pts)</option>
                   </select>
                 </div>
               </div>
@@ -238,9 +239,10 @@
                 <div class="select-wrapper">
                   <select class="form-select select-score" data-ldg="1" data-criterion="c2"
                     aria-label="Compétences professionnelles">
+                    <option value="" selected>Choisir</option>
                     <option value="0">Très insuffisant (0 pt)</option>
                     <option value="3">Insuffisant (3 pts)</option>
-                    <option value="6" selected>À améliorer (6 pts)</option>
+                    <option value="6">À améliorer (6 pts)</option>
                     <option value="9">Satisfaisant (9 pts)</option>
                   </select>
                 </div>
@@ -266,10 +268,11 @@
                 <div class="select-wrapper">
                   <select class="form-select select-score" data-ldg="1" data-criterion="c3"
                     aria-label="Qualités relationnelles">
+                    <option value="" selected>Choisir</option>
                     <option value="0">Très insuffisant (0 pt)</option>
                     <option value="3">Insuffisant (3 pts)</option>
                     <option value="6">À améliorer (6 pts)</option>
-                    <option value="9" selected>Satisfaisant (9 pts)</option>
+                    <option value="9">Satisfaisant (9 pts)</option>
                   </select>
                 </div>
               </div>
@@ -294,9 +297,10 @@
                 <div class="select-wrapper">
                   <select class="form-select select-score" data-ldg="1" data-criterion="c4"
                     aria-label="Capacité d'encadrement ou expertise">
+                    <option value="" selected>Choisir</option>
                     <option value="0">Très insuffisant (0 pt)</option>
                     <option value="3">Insuffisant (3 pts)</option>
-                    <option value="6" selected>À améliorer (6 pts)</option>
+                    <option value="6">À améliorer (6 pts)</option>
                     <option value="9">Satisfaisant (9 pts)</option>
                   </select>
                 </div>
@@ -320,10 +324,11 @@
                 <div class="select-wrapper">
                   <select class="form-select select-score" data-ldg="1" data-criterion="c5"
                     aria-label="Acquis de l'expérience professionnelle">
+                    <option value="" selected>Choisir</option>
                     <option value="0">Très insuffisant (0 pt)</option>
                     <option value="3">Insuffisant (3 pts)</option>
                     <option value="6">À améliorer (6 pts)</option>
-                    <option value="9" selected>Satisfaisant (9 pts)</option>
+                    <option value="9">Satisfaisant (9 pts)</option>
                   </select>
                 </div>
               </div>
@@ -351,11 +356,14 @@
               <div class="ldg-title-with-info">
                 <h3>Fonctions Exercées</h3>
 
-                <!-- Bulle d'information avec un I -->
+                <!-- Bouton Aide avec popover -->
                 <div class="info-bubble-wrapper" id="ldg2InfoWrapper">
                   <button type="button" class="info-bubble-btn" id="btnInfoLdg2" aria-expanded="false"
                     aria-controls="popoverLdg2" title="Afficher la grille officielle CIG (survolez ou cliquez)">
-                    <span class="info-bubble-letter">i</span>
+                    <span class="info-bubble-letter">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      Aide
+                    </span>
                     <span class="info-bubble-pulse"></span>
                   </button>
 
@@ -775,7 +783,8 @@
               <div class="select-wrapper">
                 <select id="selectLdg2Hierarchy" class="form-select select-score">
                   <!-- dynamically updated based on Cat A/B -->
-                  <option value="25" selected>Niveau Intermédiaire : Responsabilité d'au moins un service, d'un pôle ou
+                  <option value="" selected>Choisir</option>
+                  <option value="25">Niveau Intermédiaire : Responsabilité d'au moins un service, d'un pôle ou
                     d'un équipement (25 pts)</option>
                   <option value="20">Niveau Opérationnel : Responsabilité d'une unité, secteur, proximité (20 pts)
                   </option>
@@ -800,7 +809,8 @@
               </div>
               <div class="select-wrapper">
                 <select id="selectLdg2Seniority" class="form-select select-score">
-                  <option value="2" selected>Occupe ces fonctions depuis 3 ans et plus (+2 pts)</option>
+                  <option value="" selected>Choisir</option>
+                  <option value="2">Occupe ces fonctions depuis 3 ans et plus (+2 pts)</option>
                   <option value="0">Occupe ces fonctions depuis moins de 3 ans (0 pt)</option>
                 </select>
               </div>
@@ -818,7 +828,8 @@
               </div>
               <div class="select-wrapper">
                 <select id="selectLdg2Team" class="form-select select-score">
-                  <option value="0" selected>Aucun encadrement direct OU sans réalisation des entretiens (0 pt)</option>
+                  <option value="" selected>Choisir</option>
+                  <option value="0">Aucun encadrement direct OU sans réalisation des entretiens (0 pt)</option>
                   <option value="1">Encadre et évalue 1 à 4 agents (+1 pt)</option>
                   <option value="2">Encadre et évalue 5 à 19 agents (+2 pts)</option>
                   <option value="3">Encadre et évalue plus de 20 agents (+3 pts)</option>
@@ -846,10 +857,16 @@
           <div class="ldg-header-left">
             <span class="ldg-number-badge">Ligne 3</span>
             <div>
-              <h3>Ancienneté dans la Catégorie</h3>
+              <div class="ldg-title-with-info">
+                <h3>Ancienneté dans la Catégorie</h3>
+                <span class="badge-auto-calc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                  Calculé automatiquement
+                </span>
+              </div>
               <p class="ldg-phrase-explain">
                 « Cette ligne valorise la fidélité au service public et l'expérience acquise en attribuant 1 point par
-                année de présence dans votre catégorie hiérarchique actuelle. »
+                année de présence dans votre catégorie hiérarchique actuelle (calculée automatiquement d'après vos dates renseignées à l'Étape 3). »
               </p>
             </div>
           </div>
@@ -871,8 +888,8 @@
                 <span class="criterion-num">1</span>
                 <div>
                   <strong>Années complètes d'ancienneté</strong>
-                  <p class="criterion-desc">Depuis votre nomination stagiaire (ou titulaire) dans la catégorie actuelle,
-                    calculée au <strong>1er janvier 2027</strong> (1 pt / an).</p>
+                  <p class="criterion-desc">Calculé automatiquement depuis vos dates d'ancienneté (Étape 3 du simulateur),
+                    au <strong>1er janvier 2027</strong> (1 pt / an).</p>
                 </div>
               </div>
               <div class="select-wrapper">
@@ -887,7 +904,7 @@
                 <span class="criterion-num">2</span>
                 <div>
                   <strong>Mois supplémentaires (au prorata)</strong>
-                  <p class="criterion-desc">Le CIG calcule l'ancienneté au prorata exact de la date de nomination (ex: 5
+                  <p class="criterion-desc">Calculé automatiquement au prorata exact de la date de nomination (ex: 5
                     mois = 0,42 pt).</p>
                 </div>
               </div>
@@ -965,7 +982,8 @@
               </div>
               <div class="select-wrapper">
                 <select id="selectLdg4Concours" class="form-select select-score">
-                  <option value="15" selected>Oui : Recruté suite à concours dans la catégorie (+15 pts)</option>
+                  <option value="" selected>Choisir</option>
+                  <option value="15">Oui : Recruté suite à concours dans la catégorie (+15 pts)</option>
                   <option value="0">Non : Recrutement direct sans concours ou autre voie (0 pt)</option>
                 </select>
               </div>
@@ -983,8 +1001,9 @@
               </div>
               <div class="select-wrapper">
                 <select id="selectLdg4Exam" class="form-select select-score">
+                  <option value="" selected>Choisir</option>
                   <option value="0">Aucun examen professionnel (0 pt)</option>
-                  <option value="10" selected>Examen pro d'avancement de grade dans la catégorie actuelle (+10 pts)
+                  <option value="10">Examen pro d'avancement de grade dans la catégorie actuelle (+10 pts)
                   </option>
                   <option value="20_reg">Examen pro réglementaire visé : obtenu en 2024 ou avant (N-3 ou antérieur) (+20
                     pts)</option>
@@ -1059,6 +1078,7 @@
               </div>
               <div class="select-wrapper">
                 <select id="selectLdg5Days" class="form-select select-score">
+                  <option value="" selected>Choisir</option>
                   <!-- Dynamically 0 to 15 -->
                 </select>
               </div>
@@ -1076,7 +1096,8 @@
               </div>
               <div class="select-wrapper">
                 <select id="selectLdg5Prep" class="form-select select-score">
-                  <option value="2" selected>Oui : Au moins 2 jours de préparation effectués (+2 pts)</option>
+                  <option value="" selected>Choisir</option>
+                  <option value="2">Oui : Au moins 2 jours de préparation effectués (+2 pts)</option>
                   <option value="0">Non : Moins de 2 jours ou aucune préparation (0 pt)</option>
                 </select>
               </div>
@@ -1139,10 +1160,11 @@
               </div>
               <div class="select-wrapper">
                 <select id="selectLdg6Diploma" class="form-select select-score">
+                  <option value="" selected>Choisir</option>
                   <option value="0">Aucun diplôme certifié OU niveau inférieur au niveau 3 (0 pt)</option>
                   <option value="1">Niveau 3 : CAP, BEP, Diplôme National du Brevet / ex-BEPC (1 pt)</option>
                   <option value="1">Niveau 4 : Baccalauréat général/technologique/pro, BPJEPS, BTA (1 pt)</option>
-                  <option value="2" selected>Niveau 5 : Bac +2 (BTS, DUT, DEUG, DEUST) (2 pts)</option>
+                  <option value="2">Niveau 5 : Bac +2 (BTS, DUT, DEUG, DEUST) (2 pts)</option>
                   <option value="3">Niveau 6 : Bac +3 / Bac +4 (Licence, Licence Pro, Master 1, Maîtrise) (3 pts)
                   </option>
                   <option value="3">Niveau 7 : Bac +5 (Master 2, DEA, DESS, Diplôme d'Ingénieur) (3 pts)</option>
@@ -1199,97 +1221,6 @@
 
   </main>
 
-  <!-- Floating Action Button for MementoRH Tools -->
-  <button id="btnOpenMementoDrawer" class="memento-fab" aria-label="Ouvrir les outils MementoRH" title="Boîte à outils RH">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-      <line x1="9" y1="3" x2="9" y2="21"/>
-    </svg>
-    <span>Outils RH</span>
-  </button>
-
-  <!-- MementoRH Drawer Overlay -->
-  <div id="mementoDrawerOverlay" class="memento-drawer-overlay hidden" aria-hidden="true"></div>
-
-  <!-- MementoRH Drawer -->
-  <aside id="mementoDrawer" class="memento-drawer hidden" aria-hidden="true">
-    <div class="drawer-header">
-      <div class="drawer-title">
-        <span class="memento-brand">Memento<span class="memento-rh">RH</span></span>
-        <span class="memento-sub">Boîte à outils RH</span>
-      </div>
-      <button id="btnCloseMementoDrawer" class="drawer-close-btn" aria-label="Fermer le panneau">&times;</button>
-    </div>
-    
-    <div class="drawer-body">
-      <!-- Role Toggle -->
-      <div class="memento-role-toggle">
-        <button id="btnRoleGestionnaire" class="role-btn active" data-role="gestionnaire">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          Gestionnaire RH
-        </button>
-        <button id="btnRoleAgent" class="role-btn" data-role="agent">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Agent
-        </button>
-      </div>
-
-      <!-- Links Container -->
-      <nav class="memento-links-nav">
-        <!-- Gestion des postes (Gestionnaire only) -->
-        <div class="link-group" data-vue-only="gestionnaire">
-          <div class="link-group-title">Gestion des postes</div>
-          <a href="https://mementorh.fr/fiche-de-poste" target="_blank" rel="noopener">Kit création de poste</a>
-          <a href="https://mementorh.fr/fiche-de-poste/creer-fiche" target="_blank" rel="noopener">Fiche de poste</a>
-          <a href="https://mementorh.fr/fiche-de-poste/creer-entretien" target="_blank" rel="noopener">Fiche d'entretien professionnel</a>
-          <a href="https://mementorh.fr/deliberation-tableau-effectifs" target="_blank" rel="noopener">Tableau des effectifs</a>
-        </div>
-
-        <!-- Rémunération et budget -->
-        <div class="link-group">
-          <div class="link-group-title">Rémunération et budget</div>
-          <a href="https://mementorh.fr/remuneration/grille-indiciaire" target="_blank" rel="noopener">Grilles indiciaires</a>
-          <a href="https://mementorh.fr/remuneration/budget-personnel" target="_blank" rel="noopener" data-vue-only="gestionnaire">Simulateur de masse salariale</a>
-          <a href="https://mementorh.fr/remuneration/simulateur-sft" target="_blank" rel="noopener" data-vue-only="gestionnaire">Simulateur SFT</a>
-          <a href="https://mementorh.fr/remuneration/traitement-net" target="_blank" rel="noopener">Simulateur de net à payer</a>
-          <a href="https://mementorh.fr/remuneration/ihts" target="_blank" rel="noopener">Calculateur d'heures supplémentaires (IHTS)</a>
-          <a href="https://mementorh.fr/remuneration/psc" target="_blank" rel="noopener" data-vue-only="gestionnaire">Simulateur PSC</a>
-          <a href="https://mementorh.fr/carriere/rupture-conventionnelle" target="_blank" rel="noopener">Indemnité de rupture conventionnelle</a>
-          <a href="https://mementorh.fr/remuneration/frais-deplacement" target="_blank" rel="noopener">Frais de déplacement</a>
-        </div>
-
-        <!-- Carrière & temps de travail -->
-        <div class="link-group">
-          <div class="link-group-title">Carrière & temps de travail</div>
-          <a href="https://mementorh.fr/carriere/avancement-echelon" target="_blank" rel="noopener">Avancement d'échelon</a>
-          <a href="https://mementorh.fr/carriere/reprise-anciennete" target="_blank" rel="noopener" data-vue-only="gestionnaire">Reprise d'ancienneté</a>
-          <a href="https://mementorh.fr/carriere/seuils-syndicaux" target="_blank" rel="noopener" data-vue-only="gestionnaire">Seuils & obligations syndicales</a>
-          <a href="https://mementorh.fr/temps-de-travail/calculateur" target="_blank" rel="noopener">Calculateur RTT & temps de travail</a>
-          <a href="https://mementorh.fr/temps-de-travail/calculateur-etp" target="_blank" rel="noopener" data-vue-only="gestionnaire">Calculateur ETP</a>
-          <a href="https://mementorh.fr/remuneration/conges-maladie" target="_blank" rel="noopener">Droits à congés maladie</a>
-        </div>
-
-        <!-- Délibérations (Gestionnaire only) -->
-        <div class="link-group" data-vue-only="gestionnaire">
-          <div class="link-group-title">Délibérations</div>
-          <a href="https://mementorh.fr/fiche-de-poste/creer-deliberation" target="_blank" rel="noopener">Création de poste</a>
-          <a href="https://mementorh.fr/deliberation-suppression" target="_blank" rel="noopener">Suppression de poste</a>
-          <a href="https://mementorh.fr/deliberation-tableau-effectifs" target="_blank" rel="noopener">Tableau des effectifs</a>
-          <a href="https://mementorh.fr/temps-de-travail/deliberation-teletravail" target="_blank" rel="noopener">Télétravail</a>
-        </div>
-
-        <!-- Arrêtés RH (Gestionnaire only) -->
-        <div class="link-group" data-vue-only="gestionnaire">
-          <div class="link-group-title">Arrêtés RH</div>
-          <a href="https://mementorh.fr/arretes/nomination-stagiaire" target="_blank" rel="noopener">Nomination stagiaire</a>
-          <a href="https://mementorh.fr/arretes/titularisation" target="_blank" rel="noopener">Titularisation</a>
-          <a href="https://mementorh.fr/arretes/avancement-echelon" target="_blank" rel="noopener">Avancement d'échelon</a>
-          <a href="https://mementorh.fr/arretes/avancement-grade" target="_blank" rel="noopener">Avancement de grade</a>
-          <a href="https://mementorh.fr/arretes/promotion-interne" target="_blank" rel="noopener">Promotion interne</a>
-        </div>
-      </nav>
-    </div>
-  </aside>
 
   <!-- Modal Fiche Récapitulative -->
   <div class="modal-backdrop" id="recapModal" aria-hidden="true" role="dialog" aria-modal="true">
@@ -1348,18 +1279,6 @@
           </ul>
         </div>
 
-        <div class="recap-signature-box">
-          <div class="sig-block">
-            <p><strong>Pour l'agent :</strong></p>
-            <p class="sig-note">Date et signature :</p>
-            <div class="sig-line"></div>
-          </div>
-          <div class="sig-block">
-            <p><strong>Avis hiérarchique / RH Gennevilliers :</strong></p>
-            <p class="sig-note">Date et visa :</p>
-            <div class="sig-line"></div>
-          </div>
-        </div>
       </div>
 
       <div class="modal-footer">

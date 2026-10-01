@@ -1297,39 +1297,58 @@ body {
   position: relative;
 }
 
+.badge-auto-calc {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.2px;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.15);
+}
+
 .info-bubble-wrapper {
   position: relative;
   display: inline-flex;
   align-items: center;
 }
 
-/* Pastille « Besoin d'infos ? » */
+/* Bouton Aide */
 .info-bubble-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 28px;
+  gap: 5px;
+  padding: 3px 11px;
+  height: 25px;
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, #0B1727 0%, #162A45 100%);
   color: var(--electric-aqua);
   border: 1.5px solid var(--electric-aqua);
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(27, 231, 255, 0.25);
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
-  padding: 0 14px;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   outline: none;
   z-index: 10;
 }
 
 .info-bubble-letter {
-  font-family: 'Outfit', 'Georgia', serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.76rem;
+  font-weight: 800;
+  font-style: normal;
+  letter-spacing: 0.3px;
   line-height: 1;
   pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* Pulsation douce autour de la bulle */
@@ -1340,7 +1359,7 @@ body {
   right: -3px;
   bottom: -3px;
   border-radius: var(--radius-full);
-  border: 2px solid var(--electric-aqua);
+  border: 1.5px solid var(--electric-aqua);
   opacity: 0.7;
   animation: infoPulse 2.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
   pointer-events: none;
@@ -1348,15 +1367,15 @@ body {
 
 @keyframes infoPulse {
   0% {
-    transform: scale(0.95);
+    transform: scale(0.98);
     opacity: 0.8;
   }
   70% {
-    transform: scale(1.4);
+    transform: scale(1.06, 1.22);
     opacity: 0;
   }
   100% {
-    transform: scale(1.4);
+    transform: scale(1.06, 1.22);
     opacity: 0;
   }
 }
@@ -1364,7 +1383,7 @@ body {
 .info-bubble-btn:hover,
 .info-bubble-btn:focus-visible,
 .info-bubble-wrapper.is-open .info-bubble-btn {
-  transform: scale(1.12);
+  transform: scale(1.06);
   background: var(--electric-aqua);
   color: #0B1727;
   border-color: #FFFFFF;
@@ -1802,4 +1821,215 @@ body {
     display: block !important;
     padding: 0 !important;
   }
+}
+
+/* =========================================================
+   MEMENTORH DRAWER UI
+   ========================================================= */
+
+.memento-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e293b;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  z-index: 90;
+  transition: all var(--transition-fast);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.memento-fab:hover {
+  background: #0f172a;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.25);
+}
+
+.memento-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 99;
+  opacity: 1;
+  transition: opacity var(--transition-normal);
+}
+
+.memento-drawer-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.memento-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 360px;
+  height: 100vh;
+  background: #1e293b;
+  color: #f8fafc;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -8px 0 24px rgba(0,0,0,0.2);
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.memento-drawer.hidden {
+  transform: translateX(100%);
+}
+
+.drawer-header {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.drawer-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.memento-brand {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.memento-rh {
+  color: #818cf8;
+}
+
+.memento-sub {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+.drawer-close-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  line-height: 1;
+  padding: 4px;
+}
+
+.drawer-close-btn:hover {
+  color: #ffffff;
+}
+
+.drawer-body {
+  padding: 20px 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.memento-role-toggle {
+  display: flex;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.role-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255,255,255,0.5);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.role-btn.active {
+  background: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.memento-links-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.link-group-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #818cf8;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+
+.link-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.link-group a {
+  color: #e2e8f0;
+  text-decoration: none;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background var(--transition-fast);
+  display: block;
+}
+
+.link-group a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+[data-vue-only="gestionnaire"].vue-hidden {
+  display: none !important;
+}
+
+/* Scrollbar styling for drawer */
+.drawer-body::-webkit-scrollbar {
+  width: 6px;
+}
+.drawer-body::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.02);
+}
+.drawer-body::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+.drawer-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
 }

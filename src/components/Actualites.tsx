@@ -76,9 +76,6 @@ const Actualites: React.FC<ActualitesProps> = ({ news, onClose, baseUrl, onNavig
                       alt="Retraites, congés de maladie et temps partiel thérapeutique"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
-                    <span className="absolute top-3 left-3 inline-block text-xs font-bold px-3 py-1 rounded-full bg-white/90 backdrop-blur text-red-600 border border-red-200 shadow-md">
-                      Statutaire CIG (Août 2026)
-                    </span>
                   </div>
                   <div className="flex flex-col justify-between h-full">
                     <div>

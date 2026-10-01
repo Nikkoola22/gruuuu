@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Bot, ArrowRight, Rss, Radio, Calculator, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, BookOpen, Scale, Landmark, GraduationCap, Gamepad2, FileText, Clock, Briefcase, ExternalLink as ExternalLinkIcon, PlayCircle, Sparkles, Laptop, Palette, FileSignature, Award, TrendingUp, CheckCircle2, Zap, Download, Eye } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { BorderBeam } from "./ui/BorderBeam.tsx"
@@ -58,6 +58,55 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
   // ce qui restaure le drag après un aller-retour menu → autre vue → menu.
   const intercoCarouselRef = useRef<HTMLDivElement>(null)
   const fpCarouselRef = useRef<HTMLDivElement>(null)
+  const quickActionsScrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const [canScrollIntercoLeft, setCanScrollIntercoLeft] = useState(false)
+  const [canScrollIntercoRight, setCanScrollIntercoRight] = useState(true)
+
+  const [canScrollFpLeft, setCanScrollFpLeft] = useState(false)
+  const [canScrollFpRight, setCanScrollFpRight] = useState(true)
+
+  const checkQuickActionsScroll = () => {
+    const el = quickActionsScrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 6)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 6)
+  }
+
+  const scrollQuickActions = (direction: 'left' | 'right') => {
+    const el = quickActionsScrollRef.current
+    if (!el) return
+    const scrollAmount = direction === 'left' ? -200 : 200
+    el.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+  }
+
+  const checkIntercoScroll = () => {
+    const el = intercoCarouselRef.current
+    if (!el) return
+    setCanScrollIntercoLeft(el.scrollLeft > 6)
+    setCanScrollIntercoRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 6)
+  }
+
+  const scrollInterco = (direction: 'left' | 'right') => {
+    const el = intercoCarouselRef.current
+    if (!el) return
+    el.scrollBy({ left: direction === 'left' ? -280 : 280, behavior: 'smooth' })
+  }
+
+  const checkFpScroll = () => {
+    const el = fpCarouselRef.current
+    if (!el) return
+    setCanScrollFpLeft(el.scrollLeft > 6)
+    setCanScrollFpRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 6)
+  }
+
+  const scrollFp = (direction: 'left' | 'right') => {
+    const el = fpCarouselRef.current
+    if (!el) return
+    el.scrollBy({ left: direction === 'left' ? -280 : 280, behavior: 'smooth' })
+  }
 
   // --- COMPATIBILITÉ FIREFOX WINDOWS : MOLETTE VERTICALE -> SCROLL HORIZONTAL & MOUSE DRAG ---
   useEffect(() => {
@@ -128,10 +177,52 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
 
     const cleanupInterco = setupCarouselScroll(intercoCarouselRef)
     const cleanupFp = setupCarouselScroll(fpCarouselRef)
+    const cleanupQuick = setupCarouselScroll(quickActionsScrollRef)
+
+    const quickEl = quickActionsScrollRef.current
+    if (quickEl) {
+      quickEl.addEventListener('scroll', checkQuickActionsScroll, { passive: true })
+    }
+    const intercoEl = intercoCarouselRef.current
+    if (intercoEl) {
+      intercoEl.addEventListener('scroll', checkIntercoScroll, { passive: true })
+    }
+    const fpEl = fpCarouselRef.current
+    if (fpEl) {
+      fpEl.addEventListener('scroll', checkFpScroll, { passive: true })
+    }
+
+    const handleWindowResize = () => {
+      checkQuickActionsScroll()
+      checkIntercoScroll()
+      checkFpScroll()
+    }
+
+    window.addEventListener('resize', handleWindowResize)
+    checkQuickActionsScroll()
+    checkIntercoScroll()
+    checkFpScroll()
+    const timer = setTimeout(() => {
+      checkQuickActionsScroll()
+      checkIntercoScroll()
+      checkFpScroll()
+    }, 400)
 
     return () => {
       cleanupInterco()
       cleanupFp()
+      cleanupQuick()
+      if (quickEl) {
+        quickEl.removeEventListener('scroll', checkQuickActionsScroll)
+      }
+      if (intercoEl) {
+        intercoEl.removeEventListener('scroll', checkIntercoScroll)
+      }
+      if (fpEl) {
+        fpEl.removeEventListener('scroll', checkFpScroll)
+      }
+      window.removeEventListener('resize', handleWindowResize)
+      clearTimeout(timer)
     }
   }, [intercoNews, fpNews, intercoLoading, fpLoading])
   return (
@@ -140,10 +231,46 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
         <div className="lg:col-span-1">
 
           {/* Barre d'accès rapide style GAFAM / Frosted Glass Dock Ajustée avec précision */}
-          <div className="max-w-7xl mx-auto mt-3 sm:mt-5 mb-5 sm:mb-7 bg-white/85 dark:bg-[#0E121D]/90 backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-2.5 sm:p-4.5 border border-slate-200/80 dark:border-white/[0.1] shadow-xl shadow-slate-200/50 dark:shadow-black/60 flex flex-wrap lg:flex-nowrap items-center justify-between gap-3 sm:gap-4">
+          <div className="relative max-w-7xl mx-auto mt-3 sm:mt-5 mb-5 sm:mb-7 bg-white/85 dark:bg-[#0E121D]/90 backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-2.5 sm:p-4.5 border border-slate-200/80 dark:border-white/[0.1] shadow-xl shadow-slate-200/50 dark:shadow-black/60 flex flex-wrap lg:flex-nowrap items-center justify-between gap-3 sm:gap-4">
+
+            {/* Indicateur de défilement mobile - Flèche gauche */}
+            <div
+              className={`absolute left-0 top-0 bottom-0 z-20 md:hidden flex items-center pl-1.5 pr-4 bg-gradient-to-r from-white/95 via-white/80 dark:from-[#0E121D]/95 dark:via-[#0E121D]/80 to-transparent rounded-l-2xl transition-opacity duration-300 pointer-events-none ${
+                canScrollLeft ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => scrollQuickActions('left')}
+                aria-label="Faire défiler les actions vers la gauche"
+                className="pointer-events-auto w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md flex items-center justify-center text-purple-600 dark:text-purple-400 active:scale-90 transition-transform"
+              >
+                <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </div>
+
+            {/* Indicateur de défilement mobile - Flèche droite */}
+            <div
+              className={`absolute right-0 top-0 bottom-0 z-20 md:hidden flex items-center pr-1.5 pl-4 bg-gradient-to-l from-white/95 via-white/80 dark:from-[#0E121D]/95 dark:via-[#0E121D]/80 to-transparent rounded-r-2xl transition-opacity duration-300 pointer-events-none ${
+                canScrollRight ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => scrollQuickActions('right')}
+                aria-label="Faire défiler les actions vers la droite"
+                className="pointer-events-auto w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md flex items-center justify-center text-purple-600 dark:text-purple-400 active:scale-90 transition-transform animate-pulse"
+              >
+                <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </div>
 
             {/* Links & Quick Actions avec ajustement précis */}
-            <div className="flex flex-1 justify-start sm:justify-around items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar py-1 px-1 sm:py-1.5 sm:px-2 relative snap-x snap-mandatory">
+            <div
+              ref={quickActionsScrollRef}
+              onScroll={checkQuickActionsScroll}
+              className="flex flex-1 justify-start sm:justify-around items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar py-1 px-1 sm:py-1.5 sm:px-2 relative snap-x snap-mandatory"
+            >
               
               {/* 1. Spotlight Search Button */}
               <button
@@ -396,9 +523,6 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 group/card min-w-0">
                     <div className="relative w-full sm:w-44 md:w-48 h-36 overflow-hidden rounded-2xl shrink-0 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
                       <img loading="lazy" src="https://www.cig929394.fr/wp-content/uploads/2026/08/FOCUS-BIP_Actu-aout2026.png" alt="Retraites, congés de maladie et temps partiel thérapeutique" className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300" />
-                      <span className="absolute top-2 left-2 inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-white/90 dark:bg-slate-900/90 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/60 shadow-xs">
-                        Statutaire CIG (Août 2026)
-                      </span>
                     </div>
                     <div className="flex flex-col justify-between flex-1 min-w-0">
                       <div className="min-w-0">
@@ -733,34 +857,41 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 </div>
               ) : (
                 <div className="relative group/carousel">
-                  <button
-                    type="button"
-                    aria-label="Défiler vers la gauche"
-                    onClick={() => {
-                      if (intercoCarouselRef.current) {
-                        intercoCarouselRef.current.scrollBy({ left: -280, behavior: 'smooth' })
-                      }
-                    }}
-                    className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-slate-200 flex items-center justify-center text-slate-700 shadow-lg opacity-80 sm:opacity-0 sm:group-hover/carousel:opacity-100 hover:opacity-100 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-150"
+                  {/* Indicateur de défilement mobile & desktop - Flèche gauche */}
+                  <div
+                    className={`absolute left-0 top-0 bottom-2 z-20 flex items-center pl-1 pr-3 bg-gradient-to-r from-white/95 via-white/80 dark:from-slate-900/95 dark:via-slate-900/80 to-transparent rounded-l-xl transition-opacity duration-300 pointer-events-none ${
+                      canScrollIntercoLeft ? 'opacity-90 sm:opacity-0 sm:group-hover/carousel:opacity-100' : 'opacity-0'
+                    }`}
                   >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
+                    <button
+                      type="button"
+                      aria-label="Défiler vers la gauche"
+                      onClick={() => scrollInterco('left')}
+                      className="pointer-events-auto w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg flex items-center justify-center text-blue-600 dark:text-blue-400 active:scale-95 hover:scale-105 transition-all"
+                    >
+                      <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+                    </button>
+                  </div>
 
-                  <button
-                    type="button"
-                    aria-label="Défiler vers la droite"
-                    onClick={() => {
-                      if (intercoCarouselRef.current) {
-                        intercoCarouselRef.current.scrollBy({ left: 280, behavior: 'smooth' })
-                      }
-                    }}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-slate-200 flex items-center justify-center text-slate-700 shadow-lg opacity-80 sm:opacity-0 sm:group-hover/carousel:opacity-100 hover:opacity-100 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-150"
+                  {/* Indicateur de défilement mobile & desktop - Flèche droite */}
+                  <div
+                    className={`absolute right-0 top-0 bottom-2 z-20 flex items-center pr-1 pl-3 bg-gradient-to-l from-white/95 via-white/80 dark:from-slate-900/95 dark:via-slate-900/80 to-transparent rounded-r-xl transition-opacity duration-300 pointer-events-none ${
+                      canScrollIntercoRight ? 'opacity-90 sm:opacity-0 sm:group-hover/carousel:opacity-100' : 'opacity-0'
+                    }`}
                   >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                    <button
+                      type="button"
+                      aria-label="Défiler vers la droite"
+                      onClick={() => scrollInterco('right')}
+                      className="pointer-events-auto w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg flex items-center justify-center text-blue-600 dark:text-blue-400 active:scale-95 hover:scale-105 transition-all animate-pulse"
+                    >
+                      <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+                    </button>
+                  </div>
 
                   <div
                     ref={intercoCarouselRef}
+                    onScroll={checkIntercoScroll}
                     className="flex gap-3.5 overflow-x-auto pb-2 scroll-smooth interco-carousel-track cursor-grab active:cursor-grabbing select-none"
                     style={{ scrollbarWidth: 'none' }}
                   >
@@ -832,34 +963,41 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 </div>
               ) : (
                 <div className="relative group/carousel-fp">
-                  <button
-                    type="button"
-                    aria-label="Défiler vers la gauche"
-                    onClick={() => {
-                      if (fpCarouselRef.current) {
-                        fpCarouselRef.current.scrollBy({ left: -280, behavior: 'smooth' })
-                      }
-                    }}
-                    className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-slate-200 flex items-center justify-center text-slate-700 shadow-lg opacity-80 sm:opacity-0 sm:group-hover/carousel-fp:opacity-100 hover:opacity-100 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-150"
+                  {/* Indicateur de défilement mobile & desktop - Flèche gauche */}
+                  <div
+                    className={`absolute left-0 top-0 bottom-2 z-20 flex items-center pl-1 pr-3 bg-gradient-to-r from-white/95 via-white/80 dark:from-slate-900/95 dark:via-slate-900/80 to-transparent rounded-l-xl transition-opacity duration-300 pointer-events-none ${
+                      canScrollFpLeft ? 'opacity-90 sm:opacity-0 sm:group-hover/carousel-fp:opacity-100' : 'opacity-0'
+                    }`}
                   >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
+                    <button
+                      type="button"
+                      aria-label="Défiler vers la gauche"
+                      onClick={() => scrollFp('left')}
+                      className="pointer-events-auto w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg flex items-center justify-center text-emerald-600 dark:text-emerald-400 active:scale-95 hover:scale-105 transition-all"
+                    >
+                      <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+                    </button>
+                  </div>
 
-                  <button
-                    type="button"
-                    aria-label="Défiler vers la droite"
-                    onClick={() => {
-                      if (fpCarouselRef.current) {
-                        fpCarouselRef.current.scrollBy({ left: 280, behavior: 'smooth' })
-                      }
-                    }}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-slate-200 flex items-center justify-center text-slate-700 shadow-lg opacity-80 sm:opacity-0 sm:group-hover/carousel-fp:opacity-100 hover:opacity-100 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-150"
+                  {/* Indicateur de défilement mobile & desktop - Flèche droite */}
+                  <div
+                    className={`absolute right-0 top-0 bottom-2 z-20 flex items-center pr-1 pl-3 bg-gradient-to-l from-white/95 via-white/80 dark:from-slate-900/95 dark:via-slate-900/80 to-transparent rounded-r-xl transition-opacity duration-300 pointer-events-none ${
+                      canScrollFpRight ? 'opacity-90 sm:opacity-0 sm:group-hover/carousel-fp:opacity-100' : 'opacity-0'
+                    }`}
                   >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                    <button
+                      type="button"
+                      aria-label="Défiler vers la droite"
+                      onClick={() => scrollFp('right')}
+                      className="pointer-events-auto w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg flex items-center justify-center text-emerald-600 dark:text-emerald-400 active:scale-95 hover:scale-105 transition-all animate-pulse"
+                    >
+                      <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+                    </button>
+                  </div>
 
                   <div
                     ref={fpCarouselRef}
+                    onScroll={checkFpScroll}
                     className="flex gap-3.5 overflow-x-auto pb-2 scroll-smooth interco-carousel-track cursor-grab active:cursor-grabbing select-none"
                     style={{ scrollbarWidth: 'none' }}
                   >

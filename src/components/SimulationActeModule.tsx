@@ -35,32 +35,32 @@ interface QuickScenario {
 
 const QUICK_SCENARIOS: QuickScenario[] = [
   {
-    icon: "📑",
+    icon: "🏛️",
     title: "CDD Emploi Permanent",
     badge: "Art. L. 332-8 2°",
     query: "Contrat CDD sur Emploi Permanent (CGFP Art. L. 332-8 2°)",
-    description: "Recrutement contractuel pour besoins des services municipaux."
+    description: "Recrutement sur emploi permanent vacant en l'absence de fonctionnaire titulaire."
   },
   {
     icon: "👥",
     title: "CDD Remplacement",
     badge: "Art. L. 332-13",
     query: "Contrat CDD : Remplacement Temporaire d'un Agent Indisponible (L. 332-13)",
-    description: "Remplacement temporaire d'un agent en arrêt ou congé."
+    description: "Remplacement temporaire d'un agent indisponible ou en congé."
   },
   {
-    icon: "📜",
-    title: "Nomination Stagiaire",
-    badge: "Statut FPT",
-    query: "Arrêté du Maire : Nomination en Qualité de Fonctionnaire Stagiaire",
-    description: "Arrêté de mise en stage suite à réussite au concours."
+    icon: "📈",
+    title: "CDD Engagement Accroissement",
+    badge: "Art. L. 332-23 1°",
+    query: "Contrat CDD : Engagement pour Accroissement Temporaire d'Activité (L. 332-23 1°)",
+    description: "Recrutement temporaire lié à un surcroît ou pic d'activité des services."
   },
   {
-    icon: "💰",
-    title: "Attribution IFSE",
-    badge: "RIFSEEP",
-    query: "Arrêté du Maire : Attribution de l'IFSE Mensuelle",
-    description: "Arrêté portant attribution individuelle de l'IFSE."
+    icon: "🚀",
+    title: "Contrat de Projet",
+    badge: "Art. L. 332-24",
+    query: "Contrat de Projet de Droit Public (CGFP Art. L. 332-24)",
+    description: "Conduite et réalisation d'une opération ou mission stratégique spécifique."
   }
 ];
 

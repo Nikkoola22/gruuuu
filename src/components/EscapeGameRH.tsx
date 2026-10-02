@@ -476,13 +476,13 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
                 {/* FEEDBACK EXPLANATION PANEL */}
                 <AnimatePresence>
                   {selectedChoiceIndex !== null && (
-                    <motion.div
-                      ref={feedbackRef}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                      className={`rounded-3xl p-6 sm:p-8 border-4 border-slate-900 text-left shadow-[8px_8px_0px_rgba(0,0,0,1)] relative overflow-hidden scroll-mt-6 ${
+                    <div ref={feedbackRef} className="scroll-mt-6 w-full">
+                      <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                        className={`rounded-3xl p-6 sm:p-8 border-4 border-slate-900 text-left shadow-[8px_8px_0px_rgba(0,0,0,1)] relative overflow-hidden ${
                         currentScenario.choices[selectedChoiceIndex].type === "bon"
                           ? "bg-emerald-100"
                           : currentScenario.choices[selectedChoiceIndex].type === "risque"
@@ -534,6 +534,7 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
                         </button>
                       </div>
                     </motion.div>
+                  </div>
                   )}
                 </AnimatePresence>
 

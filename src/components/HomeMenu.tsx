@@ -1546,6 +1546,38 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     <ExternalLinkIcon className="w-4 h-4" />
                   </div>
                 </a>
+
+                {/* Vidéo 4 */}
+                <a
+                  href="https://www.youtube.com/watch?v=0dIlS7SGMRI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/item relative bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border border-amber-100 dark:border-slate-700 hover:border-amber-300 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3.5 overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-amber-500 to-yellow-400 opacity-80 group-hover/item:opacity-100 transition-opacity" />
+                  <div className="w-16 h-12 flex-shrink-0 rounded-xl bg-slate-900 overflow-hidden relative shadow-md border border-slate-200 dark:border-slate-700 group-hover/item:scale-105 transition-transform duration-300">
+                    <img loading="lazy" src="https://img.youtube.com/vi/0dIlS7SGMRI/hqdefault.jpg" alt="Note de synthèse concours" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover/item:bg-black/20 transition-colors">
+                      <PlayCircle className="w-5 h-5 text-white drop-shadow-lg group-hover/item:scale-110 transition-transform" />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/40 px-2 py-0.5 rounded-md border border-amber-200/50 dark:border-amber-800/50">
+                        Écrit & Méthode
+                      </span>
+                    </div>
+                    <h4 className="font-black text-slate-900 dark:text-white text-base sm:text-lg leading-snug group-hover/item:text-amber-600 transition-colors truncate">
+                      Note de synthèse
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 line-clamp-1 font-medium">
+                      Analyser le dossier et structurer le plan.
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 p-2 rounded-xl bg-amber-50 dark:bg-amber-900/40 group-hover/item:bg-amber-500 text-amber-600 group-hover/item:text-slate-950 transition-all shadow-sm">
+                    <ExternalLinkIcon className="w-4 h-4" />
+                  </div>
+                </a>
               </div>
             </div>
 

@@ -1108,7 +1108,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
               {/* Question 1 : Échelon */}
               <div
                 onClick={() => {
-                  setChatState(prev => ({ ...prev, currentView: 'simul-agent' }))
+                  setChatState(prev => ({ ...prev, currentView: 'simul-agent', simulTool: 'frise' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
                 className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-amber-200/70 hover:border-amber-400 dark:border-slate-700/80 dark:hover:border-amber-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
@@ -1118,6 +1118,11 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     <Clock className="w-6 h-6" />
                   </div>
                   <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20">
+                        Cadence Statutaire
+                      </span>
+                    </div>
                     <h4 className="text-slate-900 dark:text-white font-extrabold text-base sm:text-lg leading-snug group-hover/card:text-amber-600 dark:group-hover/card:text-amber-400 transition-colors">
                       Quand est mon prochain avancement d'échelon ?
                     </h4>
@@ -1129,7 +1134,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs font-bold text-amber-600 dark:text-amber-400">
                   <span>Calculer ma date d'échelon</span>
                   <span className="inline-flex items-center gap-1 group-hover/card:translate-x-1 transition-transform">
-                    <span>Ouvrir</span>
+                    <span>Ouvrir la frise</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -1138,7 +1143,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
               {/* Question 2 : Grade */}
               <div
                 onClick={() => {
-                  setChatState(prev => ({ ...prev, currentView: 'simul-agent' }))
+                  setChatState(prev => ({ ...prev, currentView: 'simul-agent', simulTool: 'frise' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
                 className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-emerald-200/70 hover:border-emerald-400 dark:border-slate-700/80 dark:hover:border-emerald-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
@@ -1148,6 +1153,11 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     <TrendingUp className="w-6 h-6" />
                   </div>
                   <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+                        Quotas & Seuils
+                      </span>
+                    </div>
                     <h4 className="text-slate-900 dark:text-white font-extrabold text-base sm:text-lg leading-snug group-hover/card:text-emerald-600 dark:group-hover/card:text-emerald-400 transition-colors">
                       Vais-je avoir un avancement de grade cette année ?
                     </h4>
@@ -1159,7 +1169,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs font-bold text-emerald-600 dark:text-emerald-400">
                   <span>Tester mon éligibilité au grade</span>
                   <span className="inline-flex items-center gap-1 group-hover/card:translate-x-1 transition-transform">
-                    <span>Ouvrir</span>
+                    <span>Ouvrir la frise</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -1168,7 +1178,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
               {/* Question 3 : Promotion Interne LDG */}
               <div
                 onClick={() => {
-                  setChatState(prev => ({ ...prev, currentView: 'simul-agent' }))
+                  setChatState(prev => ({ ...prev, currentView: 'simul-agent', simulTool: 'ldg' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
                 className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-blue-200/70 hover:border-blue-400 dark:border-slate-700/80 dark:hover:border-blue-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
@@ -1178,18 +1188,23 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     <Award className="w-6 h-6" />
                   </div>
                   <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20">
+                        Barème CIG 175 pts
+                      </span>
+                    </div>
                     <h4 className="text-slate-900 dark:text-white font-extrabold text-base sm:text-lg leading-snug group-hover/card:text-blue-600 dark:group-hover/card:text-blue-400 transition-colors">
                       Comment savoir mes points pour la promotion interne ?
                     </h4>
                     <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1.5 leading-relaxed">
-                      Simulateur pas-à-pas des 6 LDG-PI de Gennevilliers avec liste des justificatifs DRH.
+                      Simulateur officiel des 6 LDG-PI de Gennevilliers avec calcul automatisé et fiche DRH.
                     </p>
                   </div>
                 </div>
                 <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs font-bold text-blue-600 dark:text-blue-400">
-                  <span>Simuler mon barème LDG-PI</span>
+                  <span>Calculer mon barème LDG-PI</span>
                   <span className="inline-flex items-center gap-1 group-hover/card:translate-x-1 transition-transform">
-                    <span>Ouvrir</span>
+                    <span>Ouvrir l'outil LDG</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -1198,7 +1213,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
               {/* Question 4 : Concours & Examens Pro */}
               <div
                 onClick={() => {
-                  setChatState(prev => ({ ...prev, currentView: 'simul-agent' }))
+                  setChatState(prev => ({ ...prev, currentView: 'simul-agent', simulTool: 'frise' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
                 className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-purple-200/70 hover:border-purple-400 dark:border-slate-700/80 dark:hover:border-purple-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
@@ -1208,6 +1223,11 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     <GraduationCap className="w-6 h-6" />
                   </div>
                   <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/20">
+                        Reclassement Garanti
+                      </span>
+                    </div>
                     <h4 className="text-slate-900 dark:text-white font-extrabold text-base sm:text-lg leading-snug group-hover/card:text-purple-600 dark:group-hover/card:text-purple-400 transition-colors">
                       Quel changement si je réussis mon examen pro ou concours ?
                     </h4>
@@ -1219,7 +1239,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs font-bold text-purple-600 dark:text-purple-400">
                   <span>Calculer mon reclassement</span>
                   <span className="inline-flex items-center gap-1 group-hover/card:translate-x-1 transition-transform">
-                    <span>Ouvrir</span>
+                    <span>Ouvrir la frise</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </span>
                 </div>

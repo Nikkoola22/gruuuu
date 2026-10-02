@@ -188,7 +188,17 @@ export const MemoireJuridiqueGenerator: React.FC<MemoireJuridiqueGeneratorProps>
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-1">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl shadow-lg shadow-blue-500/20 text-white">
+              {onClose && (
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                  <span>Retour</span>
+                </button>
+              )}
+              <div className="p-2.5 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl shadow-lg shadow-blue-500/20 text-white shrink-0">
                 <Gavel className="w-7 h-7 animate-pulse" />
               </div>
               <div className="text-left">
@@ -204,8 +214,8 @@ export const MemoireJuridiqueGenerator: React.FC<MemoireJuridiqueGeneratorProps>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
-              {currentStep === 2 && (
+            {currentStep === 2 && (
+              <div className="flex items-center gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => setCurrentStep(1)}
@@ -214,18 +224,8 @@ export const MemoireJuridiqueGenerator: React.FC<MemoireJuridiqueGeneratorProps>
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Modifier les données</span>
                 </button>
-              )}
-              {onClose && (
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  <span>Retour</span>
-                </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

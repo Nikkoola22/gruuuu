@@ -25,13 +25,7 @@ const Actualites: React.FC<ActualitesProps> = ({ news, onClose, baseUrl, onNavig
       {/* Top Header Banner */}
       <section className="relative z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-3xl py-3 text-center border-b border-slate-200/60 dark:border-white/5 shadow-sm transition-colors duration-700">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-1">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-              <div className="p-2 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-xl">
-                <Newspaper className="w-8 h-8 text-blue-600 dark:text-blue-400 animate-pulse" />
-              </div>
-              Actualités <span className="text-blue-600 dark:text-blue-400">CFDT & Statut RH</span>
-            </h2>
+          <div className="flex items-center gap-3.5 mb-2">
             <button
               type="button"
               onClick={(event) => {
@@ -39,11 +33,17 @@ const Actualites: React.FC<ActualitesProps> = ({ news, onClose, baseUrl, onNavig
                 event.stopPropagation();
                 onClose();
               }}
-              className="relative z-50 pointer-events-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0"
+              className="relative z-50 pointer-events-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               <span>Retour</span>
             </button>
+            <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <div className="p-1.5 sm:p-2 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-xl">
+                <Newspaper className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400 animate-pulse" />
+              </div>
+              Actualités <span className="text-blue-600 dark:text-blue-400">CFDT & Statut RH</span>
+            </h2>
           </div>
           <p className="text-slate-600 text-base sm:text-lg leading-relaxed text-left font-medium max-w-3xl">
             Restez informés en temps réel avec les toutes dernières publications syndicales, décisions d'actualité et droits des agents.

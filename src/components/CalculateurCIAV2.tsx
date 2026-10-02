@@ -225,25 +225,25 @@ export default function CalculateurCIAV2({ onClose }: CalculateurCIAProps) {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col text-slate-900 dark:text-slate-100">
       {/* Header */}
       <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md py-4 border-b border-slate-200 dark:border-slate-800 shadow-sm sticky top-0 z-30">
-        <div className="px-4 sm:px-6 flex flex-col gap-4 max-w-4xl mx-auto sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center justify-between w-full sm:w-auto gap-3 min-w-0">
+        <div className="px-4 sm:px-6 flex items-center justify-between gap-4 max-w-4xl mx-auto">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                <span>Retour</span>
+              </button>
+            )}
+            <div className={`p-2.5 sm:p-3 bg-gradient-to-br ${currentStepData.gradient} rounded-xl shadow-md shrink-0`}>
+              <Euro className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
             <div className="min-w-0">
               <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">Calculateur CIA</h1>
               <p className="text-orange-600 dark:text-orange-400 text-xs sm:text-sm font-semibold">Complément Indemnitaire Annuel</p>
             </div>
-            <div className={`p-3 bg-gradient-to-br ${currentStepData.gradient} rounded-xl shadow-md flex-shrink-0`}>
-              <Euro className="w-6 h-6 text-white" />
-            </div>
           </div>
-          {onClose && (
-            <button
-              onClick={onClose}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm shadow-sm border border-slate-300 dark:border-slate-700 transition-all duration-200 group shrink-0"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>Retour</span>
-            </button>
-          )}
         </div>
       </div>
 

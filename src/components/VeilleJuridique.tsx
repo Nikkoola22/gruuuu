@@ -1076,6 +1076,15 @@ const VeilleJuridique: React.FC<VeilleJuridiqueProps> = ({ onClose, initialViewM
           
           {/* Header Title & CFDT Logo */}
           <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            {/* Back Button */}
+            <button
+              onClick={onClose}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow-md hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-x-1 transition-transform" />
+              <span>Retour</span>
+            </button>
+
             {/* Logo CFDT agrandi à la place de l'icône */}
             <div className="relative shrink-0 flex items-center">
               <img
@@ -1132,17 +1141,6 @@ const VeilleJuridique: React.FC<VeilleJuridiqueProps> = ({ onClose, initialViewM
               </button>
 
             </div>
-
-
-
-            {/* Back Button */}
-            <button
-              onClick={onClose}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow-md hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>Retour</span>
-            </button>
           </div>
         </div>
       </header>

@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { 
   ArrowLeft, 
-  Sparkles, 
-  Briefcase, 
   RotateCcw,
-  Compass,
-  Award,
   ExternalLink,
-  CheckCircle2,
-  X
+  ShieldCheck
 } from "lucide-react";
 
 interface SimulateurCarriereProps {
@@ -22,9 +17,7 @@ const FRISE_URL = `${BASE_URL.endsWith("/") ? BASE_URL : `${BASE_URL}/`}simul-ag
 const LDG_URL = `${BASE_URL.endsWith("/") ? BASE_URL : `${BASE_URL}/`}simul-agent/ldg/index.html`;
 
 export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose, tool }) => {
-  const [activeTab, setActiveTab] = useState<'frise' | 'ldg'>(tool === 'ldg' ? 'ldg' : 'frise');
   const [isLoading, setIsLoading] = useState(true);
-  const [showInfoBanner, setShowInfoBanner] = useState(true);
 
   useEffect(() => {
     // S'assurer que le scroll est remis à zéro immédiatement
@@ -37,24 +30,7 @@ export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose,
     };
   }, []);
 
-  // Synchronisation si le paramètre tool change dynamiquement
-  useEffect(() => {
-    if (tool === 'ldg') {
-      setActiveTab('ldg');
-      setIsLoading(true);
-    } else if (tool === 'frise') {
-      setActiveTab('frise');
-      setIsLoading(true);
-    }
-  }, [tool]);
-
-  const currentUrl = activeTab === 'ldg' ? LDG_URL : FRISE_URL;
-
-  const handleSwitchTab = (tab: 'frise' | 'ldg') => {
-    if (tab === activeTab) return;
-    setIsLoading(true);
-    setActiveTab(tab);
-  };
+  const currentUrl = tool === 'ldg' ? LDG_URL : FRISE_URL;
 
   const handleReload = () => {
     setIsLoading(true);
@@ -66,11 +42,11 @@ export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose,
 
   return (
     <div className="fixed inset-0 z-[60] flex flex-col bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 overflow-hidden select-none font-sans">
-      {/* Header Bar - Épinglé en haut avec style moderne et harmonisé */}
-      <header className="shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800 shadow-sm px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 z-30 transition-colors">
+      {/* Header Bar - Épuré et harmonisé avec le bloc CFDT Ma Carrière Gennevilliers */}
+      <header className="shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800 shadow-sm px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3 z-30 transition-colors">
         
-        {/* Gauche : Bouton retour & Titre */}
-        <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+        {/* Gauche : Bouton retour & Bloc Marque CFDT Ma Carrière Gennevilliers */}
+        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
           <button
             type="button"
             onClick={onClose}
@@ -80,73 +56,52 @@ export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose,
             <span>Retour</span>
           </button>
 
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-md shadow-orange-500/20 shrink-0">
-              <Briefcase className="w-4 h-4 sm:w-5 sm:h-5" />
+          {/* Séparateur subtil */}
+          <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 shrink-0"></div>
+
+          {/* Bloc Logo CFDT « MA CARRIÈRE » Gennevilliers */}
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="relative flex items-center shrink-0">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-orange-500 via-amber-500 to-orange-400 flex items-center justify-center text-slate-950 font-black text-[11px] sm:text-xs shadow-md shadow-orange-500/25 tracking-wider">
+                CFDT
+              </div>
+              {/* Liseré tricolore discret */}
+              <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 flex h-0.5 w-4 rounded-full overflow-hidden opacity-90">
+                <span className="w-1/3 bg-blue-500"></span>
+                <span className="w-1/3 bg-white"></span>
+                <span className="w-1/3 bg-red-500"></span>
+              </div>
             </div>
-            <div className="min-w-0">
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 min-w-0">
               <div className="flex items-center gap-2">
-                <h1 className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight truncate">
-                  Simulateur & Guide Carrière de l'Agent
-                </h1>
-                <span className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
-                  <Sparkles className="w-3 h-3 text-orange-500" />
-                  CFDT 2026-2027
+                <span className="text-xs sm:text-base font-black tracking-tight text-slate-900 dark:text-white">
+                  CFDT « MA CARRIÈRE »
+                </span>
+                <span className="inline-flex text-[10px] font-extrabold tracking-wide uppercase px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/25">
+                  Gennevilliers
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate hidden sm:block">
-                Échelon • Avancement de Grade • Points Promotion Interne LDG-PI • Reclassement
-              </p>
+              <span className="hidden md:inline-flex text-slate-400 dark:text-slate-600">•</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:inline-block">
+                Collectivité de Gennevilliers (FPT)
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Centre : Sélecteur d'onglets ergonomique (Frise / LDG) */}
-        <div className="order-3 sm:order-2 w-full sm:w-auto flex items-center justify-center">
-          <div className="bg-slate-100 dark:bg-slate-800/90 p-1 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-inner flex items-center gap-1 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={() => handleSwitchTab('frise')}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all duration-200 cursor-pointer ${
-                activeTab === 'frise'
-                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md shadow-orange-500/20'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-700/60'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>Frise & Échelons</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleSwitchTab('ldg')}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all duration-200 cursor-pointer ${
-                activeTab === 'ldg'
-                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md shadow-orange-500/20'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-700/60'
-              }`}
-            >
-              <Award className="w-3.5 h-3.5" />
-              <span>Promotion Interne LDG-PI</span>
-              <span className="hidden md:inline-block text-[9px] px-1.5 py-0.5 rounded-md bg-white/20 dark:bg-slate-900/40 text-current">
-                175 pts
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* Droite : Outils d'action (Badge CIG, Recharger, Nouvel onglet) */}
-        <div className="order-2 sm:order-3 flex items-center gap-2 ml-auto sm:ml-0 shrink-0">
-          <span className="hidden xl:inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-xl">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            CIG Petite Couronne
+        {/* Droite : Badge CGFP & Actions (Recharger, Nouvel onglet) */}
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="hidden md:inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full shadow-2xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span>Conforme CGFP & CIG Petite Couronne</span>
           </span>
 
           <button
             type="button"
             onClick={handleReload}
             title="Réinitialiser l'affichage du simulateur"
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/60 transition-colors shadow-2xs cursor-pointer"
+            className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/60 transition-colors shadow-2xs cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -156,42 +111,12 @@ export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose,
             target="_blank"
             rel="noopener noreferrer"
             title="Ouvrir dans un nouvel onglet plein écran"
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/40 hover:text-orange-600 dark:hover:text-orange-400 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/60 transition-colors shadow-2xs cursor-pointer"
+            className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/40 hover:text-orange-600 dark:hover:text-orange-400 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/60 transition-colors shadow-2xs cursor-pointer"
           >
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>
       </header>
-
-      {/* Info Banner Pédagogique */}
-      {showInfoBanner && (
-        <div className="shrink-0 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 dark:from-slate-900 dark:via-orange-950/20 dark:to-slate-900 border-b border-orange-200/60 dark:border-orange-500/20 px-3 sm:px-6 py-2 text-xs flex items-center justify-between gap-3 text-slate-700 dark:text-slate-300">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="p-1 rounded-md bg-orange-500/15 text-orange-600 dark:text-orange-400 shrink-0 font-bold text-[11px]">
-              💡 {activeTab === 'frise' ? 'Mode Frise de Carrière' : 'Mode Barème LDG-PI'}
-            </span>
-            <p className="truncate font-medium text-xs">
-              {activeTab === 'frise' ? (
-                <>
-                  <strong className="text-slate-900 dark:text-white">Frise chronologique interactive :</strong> projetez vos dates d'échelon, cadences, indices majorés et simulez des événements de vie (congé parental, dispo, temps partiel).
-                </>
-              ) : (
-                <>
-                  <strong className="text-slate-900 dark:text-white">Barème officiel de promotion interne :</strong> calculez vos points sur les 6 critères officiels du CIG Petite Couronne et éditez votre fiche récapitulative pour la DRH.
-                </>
-              )}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowInfoBanner(false)}
-            title="Masquer cette bannière"
-            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg shrink-0 transition-colors cursor-pointer"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      )}
 
       {/* Frame Container - Occupe 100% de la hauteur restante */}
       <div className="relative flex-1 w-full h-full bg-slate-900 overflow-hidden">
@@ -199,17 +124,14 @@ export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose,
         {isLoading && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md text-white gap-4 animate-fade-in">
             <div className="relative">
-              <div className="w-14 h-14 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Briefcase className="w-6 h-6 text-orange-400 animate-pulse" />
-              </div>
+              <div className="w-12 h-12 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
             </div>
             <div className="text-center space-y-1">
-              <p className="text-base font-bold text-slate-100">
-                {activeTab === 'frise' ? 'Chargement de la frise de carrière...' : 'Chargement du barème LDG-PI...'}
+              <p className="text-sm font-bold text-slate-100">
+                Chargement du simulateur de carrière...
               </p>
               <p className="text-xs text-slate-400 font-medium">
-                Conforme Ville de Gennevilliers & CIG Petite Couronne
+                CFDT • Ville de Gennevilliers & CIG Petite Couronne
               </p>
             </div>
           </div>
@@ -217,10 +139,9 @@ export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose,
 
         {/* Embedded Application */}
         <iframe
-          key={activeTab}
           id="simul-agent-iframe"
           src={currentUrl}
-          title={activeTab === 'frise' ? "Frise Interactive de Carrière" : "Simulateur Promotion Interne LDG-PI"}
+          title="Simulateur de Carrière de l'Agent"
           className="w-full h-full border-0 block"
           onLoad={() => setIsLoading(false)}
           allow="fullscreen"

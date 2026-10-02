@@ -106,25 +106,79 @@ export async function exportToOfficialDocx(options: DocxGenerationOptions): Prom
       continue;
     }
 
-    // Titre d'acte (ex: ARRÊTÉ DU MAIRE, DÉCISION DU MAIRE, CONTRAT, NOTE DE SERVICE)
+    // 1. Suppression des mentions redondantes Gennevilliers / République / Logo Ville Populaire
+    if (
+      /Gennevilliers\s+RÉPUBLIQUE FRANÇAISE/i.test(rawLine) ||
+      /Logo Ville Populaire/i.test(rawLine) ||
+      /LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ/i.test(rawLine)
+    ) {
+      continue;
+    }
+
+    // 2. Titre d'acte et sous-titres (CONTRAT, ARRÊTÉ, DÉCISION, etc.) - EN GRAS ET CENTRÉ
     if (
       rawLine.startsWith("ARRÊTÉ DU MAIRE") ||
+      rawLine.startsWith("ARRÊTÉ") ||
       rawLine.startsWith("DÉCISION DU MAIRE") ||
-      rawLine.startsWith("CONTRAT D'ENGAGEMENT") ||
+      rawLine.startsWith("DÉCISION") ||
+      rawLine.startsWith("CONTRAT") ||
+      rawLine.startsWith("POUR ASSURER LE REMPLACEMENT") ||
+      rawLine.startsWith("POUR FAIRE FACE") ||
+      rawLine.startsWith("SUR UN EMPLOI PERMANENT") ||
+      rawLine === "MEDECIN VACATAIRE" ||
       rawLine.startsWith("NOTE DE SERVICE") ||
-      rawLine.startsWith("EXTRAIT DU REGISTRE")
+      rawLine.startsWith("CIRCULAIRE") ||
+      rawLine.startsWith("EXTRAIT DU REGISTRE") ||
+      rawLine.startsWith("RAPPORT HIÉRARCHIQUE") ||
+      rawLine.startsWith("CERTIFICAT DE TRAVAIL") ||
+      rawLine.startsWith("ACTE D'ENGAGEMENT") ||
+      rawLine.startsWith("FORMULAIRE ATTRI1") ||
+      rawLine.startsWith("AVENANT N°") ||
+      rawLine.startsWith("ORDRE DE SERVICE") ||
+      rawLine.startsWith("PROCÈS-VERBAL") ||
+      rawLine.startsWith("COMPTE-RENDU D'ENTRETIEN") ||
+      rawLine.startsWith("FICHE DE COTATION")
     ) {
       docParagraphs.push(
         new Paragraph({
           heading: HeadingLevel.HEADING_1,
           alignment: AlignmentType.CENTER,
-          spacing: { before: 200, after: 140 },
+          spacing: { before: 160, after: 100 },
           children: [
             new TextRun({
               text: rawLine,
               bold: true,
               size: 24,
               color: "0B3C5D",
+              font: "Arial"
+            })
+          ]
+        })
+      );
+      continue;
+    }
+
+    // 3. Mention légale entre parenthèses sous le titre (ex: (Etabli en application des dispositions de l'article L332-13...)) - EN GRAS ET CENTRÉ
+    if (
+      rawLine.startsWith("(") && rawLine.endsWith(")") &&
+      (
+        rawLine.toLowerCase().includes("application") ||
+        rawLine.toLowerCase().includes("article l") ||
+        rawLine.toLowerCase().includes("code général") ||
+        rawLine.toLowerCase().includes("cgfp") ||
+        rawLine.toLowerCase().includes("décret")
+      )
+    ) {
+      docParagraphs.push(
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 60, after: 180 },
+          children: [
+            new TextRun({
+              text: rawLine,
+              bold: true,
+              size: 20,
+              color: "2D3748",
               font: "Arial"
             })
           ]

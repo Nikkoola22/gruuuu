@@ -184,10 +184,7 @@ Pour le Maire, Soraya FONTAINE KESSAR (DGS)`
         officialDocLink: "https://intranet.ville-gennevilliers.fr/Statics/Docutheque/ressources_et_moyens_generaux/charte_bureautique/courrier.doc",
         cgfpRef: "CGFP Art. L. 332-23 1° & Décret n° 88-145 (Modèle Original Conforme)",
         summary: "Contrat à durée déterminée complet avec grille d'horaires, période d'essai, préavis et médiation préalable obligatoire CIG.",
-        sampleDocument: `Gennevilliers                                                   RÉPUBLIQUE FRANÇAISE
-(Logo Ville Populaire)                                          LIBERTÉ - ÉGALITÉ - FRATERNITÉ
-
-CONTRAT À DURÉE DÉTERMINÉE PORTANT ENGAGEMENT DE Monsieur/Madame [NOM Prénom]
+        sampleDocument: `CONTRAT À DURÉE DÉTERMINÉE PORTANT ENGAGEMENT DE Monsieur/Madame [NOM Prénom]
 POUR FAIRE FACE A UN ACCROISSEMENT TEMPORAIRE D'ACTIVITE
 (Etabli en application des dispositions de l'article L332-23 1° du code général de la fonction publique)
 
@@ -277,10 +274,7 @@ Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») 
         officialDocLink: "https://intranet.ville-gennevilliers.fr/Statics/Docutheque/ressources_et_moyens_generaux/charte_bureautique/courrier.doc",
         cgfpRef: "CGCT & Délibération municipale fixant le taux de vacation",
         summary: "Contrat d'engagement de médecin vacataire pour la permanence des soins ambulatoires avec grille forfaitaire dégressive.",
-        sampleDocument: `Gennevilliers                                                   RÉPUBLIQUE FRANÇAISE
-(Logo Ville Populaire)                                          LIBERTÉ - ÉGALITÉ - FRATERNITÉ
-
-CONTRAT PORTANT ENGAGEMENT DE Madame/Monsieur [NOM Prénom]
+        sampleDocument: `CONTRAT PORTANT ENGAGEMENT DE Madame/Monsieur [NOM Prénom]
 MEDECIN VACATAIRE
 
 Monsieur Patrice LECLERC, Maire de Gennevilliers,
@@ -340,10 +334,7 @@ Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») 
         officialDocLink: "https://intranet.ville-gennevilliers.fr/Statics/Docutheque/ressources_et_moyens_generaux/charte_bureautique/courrier.doc",
         cgfpRef: "CGFP Art. L. 332-13 & Décret n° 88-145 (Modèle Original Conforme)",
         summary: "Contrat de droit public pour remplacer un fonctionnaire ou contractuel indisponible avec toutes les mentions obligatoires.",
-        sampleDocument: `Gennevilliers                                                   RÉPUBLIQUE FRANÇAISE
-(Logo Ville Populaire)                                          LIBERTÉ - ÉGALITÉ - FRATERNITÉ
-
-CONTRAT À DURÉE DÉTERMINÉE PORTANT ENGAGEMENT DE Monsieur/Madame [NOM Prénom]
+        sampleDocument: `CONTRAT À DURÉE DÉTERMINÉE PORTANT ENGAGEMENT DE Monsieur/Madame [NOM Prénom]
 POUR ASSURER LE REMPLACEMENT TEMPORAIRE D'UN AGENT INDISPONIBLE
 (Etabli en application des dispositions de l'article L332-13 du code général de la fonction publique)
 
@@ -437,10 +428,7 @@ Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») 
         officialDocLink: "https://intranet.ville-gennevilliers.fr/Statics/Docutheque/ressources_et_moyens_generaux/charte_bureautique/courrier.doc",
         cgfpRef: "CGFP Art. L. 332-8 2°, L. 332-9 & Décret n° 2019-1414 (CDD 3 ans / CDI après 6 ans)",
         summary: "Contrat de 3 ans maximum sur emploi permanent de catégorie A en l'absence de candidature de fonctionnaire titulaire.",
-        sampleDocument: `Gennevilliers                                                   RÉPUBLIQUE FRANÇAISE
-(Logo Ville Populaire)                                          LIBERTÉ - ÉGALITÉ - FRATERNITÉ
-
-CONTRAT À DURÉE DÉTERMINÉE PORTANT ENGAGEMENT DE Monsieur/Madame [NOM Prénom]
+        sampleDocument: `CONTRAT À DURÉE DÉTERMINÉE PORTANT ENGAGEMENT DE Monsieur/Madame [NOM Prénom]
 SUR UN EMPLOI PERMANENT DE LA FONCTION PUBLIQUE TERRITORIALE
 (Établi en application des dispositions de l'article L. 332-8 2° du Code Général de la Fonction Publique)
 
@@ -537,10 +525,7 @@ Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») 
         officialDocLink: "https://intranet.ville-gennevilliers.fr/Statics/Docutheque/ressources_et_moyens_generaux/charte_bureautique/courrier.doc",
         cgfpRef: "CGFP Art. L. 332-24 & Décret n° 2020-172 (Durée de 1 à 6 ans)",
         summary: "Contrat spécifique pour mener une mission stratégique définie dont l'échéance est liée à la réalisation du projet.",
-        sampleDocument: `Gennevilliers                                                   RÉPUBLIQUE FRANÇAISE
-(Logo Ville Populaire)                                          LIBERTÉ - ÉGALITÉ - FRATERNITÉ
-
-CONTRAT DE PROJET DE DROIT PUBLIC (CGFP ART. L. 332-24)
+        sampleDocument: `CONTRAT DE PROJET DE DROIT PUBLIC (CGFP ART. L. 332-24)
 Projet : [Intitulé de l'opération stratégique]
 
 Entre la Ville de Gennevilliers et [Monsieur/Madame NOM Prénom], Chef de projet,
@@ -566,10 +551,7 @@ Signature de l'agent :                          Pour le Maire, Patrice LECLERC`
         officialDocLink: "https://intranet.ville-gennevilliers.fr/Statics/Docutheque/ressources_et_moyens_generaux/charte_bureautique/courrier.doc",
         cgfpRef: "Code du Travail L. 6227-1 & CGFP L. 312-1",
         summary: "Contrat d'alternance diplômante dans les services municipaux avec désignation d'un maître d'apprentissage.",
-        sampleDocument: `Gennevilliers                                                   RÉPUBLIQUE FRANÇAISE
-(Logo Ville Populaire)                                          LIBERTÉ - ÉGALITÉ - FRATERNITÉ
-
-CONTRAT D'APPRENTISSAGE DU SECTEUR PUBLIC TERRITORIAL
+        sampleDocument: `CONTRAT D'APPRENTISSAGE DU SECTEUR PUBLIC TERRITORIAL
 Diplôme préparé : [Intitulé du diplôme] - CFA : [Nom du CFA]
 
 Entre la Ville de Gennevilliers et l'Apprenti(e) [NOM Prénom],

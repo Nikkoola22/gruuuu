@@ -62,8 +62,14 @@ export const OfficialDocumentPreview: React.FC<OfficialDocumentPreviewProps> = (
     officialTemplateLabel = "Trame decision_municipale.docx";
   }
 
+  const sanitizedDocText = documentText
+    .replace(/Gennevilliers\s+RÉPUBLIQUE FRANÇAISE/gi, '')
+    .replace(/\(?Logo Ville Populaire\)?\s*(LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ)?/gi, '')
+    .replace(/LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ/gi, '')
+    .trim();
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(documentText);
+    navigator.clipboard.writeText(sanitizedDocText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -74,8 +80,8 @@ export const OfficialDocumentPreview: React.FC<OfficialDocumentPreviewProps> = (
       await exportToOfficialDocx({
         title,
         category,
-        content: documentText,
-        rawText: documentText,
+        content: sanitizedDocText,
+        rawText: sanitizedDocText,
         docType
       });
     } catch (e) {
@@ -230,29 +236,90 @@ export const OfficialDocumentPreview: React.FC<OfficialDocumentPreviewProps> = (
                   return <div key={idx} className="h-2" />;
                 }
 
-                // Titre principal de l'acte (ex: ARRÊTÉ DU MAIRE, DÉCISION DU MAIRE)
+                // 1. Suppression des mentions redondantes Gennevilliers / République / Logo Ville Populaire
+                if (
+                  /Gennevilliers\s+RÉPUBLIQUE FRANÇAISE/i.test(trimmed) ||
+                  /Logo Ville Populaire/i.test(trimmed) ||
+                  /LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ/i.test(trimmed)
+                ) {
+                  return null;
+                }
+
+                // 2. Titre principal de l'acte (CONTRAT, ARRÊTÉ, DÉCISION, etc.) - EN GRAS ET CENTRÉ
                 if (
                   trimmed.startsWith("ARRÊTÉ DU MAIRE") ||
+                  trimmed.startsWith("ARRÊTÉ") ||
                   trimmed.startsWith("DÉCISION DU MAIRE") ||
-                  trimmed.startsWith("CONTRAT D'ENGAGEMENT") ||
+                  trimmed.startsWith("DÉCISION") ||
+                  trimmed.startsWith("CONTRAT") ||
                   trimmed.startsWith("NOTE DE SERVICE") ||
-                  trimmed.startsWith("EXTRAIT DU REGISTRE")
+                  trimmed.startsWith("CIRCULAIRE") ||
+                  trimmed.startsWith("EXTRAIT DU REGISTRE") ||
+                  trimmed.startsWith("RAPPORT HIÉRARCHIQUE") ||
+                  trimmed.startsWith("CERTIFICAT DE TRAVAIL") ||
+                  trimmed.startsWith("ACTE D'ENGAGEMENT") ||
+                  trimmed.startsWith("FORMULAIRE ATTRI1") ||
+                  trimmed.startsWith("AVENANT N°") ||
+                  trimmed.startsWith("ORDRE DE SERVICE") ||
+                  trimmed.startsWith("PROCÈS-VERBAL") ||
+                  trimmed.startsWith("COMPTE-RENDU D'ENTRETIEN") ||
+                  trimmed.startsWith("FICHE DE COTATION")
                 ) {
                   return (
-                    <div key={idx} className="text-center my-3">
-                      <h2 className="text-base sm:text-lg font-black text-[#0B3C5D] uppercase tracking-wide bg-slate-50 py-2 px-4 rounded-xl border border-slate-200/80 inline-block shadow-2xs">
+                    <div key={idx} className="text-center my-2 px-2">
+                      <h2 className="text-base sm:text-lg font-black text-[#0B3C5D] uppercase tracking-wide leading-snug">
                         {trimmed}
                       </h2>
                     </div>
                   );
                 }
 
-                // Objet / Portant ...
+                // 3. Précision / sous-titre de l'acte (ex: POUR ASSURER LE REMPLACEMENT..., POUR FAIRE FACE..., SUR UN EMPLOI PERMANENT...) - EN GRAS ET CENTRÉ
+                if (
+                  trimmed.startsWith("POUR ASSURER LE REMPLACEMENT") ||
+                  trimmed.startsWith("POUR FAIRE FACE") ||
+                  trimmed.startsWith("SUR UN EMPLOI PERMANENT") ||
+                  trimmed === "MEDECIN VACATAIRE" ||
+                  trimmed.startsWith("Projet :") ||
+                  trimmed.startsWith("Diplôme préparé :")
+                ) {
+                  return (
+                    <div key={idx} className="text-center my-1 px-2">
+                      <h3 className="text-sm sm:text-base font-black text-slate-900 uppercase tracking-wide leading-snug">
+                        {trimmed}
+                      </h3>
+                    </div>
+                  );
+                }
+
+                // 4. Mention légale entre parenthèses sous le titre (ex: (Etabli en application des dispositions de l'article L332-13...)) - EN GRAS ET CENTRÉ
+                if (
+                  trimmed.startsWith("(") && trimmed.endsWith(")") &&
+                  (
+                    trimmed.toLowerCase().includes("application") ||
+                    trimmed.toLowerCase().includes("article l") ||
+                    trimmed.toLowerCase().includes("code général") ||
+                    trimmed.toLowerCase().includes("cgfp") ||
+                    trimmed.toLowerCase().includes("décret")
+                  )
+                ) {
+                  return (
+                    <div key={idx} className="text-center mt-1 mb-3 px-2">
+                      <p className="text-xs sm:text-sm font-bold text-slate-800 leading-normal">
+                        {trimmed}
+                      </p>
+                    </div>
+                  );
+                }
+
+                // 5. Objet / Portant ... - EN GRAS ET CENTRÉ
                 if (trimmed.startsWith("Portant ") || trimmed.startsWith("OBJET :") || trimmed.startsWith("Objet :")) {
                   return (
-                    <p key={idx} className="text-center font-bold italic text-slate-900 text-[13.5px] sm:text-[14px] mb-3 px-4">
-                      {trimmed}
-                    </p>
+                    <div key={idx} className="text-center my-2 px-4">
+                      <p className="font-bold italic text-slate-900 text-[13.5px] sm:text-[14px] leading-snug">
+                        {trimmed}
+                      </p>
+                    </div>
                   );
                 }
 
@@ -359,7 +426,7 @@ export const OfficialDocumentPreview: React.FC<OfficialDocumentPreviewProps> = (
       ) : (
         /* RAW MONOSPACE VIEW */
         <pre className="text-[11px] sm:text-xs font-mono text-slate-800 dark:text-slate-200 whitespace-pre-wrap bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-x-auto max-w-full leading-relaxed shadow-xs">
-          {documentText}
+          {sanitizedDocText}
         </pre>
       )}
     </div>

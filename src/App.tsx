@@ -18,7 +18,6 @@ const Calculateur13emeV2 = lazy(() => import("./components/Calculateur13emeV2.ts
 const CalculateurSFTV2 = lazy(() => import("./components/CalculateurSFTV2.tsx"))
 const Metiers = lazy(() => import("./components/Metiers.tsx"))
 const FAQ = lazy(() => import("./components/FAQ.tsx"))
-const LandingPage = lazy(() => import("./components/LandingPage.tsx"))
 const EspaceJeux = lazy(() => import("./components/EspaceJeux.tsx"))
 const Actualites = lazy(() => import("./components/Actualites.tsx"))
 const VeilleJuridique = lazy(() => import("./components/VeilleJuridique.tsx"))
@@ -244,8 +243,6 @@ function App() {
       returnToMenu();
     }
   };
-  // --- LANDING PAGE ---
-  const [showLanding, setShowLanding] = useState(true)
 
   // --- ÉTATS & REFS ---
   const [chatState, setChatState] = useState<ChatbotState>({
@@ -1200,21 +1197,6 @@ ${indicesFactuels}
   }
 
   // --- RENDU DU COMPOSANT ---
-  if (showLanding) {
-    return (
-      <Suspense fallback={<ViewLoader />}>
-        <LandingPage
-          theme="light"
-          onEnter={() => setShowLanding(false)}
-          onQuizz={() => {
-            setShowLanding(false)
-            setChatState(s => ({ ...s, currentView: 'faq' }))
-          }}
-        />
-      </Suspense>
-    )
-  }
-
   return (
     <div
       className="min-h-screen relative overflow-x-clip dark:bg-slate-950"
@@ -1260,7 +1242,7 @@ ${indicesFactuels}
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-3 relative z-10">
           <div className="flex items-center justify-between gap-3 sm:gap-6">
             {/* Logo et titre (Gauche) */}
-            <div className="flex items-center gap-2.5 sm:gap-3.5 group cursor-pointer" onClick={() => setShowLanding(true)}>
+            <div className="flex items-center gap-2.5 sm:gap-3.5 group cursor-pointer" onClick={() => setChatState(s => ({ ...s, currentView: 'menu' }))}>
               <div className="relative">
                 {/* Glow effect on hover (supprimé) */}
                 {logoLoadError ? (

@@ -145,17 +145,8 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
           </div>
         </section>
 
-        {/* Module 2 : Simulation d'Actes */}
+        {/* Module 2 : Simulation d'Actes RH */}
         <section>
-          <div className="flex items-center gap-3 mb-8">
-            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-xl text-purple-600 dark:text-purple-400">
-              <FileSignature className="w-6 h-6" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Simulation d'Actes (Non officiels)</h2>
-              <p className="text-slate-500 dark:text-slate-400">Rédigez et simulez des actes complexes ou non-standard</p>
-            </div>
-          </div>
           <SimulationActeModule theme={theme} />
         </section>
         

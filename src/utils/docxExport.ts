@@ -132,6 +132,7 @@ export async function exportToOfficialDocx(options: DocxGenerationOptions): Prom
       rawLine.startsWith("POUR ASSURER LE REMPLACEMENT") ||
       rawLine.startsWith("POUR FAIRE FACE") ||
       rawLine.startsWith("SUR UN EMPLOI PERMANENT") ||
+      rawLine.startsWith("POUR LA CONDUITE") ||
       rawLine === "MEDECIN VACATAIRE" ||
       rawLine.startsWith("NOTE DE SERVICE") ||
       rawLine.startsWith("CIRCULAIRE") ||

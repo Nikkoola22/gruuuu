@@ -521,24 +521,95 @@ Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») 
         officialDocLink: "https://intranet.ville-gennevilliers.fr/Statics/Docutheque/ressources_et_moyens_generaux/charte_bureautique/courrier.doc",
         cgfpRef: "CGFP Art. L. 332-24 & Décret n° 2020-172 (Durée de 1 à 6 ans)",
         summary: "Contrat spécifique pour mener une mission stratégique définie dont l'échéance est liée à la réalisation du projet.",
-        sampleDocument: `CONTRAT DE PROJET DE DROIT PUBLIC (CGFP ART. L. 332-24)
-Projet : [Intitulé de l'opération stratégique]
+        sampleDocument: `CONTRAT DE PROJET DE DROIT PUBLIC
+POUR LA CONDUITE ET LA RÉALISATION D'OPÉRATIONS STRATÉGIQUES
+(Établi en application des dispositions des articles L. 332-24 à L. 332-26 du code général de la fonction publique)
 
-Entre la Ville de Gennevilliers et [Monsieur/Madame NOM Prénom], Chef de projet,
-Vu le CGFP (Art. L. 332-24) et le décret n° 2020-172 du 27 février 2020 ;
-Vu la délibération du Conseil Municipal du [Date] ;
+Monsieur Patrice LECLERC, Maire de Gennevilliers,
+                                                                d'une part,
+Et
+[Monsieur/Madame NOM Prénom], né(e) le [Date de naissance] à [Lieu de naissance],
+Demeurant à [Adresse complète],
+Numéro de Sécurité Sociale (NIR) : [NIR],
+                                                                d'autre part,
 
-Article 1er : Conduite et réalisation des livrables du projet [Nom du projet].
-Article 2 : Durée prévisionnelle de [X] ans prenant effet le [Date début].
-Article 3 : Rémunération forfaitaire annuelle brute de [Montant] €.
-Article 4 : Indemnité de rupture anticipée de 10% en cas de fin anticipée du projet.
-Article 5 : Sécurité Sociale et IRCANTEC.
+Vu le Code général de la fonction publique (CGFP), notamment ses articles L. 332-24 à L. 332-26 ;
+Vu le décret n° 88-145 du 15 février 1988 modifié relatif aux agents contractuels de la fonction publique territoriale ;
+Vu le décret n° 2020-172 du 27 février 2020 relatif au contrat de projet dans la fonction publique ;
+Vu la délibération du Conseil Municipal de Gennevilliers du [Date de délibération] décidant la mise en œuvre de l'opération stratégique [Intitulé de l'opération] et la création d'un emploi non permanent de Chef de projet / Responsable de mission (relevant de la catégorie [A / B]) ;
+Vu la déclaration de vacance d'emploi transmise au Centre Interdépartemental de Gestion (CIG Petite Couronne) et la publication de l'offre d'emploi sur « Choisir le service public » sous le n° [Numéro de l'offre] ;
+Considérant que la conduite et la réalisation de l'opération nécessitent des compétences professionnelles hautement spécialisées de niveau catégorie [A / B] ;
+Vu l'arrêté municipal du 30 mars 2026 portant délégation d'attribution de fonctions et de signature à Monsieur Pierric ANNOOT, 12ème adjoint au Maire ;
+Vu la candidature présentée par [Monsieur/Madame NOM Prénom], titulaire du diplôme [Intitulé du diplôme / Titre requis] et attestant de l'expertise requise ;
+Considérant que le cocontractant remplit les conditions d'aptitude physique (certificat médical) et générales de recrutement prévues à l'article 2 du décret n° 88-145 modifié ;
 
-Fait à Gennevilliers, le [Date].
+Il a été d'un commun accord convenu ce qui suit :
+
+Article 1er - Objet du contrat, Définition du projet et Missions :
+[Monsieur/Madame NOM Prénom] est recruté(e) en qualité d'agent contractuel de droit public sur un contrat de projet pour assurer les fonctions de Chef de projet [Intitulé exact du poste / de l'opération], relevant de la catégorie hiérarchique [A / B].
+L'agent est chargé(e) du pilotage stratégique, de la coordination technique et de la réalisation de l'opération suivante : [Description précise du projet : objectifs opérationnels, livrables attendus, planning et indicateurs de performance].
+L'agent exercera ses missions au sein de la Direction [Nom de la Direction], service [Nom du service], situé à l'Hôtel de Ville / [Site d'affectation], 177, avenue Gabriel-Péri, 92230 Gennevilliers.
+La lettre de mission précisant la trajectoire d'exécution, les étapes clés et les livrables attendus est annexée au présent contrat.
+
+Article 2 - Durée du contrat, Prise d'effet et Échéance prévisionnelle :
+En application de l'''article L. 332-25 du CGFP et du décret n° 2020-172, le présent contrat est conclu pour une durée déterminée prévisionnelle de [X] ans (comprise entre 1 an minimum et 3 ans maximum).
+Il prend effet à compter du [Date de prise d'effet] pour s'achever le [Date d'échéance prévisionnelle] inclus.
+Le contrat prend fin de plein droit avec la réalisation de l'objet du projet. En cas de nécessité justifiée par l'état d'avancement de l'opération, le contrat peut être renouvelé par avenant sans que la durée totale cumulée de l'engagement ne puisse excéder six (6) ans.
+Conformément à l'article L. 332-25 du CGFP, le contrat de projet ne peut en aucun cas faire l'objet d'une transformation en contrat à durée indéterminée (CDI).
+
+Article 3 - Temps de travail et Modalités d'exercice :
+[Monsieur/Madame NOM Prénom] effectuera un service à temps complet sur la base d'une durée hebdomadaire de 35 heures 00 [ou régime forfaitaire selon le cycle applicable], selon les modalités arrêtées au sein de sa direction d'affectation.
+
+Article 4 - Période d'essai :
+Conformément à l'article 4 du décret n° 88-145 et au décret n° 2020-172, le cocontractant est soumis à une période d'essai de trois (3) mois [ou 2 mois si catégorie B].
+La collectivité se réserve la possibilité de renouveler une fois cette période d'essai pour une durée au plus égale à sa durée initiale.
+Pendant la période d'essai, chacune des parties peut résilier le contrat sans préavis ni versement d'indemnité.
+
+Article 5 - Rémunération et Régime indemnitaire (RIFSEEP) :
+Pour une durée hebdomadaire de 35 heures, [Monsieur/Madame NOM Prénom] perçoit une rémunération mensuelle brute comprenant :
+- Le traitement indiciaire de base calculé par référence à l'Indice Brut [IB], Indice Majoré [IM] : [Montant traitement brut] € ;
+- L'indemnité de résidence : [Montant] € ;
+- Le régime indemnitaire RIFSEEP (délibération F13 du Conseil Municipal du 15 décembre 2021) : IFSE Groupe [1 / 2 / 3] : [Montant IFSE mensuelle] € ;
+- Le cas échéant, le Complément Indemnitaire Annuel (CIA) modulé au vu des résultats de l'entretien professionnel et de l'atteinte des jalons du projet ;
+- Le Supplément Familial de Traitement (SFT) selon les justificatifs de charges de famille.
+Conformément à l'article 1-2 du décret n° 88-145, la rémunération de l'agent fait obligatoirement l'objet d'un réexamen au moins tous les trois ans au vu de l'évaluation professionnelle.
+
+Article 6 - Protection Sociale, Congés et Retraite :
+[Monsieur/Madame NOM Prénom] relève du Régime Général de la Sécurité Sociale (CPAM des Hauts-de-Seine) pour l'ensemble des risques maladie, maternité, invalidité et accidents de travail, et est affilié(e) au régime complémentaire de retraite IRCANTEC.
+L'intéressé(e) bénéficie des droits à congés annuels rémunérés (5 fois les obligations hebdomadaires de service) ainsi que des congés statutaires régis par le Titre III du décret n° 88-145.
+
+Article 7 - Évaluation Professionnelle et Bilan Annuel d'Étape :
+L'agent fait l'objet chaque année d'un entretien professionnel d'évaluation conduit par son supérieur hiérarchique direct, donnant lieu à la rédaction d'un Compte-Rendu d'Entretien Professionnel (CREP) conformément à l'article L. 521-1 du CGFP.
+Cet entretien comporte obligatoirement un bilan d'avancement des phases du projet, du respect des échéances opérationnelles et de l'atteinte des livrables fixés dans la lettre de mission.
+
+Article 8 - Fin de Contrat, Rupture Anticipée et Indemnité de Fin de Projet :
+1. Fin régulière du contrat : Le contrat s'achève à son échéance normale ou à la réalisation effective de l'opération. La collectivité notifie à l'agent son intention de renouveler ou non le contrat en respectant un préavis de 2 mois (contrat < 3 ans) ou 3 mois (contrat >= 3 ans).
+2. Rupture anticipée par la collectivité : Après l'expiration d'un délai d'un an à compter de la prise d'effet du contrat, la collectivité peut rompre unilatéralement le contrat lorsque le projet ou l'opération ne peut pas se réaliser (Décret n° 2020-172 Art. 8).
+Dans ce cas, la collectivité respecte un préavis minimum de trois (3) mois et verse à l'agent une indemnité de rupture d'un montant égal à dix pour cent (10 %) de la rémunération brute globale perçue depuis le début du contrat (Décret 2020-172 Art. 9).
+3. Démission du cocontractant : L'agent peut démissionner par lettre recommandée avec AR en respectant un préavis de trois (3) mois.
+4. Licenciement : Le contrat peut faire l'objet d'un licenciement pour motif disciplinaire ou insuffisance professionnelle dans le respect des garanties du décret n° 88-145.
+
+Article 9 - Droits, Obligations Déontologiques et Propriété Intellectuelle :
+Le cocontractant est soumis aux dispositions des Livres Ier et V du Code Général de la Fonction Publique (neutralité, laïcité, probité, obéissance hiérarchique et interdiction de cumul d'activités sans autorisation préalable expresse).
+L'agent est tenu-e au secret professionnel et à l'obligation de discrétion professionnelle pour tous les faits, documents ou informations dont il a connaissance dans le cadre de ses missions.
+L'ensemble des productions, rapports, études, méthodologies, logiciels et livrables créés ou développés par l'agent dans le cadre du projet sont la propriété pleine et exclusive de la Ville de Gennevilliers.
+
+Article 10 - Assurance Responsabilité Civile :
+La commune de Gennevilliers souscrit une assurance garantissant la responsabilité civile de ses agents pour les fautes de service commises dans le cadre de leurs fonctions.
+
+Article 11 - Exécution et Notification :
+Madame la Directrice Générale des Services (Soraya FONTAINE KESSAR) et la DRH sont chargées de l'exécution du présent contrat qui sera notifié à l'intéressé(e) et adressé à Monsieur le Trésorier Principal de Gennevilliers.
+
+Le présent contrat est fait en trois exemplaires originaux.
+Fait en Mairie de Gennevilliers, le [Date].
 
 ${GENNEVILLIERS_MPO_RECOURS_CLAUSE}
 
-Signature de l'agent :                          Pour le Maire, Patrice LECLERC`
+Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») :
+
+                                                Pour le Maire, par délégation,
+                                                Pierric ANNOOT
+                                                Adjoint au Maire`
       },
       {
         id: "recrut_apprentissage",

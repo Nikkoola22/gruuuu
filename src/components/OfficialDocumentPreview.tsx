@@ -290,6 +290,7 @@ export const OfficialDocumentPreview: React.FC<OfficialDocumentPreviewProps> = (
                   trimmed.startsWith("POUR ASSURER LE REMPLACEMENT") ||
                   trimmed.startsWith("POUR FAIRE FACE") ||
                   trimmed.startsWith("SUR UN EMPLOI PERMANENT") ||
+                  trimmed.startsWith("POUR LA CONDUITE") ||
                   trimmed === "MEDECIN VACATAIRE" ||
                   trimmed.startsWith("Projet :") ||
                   trimmed.startsWith("Diplôme préparé :")

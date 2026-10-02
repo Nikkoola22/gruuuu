@@ -73,18 +73,12 @@ export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose,
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-xs sm:text-base font-black tracking-tight text-slate-900 dark:text-white">
-                  CFDT « MA CARRIÈRE »
-                </span>
-                <span className="inline-flex text-[10px] font-extrabold tracking-wide uppercase px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/25">
-                  Gennevilliers
-                </span>
-              </div>
-              <span className="hidden md:inline-flex text-slate-400 dark:text-slate-600">•</span>
-              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:inline-block">
-                Collectivité de Gennevilliers (FPT)
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-xs sm:text-base font-black tracking-tight text-slate-900 dark:text-white">
+                CFDT « MA CARRIÈRE »
+              </span>
+              <span className="inline-flex text-[10px] font-extrabold tracking-wide uppercase px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/25">
+                Gennevilliers
               </span>
             </div>
           </div>

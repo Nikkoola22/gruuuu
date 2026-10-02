@@ -1384,20 +1384,38 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     <ExternalLinkIcon className="w-4 h-4" />
                   </div>
                 </a>
-              </div>
 
-              {/* Action Button: Docuthèque RAG */}
-              <button
-                onClick={() => {
-                  setChatState({ ...chatState, currentView: 'docutheque-rag' });
-                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-                }}
-                className="mt-4 flex items-center justify-center gap-2 w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-2.5 px-3 rounded-xl shadow-md hover:shadow-lg transition-all text-xs group-hover:scale-[1.02]"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Rechercher dans les 111 docs RH (RAG)</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </button>
+                {/* Document 4 : Recherche dans les 111 docs RH (RAG) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setChatState(prev => ({ ...prev, currentView: 'docutheque-rag' }));
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                  }}
+                  className="group/item relative bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border border-purple-100 dark:border-slate-700 hover:border-purple-300 rounded-2xl p-3.5 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-4 overflow-hidden text-left w-full cursor-pointer"
+                >
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-purple-500 to-pink-500 opacity-80 group-hover/item:opacity-100 transition-opacity" />
+                  <div className="w-12 h-12 flex-shrink-0 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-slate-900 dark:to-slate-800 p-2 flex items-center justify-center shadow-inner border border-purple-100/60 dark:border-slate-700 relative group-hover/item:scale-105 transition-transform duration-300">
+                    <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="text-xs font-black uppercase tracking-wider text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/40 px-2 py-0.5 rounded-md border border-purple-200/50 dark:border-purple-800/50">
+                        Moteur IA • RAG
+                      </span>
+                    </div>
+                    <h4 className="font-black text-slate-900 dark:text-white text-base sm:text-lg leading-snug group-hover/item:text-purple-600 transition-colors truncate">
+                      Recherche dans les 111 docs
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 line-clamp-1 font-medium">
+                      Recherche intelligente dans tous les règlements & notes.
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 p-2 rounded-xl bg-purple-50 dark:bg-purple-900/40 group-hover/item:bg-purple-600 text-purple-600 group-hover/item:text-white transition-all shadow-sm">
+                    <ArrowRight className="w-4 h-4 group-hover/item:translate-x-0.5 transition-transform" />
+                  </div>
+                </button>
+              </div>
             </div>
 
             {/* Pied de carte */}

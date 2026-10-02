@@ -66,6 +66,10 @@ export const OfficialDocumentPreview: React.FC<OfficialDocumentPreviewProps> = (
     .replace(/Gennevilliers\s+RÉPUBLIQUE FRANÇAISE/gi, '')
     .replace(/\(?Logo Ville Populaire\)?\s*(LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ)?/gi, '')
     .replace(/LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ/gi, '')
+    .replace(/\s*\[ou Zineb ZOUAOUI\]/gi, '')
+    .replace(/\s*\[ou Madame ZOUAOUI Zineb, adjointe au Maire\]/gi, '')
+    .replace(/\s*\[Tampon officiel Ville de Gennevilliers\]/gi, '')
+    .replace(/\s*\[Tampon officiel[^\]]*\]/gi, '')
     .trim();
 
   const handleCopy = () => {
@@ -236,14 +240,21 @@ export const OfficialDocumentPreview: React.FC<OfficialDocumentPreviewProps> = (
                   return <div key={idx} className="h-2" />;
                 }
 
-                // 1. Suppression des mentions redondantes Gennevilliers / République / Logo Ville Populaire
+                // 1. Suppression des mentions redondantes Gennevilliers / République / Logo Ville Populaire / Tampon officiel
                 if (
                   /Gennevilliers\s+RÉPUBLIQUE FRANÇAISE/i.test(trimmed) ||
                   /Logo Ville Populaire/i.test(trimmed) ||
-                  /LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ/i.test(trimmed)
+                  /LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ/i.test(trimmed) ||
+                  /\[?Tampon officiel/i.test(trimmed) ||
+                  /Tampon officiel Ville de Gennevilliers/i.test(trimmed)
                 ) {
                   return null;
                 }
+
+                const cleanTrimmed = trimmed
+                  .replace(/\s*\[ou Zineb ZOUAOUI\]/gi, '')
+                  .replace(/\s*\[ou Madame ZOUAOUI Zineb, adjointe au Maire\]/gi, '')
+                  .trim();
 
                 // 2. Titre principal de l'acte (CONTRAT, ARRÊTÉ, DÉCISION, etc.) - EN GRAS ET CENTRÉ
                 if (
@@ -392,11 +403,50 @@ export const OfficialDocumentPreview: React.FC<OfficialDocumentPreviewProps> = (
                   );
                 }
 
-                // Bloc de signatures officielles
-                if (trimmed.startsWith("Fait à Gennevilliers") || trimmed.startsWith("Pour le Maire") || trimmed.startsWith("Pierric ANNOOT") || trimmed.startsWith("Soraya FONTAINE")) {
+                // Date et lieu officiel
+                if (cleanTrimmed.startsWith("Fait à Gennevilliers") || cleanTrimmed.startsWith("Fait en Mairie")) {
                   return (
-                    <div key={idx} className="text-right mt-3 font-medium text-slate-900">
-                      <p className="font-bold text-[13px]">{trimmed}</p>
+                    <div key={idx} className="text-right mt-5 mb-2 text-slate-700 italic text-[12px]">
+                      <p>{cleanTrimmed}</p>
+                    </div>
+                  );
+                }
+
+                // Signature agent / cocontractant
+                if (cleanTrimmed.startsWith("Signature de l'intéressé") || cleanTrimmed.startsWith("Signature de l'agent")) {
+                  return (
+                    <div key={idx} className="text-left mt-6 mb-2 font-bold text-[12.5px] text-slate-800">
+                      <p>{cleanTrimmed}</p>
+                    </div>
+                  );
+                }
+
+                // Bloc de signatures officielles de l'autorité territoriale (Pour le Maire, Pierric ANNOOT, Adjoint au Maire...)
+                if (
+                  cleanTrimmed.startsWith("Pour le Maire") ||
+                  cleanTrimmed.startsWith("Pierric ANNOOT") ||
+                  cleanTrimmed.startsWith("Adjoint au Maire") ||
+                  cleanTrimmed.startsWith("12ᵉ Adjoint") ||
+                  cleanTrimmed.startsWith("12ème Adjoint") ||
+                  cleanTrimmed.includes("Adjoint au Maire") ||
+                  cleanTrimmed === "Adjoint RH" ||
+                  cleanTrimmed.startsWith("Soraya FONTAINE") ||
+                  cleanTrimmed.startsWith("Patrice LECLERC") ||
+                  cleanTrimmed.startsWith("Directrice Générale")
+                ) {
+                  const isTopLine = cleanTrimmed.startsWith("Pour le Maire");
+                  const isNameLine = cleanTrimmed.startsWith("Pierric ANNOOT") || cleanTrimmed.startsWith("Patrice LECLERC") || cleanTrimmed.startsWith("Soraya FONTAINE");
+                  const isTitleLine = cleanTrimmed.startsWith("Adjoint") || cleanTrimmed.includes("Adjoint") || cleanTrimmed.startsWith("12ᵉ") || cleanTrimmed.startsWith("12ème") || cleanTrimmed.startsWith("Directrice");
+
+                  return (
+                    <div key={idx} className={`text-right ${isTopLine ? "mt-4" : "mt-0.5"} font-medium leading-tight`}>
+                      <p className={`
+                        ${isTopLine ? "font-bold text-[13px] text-slate-900" : ""}
+                        ${isNameLine ? "font-black text-[13.5px] text-[#0B3C5D]" : ""}
+                        ${isTitleLine ? "font-bold text-[12px] text-slate-700" : ""}
+                      `}>
+                        {cleanTrimmed}
+                      </p>
                     </div>
                   );
                 }

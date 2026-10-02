@@ -100,20 +100,27 @@ export async function exportToOfficialDocx(options: DocxGenerationOptions): Prom
 
   // 2. PARCOURS DES LIGNES DU TEXTE POUR APPLIQUER LA MISE EN PAGE OFFICIELLE
   for (let i = 0; i < lines.length; i++) {
-    const rawLine = lines[i].trim();
+    let rawLine = lines[i].trim();
     if (!rawLine) {
       docParagraphs.push(new Paragraph({ spacing: { after: 120 }, children: [] }));
       continue;
     }
 
-    // 1. Suppression des mentions redondantes Gennevilliers / République / Logo Ville Populaire
+    // 1. Suppression des mentions redondantes Gennevilliers / République / Logo Ville Populaire / Tampon
     if (
       /Gennevilliers\s+RÉPUBLIQUE FRANÇAISE/i.test(rawLine) ||
       /Logo Ville Populaire/i.test(rawLine) ||
-      /LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ/i.test(rawLine)
+      /LIBERTÉ\s*-\s*ÉGALITÉ\s*-\s*FRATERNITÉ/i.test(rawLine) ||
+      /\[?Tampon officiel/i.test(rawLine) ||
+      /Tampon officiel Ville de Gennevilliers/i.test(rawLine)
     ) {
       continue;
     }
+
+    rawLine = rawLine
+      .replace(/\s*\[ou Zineb ZOUAOUI\]/gi, '')
+      .replace(/\s*\[ou Madame ZOUAOUI Zineb, adjointe au Maire\]/gi, '')
+      .trim();
 
     // 2. Titre d'acte et sous-titres (CONTRAT, ARRÊTÉ, DÉCISION, etc.) - EN GRAS ET CENTRÉ
     if (
@@ -308,17 +315,69 @@ export async function exportToOfficialDocx(options: DocxGenerationOptions): Prom
       }
     }
 
-    // Signature Block (Fait à Gennevilliers, Pour le Maire...)
-    if (rawLine.startsWith("Fait à Gennevilliers") || rawLine.startsWith("Pour le Maire")) {
+    // Date & Lieu officiel
+    if (rawLine.startsWith("Fait à Gennevilliers") || rawLine.startsWith("Fait en Mairie")) {
       docParagraphs.push(
         new Paragraph({
           alignment: AlignmentType.RIGHT,
-          spacing: { before: 200, after: 60 },
+          spacing: { before: 200, after: 80 },
           children: [
             new TextRun({
               text: rawLine,
-              bold: rawLine.startsWith("Pour le Maire") || rawLine.startsWith("Pierric ANNOOT"),
+              italics: true,
               size: 20,
+              font: "Arial"
+            })
+          ]
+        })
+      );
+      continue;
+    }
+
+    // Signature de l'agent / intéressé
+    if (rawLine.startsWith("Signature de l'intéressé") || rawLine.startsWith("Signature de l'agent")) {
+      docParagraphs.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          spacing: { before: 240, after: 80 },
+          children: [
+            new TextRun({
+              text: rawLine,
+              bold: true,
+              size: 20,
+              font: "Arial"
+            })
+          ]
+        })
+      );
+      continue;
+    }
+
+    // Signature Block officiel (Pour le Maire, Pierric ANNOOT, Adjoint au Maire...)
+    if (
+      rawLine.startsWith("Pour le Maire") ||
+      rawLine.startsWith("Pierric ANNOOT") ||
+      rawLine.startsWith("Adjoint au Maire") ||
+      rawLine.startsWith("12ᵉ Adjoint") ||
+      rawLine.startsWith("12ème Adjoint") ||
+      rawLine.includes("Adjoint au Maire") ||
+      rawLine === "Adjoint RH" ||
+      rawLine.startsWith("Soraya FONTAINE") ||
+      rawLine.startsWith("Patrice LECLERC") ||
+      rawLine.startsWith("Directrice Générale")
+    ) {
+      const isTopLine = rawLine.startsWith("Pour le Maire");
+      const isNameLine = rawLine.startsWith("Pierric ANNOOT") || rawLine.startsWith("Patrice LECLERC") || rawLine.startsWith("Soraya FONTAINE");
+      docParagraphs.push(
+        new Paragraph({
+          alignment: AlignmentType.RIGHT,
+          spacing: { before: isTopLine ? 180 : 30, after: 30 },
+          children: [
+            new TextRun({
+              text: rawLine,
+              bold: true,
+              size: 20,
+              color: isNameLine ? "0B3C5D" : "1A202C",
               font: "Arial"
             })
           ]

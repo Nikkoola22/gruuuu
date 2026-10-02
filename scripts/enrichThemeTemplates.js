@@ -196,7 +196,7 @@ Et
 
 Vu le Code général de la fonction publique,
 Vu le décret n°88-145 du 15 février 1988 pris pour l'application de l'article 136 de la loi du 26 janvier 1984 modifiée, portant dispositions statutaires relatives à la Fonction Publique Territoriale et relatif aux agents contractuels de la fonction publique territoriale,
-Vu l'arrêté municipal du 30 mars 2026, exécutoire le 30 mars 2026, portant délégation d'attribution de fonctions et de signature à Monsieur Pierric ANNOOT, 12ème adjoint au Maire [ou Madame ZOUAOUI Zineb, adjointe au Maire],
+Vu l'arrêté municipal du 30 mars 2026, exécutoire le 30 mars 2026, portant délégation d'attribution de fonctions et de signature à Monsieur Pierric ANNOOT, 12ème adjoint au Maire,
 Considérant qu'il est nécessaire de recruter un agent contractuel sur un emploi non permanent pour faire face à un besoin lié à un accroissement temporaire d'activité,
 Vu la candidature présentée par [Monsieur/Madame NOM Prénom] ;
 Considérant que le cocontractant remplit les conditions générales de recrutement énumérées à l'article 2 du décret susvisé du 15 février 1988 modifié, dont l'aptitude physique attestée par certificat médical ;
@@ -263,9 +263,8 @@ ${GENNEVILLIERS_MPO_RECOURS_CLAUSE}
 Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») :
 
                                                 Pour le Maire, par délégation,
-                                                Pierric ANNOOT [ou Zineb ZOUAOUI]
-                                                Adjoint au Maire
-                                                [Tampon officiel Ville de Gennevilliers]`
+                                                Pierric ANNOOT
+                                                Adjoint au Maire`
       },
       {
         id: "recrut_medecin_vacataire",
@@ -324,8 +323,7 @@ Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») 
 
                                                 Pour le Maire, par délégation,
                                                 Pierric ANNOOT
-                                                Adjoint au Maire
-                                                [Tampon officiel Ville de Gennevilliers]`
+                                                Adjoint au Maire`
       },
       {
         id: "recrut_cdd_remplacement",
@@ -346,7 +344,7 @@ Et
 
 Vu le Code général de la fonction publique, notamment son article L. 332-13,
 Vu le décret n°88-145 du 15 février 1988 pris pour l'application de l'article 136 de la loi du 26 janvier 1984 modifiée, portant dispositions statutaires relatives à la Fonction Publique Territoriale et relatif aux agents contractuels de la fonction publique territoriale,
-Vu l'arrêté municipal du 30 mars 2026, exécutoire le 30 mars 2026, portant délégation d'attribution de fonctions et de signature à Monsieur Pierric ANNOOT, 12ème adjoint au Maire [ou Madame ZOUAOUI Zineb, adjointe au Maire],
+Vu l'arrêté municipal du 30 mars 2026, exécutoire le 30 mars 2026, portant délégation d'attribution de fonctions et de signature à Monsieur Pierric ANNOOT, 12ème adjoint au Maire,
 Considérant qu'il est nécessaire de recruter un agent contractuel pour assurer le remplacement temporaire de [Monsieur/Madame NOM de l'agent remplacé], titulaire du poste de [Intitulé du poste], placé(e) en [Congé de maladie ordinaire / Congé de longue maladie / Congé maternité / Congé parental / Disponibilité],
 Vu la candidature présentée par [Monsieur/Madame NOM Prénom] ;
 Considérant que le cocontractant remplit les conditions générales de recrutement énumérées à l'article 2 du décret susvisé du 15 février 1988 modifié, dont l'aptitude physique attestée par certificat médical ;
@@ -417,9 +415,8 @@ ${GENNEVILLIERS_MPO_RECOURS_CLAUSE}
 Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») :
 
                                                 Pour le Maire, par délégation,
-                                                Pierric ANNOOT [ou Zineb ZOUAOUI]
-                                                Adjoint au Maire
-                                                [Tampon officiel Ville de Gennevilliers]`
+                                                Pierric ANNOOT
+                                                Adjoint au Maire`
       },
       {
         id: "recrut_cdd_emploi_permanent",
@@ -515,8 +512,7 @@ Signature de l'intéressé(e) (précédée de la mention « lu et approuvé ») 
 
                                                 Pour le Maire, par délégation,
                                                 Pierric ANNOOT
-                                                12ᵉ Adjoint au Maire délégué aux RH
-                                                [Tampon officiel Ville de Gennevilliers]`
+                                                Adjoint au Maire`
       },
       {
         id: "recrut_contrat_projet",

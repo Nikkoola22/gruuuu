@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { 
   ArrowLeft, FileSignature, FileBadge, Baby, UserCheck, UserPlus, 
-  RefreshCw, Briefcase, PlusCircle, LayoutList, Award, Clock, 
-  DollarSign, ArrowUpRight, CheckCircle2, Search, Filter
+  RefreshCw, Briefcase, LayoutList, Award, Clock, 
+  Search
 } from "lucide-react";
 import { SimulationActeModule } from "./SimulationActeModule";
 
@@ -36,7 +36,7 @@ const ActeCard: React.FC<ActeCardProps> = ({ title, description, category, icon,
       <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-2 leading-snug">{title}</h3>
       <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">{description}</p>
       <button className="inline-flex items-center gap-2 text-xs sm:text-sm text-purple-600 dark:text-purple-400 font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mt-auto">
-        <span>Générer l'acte</span>
+        <span>Générer l'arrêté</span>
         <ArrowLeft className="w-4 h-4 rotate-180" />
       </button>
     </div>
@@ -47,7 +47,7 @@ interface ActeItem {
   id: string;
   title: string;
   description: string;
-  category: "carriere" | "temps" | "mobilite" | "deliberations";
+  category: "carriere" | "temps" | "mobilite";
   categoryLabel: string;
   icon: React.ReactNode;
   badge?: string;
@@ -167,26 +167,6 @@ const ACTES_CATALOG: ActeItem[] = [
     icon: <RefreshCw className="w-6 h-6" />,
     badge: "Essentiel",
   },
-
-  // 4. DÉLIBÉRATIONS DU CONSEIL
-  {
-    id: "delib-poste",
-    title: "Création / Suppression d'emploi",
-    description: "Délibération du Conseil Municipal modifiant le tableau des effectifs (art. L. 313-1 CGFP)",
-    category: "deliberations",
-    categoryLabel: "Délibérations du Conseil",
-    icon: <PlusCircle className="w-6 h-6" />,
-    badge: "Séance",
-  },
-  {
-    id: "delib-rifseep",
-    title: "Délibération RIFSEEP (IFSE & CIA)",
-    description: "Instauration ou révision des plafonds de l'IFSE et du CIA par groupe de fonctions",
-    category: "deliberations",
-    categoryLabel: "Délibérations du Conseil",
-    icon: <DollarSign className="w-6 h-6" />,
-    badge: "Séance",
-  },
 ];
 
 const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) => void; theme?: 'light' | 'dark' }> = ({ onClose, onOpenCalculator, theme = 'dark' }) => {
@@ -226,7 +206,7 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
             </div>
             <div>
               <h1 className="text-xl font-bold text-slate-900 dark:text-white leading-none">Aides aux Gestionnaires</h1>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Actes officiels pré-remplis & simulateurs RH</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Arrêtés administratifs pré-remplis & simulateurs RH</p>
             </div>
           </div>
         </div>
@@ -234,7 +214,7 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
 
       <div className="max-w-6xl mx-auto px-6 py-10 space-y-16">
         
-        {/* Module 1 : Actes RH (Arrêtés & Délibérations) */}
+        {/* Module 1 : Actes RH (Arrêtés) */}
         <section>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div className="flex items-center gap-3">
@@ -242,8 +222,8 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
                 <LayoutList className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Actes RH (Arrêtés & Délibérations)</h2>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">Générez rapidement vos actes officiels pré-remplis (CGFP, LDG, CIG Petite Couronne)</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Actes RH (Arrêtés)</h2>
+                <p className="text-slate-500 dark:text-slate-400 text-sm">Générez rapidement vos arrêtés administratifs pré-remplis (CGFP, LDG, CIG Petite Couronne)</p>
               </div>
             </div>
 
@@ -254,7 +234,7 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Rechercher un arrêté ou une délibération..."
+                placeholder="Rechercher un arrêté..."
                 className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm"
               />
             </div>
@@ -270,7 +250,7 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
                   : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
               }`}
             >
-              Tous les actes ({ACTES_CATALOG.length})
+              Tous les arrêtés ({ACTES_CATALOG.length})
             </button>
             <button
               onClick={() => setSelectedCategory("carriere")}
@@ -302,19 +282,9 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
             >
               Mobilités & Affectations (5)
             </button>
-            <button
-              onClick={() => setSelectedCategory("deliberations")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                selectedCategory === "deliberations"
-                  ? "bg-purple-600 text-white shadow-sm"
-                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
-              }`}
-            >
-              Délibérations du Conseil (2)
-            </button>
           </div>
 
-          {/* Grille des actes */}
+          {/* Grille des arrêtés */}
           {filteredActes.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredActes.map((acte) => (
@@ -332,7 +302,7 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
             </div>
           ) : (
             <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
-              <p className="text-slate-500 dark:text-slate-400 text-sm">Aucun acte ne correspond à votre recherche "{searchQuery}".</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Aucun arrêté ne correspond à votre recherche "{searchQuery}".</p>
               <button 
                 onClick={() => { setSelectedCategory("all"); setSearchQuery(""); }}
                 className="mt-3 text-xs font-semibold text-purple-600 dark:text-purple-400 hover:underline"

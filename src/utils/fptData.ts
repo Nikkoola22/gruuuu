@@ -115,6 +115,57 @@ export const fptCadres: FptCadre[] = [
       "ATSEM principal de 2e classe",
       "ATSEM principal de 1re classe"
     ]
+  },
+  {
+    id: "aux-puericulture",
+    nom: "Auxiliaires de puériculture territoriaux",
+    decretNum: "2021-1880",
+    decretDate: "2021-12-29",
+    grades: [
+      "Auxiliaire de puériculture de classe normale",
+      "Auxiliaire de puériculture de classe supérieure"
+    ]
+  },
+  {
+    id: "eje",
+    nom: "Éducateurs territoriaux de jeunes enfants",
+    decretNum: "2017-1256",
+    decretDate: "2017-08-09",
+    grades: [
+      "Éducateur de jeunes enfants",
+      "Éducateur de jeunes enfants de classe exceptionnelle"
+    ]
+  },
+  {
+    id: "police-municipale",
+    nom: "Agents de police municipale",
+    decretNum: "2006-1391",
+    decretDate: "2006-11-17",
+    grades: [
+      "Gardien-brigadier",
+      "Brigadier-chef principal"
+    ]
+  },
+  {
+    id: "adj-patrimoine",
+    nom: "Adjoints territoriaux du patrimoine",
+    decretNum: "2006-1692",
+    decretDate: "2006-12-22",
+    grades: [
+      "Adjoint du patrimoine",
+      "Adjoint du patrimoine principal de 2e classe",
+      "Adjoint du patrimoine principal de 1re classe"
+    ]
+  },
+  {
+    id: "assistants-socio-educatifs",
+    nom: "Assistants territoriaux socio-éducatifs",
+    decretNum: "2017-901",
+    decretDate: "2017-05-09",
+    grades: [
+      "Assistant socio-éducatif",
+      "Assistant socio-éducatif de classe exceptionnelle"
+    ]
   }
 ];
 

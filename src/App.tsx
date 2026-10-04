@@ -43,13 +43,18 @@ import { GrillesIndiciairesModule } from "./components/calculators/GrillesIndici
 import { ArrNomination } from "./components/actes/ArrNomination"
 import { ArrTitularisation } from "./components/actes/ArrTitularisation"
 import { ArrEchelon } from "./components/actes/ArrEchelon"
+import { ArrGrade } from "./components/actes/ArrGrade"
 import { ArrTeletravail } from "./components/actes/ArrTeletravail"
+import { ArrTempsPartiel } from "./components/actes/ArrTempsPartiel"
 import { ArrCongeParental } from "./components/actes/ArrCongeParental"
+import { ArrDisponibilite } from "./components/actes/ArrDisponibilite"
 import { ArrDetachement } from "./components/actes/ArrDetachement"
 import { ArrIntegrationDetachement } from "./components/actes/ArrIntegrationDetachement"
+import { ArrReintegration } from "./components/actes/ArrReintegration"
 import { ArrMutationExterne } from "./components/actes/ArrMutationExterne"
 import { ArrMutationInterne } from "./components/actes/ArrMutationInterne"
 import { DelibPoste } from "./components/actes/DelibPoste"
+import { DelibRifseep } from "./components/actes/DelibRifseep"
 import MacMenuBar from "./components/MacMenuBar.tsx"
 
 // --- CONFIGURATION BASE URL POUR GITHUB PAGES ---
@@ -1443,14 +1448,24 @@ ${indicesFactuels}
           <div className="max-w-7xl mx-auto w-full p-4 sm:p-6 pb-32 space-y-6 mt-4">
             <button
               onClick={() => {
-                const isActe = ['arr-nomination', 'arr-titularisation', 'arr-echelon', 'arr-teletravail', 'arr-conge-parental', 'arr-detachement', 'arr-integration', 'arr-mutation-externe', 'arr-mutation-interne', 'delib-poste'].includes(chatState.simulTool || '');
+                const isActe = [
+                  'arr-nomination', 'arr-titularisation', 'arr-echelon', 'arr-grade',
+                  'arr-teletravail', 'arr-temps-partiel', 'arr-conge-parental', 'arr-disponibilite',
+                  'arr-detachement', 'arr-integration', 'arr-reintegration',
+                  'arr-mutation-externe', 'arr-mutation-interne', 'delib-poste', 'delib-rifseep'
+                ].includes(chatState.simulTool || '');
                 setChatState({ ...chatState, currentView: isActe ? 'metiers' : 'calculators', simulTool: null })
               }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               <span>
-                {['arr-nomination', 'arr-titularisation', 'arr-echelon', 'arr-teletravail', 'arr-conge-parental', 'arr-detachement', 'arr-integration', 'arr-mutation-externe', 'arr-mutation-interne', 'delib-poste'].includes(chatState.simulTool || '') 
+                {[
+                  'arr-nomination', 'arr-titularisation', 'arr-echelon', 'arr-grade',
+                  'arr-teletravail', 'arr-temps-partiel', 'arr-conge-parental', 'arr-disponibilite',
+                  'arr-detachement', 'arr-integration', 'arr-reintegration',
+                  'arr-mutation-externe', 'arr-mutation-interne', 'delib-poste', 'delib-rifseep'
+                ].includes(chatState.simulTool || '') 
                   ? "Retour aux Aides aux Gestionnaires" 
                   : "Retour aux calculateurs"}
               </span>
@@ -1468,13 +1483,18 @@ ${indicesFactuels}
                 {chatState.simulTool === 'arr-nomination' && <ArrNomination />}
                 {chatState.simulTool === 'arr-titularisation' && <ArrTitularisation />}
                 {chatState.simulTool === 'arr-echelon' && <ArrEchelon />}
+                {chatState.simulTool === 'arr-grade' && <ArrGrade />}
                 {chatState.simulTool === 'arr-teletravail' && <ArrTeletravail />}
+                {chatState.simulTool === 'arr-temps-partiel' && <ArrTempsPartiel />}
                 {chatState.simulTool === 'arr-conge-parental' && <ArrCongeParental />}
+                {chatState.simulTool === 'arr-disponibilite' && <ArrDisponibilite />}
                 {chatState.simulTool === 'arr-detachement' && <ArrDetachement />}
                 {chatState.simulTool === 'arr-integration' && <ArrIntegrationDetachement />}
+                {chatState.simulTool === 'arr-reintegration' && <ArrReintegration />}
                 {chatState.simulTool === 'arr-mutation-externe' && <ArrMutationExterne />}
                 {chatState.simulTool === 'arr-mutation-interne' && <ArrMutationInterne />}
                 {chatState.simulTool === 'delib-poste' && <DelibPoste />}
+                {chatState.simulTool === 'delib-rifseep' && <DelibRifseep />}
               </Suspense>
             </div>
           </div>

@@ -161,35 +161,57 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
   const [activeCalqueId, setActiveCalqueId] = useState<CalqueId>('all');
   const [selectedZone, setSelectedZone] = useState<CalqueId | null>('statut');
 
-  const { agent, totaux } = result;
+  const { agent, totaux, lignes } = result;
 
-  // Calculs formatés pour les calques
-  const formatCur = (val: number) => val.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  // Calculs formatés pour les calques - 100% sécurisé contre undefined / null / NaN
+  const formatCur = (val: number | undefined | null) => {
+    if (val === undefined || val === null || isNaN(Number(val))) return '0,00';
+    return Number(val).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  const getGain = (id: string) => (lignes || []).find(l => l.id === id)?.montantGain || 0;
+  const getRetenue = (id: string) => (lignes || []).find(l => l.id === id)?.montantRetenue || 0;
+  const getPatronale = (id: string) => (lignes || []).find(l => l.id === id)?.partPatronale || 0;
+
+  const tibVal = getGain('tib') || totaux?.traitementBase || 0;
+  const resVal = getGain('residence') || totaux?.indemniteResidence || 0;
+  const sftVal = getGain('sft') || totaux?.sft || 0;
+  const ifseVal = getGain('ifse') || totaux?.primesIfse || 0;
+  const ciaVal = getGain('cia') || totaux?.primesCia || 0;
+  const retraiteVal = getRetenue('cnracl') || getRetenue('ircantec') || (tibVal * 0.111);
+  const retraitePatronaleVal = getPatronale('cnracl') || getPatronale('ircantec') || (tibVal * TAUX_CNRACL_PATRONAL);
+  const rafpVal = getRetenue('rafp') || 0;
+  const rafpPatronaleVal = getPatronale('rafp') || rafpVal;
+  const csgDedVal = getRetenue('csg_ded') || 0;
+  const csgNdVal = getRetenue('csg_nonded') || 0;
+  const crdsVal = getRetenue('crds') || 0;
+  const assietteCsg = Math.round((totaux?.salaireBrut || 0) * ASSIETTE_ABATTEMENT_CSG_CRDS * 100) / 100;
+  const pasVal = getRetenue('pas') || totaux?.montantPas || 0;
 
   const activeCalqueDef = CALQUES_CIRIL.find(c => c.id === (selectedZone || 'statut')) || CALQUES_CIRIL[0];
 
   // Remplacement dynamique des variables dans les formules des calques
   const getRenderedFormule = (calque: CalqueDefinition) => {
     return calque.formuleChiffree
-      .replace('{IB}', String(agent.indiceBrut || Math.round(agent.indiceMajore * 1.06)))
-      .replace('{IM}', String(agent.indiceMajore))
-      .replace('{ECHELON}', agent.echelon)
-      .replace('{QUOTITE}', String(agent.quotite))
-      .replace('{TIB}', formatCur(totaux.traitementBase))
-      .replace('{RESIDENCE}', formatCur(totaux.indemniteResidence))
-      .replace('{IFSE}', formatCur(totaux.ifse))
-      .replace('{CIA}', formatCur(totaux.cia))
-      .replace('{CNRACL}', formatCur(totaux.retraiteSalarie))
-      .replace('{RAFP}', formatCur(totaux.rafpSalarie))
-      .replace('{ASSIETTE_CSG}', formatCur(totaux.assietteCsgCrds))
-      .replace('{CSG_DED}', formatCur(totaux.csgDeductible))
-      .replace('{CSG_ND}', formatCur(totaux.csgNonDeductible))
-      .replace('{CRDS}', formatCur(totaux.crds))
-      .replace('{NET_FISCAL}', formatCur(totaux.netFiscal))
-      .replace('{TAUX_PAS}', String(totaux.tauxPas))
-      .replace('{MONTANT_PAS}', formatCur(totaux.montantPas))
-      .replace('{NET_A_PAYER}', formatCur(totaux.netAPayer))
-      .replace('{COUT_EMPLOYEUR}', formatCur(totaux.coutGlobalEmployeur));
+      .replace('{IB}', String(agent?.indiceBrut || Math.round((agent?.indiceMajore || 382) * 1.06)))
+      .replace('{IM}', String(agent?.indiceMajore || 382))
+      .replace('{ECHELON}', agent?.echelon || 'Échelon 4')
+      .replace('{QUOTITE}', String(agent?.quotite || 100))
+      .replace('{TIB}', formatCur(tibVal))
+      .replace('{RESIDENCE}', formatCur(resVal))
+      .replace('{IFSE}', formatCur(ifseVal))
+      .replace('{CIA}', formatCur(ciaVal))
+      .replace('{CNRACL}', formatCur(retraiteVal))
+      .replace('{RAFP}', formatCur(rafpVal))
+      .replace('{ASSIETTE_CSG}', formatCur(assietteCsg))
+      .replace('{CSG_DED}', formatCur(csgDedVal))
+      .replace('{CSG_ND}', formatCur(csgNdVal))
+      .replace('{CRDS}', formatCur(crdsVal))
+      .replace('{NET_FISCAL}', formatCur(totaux?.netFiscal))
+      .replace('{TAUX_PAS}', String(totaux?.tauxPas || 0))
+      .replace('{MONTANT_PAS}', formatCur(pasVal))
+      .replace('{NET_A_PAYER}', formatCur(totaux?.netAPayer))
+      .replace('{COUT_EMPLOYEUR}', formatCur(totaux?.coutGlobalEmployeur));
   };
 
   const isZoneActive = (zoneId: CalqueId) => {
@@ -527,14 +549,14 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
                   <td className="py-2 px-2 text-right">Fixe</td>
                   <td className="py-2 px-2 text-right">-</td>
                   <td className="py-2 px-3 text-right font-bold text-purple-600 dark:text-purple-400">
-                    {formatCur(totaux.ifse)}
+                    {formatCur(ifseVal)}
                   </td>
                   <td className="py-2 px-3 text-right text-slate-300">-</td>
                   <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
                   <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
                 </tr>
 
-                {totaux.cia > 0 && (
+                {ciaVal > 0 && (
                   <tr
                     onClick={() => setSelectedZone('rifseep')}
                     className={`transition-colors cursor-pointer ${
@@ -550,7 +572,7 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
                     <td className="py-2 px-2 text-right">-</td>
                     <td className="py-2 px-2 text-right">-</td>
                     <td className="py-2 px-3 text-right font-bold text-purple-600 dark:text-purple-400">
-                      {formatCur(totaux.cia)}
+                      {formatCur(ciaVal)}
                     </td>
                     <td className="py-2 px-3 text-right text-slate-300">-</td>
                     <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
@@ -580,15 +602,15 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
                       <span>Retraite CNRACL (Pension)</span>
                     </div>
                   </td>
-                  <td className="py-2 px-2 text-right">{formatCur(totaux.traitementBase)}</td>
+                  <td className="py-2 px-2 text-right">{formatCur(tibVal)}</td>
                   <td className="py-2 px-2 text-right">11,100 %</td>
                   <td className="py-2 px-3 text-right text-slate-300">-</td>
                   <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(totaux.retraiteSalarie)}
+                    {formatCur(retraiteVal)}
                   </td>
                   <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-600">31,650 %</td>
                   <td className="py-2 px-3 text-right hidden sm:table-cell font-mono text-slate-600">
-                    {formatCur(totaux.traitementBase * TAUX_CNRACL_PATRONAL)}
+                    {formatCur(retraitePatronaleVal)}
                   </td>
                 </tr>
 
@@ -604,15 +626,15 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
                   <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
                     Retraite Additionnelle RAFP (Primes)
                   </td>
-                  <td className="py-2 px-2 text-right">{formatCur(totaux.ifse + totaux.cia)}</td>
+                  <td className="py-2 px-2 text-right">{formatCur(ifseVal + ciaVal)}</td>
                   <td className="py-2 px-2 text-right">5,000 %</td>
                   <td className="py-2 px-3 text-right text-slate-300">-</td>
                   <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(totaux.rafpSalarie)}
+                    {formatCur(rafpVal)}
                   </td>
                   <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-600">5,000 %</td>
                   <td className="py-2 px-3 text-right hidden sm:table-cell font-mono text-slate-600">
-                    {formatCur(totaux.rafpSalarie)}
+                    {formatCur(rafpPatronaleVal)}
                   </td>
                 </tr>
 
@@ -638,11 +660,11 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
                       <span>CSG Déductible (6,80%)</span>
                     </div>
                   </td>
-                  <td className="py-2 px-2 text-right">{formatCur(totaux.assietteCsgCrds)}</td>
+                  <td className="py-2 px-2 text-right">{formatCur(assietteCsg)}</td>
                   <td className="py-2 px-2 text-right">6,800 %</td>
                   <td className="py-2 px-3 text-right text-slate-300">-</td>
                   <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(totaux.csgDeductible)}
+                    {formatCur(csgDedVal)}
                   </td>
                   <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
                   <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
@@ -660,11 +682,11 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
                   <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
                     CSG Non Déductible (2,40%)
                   </td>
-                  <td className="py-2 px-2 text-right">{formatCur(totaux.assietteCsgCrds)}</td>
+                  <td className="py-2 px-2 text-right">{formatCur(assietteCsg)}</td>
                   <td className="py-2 px-2 text-right">2,400 %</td>
                   <td className="py-2 px-3 text-right text-slate-300">-</td>
                   <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(totaux.csgNonDeductible)}
+                    {formatCur(csgNdVal)}
                   </td>
                   <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
                   <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
@@ -682,11 +704,11 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
                   <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
                     CRDS Dette Sociale (0,50%)
                   </td>
-                  <td className="py-2 px-2 text-right">{formatCur(totaux.assietteCsgCrds)}</td>
+                  <td className="py-2 px-2 text-right">{formatCur(assietteCsg)}</td>
                   <td className="py-2 px-2 text-right">0,500 %</td>
                   <td className="py-2 px-3 text-right text-slate-300">-</td>
                   <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(totaux.crds)}
+                    {formatCur(crdsVal)}
                   </td>
                   <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
                   <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
@@ -712,17 +734,17 @@ export default function CirilBulletinView({ params, result, onUpdateParam }: Cir
                         </span>
                       )}
                       <span className="font-bold text-slate-900 dark:text-white">
-                        Prélèvement à la Source (Taux DGFiP : {totaux.tauxPas}%)
+                        Prélèvement à la Source (Taux DGFiP : {totaux?.tauxPas || 0}%)
                       </span>
                     </div>
                   </td>
-                  <td className="py-2.5 px-2 text-right font-semibold">{formatCur(totaux.netFiscal)}</td>
+                  <td className="py-2.5 px-2 text-right font-semibold">{formatCur(totaux?.netFiscal)}</td>
                   <td className="py-2.5 px-2 text-right font-bold text-orange-600 dark:text-orange-400">
-                    {totaux.tauxPas}%
+                    {totaux?.tauxPas || 0}%
                   </td>
                   <td className="py-2.5 px-3 text-right text-slate-300">-</td>
                   <td className="py-2.5 px-3 text-right font-extrabold text-orange-600 dark:text-orange-400 text-sm">
-                    {formatCur(totaux.montantPas)}
+                    {formatCur(pasVal)}
                   </td>
                   <td className="py-2.5 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
                   <td className="py-2.5 px-3 text-right hidden sm:table-cell text-slate-400">-</td>

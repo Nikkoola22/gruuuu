@@ -18,7 +18,9 @@ import {
   AlertTriangle,
   FileCheck,
   Code2,
-  Users
+  Users,
+  ChevronRight,
+  BookOpen
 } from "lucide-react";
 import { extractTextFromFile, auditStatutoryDocument, FullLegalAuditResult } from "../services/statutoryAuditEngine";
 import { OfficialDocumentPreview } from "./OfficialDocumentPreview";
@@ -43,6 +45,57 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
   const [isAutoDefenseOpen, setIsAutoDefenseOpen] = useState<boolean>(false);
   const [autoDefenseInitialTab, setAutoDefenseInitialTab] = useState<"recours" | "protection" | "instances" | "requete" | "bordereau" | "docassemble">("recours");
   const statutResultRef = useRef<HTMLDivElement>(null);
+
+  // Section refs for smooth navigation
+  const auditSectionRef = useRef<HTMLDivElement>(null);
+  const memoireSectionRef = useRef<HTMLDivElement>(null);
+  const jurisSectionRef = useRef<HTMLDivElement>(null);
+  const autoDefenseSectionRef = useRef<HTMLDivElement>(null);
+
+  const SAMPLE_PRESETS = [
+    {
+      label: "CDD Emploi Permanent",
+      sub: "Art. L. 332-8 CGFP",
+      badge: "DVE CIG • RIFSEEP",
+      name: "Contrat CDD sur Emploi Permanent (Modèle CGFP)",
+      text: "Contrat d'engagement à durée déterminée sur emploi permanent article L. 332-8 du Code Général de la Fonction Publique, Ville de Gennevilliers. Déclaration de Vacance d'Emploi DVE publiée auprès du CIG Petite Couronne. Indice brut 450, majoré 395. RIFSEEP applicable. Recours contentieux devant le Tribunal Administratif de Cergy-Pontoise sous deux mois."
+    },
+    {
+      label: "CDD Remplacement",
+      sub: "Art. L. 332-13 CGFP",
+      badge: "Congé Titulaire",
+      name: "Contrat CDD de Remplacement Temporaire (L. 332-13 CGFP)",
+      text: "Contrat de remplacement temporaire article L. 332-13 du Code Général de la Fonction Publique pour remplacer Mme Martin, Adjoint administratif principal, placée en congé de maternité puis parental. Terme fixé au retour effectif de l'agent. Clause de recours TA de Cergy-Pontoise sous 2 mois."
+    },
+    {
+      label: "CDD Accroissement",
+      sub: "Art. L. 332-23 1° CGFP",
+      badge: "Plafond 12 mois",
+      name: "Contrat CDD pour Accroissement d'Activité (L. 332-23 1° CGFP)",
+      text: "Contrat CDD pour accroissement temporaire d'activité et surcroît de travail article L. 332-23 1° du Code Général de la Fonction Publique. Durée de 6 mois dans la limite du plafond maximal de 12 mois sur une période de 18 mois consécutifs. Clause de recours TA de Cergy-Pontoise (2 mois)."
+    },
+    {
+      label: "Arrêté Municipal & Délégation",
+      sub: "CGCT • CRPA",
+      badge: "Légalité Générale",
+      name: "Arrêté du Maire de Gennevilliers portant organisation de service",
+      text: "Arrêté du Maire de la Ville de Gennevilliers. Vu le Code Général des Collectivités Territoriales (CGCT) notamment ses articles L. 2122-18 et suivants, vu le Code Général de la Fonction Publique (CGFP), vu le Code des Relations entre le Public et l'Administration (CRPA) articles L. 211-2 et L. 211-5. Arrête : organisation du service et délégation de signature. Voies et délais de recours devant le Tribunal Administratif de Cergy-Pontoise (2 mois)."
+    }
+  ];
+
+  const handleTestPreset = (preset: typeof SAMPLE_PRESETS[0]) => {
+    setIsStatutLoading(true);
+    try {
+      const res = auditStatutoryDocument(preset.name, preset.text);
+      setStatutResult(res);
+      toast.success(`Audit CGFP généré : ${preset.label}`);
+      setTimeout(() => {
+        statutResultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 150);
+    } finally {
+      setIsStatutLoading(false);
+    }
+  };
 
   // Jurisprudence search state
   const [jurisQuery, setJurisQuery] = useState<string>("");
@@ -154,6 +207,17 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
         <div className="flex items-center gap-2">
           <button
             onClick={() => {
+              setAutoDefenseInitialTab("instances");
+              setIsAutoDefenseOpen(true);
+            }}
+            className="hidden sm:inline-flex px-3.5 py-1.5 rounded-xl bg-rose-600/90 hover:bg-rose-600 text-white font-bold text-xs border border-rose-500/40 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer hover:scale-105 active:scale-95 shrink-0"
+            title="Saisine CAP, CCP, F3SCT / CST"
+          >
+            <Users className="w-3.5 h-3.5" />
+            <span>Saisine Instances CGFP</span>
+          </button>
+          <button
+            onClick={() => {
               setAutoDefenseInitialTab("recours");
               setIsAutoDefenseOpen(true);
             }}
@@ -171,12 +235,148 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
       {/* Main Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
+        {/* ─── HUB RAPIDE DES 4 PÔLES DU DÉFENSEUR ─── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          {/* Pôle 1 : Contrôle & Audit de Légalité */}
+          <button
+            type="button"
+            onClick={() => auditSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            className={`p-4 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between gap-3 shadow-md hover:scale-[1.02] active:scale-[0.99] ${
+              isLight
+                ? "bg-white hover:bg-emerald-50/50 border-emerald-300/80 shadow-emerald-500/5 hover:border-emerald-400"
+                : "bg-[#0E1526] hover:bg-[#121c33] border-emerald-500/30 hover:border-emerald-500/60 shadow-black/50"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="p-2.5 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <Shield className="w-5 h-5" />
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/40">
+                CGFP & CGCT
+              </span>
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-emerald-400 transition-colors">
+                1. Audit de Légalité des Actes
+              </h3>
+              <p className={`text-[11px] font-medium mt-0.5 line-clamp-2 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                Contrôle des visas, compétences, DVE CIG et auto-critique Préfecture & TA.
+              </p>
+            </div>
+            <span className="text-[11px] font-bold text-emerald-500 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span>Auditer un acte</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </button>
+
+          {/* Pôle 2 : Mémoire en Défense */}
+          <button
+            type="button"
+            onClick={() => setIsMemoireOpen(true)}
+            className={`p-4 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between gap-3 shadow-md hover:scale-[1.02] active:scale-[0.99] ${
+              isLight
+                ? "bg-white hover:bg-blue-50/50 border-blue-300/80 shadow-blue-500/5 hover:border-blue-400"
+                : "bg-[#0E1526] hover:bg-[#121c33] border-blue-500/30 hover:border-blue-500/60 shadow-black/50"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="p-2.5 rounded-xl bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                <Gavel className="w-5 h-5" />
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-500/40">
+                CE Dahan & ENM
+              </span>
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-blue-400 transition-colors">
+                2. Mémoire en Défense
+              </h3>
+              <p className={`text-[11px] font-medium mt-0.5 line-clamp-2 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                Réfutation des griefs, syllogismes judiciaires et contrôle de proportionnalité.
+              </p>
+            </div>
+            <span className="text-[11px] font-bold text-blue-500 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span>Rédiger un mémoire</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </button>
+
+          {/* Pôle 3 : Jurisprudence Administrative */}
+          <button
+            type="button"
+            onClick={() => jurisSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            className={`p-4 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between gap-3 shadow-md hover:scale-[1.02] active:scale-[0.99] ${
+              isLight
+                ? "bg-white hover:bg-indigo-50/50 border-indigo-300/80 shadow-indigo-500/5 hover:border-indigo-400"
+                : "bg-[#0E1526] hover:bg-[#121c33] border-indigo-500/30 hover:border-indigo-500/60 shadow-black/50"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="p-2.5 rounded-xl bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
+                <Scale className="w-5 h-5" />
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-950/80 text-indigo-300 border border-indigo-500/40">
+                CETAT Légifrance
+              </span>
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-indigo-400 transition-colors">
+                3. Jurisprudence Administrative
+              </h3>
+              <p className={`text-[11px] font-medium mt-0.5 line-clamp-2 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                Arrêts du Conseil d'État, des CAA et jugements des Tribunaux Administratifs.
+              </p>
+            </div>
+            <span className="text-[11px] font-bold text-indigo-500 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span>Rechercher les arrêts</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </button>
+
+          {/* Pôle 4 : Guichet d'Auto-Défense Syndicale & Recours */}
+          <button
+            type="button"
+            onClick={() => autoDefenseSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            className={`p-4 rounded-2xl border-2 text-left transition-all cursor-pointer group flex flex-col justify-between gap-3 shadow-lg hover:scale-[1.02] active:scale-[0.99] ${
+              isLight
+                ? "bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-rose-500/10 border-orange-400 shadow-orange-500/10 hover:border-orange-500"
+                : "bg-gradient-to-br from-[#1b1722] via-[#141b2d] to-[#0E1526] border-orange-500/50 hover:border-orange-400 shadow-orange-950/30"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="p-2.5 rounded-xl bg-orange-500/20 text-orange-400 border border-orange-500/40 shadow-xs">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/50 uppercase tracking-wider">
+                CAP • CCP • F3SCT • TA
+              </span>
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <h3 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-orange-400 transition-colors">
+                  4. Guichet d'Auto-Défense
+                </h3>
+              </div>
+              <p className={`text-[11px] font-medium mt-0.5 line-clamp-2 ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+                Recours gracieux, saisine des instances avec formulaires CGFP et requêtes TA.
+              </p>
+            </div>
+            <span className="text-[11px] font-black text-orange-500 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span>Permanence Numérique (5 min)</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </button>
+        </div>
+
         {/* ─── MODULE 1 : VÉRIFICATION DE LÉGALITÉ ─── */}
-        <div className={`rounded-3xl p-6 sm:p-7 border-2 shadow-xl relative overflow-hidden transition-all ${
-          isLight
-            ? "bg-white border-emerald-300 shadow-emerald-100/50"
-            : "bg-[#0E1526] border-emerald-500/40 shadow-2xl shadow-black/80"
-        }`}>
+        <div 
+          ref={auditSectionRef}
+          className={`rounded-3xl p-6 sm:p-7 border-2 shadow-xl relative overflow-hidden transition-all ${
+            isLight
+              ? "bg-white border-emerald-300 shadow-emerald-100/50"
+              : "bg-[#0E1526] border-emerald-500/40 shadow-2xl shadow-black/80"
+          }`}
+        >
           <div className="relative z-10 flex flex-col gap-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-emerald-500/20 pb-4">
               <div className="flex items-start sm:items-center gap-3.5">
@@ -220,7 +420,7 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
                   <p className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-400"}`}>
                     {uploadedFile 
                       ? `${Math.round(uploadedFile.size / 1024)} ko chargé • Cliquez sur 'Auditer la légalité'` 
-                      : "Ou tapez un projet d'acte dans le module de création ci-dessous"}
+                      : "Ou choisissez l'un des modèles certifiés ci-dessous pour audit immédiat"}
                   </p>
                 </div>
               </div>
@@ -249,17 +449,7 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
                     if (uploadedFile) {
                       handleAnalyzeFile();
                     } else {
-                      setIsStatutLoading(true);
-                      try {
-                        const res = auditStatutoryDocument("Contrat CDD sur Emploi Permanent (Modèle CGFP)", "Contrat d'engagement à durée déterminée sur emploi permanent article L. 332-8 du Code Général de la Fonction Publique, Ville de Gennevilliers.");
-                        setStatutResult(res);
-                        toast.success("Audit de conformité CGFP généré !");
-                        setTimeout(() => {
-                          statutResultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                        }, 150);
-                      } finally {
-                        setIsStatutLoading(false);
-                      }
+                      handleTestPreset(SAMPLE_PRESETS[0]);
                     }
                   }}
                   disabled={isStatutLoading}
@@ -274,15 +464,56 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
                 </button>
               </div>
             </div>
+
+            {/* Presets rapides de tests d'actes */}
+            <div className="pt-2 border-t border-emerald-500/20 flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5" /> Modèles certifiés prêts pour audit instantané :
+                </span>
+                <span className="text-[10px] text-slate-400 hidden sm:inline">Analyse clause par clause & visas CGFP</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                {SAMPLE_PRESETS.map((preset, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleTestPreset(preset)}
+                    disabled={isStatutLoading}
+                    className={`p-2.5 rounded-xl border text-left text-xs transition-all cursor-pointer flex flex-col justify-between gap-1 group ${
+                      isLight
+                        ? "bg-slate-50 hover:bg-emerald-50 border-slate-200 hover:border-emerald-300 text-slate-800"
+                        : "bg-[#0A1020] hover:bg-[#101b33] border-slate-800 hover:border-emerald-500/50 text-slate-200"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="font-bold truncate text-[11px] group-hover:text-emerald-400 transition-colors">
+                        {preset.label}
+                      </span>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded font-mono shrink-0 bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+                        {preset.badge}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                      <span>Lancer l'audit</span>
+                      <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform text-emerald-400" />
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
         {/* ─── MODULE 2 : RÉDACTION DE MÉMOIRE EN DÉFENSE ─── */}
-        <div className={`rounded-3xl p-6 sm:p-7 border-2 shadow-2xl relative overflow-hidden transition-all ${
-          isLight
-            ? "bg-white border-blue-200 shadow-blue-100/50"
-            : "bg-[#0E1526] border-blue-500/40 shadow-2xl shadow-black/80"
-        }`}>
+        <div 
+          ref={memoireSectionRef}
+          className={`rounded-3xl p-6 sm:p-7 border-2 shadow-2xl relative overflow-hidden transition-all ${
+            isLight
+              ? "bg-white border-blue-200 shadow-blue-100/50"
+              : "bg-[#0E1526] border-blue-500/40 shadow-2xl shadow-black/80"
+          }`}
+        >
           <div className="relative z-10 flex flex-col gap-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3.5 border-b border-blue-500/20 pb-4">
               <div className="flex items-start sm:items-center gap-3.5">
@@ -316,11 +547,14 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
         </div>
 
         {/* ─── MODULE 3 : RECHERCHE DE JURISPRUDENCE ─── */}
-        <div className={`rounded-3xl p-6 sm:p-7 border-2 shadow-xl relative overflow-hidden transition-all ${
-          isLight
-            ? "bg-white border-indigo-200 shadow-indigo-100/50"
-            : "bg-[#0E1526] border-indigo-500/40 shadow-2xl shadow-black/80"
-        }`}>
+        <div 
+          ref={jurisSectionRef}
+          className={`rounded-3xl p-6 sm:p-7 border-2 shadow-xl relative overflow-hidden transition-all ${
+            isLight
+              ? "bg-white border-indigo-200 shadow-indigo-100/50"
+              : "bg-[#0E1526] border-indigo-500/40 shadow-2xl shadow-black/80"
+          }`}
+        >
           {/* Header Box */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5">
             <div className="flex items-center gap-3.5">
@@ -752,11 +986,14 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
         )}
 
         {/* ─── SECTION MAJEURE (EN BAS DE PAGE) : GUICHET D'AUTO-DÉFENSE SYNDICALE & CONTENTIEUX (DOCASSEMBLE) ─── */}
-        <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-2xl relative overflow-hidden transition-all ${
-          isLight
-            ? "bg-gradient-to-br from-white via-orange-50/50 to-amber-50/30 border-orange-300 shadow-orange-500/10"
-            : "bg-gradient-to-br from-[#0E1526] via-[#141b2d] to-[#1c1822] border-orange-500/40 shadow-2xl shadow-orange-950/20"
-        }`}>
+        <div 
+          ref={autoDefenseSectionRef}
+          className={`rounded-3xl p-6 sm:p-8 border-2 shadow-2xl relative overflow-hidden transition-all ${
+            isLight
+              ? "bg-gradient-to-br from-white via-orange-50/50 to-amber-50/30 border-orange-300 shadow-orange-500/10"
+              : "bg-gradient-to-br from-[#0E1526] via-[#141b2d] to-[#1c1822] border-orange-500/40 shadow-2xl shadow-orange-950/20"
+          }`}
+        >
           {/* Lueur d'ambiance */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
           
@@ -881,6 +1118,11 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
                   <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
                     CAP (CREP & Formation), CCP (Contractuels) et F3SCT (DGI)
                   </h3>
+
+                  <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[11px] flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-rose-400 mt-0.5" />
+                    <span><strong>13 motifs statutaires types :</strong> Auto-remplissage des faits et moyens juridiques dès la sélection du motif et production instantanée du <em>Formulaire Officiel Conforme CGFP</em>.</span>
+                  </div>
 
                   <ul className="text-xs space-y-2 text-slate-600 dark:text-slate-300">
                     <li className="flex items-start gap-2">

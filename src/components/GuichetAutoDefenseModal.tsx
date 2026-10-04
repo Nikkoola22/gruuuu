@@ -65,6 +65,12 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
 }) => {
   const [activeTab, setActiveTab] = useState<"recours" | "protection" | "instances" | "requete" | "bordereau" | "docassemble">(defaultTab);
 
+  useEffect(() => {
+    if (defaultTab) {
+      setActiveTab(defaultTab);
+    }
+  }, [defaultTab]);
+
   // ─────────────────────────────────────────────────────────────
   // ÉTAT DU VOLET 1 : RECOURS GRACIEUX & CONTRÔLE DE RECEVABILITÉ
   // ─────────────────────────────────────────────────────────────

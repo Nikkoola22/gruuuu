@@ -638,18 +638,28 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Agent de maîtrise territorial (Catégorie C+)",
             categorieCible: "C",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Nomination sur liste d aptitude établie par le Centre de Gestion.",
+            ratioPromusPromouvablesExplication: "Nomination sur liste d aptitude établie par le Centre de Gestion (Décret n° 88-547 art. 4).",
             modaliteReclassement: "Reclassement dans la grille des agents de maîtrise avec prise en compte des fonctions d encadrement.",
             explicationReclassement: "Passage aux fonctions d encadrement d équipes et de chantiers techniques.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne vers Agent de Maîtrise",
-                echelonMinimum: 4,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 7,
+                ancienneteCadreAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: ["Attestation de réussite examen Agent de Maîtrise", "Justificatif de 7 ans de services effectifs dans le cadre d emplois", "Comptes-rendus EPA"],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté de nomination stagiaire"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix (dès 9 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteCadreAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["Justificatif de 7 ans de services effectifs dans la filière technique", "Rapport hiérarchique"],
+                piecesRequises: ["Justificatif de 9 ans de services effectifs dans le cadre d emplois", "Rapport hiérarchique circonstancié", "Comptes-rendus EPA"],
                 actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté de nomination stagiaire"]
               }
             ]
@@ -703,18 +713,28 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Agent de maîtrise territorial (Catégorie C+)",
             categorieCible: "C",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 88-547 art. 4).",
             modaliteReclassement: "Reclassement avec reprise d indice.",
             explicationReclassement: "Encadrement technique de secteur.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne Agent de Maîtrise au choix",
-                echelonMinimum: 4,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 7,
+                ancienneteCadreAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: ["Attestation de réussite examen Agent de Maîtrise", "Justificatif de 7 ans de services effectifs dans le cadre d emplois", "Comptes-rendus EPA"],
+                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix (dès 9 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteCadreAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["7 ans de services dans la filière technique", "Avis hiérarchique"],
+                piecesRequises: ["Justificatif de 9 ans de services effectifs dans le cadre d emplois", "Avis hiérarchique circonstancié", "Comptes-rendus EPA"],
                 actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
               }
             ]
@@ -741,22 +761,63 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
         ],
         perspectives: [
           {
+            gradeCibleId: "agent_maitrise_grade_initial",
+            nomGradeCible: "Agent de maîtrise territorial (Catégorie C+)",
+            categorieCible: "C",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 88-547 art. 4).",
+            modaliteReclassement: "Reclassement avec reprise d indice.",
+            explicationReclassement: "Encadrement technique de secteur et d ateliers municipaux.",
+            conditions: [
+              {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteCadreAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: ["Attestation de réussite examen Agent de Maîtrise", "Justificatif de 7 ans de services effectifs dans le cadre d emplois", "Comptes-rendus EPA"],
+                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix (dès 9 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteCadreAnnees: 9,
+                examenProfessionnelRequis: false,
+                piecesRequises: ["Justificatif de 9 ans de services effectifs dans le cadre d emplois", "Avis hiérarchique circonstancié", "Comptes-rendus EPA"],
+                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+              }
+            ]
+          },
+          {
             gradeCibleId: "technicien_classe_normale",
             nomGradeCible: "Technicien territorial (Catégorie B)",
             categorieCible: "B",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Quotas CDG pour l accès à la catégorie B.",
+            ratioPromusPromouvablesExplication: "Quotas CDG pour l accès à la catégorie B (Décret n° 2010-1357).",
             modaliteReclassement: "Reclassement indiciaire en B avec garantie du traitement antérieur.",
             explicationReclassement: "Reclassement de catégorie C vers la catégorie B.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Technicien B (dès 7 ans)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: ["Attestation de réussite examen Technicien territorial", "7 ans de services publics"],
+                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne Technicien B au choix",
+                descriptionVoie: "Au choix Technicien B (dès 8 ans)",
                 echelonMinimum: 4,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services publics", "Rapport hiérarchique"],
+                piecesRequises: ["8 ans de services publics dont au moins 5 ans en C technique", "Rapport hiérarchique"],
                 actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
               }
             ]
@@ -1265,23 +1326,133 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             ]
           },
           {
-            gradeCibleId: "auxiliaire_puericulture_classe_normale",
-            nomGradeCible: "Auxiliaire de puériculture (Catégorie B)",
-            categorieCible: "B",
+            gradeCibleId: "agent_maitrise_grade_initial",
+            nomGradeCible: "Agent de maîtrise territorial (Catégorie C+)",
+            categorieCible: "C",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG avec diplôme requis.",
-            modaliteReclassement: "Reclassement en B avec sauvegarde de traitement.",
-            explicationReclassement: "Évolution de carrière vers la catégorie B médico-sociale.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 88-547 art. 4 modifié par décret n° 2018-152).",
+            modaliteReclassement: "Reclassement dans la grille des agents de maîtrise avec reprise d ancienneté et gain indiciaire.",
+            explicationReclassement: "Accès aux fonctions de maîtrise, coordination des équipes d ATSEM, intendance et entretien des locaux scolaires.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteCadreAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Agent de Maîtrise (CDG/CIG)",
+                  "Justificatif de 7 ans au moins de services effectifs dans le cadre d emplois des ATSEM",
+                  "Comptes-rendus d entretien professionnel annuel (EPA)"
+                ],
+                actesAdministratifs: [
+                  "Inscription sur la liste d aptitude de promotion interne (CDG)",
+                  "Arrêté individuel de nomination en qualité d agent de maîtrise stagiaire"
+                ]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B au choix",
-                echelonMinimum: 5,
+                descriptionVoie: "Au choix (dès 9 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteCadreAnnees: 9,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif de 9 ans de services effectifs dans le cadre d emplois des ATSEM",
+                  "Rapport hiérarchique circonstancié attestant des compétences d encadrement et d intendance",
+                  "Comptes-rendus d EPA"
+                ],
+                actesAdministratifs: [
+                  "Inscription sur la liste d aptitude de promotion interne (CDG)",
+                  "Arrêté individuel de nomination stagiaire"
+                ]
+              }
+            ]
+          },
+          {
+            gradeCibleId: "animateur_classe_normale",
+            nomGradeCible: "Animateur territorial (Catégorie B)",
+            categorieCible: "B",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Quotas de promotion interne B fixés par le CDG (Décret n° 2011-558 art. 5).",
+            modaliteReclassement: "Reclassement dans la grille B1 (NES) avec garantie du traitement indiciaire antérieur.",
+            explicationReclassement: "Évolution vers la catégorie B : coordination d accueil périscolaire, direction d accueils de loisirs enfance/jeunesse.",
+            conditions: [
+              {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Animateur B (dès 7 ans)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Animateur territorial (CDG)",
+                  "Justificatif de 7 ans de services publics effectifs en catégorie C"
+                ],
+                actesAdministratifs: [
+                  "Inscription sur liste d aptitude B du CDG",
+                  "Arrêté individuel de nomination stagiaire B"
+                ]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix Animateur B (dès 9 ans)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["Diplôme d État d Auxiliaire de Puériculture (DEAP)", "7 ans de services publics"],
-                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 9 ans de services publics effectifs",
+                  "Dossier de candidature LDG pour la promotion interne B"
+                ],
+                actesAdministratifs: [
+                  "Inscription sur liste d aptitude B du CDG",
+                  "Arrêté individuel de nomination stagiaire B"
+                ]
+              }
+            ]
+          },
+          {
+            gradeCibleId: "redacteur_classe_normale",
+            nomGradeCible: "Rédacteur territorial (Catégorie B)",
+            categorieCible: "B",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Liste d aptitude annuelle de promotion interne établie par le CDG (Décret n° 2012-924 art. 4 et 5).",
+            modaliteReclassement: "Reclassement dans la grille B1 avec conservation du traitement indiciaire.",
+            explicationReclassement: "Passage en filière administrative : gestion administrative scolaire, petite enfance ou ressources humaines.",
+            conditions: [
+              {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Rédacteur (dès 7 ans)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Rédacteur territorial",
+                  "Justificatif de 7 ans de services publics effectifs"
+                ],
+                actesAdministratifs: [
+                  "Inscription sur liste d aptitude B",
+                  "Arrêté individuel de nomination stagiaire"
+                ]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix Rédacteur (dès 9 ans)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif de 9 ans de services publics effectifs",
+                  "Dossier d appréciation de la valeur professionnelle (LDG)"
+                ],
+                actesAdministratifs: [
+                  "Inscription sur liste d aptitude B",
+                  "Arrêté individuel de nomination stagiaire"
+                ]
               }
             ]
           }
@@ -1307,23 +1478,109 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
         ],
         perspectives: [
           {
-            gradeCibleId: "educateur_jeunes_enfants_normal",
-            nomGradeCible: "Éducateur de jeunes enfants (Catégorie A)",
-            categorieCible: "A",
+            gradeCibleId: "agent_maitrise_grade_initial",
+            nomGradeCible: "Agent de maîtrise territorial (Catégorie C+)",
+            categorieCible: "C",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Listes d aptitude du CDG.",
-            modaliteReclassement: "Reclassement en catégorie A.",
-            explicationReclassement: "Passage en catégorie A de la petite enfance.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 88-547 art. 4 modifié par décret n° 2018-152).",
+            modaliteReclassement: "Reclassement dans la grille de maîtrise avec reprise d ancienneté.",
+            explicationReclassement: "Encadrement technique de proximité et coordination générale du pôle scolaire / petite enfance.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne vers EJE (Diplôme d État requis)",
-                echelonMinimum: 5,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
+                ancienneteCadreAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Agent de Maîtrise",
+                  "Justificatif de 7 ans de services effectifs dans le cadre d emplois des ATSEM",
+                  "Comptes-rendus d EPA"
+                ],
+                actesAdministratifs: [
+                  "Inscription liste d aptitude CDG",
+                  "Arrêté de nomination stagiaire"
+                ]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix (dès 9 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteCadreAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["Diplôme d État d Éducateur de Jeunes Enfants (DEEJE)", "8 ans de services publics"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté de nomination stagiaire"]
+                piecesRequises: [
+                  "Justificatif de 9 ans de services effectifs dans le cadre d emplois des ATSEM",
+                  "Rapport hiérarchique circonstancié",
+                  "Comptes-rendus d EPA"
+                ],
+                actesAdministratifs: [
+                  "Inscription liste d aptitude CDG",
+                  "Arrêté de nomination stagiaire"
+                ]
+              }
+            ]
+          },
+          {
+            gradeCibleId: "animateur_classe_normale",
+            nomGradeCible: "Animateur territorial (Catégorie B)",
+            categorieCible: "B",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Promotion interne B sur liste d aptitude CDG (Décret n° 2011-558 art. 5).",
+            modaliteReclassement: "Reclassement indiciaire en B avec garantie du traitement antérieur.",
+            explicationReclassement: "Coordination et direction de structures périscolaires ou d accueils de loisirs.",
+            conditions: [
+              {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Animateur B (dès 7 ans)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: ["Attestation de réussite examen Animateur", "7 ans de services publics"],
+                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix Animateur B (dès 9 ans)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
+                examenProfessionnelRequis: false,
+                piecesRequises: ["9 ans de services publics", "Rapport LDG"],
+                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+              }
+            ]
+          },
+          {
+            gradeCibleId: "redacteur_classe_normale",
+            nomGradeCible: "Rédacteur territorial (Catégorie B)",
+            categorieCible: "B",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Promotion interne B sur liste d aptitude CDG (Décret n° 2012-924 art. 4 et 5).",
+            modaliteReclassement: "Reclassement indiciaire en B.",
+            explicationReclassement: "Passage en filière administrative territoriale.",
+            conditions: [
+              {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Rédacteur (dès 7 ans)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: ["Attestation réussite examen Rédacteur", "7 ans de services publics"],
+                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix Rédacteur (dès 9 ans)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
+                examenProfessionnelRequis: false,
+                piecesRequises: ["9 ans de services publics", "Rapport LDG"],
+                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
               }
             ]
           }

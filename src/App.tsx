@@ -16,6 +16,7 @@ const CalculateurCIAV2 = lazy(() => import("./components/CalculateurCIAV2.tsx"))
 const CalculateurPrimesV2 = lazy(() => import("./components/CalculateurPrimesV2.tsx"))
 const Calculateur13emeV2 = lazy(() => import("./components/Calculateur13emeV2.tsx"))
 const CalculateurSFTV2 = lazy(() => import("./components/CalculateurSFTV2.tsx"))
+const CourriersAgentModule = lazy(() => import("./components/CourriersAgentModule.tsx"))
 const Metiers = lazy(() => import("./components/Metiers.tsx"))
 const FAQ = lazy(() => import("./components/FAQ.tsx"))
 const EspaceJeux = lazy(() => import("./components/EspaceJeux.tsx"))
@@ -282,7 +283,7 @@ function App() {
   // --- FLUX D'ACTUALITÉS (Hook optimisé) ---
   const { rssItems, rssLoading, intercoNews, intercoLoading, fpNews, fpLoading } = useNewsFeeds()
 
-  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | null>(null)
+  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | null>(null)
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [logoLoadError, setLogoLoadError] = useState(false)
@@ -328,15 +329,17 @@ function App() {
     setChatState({ ...chatState, currentView: 'metiers' })
   }
 
-  const openCalculator = (calculator: 'primes' | 'cia' | '13eme') => {
-    const keyByCalculator = {
-      primes: 'calculator_primes',
-      cia: 'calculator_cia',
-      '13eme': 'calculator_13eme',
-    } as const
-
-    incrementWeeklyStat(keyByCalculator[calculator])
+  const openCalculator = (calculator: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers') => {
+    if (calculator === 'primes' || calculator === 'cia' || calculator === '13eme') {
+      const keyByCalculator = {
+        primes: 'calculator_primes',
+        cia: 'calculator_cia',
+        '13eme': 'calculator_13eme',
+      } as const
+      incrementWeeklyStat(keyByCalculator[calculator])
+    }
     setActiveCalculator(calculator)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }
 
   const handleDomainSelection = (domainId: number) => {
@@ -1772,6 +1775,26 @@ ${indicesFactuels}
                   </div>
                 </button>
 
+                {/* Carte Courriers de l'Agent */}
+                <button
+                  onClick={() => openCalculator('courriers')}
+                  className="group relative bg-white dark:bg-slate-800/80 border border-indigo-200 dark:border-indigo-500/20 rounded-2xl p-8 shadow-sm hover:shadow-lg dark:hover:shadow-indigo-500/10 hover:border-indigo-300 dark:hover:border-indigo-500/40 hover:scale-105 hover:-translate-y-2 transition-transform duration-150"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 dark:from-indigo-500/5 via-transparent to-blue-50/50 dark:to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
+                  <div className="relative z-10 flex flex-col items-center gap-6">
+                    <div className="p-6 bg-gradient-to-br from-indigo-100 dark:from-slate-900/80 to-blue-100 dark:to-slate-800/80 rounded-2xl shadow-sm border border-indigo-200 dark:border-indigo-500/30">
+                      <Mail className="w-16 h-16 text-indigo-600 dark:text-indigo-400" />
+                    </div>
+                    <h4 className="text-2xl font-bold text-slate-800 dark:text-white text-center">Courriers</h4>
+                    <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">
+                      Demandes officielles : temps partiel, télétravail, congés, recours...
+                    </p>
+                    <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold dark:font-semibold">
+                      <span className="text-sm">Rédiger un courrier</span>
+                    </div>
+                  </div>
+                </button>
+
               </div>
             </div>
           )}
@@ -1795,6 +1818,11 @@ ${indicesFactuels}
           {activeCalculator === '13eme' && (
             <Suspense fallback={<ViewLoader />}>
               <div className="calc-tool-enter"><Calculateur13emeV2 onClose={() => setActiveCalculator(null)} /></div>
+            </Suspense>
+          )}
+          {activeCalculator === 'courriers' && (
+            <Suspense fallback={<ViewLoader />}>
+              <div className="calc-tool-enter"><CourriersAgentModule onClose={() => setActiveCalculator(null)} /></div>
             </Suspense>
           )}
         </section>

@@ -620,4 +620,405 @@ Pour le Maire de Gennevilliers et par délégation, la DRH :`;
   });
 }
 
+export interface CourrierAgentDocxOptions {
+  title: string;
+  agent: {
+    civilite: string;
+    nom: string;
+    prenom: string;
+    grade: string;
+    direction: string;
+    matricule?: string;
+    adresse: string;
+    codePostal: string;
+    ville: string;
+    telephone: string;
+    email: string;
+    destinataireTitre: string;
+    destinataireSousCouvert: string;
+    destinataireAdresse: string;
+  };
+  cgfpRef: string;
+  modeEnvoi: string;
+  bodyText: string;
+  piecesJointes?: string[];
+  filename?: string;
+}
+
+/**
+ * Exporte un courrier officiel de l'agent au format .docx avec mise en page administrative française
+ */
+export async function exportCourrierAgentToDocx(options: CourrierAgentDocxOptions): Promise<void> {
+  const { title, agent, cgfpRef, modeEnvoi, bodyText, piecesJointes = [], filename } = options;
+  const todayFormatted = new Date().toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
+  const docParagraphs: Paragraph[] = [];
+
+  // 1. EXPÉDITEUR (Aligné à gauche)
+  docParagraphs.push(
+    new Paragraph({
+      alignment: AlignmentType.LEFT,
+      spacing: { after: 40 },
+      children: [
+        new TextRun({
+          text: `${agent.civilite || "Mme"} ${agent.prenom} ${agent.nom}`,
+          bold: true,
+          size: 22,
+          font: "Arial",
+          color: "1E293B"
+        })
+      ]
+    }),
+    new Paragraph({
+      alignment: AlignmentType.LEFT,
+      spacing: { after: 30 },
+      children: [
+        new TextRun({
+          text: agent.grade,
+          size: 20,
+          font: "Arial",
+          color: "334155"
+        })
+      ]
+    }),
+    new Paragraph({
+      alignment: AlignmentType.LEFT,
+      spacing: { after: 30 },
+      children: [
+        new TextRun({
+          text: agent.direction + (agent.matricule ? `  •  Matricule : ${agent.matricule}` : ""),
+          size: 19,
+          font: "Arial",
+          color: "475569"
+        })
+      ]
+    }),
+    new Paragraph({
+      alignment: AlignmentType.LEFT,
+      spacing: { after: 30 },
+      children: [
+        new TextRun({
+          text: `${agent.adresse} — ${agent.codePostal} ${agent.ville}`,
+          size: 19,
+          font: "Arial",
+          color: "64748B"
+        })
+      ]
+    }),
+    new Paragraph({
+      alignment: AlignmentType.LEFT,
+      spacing: { after: 200 },
+      children: [
+        new TextRun({
+          text: `Tél. : ${agent.telephone}  •  Courriel : ${agent.email}`,
+          size: 19,
+          font: "Arial",
+          color: "64748B"
+        })
+      ]
+    })
+  );
+
+  // 2. DESTINATAIRE (Aligné à droite)
+  const destLines = [
+    agent.destinataireTitre,
+    ...agent.destinataireSousCouvert.split('\n'),
+    ...agent.destinataireAdresse.split('\n')
+  ];
+
+  docParagraphs.push(
+    new Paragraph({
+      alignment: AlignmentType.RIGHT,
+      spacing: { before: 100, after: 40 },
+      children: [
+        new TextRun({
+          text: destLines[0],
+          bold: true,
+          size: 21,
+          font: "Arial",
+          color: "0F172A"
+        })
+      ]
+    })
+  );
+
+  for (let i = 1; i < destLines.length; i++) {
+    docParagraphs.push(
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        spacing: { after: 30 },
+        children: [
+          new TextRun({
+            text: destLines[i],
+            size: 20,
+            font: "Arial",
+            color: "334155"
+          })
+        ]
+      })
+    );
+  }
+
+  // 3. DATE ET LIEU
+  docParagraphs.push(
+    new Paragraph({
+      alignment: AlignmentType.RIGHT,
+      spacing: { before: 240, after: 160 },
+      children: [
+        new TextRun({
+          text: `Fait à Gennevilliers, le ${todayFormatted}`,
+          italics: true,
+          size: 20,
+          font: "Arial",
+          color: "334155"
+        })
+      ]
+    })
+  );
+
+  // 4. MODE D'ENVOI
+  docParagraphs.push(
+    new Paragraph({
+      alignment: AlignmentType.LEFT,
+      spacing: { after: 140 },
+      children: [
+        new TextRun({
+          text: "Mode d'acheminement : ",
+          bold: true,
+          size: 20,
+          font: "Arial",
+          color: "0B3C5D"
+        }),
+        new TextRun({
+          text: modeEnvoi,
+          size: 20,
+          font: "Arial",
+          color: "1E293B"
+        })
+      ]
+    })
+  );
+
+  // 5. OBJET & RÉFÉRENCES (Encadré / mis en avant)
+  docParagraphs.push(
+    new Paragraph({
+      alignment: AlignmentType.LEFT,
+      spacing: { after: 60 },
+      children: [
+        new TextRun({
+          text: "OBJET : ",
+          bold: true,
+          size: 21,
+          font: "Arial",
+          color: "0B3C5D"
+        }),
+        new TextRun({
+          text: title,
+          bold: true,
+          size: 21,
+          font: "Arial",
+          color: "0F172A"
+        })
+      ]
+    }),
+    new Paragraph({
+      alignment: AlignmentType.LEFT,
+      spacing: { after: 260 },
+      border: {
+        bottom: {
+          color: "CBD5E1",
+          space: 8,
+          style: BorderStyle.SINGLE,
+          size: 6
+        }
+      },
+      children: [
+        new TextRun({
+          text: "RÉFÉRENCES JURIDIQUES : ",
+          bold: true,
+          size: 19,
+          font: "Arial",
+          color: "475569"
+        }),
+        new TextRun({
+          text: cgfpRef,
+          size: 19,
+          font: "Arial",
+          color: "334155"
+        })
+      ]
+    })
+  );
+
+  // 6. CORPS DU COURRIER
+  const paragraphs = bodyText.split(/\n\s*\n/);
+  for (const p of paragraphs) {
+    const trimmed = p.trim();
+    if (!trimmed) continue;
+
+    // Check if bullet point or regular text
+    if (trimmed.startsWith('- ') || trimmed.startsWith('1°') || trimmed.startsWith('2°') || trimmed.startsWith('3°')) {
+      const lines = trimmed.split('\n');
+      for (const line of lines) {
+        docParagraphs.push(
+          new Paragraph({
+            alignment: AlignmentType.LEFT,
+            spacing: { after: 80 },
+            indent: { left: 400 },
+            children: [
+              new TextRun({
+                text: line.trim(),
+                size: 21,
+                font: "Arial",
+                color: "1E293B"
+              })
+            ]
+          })
+        );
+      }
+    } else {
+      docParagraphs.push(
+        new Paragraph({
+          alignment: AlignmentType.BOTH,
+          spacing: { after: 140, line: 276 },
+          children: [
+            new TextRun({
+              text: trimmed.replace(/\n/g, ' '),
+              size: 21,
+              font: "Arial",
+              color: "1E293B"
+            })
+          ]
+        })
+      );
+    }
+  }
+
+  // 7. SIGNATURE (Alignée à droite)
+  docParagraphs.push(
+    new Paragraph({
+      alignment: AlignmentType.RIGHT,
+      spacing: { before: 280, after: 60 },
+      children: [
+        new TextRun({
+          text: `${agent.prenom} ${agent.nom}`,
+          bold: true,
+          size: 21,
+          font: "Arial",
+          color: "0F172A"
+        })
+      ]
+    }),
+    new Paragraph({
+      alignment: AlignmentType.RIGHT,
+      spacing: { after: 200 },
+      children: [
+        new TextRun({
+          text: "(Signature)",
+          italics: true,
+          size: 18,
+          font: "Arial",
+          color: "64748B"
+        })
+      ]
+    })
+  );
+
+  // 8. PIÈCES JOINTES (En bas de page si présentes)
+  if (piecesJointes.length > 0) {
+    docParagraphs.push(
+      new Paragraph({
+        alignment: AlignmentType.LEFT,
+        spacing: { before: 200, after: 60 },
+        border: {
+          top: {
+            color: "E2E8F0",
+            space: 6,
+            style: BorderStyle.SINGLE,
+            size: 6
+          }
+        },
+        children: [
+          new TextRun({
+            text: "Pièces jointes fournies :",
+            bold: true,
+            size: 19,
+            font: "Arial",
+            color: "334155"
+          })
+        ]
+      })
+    );
+    for (const pj of piecesJointes) {
+      docParagraphs.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          spacing: { after: 40 },
+          indent: { left: 300 },
+          children: [
+            new TextRun({
+              text: `• ${pj}`,
+              size: 18,
+              font: "Arial",
+              color: "475569"
+            })
+          ]
+        })
+      );
+    }
+  }
+
+  // CONSTRUCTION DU DOCUMENT
+  const doc = new Document({
+    title,
+    description: `Courrier administratif - ${agent.nom} ${agent.prenom}`,
+    sections: [
+      {
+        properties: {
+          page: {
+            margin: {
+              top: 1440,
+              right: 1440,
+              bottom: 1440,
+              left: 1440
+            }
+          }
+        },
+        footers: {
+          default: new Footer({
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: `${agent.civilite || "Mme"} ${agent.prenom} ${agent.nom}  •  ${title}  •  Page `,
+                    size: 16,
+                    color: "94A3B8",
+                    font: "Arial"
+                  }),
+                  new TextRun({
+                    children: [PageNumber.CURRENT],
+                    size: 16,
+                    color: "94A3B8",
+                    font: "Arial"
+                  })
+                ]
+              })
+            ]
+          })
+        },
+        children: docParagraphs
+      }
+    ]
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const cleanTitle = (filename || `Courrier_${title.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0, 10)}`).slice(0, 80);
+  saveAs(blob, `${cleanTitle}.docx`);
+}
+
 

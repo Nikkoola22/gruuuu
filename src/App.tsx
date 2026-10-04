@@ -300,6 +300,7 @@ function App() {
   const newsMarqueeRef = useRef<HTMLDivElement>(null)
   const rssMarqueeRef = useRef<HTMLDivElement>(null)
   const bipMarkdownCacheRef = useRef<Map<string, string>>(new Map())
+  const calculatorsSectionRef = useRef<HTMLElement>(null)
 
   // --- EFFETS ---
   useEffect(() => {
@@ -340,6 +341,16 @@ function App() {
     }
     setActiveCalculator(calculator)
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    if (calculatorsSectionRef.current) {
+      calculatorsSectionRef.current.scrollTop = 0
+      calculatorsSectionRef.current.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    }
+    requestAnimationFrame(() => {
+      if (calculatorsSectionRef.current) {
+        calculatorsSectionRef.current.scrollTop = 0
+        calculatorsSectionRef.current.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      }
+    })
   }
 
   const handleDomainSelection = (domainId: number) => {
@@ -1520,7 +1531,10 @@ ${indicesFactuels}
 
       {/* --- SECTION CALCULATEURS FULL-WIDTH --- */}
       {chatState.currentView === 'calculators' && (
-        <section className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-950 dark:to-slate-900">
+        <section
+          ref={calculatorsSectionRef}
+          className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-950 dark:to-slate-900"
+        >
           {/* Header */}
           <div className="sticky top-0 bg-white/95 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700/50 shadow-sm z-30 glass-banner">
             <div className="max-w-6xl mx-auto px-4 py-4">
@@ -1529,6 +1543,9 @@ ${indicesFactuels}
                   onClick={() => {
                     if (activeCalculator) {
                       setActiveCalculator(null)
+                      if (calculatorsSectionRef.current) {
+                        calculatorsSectionRef.current.scrollTop = 0
+                      }
                     } else {
                       setChatState({ ...chatState, currentView: 'menu' })
                     }

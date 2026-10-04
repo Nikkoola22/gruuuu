@@ -78,8 +78,30 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
   const [isCopied, setIsCopied] = useState(false);
   const [mobileTab, setMobileTab] = useState<'form' | 'preview'>('form');
 
-  // Référence pour le conteneur de prévisualisation (impression)
+  // Référence pour le conteneur de prévisualisation (impression) et racine
   const previewRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // Forcer l'affichage immédiat du haut de la page dès l'ouverture du module
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    const scrollContainer = document.querySelector('section.fixed.inset-0.overflow-y-auto') as HTMLElement;
+    if (scrollContainer) {
+      scrollContainer.scrollTop = 0;
+      scrollContainer.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+    rootRef.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+
+    const rafId = requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
+      }
+      rootRef.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+    });
+
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
   // Trouver le modèle actif
   const currentTemplate = useMemo(() => {
@@ -222,7 +244,7 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
   });
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-6 pb-16 print:p-0 print:m-0 print:max-w-none">
+    <div ref={rootRef} className="w-full max-w-7xl mx-auto space-y-6 pb-16 print:p-0 print:m-0 print:max-w-none">
       {/* ─────────────────────────────────────────────────────────────────────────────
           1. EN-TÊTE DU MODULE
       ───────────────────────────────────────────────────────────────────────────── */}

@@ -1018,91 +1018,215 @@ print(f"Brut: {traitement_brut} €, Net à payer: {salaire_net} €")`;
 // 6. ANALYSEUR ET PARSEUR AUTOMATIQUE DE FICHE DE PAIE UPLOADÉE
 // ─────────────────────────────────────────────────────────────────────────────
 
+export interface ParseMetadata {
+  detectedItems: string[];
+  rawTextLength: number;
+  extractedLinesCount: number;
+  confidence: 'high' | 'medium' | 'low';
+  summary: string;
+}
+
+export interface ParsePaySlipResult {
+  params: CalculParams;
+  metadata: ParseMetadata;
+}
+
 /**
  * Analyse le texte brut d'une fiche de paie uploadée (.pdf, .docx, .txt, .csv)
- * et en déduit les paramètres de simulation OpenFisca-France
+ * et en déduit les paramètres de simulation OpenFisca-France avec métadonnées détaillées
  */
-export function parseUploadedPaySlip(rawText: string, fileName?: string): CalculParams {
+export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string): ParsePaySlipResult {
   const t = rawText.toLowerCase();
+  const detectedItems: string[] = [];
+  const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
-  // Extraction Indice Majoré (IM)
+  // 1. Extraction Indice Majoré (IM)
   let im = 382; // défaut Cat C
-  const imMatch = t.match(/ind(?:ice)?\.?\s*(?:maj(?:or[ée])?|m)\s*[:=]?\s*(\d{3})/i)
-    || t.match(/(?:im|inm)\s*[:=]?\s*(\d{3})/i)
-    || t.match(/(\d{3})\s*(?:points|pts)/i)
-    || t.match(/majore[:\s]+(\d{3})/i);
+  let imFound = false;
+
+  const imMatch = t.match(/(?:inm|i\.m\.?|indice\s*(?:major[ée]|maj\.?|brut\/maj)?)\s*[:=.\s]*(\d{3})\b/i)
+    || t.match(/\bindice\s*[:=]\s*(\d{3})\b/i)
+    || t.match(/\bim\s*[:=]\s*(\d{3})\b/i)
+    || t.match(/majore[:\s]+(\d{3})\b/i);
+
   if (imMatch && parseInt(imMatch[1], 10) >= 200 && parseInt(imMatch[1], 10) <= 900) {
     im = parseInt(imMatch[1], 10);
+    imFound = true;
+    detectedItems.push(`Indice Majoré (IM) détecté : ${im}`);
+  } else {
+    // Heuristique 2 : recherche dans la ligne "traitement de base"
+    const tibLineMatch = t.match(/traitement(?:\s+de)?\s+base.*?(\d{3})\b/i);
+    if (tibLineMatch && parseInt(tibLineMatch[1], 10) >= 200 && parseInt(tibLineMatch[1], 10) <= 900) {
+      im = parseInt(tibLineMatch[1], 10);
+      imFound = true;
+      detectedItems.push(`Indice Majoré (IM) déduit du libellé : ${im}`);
+    } else {
+      // Heuristique 3 : déduction à partir du montant brut du traitement (ex: 1880.50 € / 4.92278 = 382)
+      const montantTibMatch = t.match(/traitement(?:\s+de)?\s+base.*?([\d\s]+[,.]\d{2})/i)
+        || t.match(/traitement\s+indiciaire.*?([\d\s]+[,.]\d{2})/i);
+      if (montantTibMatch) {
+        const montant = parseFloat(montantTibMatch[1].replace(/\s/g, "").replace(",", "."));
+        if (montant >= 1000 && montant <= 5000) {
+          const calculatedIm = Math.round(montant / VALEUR_POINT_INDICE_MENSUEL);
+          if (calculatedIm >= 200 && calculatedIm <= 900) {
+            im = calculatedIm;
+            imFound = true;
+            detectedItems.push(`Indice Majoré (IM) recalculé d'après le montant brut (${montant.toFixed(2)} €) : ${im}`);
+          }
+        }
+      }
+    }
   }
 
-  // Extraction NBI
+  // 2. Extraction Quotité de travail
+  let quotite = 100;
+  const quotiteMatch = t.match(/quotit[ée]\s*[:=.\s]*(\d{2,3})\s*%?/i)
+    || t.match(/temps\s*(?:partiel|de\s*travail)\s*[:=.\s]*(\d{2,3})\s*%?/i);
+  if (quotiteMatch) {
+    const q = parseInt(quotiteMatch[1], 10);
+    if (q >= 20 && q <= 100) {
+      quotite = q;
+      if (q !== 100) detectedItems.push(`Quotité de travail : ${quotite}%`);
+    }
+  }
+
+  // 3. Extraction NBI (Nouvelle Bonification Indiciaire)
   let nbi = 0;
   const nbiMatch = t.match(/nbi\s*(?:points?|pts)?\s*[:=]?\s*(\d{1,3})/i)
     || t.match(/bonification\s*(?:indiciaire)?\s*[:=]?\s*(\d{1,3})/i);
   if (nbiMatch && parseInt(nbiMatch[1], 10) <= 100) {
     nbi = parseInt(nbiMatch[1], 10);
+    if (nbi > 0) detectedItems.push(`Points NBI détectés : +${nbi} pts`);
   }
 
-  // Extraction IFSE / Primes
+  // 4. Extraction IFSE / Primes RIFSEEP
   let ifse = 380;
-  const ifseMatch = t.match(/ifse\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
-    || t.match(/rifseep\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
-    || t.match(/fonctions\s*[:=]?\s*([\d\s]+[,.]\d{2})/i);
+  let ifseFound = false;
+  const ifseMatch = t.match(/ifse\s*(?:partie\s*fixe|mensuelle|principale)?\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
+    || t.match(/rifseep\s*(?:-\s*ifse)?\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
+    || t.match(/indemnit[ée]\s*(?:de\s*)?fonctions?\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
+    || t.match(/r[ée]gime\s*indemnitaire\s*[:=]?\s*([\d\s]+[,.]\d{2})/i);
   if (ifseMatch) {
     const val = parseFloat(ifseMatch[1].replace(/\s/g, "").replace(",", "."));
-    if (val >= 50 && val <= 3000) ifse = val;
+    if (val >= 40 && val <= 3500) {
+      ifse = val;
+      ifseFound = true;
+      detectedItems.push(`Prime IFSE (RIFSEEP) détectée : ${ifse.toFixed(2)} €/mois`);
+    }
   }
 
-  // Détection du Statut (Titulaire vs Contractuel)
+  // Extraction CIA
+  let cia = 0;
+  const ciaMatch = t.match(/\bcia\b\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
+    || t.match(/compl[ée]ment\s*indemnitaire\s*annuel\s*[:=]?\s*([\d\s]+[,.]\d{2})/i);
+  if (ciaMatch) {
+    const val = parseFloat(ciaMatch[1].replace(/\s/g, "").replace(",", "."));
+    if (val > 0 && val <= 3000) {
+      cia = val;
+      detectedItems.push(`Complément CIA détecté : ${cia.toFixed(2)} €`);
+    }
+  }
+
+  // 5. Détection du Statut (Titulaire vs Contractuel)
   let statut: "titulaire" | "contractuel" | "stagiaire" = "titulaire";
-  if (t.includes("contractuel") || t.includes("ircantec") || t.includes("cdd") || t.includes("cdi") || t.includes("décret 88-145")) {
+  if (t.includes("contractuel") || t.includes("ircantec") || t.includes("cdd") || t.includes("cdi") || t.includes("décret 88-145") || t.includes("decret 88-145")) {
     statut = "contractuel";
+    detectedItems.push("Régime de retraite : Contractuel (Régime Général & IRCANTEC)");
   } else if (t.includes("stagiaire")) {
     statut = "stagiaire";
+    detectedItems.push("Statut : Fonctionnaire Stagiaire (CNRACL & RAFP)");
+  } else {
+    detectedItems.push("Statut : Fonctionnaire Titulaire (Pension CNRACL 11,10% & RAFP)");
   }
 
-  // Détection SFT / Enfants
+  // 6. Détection SFT / Enfants à charge
   let nbEnfants = 0;
-  if (t.includes("sft") || t.includes("famille") || t.includes("supplément familial")) {
+  if (t.includes("sft") || t.includes("famille") || t.includes("supplément familial") || t.includes("supplement familial")) {
     const enfMatch = t.match(/(\d)\s*(?:enfant|charge)/i)
       || t.match(/sft\s*[:=]?\s*(\d)/i);
     if (enfMatch) {
       nbEnfants = parseInt(enfMatch[1], 10);
     } else {
-      nbEnfants = 1;
+      // Déduction d'après les montants types du SFT
+      if (t.includes("73.04") || t.includes("73,04")) nbEnfants = 2;
+      else if (t.includes("181.56") || t.includes("181,56")) nbEnfants = 3;
+      else nbEnfants = 1;
+    }
+    if (nbEnfants > 0) detectedItems.push(`Supplément Familial (SFT) : ${nbEnfants} enfant(s) pris en compte`);
+  }
+
+  // 7. Détection Taux PAS (Prélèvement à la Source)
+  let tauxPas = 2.5;
+  const pasMatch = t.match(/taux\s*(?:pas|personnalis[ée]|imposition)?\s*[:=]?\s*([\d]+[,.]\d{1,2})\s*%/i)
+    || t.match(/source\s*[:=]?\s*([\d]+[,.]\d{1,2})\s*%/i)
+    || t.match(/taux\s*moyen\s*[:=]?\s*([\d]+[,.]\d{1,2})\s*%/i);
+  if (pasMatch) {
+    const val = parseFloat(pasMatch[1].replace(",", "."));
+    if (val >= 0 && val <= 45) {
+      tauxPas = val;
+      detectedItems.push(`Taux Prélèvement à la Source (PAS) : ${tauxPas}%`);
     }
   }
 
-  // Détection Taux PAS
-  let tauxPas = 2.5;
-  const pasMatch = t.match(/taux\s*(?:pas|personnalis[ée]|imposition)?\s*[:=]?\s*([\d]+[,.]\d{1,2})\s*%/i)
-    || t.match(/source\s*[:=]?\s*([\d]+[,.]\d{1,2})\s*%/i);
-  if (pasMatch) {
-    const val = parseFloat(pasMatch[1].replace(",", "."));
-    if (val >= 0 && val <= 45) tauxPas = val;
-  }
-
-  // Détection Nom de l'agent si présent
+  // 8. Détection Nom de l'agent et Grade
   let nom = "Agent Territorial";
   const nomMatch = t.match(/(?:m\.|mme|monsieur|madame)\s+([a-zÀ-ÿ\-]+)\s+([a-zÀ-ÿ\-]+)/i);
   if (nomMatch) {
     nom = `${nomMatch[1].toUpperCase()} ${nomMatch[2]}`;
+    detectedItems.push(`Agent : ${nom}`);
   } else if (fileName) {
     nom = fileName.replace(/\.[^/.]+$/, "").replace(/[_\-]/g, " ");
   }
 
+  // Détection Grade
+  let grade = statut === "contractuel" ? "Agent contractuel territorial" : "Fonctionnaire territorial";
+  const gradeMatch = t.match(/grade\s*[:=]\s*([^\n\r,;]+)/i);
+  if (gradeMatch && gradeMatch[1].trim().length > 3) {
+    grade = gradeMatch[1].trim();
+  }
+
+  // Détection Échelon
+  let echelon = "Échelon statutaire";
+  const echMatch = t.match(/[ée]chelon\s*[:=]?\s*(\d{1,2})/i);
+  if (echMatch) {
+    echelon = `Échelon ${echMatch[1]}`;
+  }
+
+  const confidence: 'high' | 'medium' | 'low' = (imFound && ifseFound) ? 'high' : (imFound || ifseFound) ? 'medium' : 'low';
+  const summary = detectedItems.length > 0
+    ? `${detectedItems.length} élément(s) détecté(s) avec succès dans le fichier.`
+    : "Peu d'éléments textuels détectés dans le fichier (possible scan ou image).";
+
   return {
-    indiceMajore: im,
-    nbiPoints: nbi,
-    ifse,
-    cia: t.includes("cia") ? 50 : 0,
-    autresPrimes: 0,
-    zoneResidence: 1, // Gennevilliers
-    nbEnfantsSft: nbEnfants,
-    quotite: 100,
-    statut,
-    tauxPas,
-    nomAgent: nom,
-    grade: statut === "contractuel" ? "Agent contractuel territorial" : "Fonctionnaire territorial"
+    params: {
+      indiceMajore: im,
+      nbiPoints: nbi,
+      ifse,
+      cia,
+      autresPrimes: 0,
+      zoneResidence: 1, // Gennevilliers
+      nbEnfantsSft: nbEnfants,
+      quotite,
+      statut,
+      tauxPas,
+      nomAgent: nom,
+      grade,
+      echelon
+    },
+    metadata: {
+      detectedItems,
+      rawTextLength: rawText.length,
+      extractedLinesCount: lines.length,
+      confidence,
+      summary
+    }
   };
 }
+
+/**
+ * Wrapper de compatibilité pour conserver la signature originale
+ */
+export function parseUploadedPaySlip(rawText: string, fileName?: string): CalculParams {
+  return parseUploadedPaySlipWithMeta(rawText, fileName).params;
+}
+

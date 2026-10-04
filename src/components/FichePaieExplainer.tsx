@@ -26,18 +26,22 @@ import {
   Building,
   UserCheck,
   Sliders,
-  Code
+  Code,
+  ClipboardPaste,
+  FileCode,
+  CheckCircle
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   computeOpenFiscaPay,
-  parseUploadedPaySlip,
+  parseUploadedPaySlipWithMeta,
   FICHE_PAIE_PRESETS,
   OPENFISCA_REPO_URL,
   VALEUR_POINT_INDICE_MENSUEL,
   type CalculParams,
   type FichePaieAnalyseResult,
-  type FichePaieLigne
+  type FichePaieLigne,
+  type ParseMetadata
 } from '../services/openfiscaPayEngine';
 import { extractTextFromFile } from '../services/statutoryAuditEngine';
 import { exportToOfficialDocx } from '../utils/docxExport';
@@ -74,11 +78,18 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   // Fichier uploadé (le cas échéant)
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [uploadedRawText, setUploadedRawText] = useState<string | null>(null);
+  const [uploadMetadata, setUploadMetadata] = useState<ParseMetadata | null>(null);
   const [isParsing, setIsParsing] = useState<boolean>(false);
+  const [parsingStatus, setParsingStatus] = useState<string>("");
   const [dragActive, setDragActive] = useState<boolean>(false);
 
+  // Mode collage direct de texte
+  const [inputMode, setInputMode] = useState<'upload' | 'paste'>('upload');
+  const [pastedText, setPastedText] = useState<string>('');
+  const [showRawTextModal, setShowRawTextModal] = useState<boolean>(false);
+
   // État des onglets et filtres
-  const [activeTab, setActiveTab] = useState<'lignes' | 'conformite' | 'openfisca' | 'raw'>('lignes');
+  const [activeTab, setActiveTab] = useState<'lignes' | 'conformite' | 'openfisca'>('lignes');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [expandedLignes, setExpandedLignes] = useState<Record<string, boolean>>({
     tib: true,
@@ -104,6 +115,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
     setSelectedPresetId(presetId);
     setUploadedFileName(null);
     setUploadedRawText(preset.rawTextPreview);
+    setUploadMetadata(null);
     setParams({
       indiceMajore: preset.agent.indiceMajore,
       indiceBrut: preset.agent.indiceBrut,
@@ -124,31 +136,77 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
     toast.info(`Profil chargé : ${preset.label}`);
   };
 
-  // Traitement d'un fichier uploadé
+  // Traitement d'un fichier uploadé (PDF, Word, TXT, CSV)
   const handleProcessFile = async (file: File) => {
     setIsParsing(true);
+    setParsingStatus(`Extraction du texte depuis ${file.name}...`);
     try {
       const text = await extractTextFromFile(file);
+
       if (!text || text.trim().length === 0) {
-        toast.error("Impossible de lire le contenu textuel de ce fichier.");
+        toast.warning(
+          "Aucun texte numérique extrait (il peut s'agir d'un scan ou d'une photo). Vous pouvez ajuster vos données via les curseurs ci-dessous ou coller le texte."
+        );
+        setUploadedFileName(file.name);
+        setUploadedRawText("(Fichier image / scan sans texte sélectionnable)");
+        setShowAdvancedTuning(true);
         setIsParsing(false);
         return;
       }
 
+      setParsingStatus("Analyse des rubriques de paie selon OpenFisca-France...");
       setUploadedFileName(file.name);
       setUploadedRawText(text);
 
-      const parsedParams = parseUploadedPaySlip(text, file.name);
+      const parseResult = parseUploadedPaySlipWithMeta(text, file.name);
+      setUploadMetadata(parseResult.metadata);
       setParams(prev => ({
         ...prev,
-        ...parsedParams
+        ...parseResult.params
       }));
 
       setSelectedPresetId("custom");
-      toast.success(`Fiche de paie "${file.name}" analysée avec le moteur OpenFisca-France !`);
+      setShowAdvancedTuning(true);
+
+      const nbItems = parseResult.metadata.detectedItems.length;
+      if (nbItems > 0) {
+        toast.success(`Fiche de paie "${file.name}" analysée avec succès (${nbItems} éléments détectés) !`);
+      } else {
+        toast.info(`Fichier chargé (${text.length} caractères). Vous pouvez vérifier les paramètres ci-dessous.`);
+      }
     } catch (err) {
       console.error("Erreur de parsing de fiche de paie:", err);
-      toast.error("Erreur lors de l'extraction des données de la fiche de paie.");
+      toast.error("Erreur lors de la lecture du fichier.");
+    } finally {
+      setIsParsing(false);
+      setParsingStatus("");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  // Traitement du texte collé
+  const handleProcessPastedText = () => {
+    if (!pastedText.trim()) {
+      toast.error("Veuillez coller le texte de votre bulletin de paie.");
+      return;
+    }
+
+    setIsParsing(true);
+    try {
+      const parseResult = parseUploadedPaySlipWithMeta(pastedText, "Texte collé");
+      setUploadedFileName("Texte collé manuellement");
+      setUploadedRawText(pastedText);
+      setUploadMetadata(parseResult.metadata);
+      setParams(prev => ({
+        ...prev,
+        ...parseResult.params
+      }));
+
+      setSelectedPresetId("custom");
+      setShowAdvancedTuning(true);
+      toast.success(`Texte analysé : ${parseResult.metadata.detectedItems.length} rubriques identifiées !`);
     } finally {
       setIsParsing(false);
     }
@@ -312,8 +370,8 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
               Comprenez Votre Fiche de Paie
             </h1>
             <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-1 max-w-3xl">
-              Uploadez votre bulletin de paie ou testez un profil type de la fonction publique territoriale.
-              Chaque ligne, retenue et prime est expliquée en clair et validée par le modèle socio-fiscal officiel OpenFisca.
+              Uploadez votre bulletin de paie (PDF, Scan, Word) ou collez son texte.
+              Chaque ligne, retenue et prime est décryptée en clair et auditée selon le modèle socio-fiscal officiel OpenFisca.
             </p>
           </div>
 
@@ -327,14 +385,14 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
             </button>
             <button
               onClick={handleCopyAudit}
-              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all"
+              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all cursor-pointer"
             >
               {copiedAudit ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
               <span>{copiedAudit ? 'Copié' : 'Copier'}</span>
             </button>
             <button
               onClick={() => window.print()}
-              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all"
+              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all cursor-pointer"
             >
               <Printer className="w-4 h-4" />
               <span>Imprimer</span>
@@ -342,7 +400,7 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
             {onClose && (
               <button
                 onClick={onClose}
-                className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-all"
+                className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-all cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Fermer</span>
@@ -353,84 +411,140 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
       </div>
 
       {/* ─────────────────────────────────────────────────────────────────────────────
-          2. ZONE D'UPLOAD & SÉLECTION DE PROFILS TYPES
+          2. ZONE D'UPLOAD / COLLER & SÉLECTION DE PROFILS TYPES
       ───────────────────────────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Colonne Gauche : Upload de Fiche de Paie */}
+        {/* Colonne Gauche : Upload ou Collage direct */}
         <div className="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Upload className="w-4 h-4 text-orange-600" />
-                Uploader votre bulletin
-              </h2>
-              <span className="text-xs text-slate-400">PDF, Word, Scan, TXT</span>
-            </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
-              Vos données restent 100% locales dans votre navigateur : aucune information nominative n'est envoyée vers un serveur externe.
-            </p>
-
-            <div
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-200 ${
-                dragActive
-                  ? "border-orange-500 bg-orange-50/50 dark:bg-orange-500/10"
-                  : "border-slate-300 dark:border-slate-700 hover:border-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
-              }`}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".pdf,.docx,.txt,.csv"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    handleProcessFile(e.target.files[0]);
-                  }
-                }}
-                className="hidden"
-              />
-              <div className="p-3 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-full w-12 h-12 mx-auto flex items-center justify-center mb-3">
-                {isParsing ? <RefreshCw className="w-6 h-6 animate-spin" /> : <Upload className="w-6 h-6" />}
+              <div className="flex items-center gap-1 p-0.5 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                <button
+                  onClick={() => setInputMode('upload')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer transition-colors ${
+                    inputMode === 'upload'
+                      ? 'bg-white dark:bg-slate-900 text-orange-600 shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400'
+                  }`}
+                >
+                  Uploader un fichier
+                </button>
+                <button
+                  onClick={() => setInputMode('paste')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer transition-colors ${
+                    inputMode === 'paste'
+                      ? 'bg-white dark:bg-slate-900 text-orange-600 shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400'
+                  }`}
+                >
+                  Coller le texte
+                </button>
               </div>
-              <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                {isParsing ? "Analyse en cours..." : "Glissez votre fiche de paie ici"}
-              </p>
-              <p className="text-xs text-slate-500 mt-1">ou cliquez pour parcourir vos fichiers</p>
+              <span className="text-[11px] text-slate-400 font-mono">100% Local</span>
             </div>
+
+            {inputMode === 'upload' ? (
+              <>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                  Glissez votre bulletin PDF, Word ou Scan. Le texte est analysé en mémoire sans quitter votre poste.
+                </p>
+
+                <div
+                  onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-200 ${
+                    dragActive
+                      ? "border-orange-500 bg-orange-50/50 dark:bg-orange-500/10"
+                      : "border-slate-300 dark:border-slate-700 hover:border-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                  }`}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf,.docx,.txt,.csv,application/pdf"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleProcessFile(e.target.files[0]);
+                      }
+                    }}
+                    className="hidden"
+                  />
+                  <div className="p-3 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-full w-12 h-12 mx-auto flex items-center justify-center mb-2">
+                    {isParsing ? <RefreshCw className="w-6 h-6 animate-spin" /> : <Upload className="w-6 h-6" />}
+                  </div>
+                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                    {isParsing ? (parsingStatus || "Analyse en cours...") : "Glissez votre fiche de paie ici"}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1">Formats acceptés : PDF, Word (.docx), Scan, TXT</p>
+                </div>
+              </>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  Copiez le texte depuis votre espace RH (Digiposte, ENSAP, etc.) et collez-le ici :
+                </p>
+                <textarea
+                  rows={5}
+                  value={pastedText}
+                  onChange={(e) => setPastedText(e.target.value)}
+                  placeholder="Collez ici les lignes de votre bulletin (ex: 101 Traitement de base 382...)"
+                  className="w-full text-xs font-mono p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-orange-500 text-slate-800 dark:text-slate-200"
+                />
+                <button
+                  onClick={handleProcessPastedText}
+                  disabled={isParsing || !pastedText.trim()}
+                  className="w-full py-2 px-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  <ClipboardPaste className="w-3.5 h-3.5" />
+                  <span>Analyser ce texte</span>
+                </button>
+              </div>
+            )}
 
             {uploadedFileName && (
-              <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl flex items-center justify-between text-xs">
+              <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2 overflow-hidden">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span className="font-medium text-emerald-900 dark:text-emerald-200 truncate">{uploadedFileName}</span>
+                  <span className="font-semibold text-emerald-900 dark:text-emerald-200 truncate">{uploadedFileName}</span>
                 </div>
-                <button
-                  onClick={() => {
-                    setUploadedFileName(null);
-                    setUploadedRawText(null);
-                    handleSelectPreset("cat_c_adjoint");
-                  }}
-                  className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 ml-2 font-bold"
-                >
-                  ✕
-                </button>
+                <div className="flex items-center gap-2 shrink-0">
+                  {uploadedRawText && (
+                    <button
+                      onClick={() => setShowRawTextModal(!showRawTextModal)}
+                      className="text-[11px] underline text-emerald-700 dark:text-emerald-300 font-medium cursor-pointer"
+                    >
+                      {showRawTextModal ? "Masquer" : "Voir texte"}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setUploadedFileName(null);
+                      setUploadedRawText(null);
+                      setUploadMetadata(null);
+                      handleSelectPreset("cat_c_adjoint");
+                    }}
+                    className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold ml-1 cursor-pointer"
+                    title="Réinitialiser"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
             )}
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <button
               onClick={() => setShowAdvancedTuning(!showAdvancedTuning)}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-600 dark:text-orange-400 hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-600 dark:text-orange-400 hover:underline cursor-pointer"
             >
               <Sliders className="w-3.5 h-3.5" />
-              <span>{showAdvancedTuning ? "Masquer les curseurs" : "Ajuster manuellement (IM, primes...)"}</span>
+              <span>{showAdvancedTuning ? "Masquer les curseurs" : "Ajuster manuellement les valeurs"}</span>
             </button>
-            <span className="text-xs text-slate-400">Point d'indice : 4,92278 €</span>
+            <span className="text-xs text-slate-400">1 pt = 4,92278 €</span>
           </div>
         </div>
 
@@ -440,10 +554,10 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
             <div>
               <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-500" />
-                Ou choisissez un profil type prérempli
+                Ou testez un profil type prérempli
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Situations réelles modélisées selon la grille de Gennevilliers
+                Situations réelles modélisées selon la doctrine Ville de Gennevilliers
               </p>
             </div>
             {selectedPresetId !== 'custom' && (
@@ -487,10 +601,10 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
 
           {/* Panneau des curseurs manuels dépliable */}
           {showAdvancedTuning && (
-            <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div className="mt-5 pt-5 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
               <div>
                 <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
-                  Indice Majoré (IM) : {params.indiceMajore}
+                  Indice Majoré (IM) : <span className="text-orange-600 font-bold">{params.indiceMajore}</span>
                 </label>
                 <input
                   type="range"
@@ -498,13 +612,13 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
                   max="830"
                   value={params.indiceMajore}
                   onChange={(e) => setParams(prev => ({ ...prev, indiceMajore: parseInt(e.target.value, 10) }))}
-                  className="w-full accent-orange-600"
+                  className="w-full accent-orange-600 cursor-pointer"
                 />
               </div>
 
               <div>
                 <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
-                  IFSE Mensuelle : {params.ifse || 0} €
+                  IFSE Mensuelle : <span className="text-orange-600 font-bold">{params.ifse || 0} €</span>
                 </label>
                 <input
                   type="range"
@@ -513,13 +627,13 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
                   step="25"
                   value={params.ifse || 0}
                   onChange={(e) => setParams(prev => ({ ...prev, ifse: parseFloat(e.target.value) }))}
-                  className="w-full accent-orange-600"
+                  className="w-full accent-orange-600 cursor-pointer"
                 />
               </div>
 
               <div>
                 <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
-                  Enfants à charge (SFT) : {params.nbEnfantsSft || 0}
+                  Enfants à charge (SFT) : <span className="text-orange-600 font-bold">{params.nbEnfantsSft || 0}</span>
                 </label>
                 <select
                   value={params.nbEnfantsSft || 0}
@@ -551,7 +665,7 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
 
               <div>
                 <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
-                  Taux PAS (Prélèvement Source) : {params.tauxPas || 0}%
+                  Taux PAS (Prélèvement Source) : <span className="text-orange-600 font-bold">{params.tauxPas || 0}%</span>
                 </label>
                 <input
                   type="range"
@@ -560,13 +674,13 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
                   step="0.5"
                   value={params.tauxPas || 0}
                   onChange={(e) => setParams(prev => ({ ...prev, tauxPas: parseFloat(e.target.value) }))}
-                  className="w-full accent-orange-600"
+                  className="w-full accent-orange-600 cursor-pointer"
                 />
               </div>
 
               <div>
                 <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
-                  Quotité de travail : {params.quotite || 100}%
+                  Quotité de travail : <span className="text-orange-600 font-bold">{params.quotite || 100}%</span>
                 </label>
                 <select
                   value={params.quotite || 100}
@@ -583,6 +697,66 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
           )}
         </div>
       </div>
+
+      {/* ─────────────────────────────────────────────────────────────────────────────
+          BANDEAU DE RÉSULTAT DU FICHIER UPLOADÉ (LE CAS ÉCHÉANT)
+      ───────────────────────────────────────────────────────────────────────────── */}
+      {uploadMetadata && (
+        <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 dark:from-emerald-950/30 dark:via-teal-950/20 dark:to-emerald-950/30 border border-emerald-300 dark:border-emerald-700/60 rounded-2xl p-5 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 bg-emerald-600 text-white rounded-xl shadow-sm shrink-0 mt-0.5">
+                <CheckCircle className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-extrabold text-emerald-900 dark:text-emerald-200 text-sm sm:text-base">
+                    Bulletin analysé : {uploadedFileName}
+                  </h3>
+                  <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-200 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200">
+                    {uploadMetadata.confidence === 'high' ? 'Précision Élevée' : 'Détection Réussie'}
+                  </span>
+                </div>
+                <p className="text-xs text-emerald-800/80 dark:text-emerald-300/80 mt-1">
+                  {uploadMetadata.summary} ({uploadMetadata.extractedLinesCount} lignes extraites du document)
+                </p>
+                <div className="flex flex-wrap items-center gap-2 mt-2">
+                  {uploadMetadata.detectedItems.map((item, idx) => (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/90 dark:bg-slate-900/90 text-emerald-900 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 shadow-2xs"
+                    >
+                      <Check className="w-3 h-3 text-emerald-600 shrink-0" />
+                      <span>{item}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0 self-end md:self-center">
+              <button
+                onClick={() => setShowRawTextModal(!showRawTextModal)}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 cursor-pointer"
+              >
+                {showRawTextModal ? "Fermer le texte extrait" : "Inspecter le texte brut"}
+              </button>
+            </div>
+          </div>
+
+          {showRawTextModal && uploadedRawText && (
+            <div className="mt-4 pt-4 border-t border-emerald-200 dark:border-emerald-800/50">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Texte brut extrait du document :</span>
+                <span className="text-xs text-slate-400 font-mono">{uploadedRawText.length} caractères</span>
+              </div>
+              <pre className="p-3 bg-white/80 dark:bg-slate-950 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-300 max-h-48 overflow-y-auto whitespace-pre-wrap border border-slate-200 dark:border-slate-800">
+                {uploadedRawText}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ─────────────────────────────────────────────────────────────────────────────
           3. 5 KPI SYNTHÈSE & BARRE VISUELLE "OÙ VA VOTRE SALAIRE ?"

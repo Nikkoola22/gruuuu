@@ -34,18 +34,32 @@ export interface FullLegalAuditResult extends StatutoryQueryResult {
   };
 }
 
+import { extractTextFromPdf } from '../utils/pdfExtractor';
+
 /**
- * Extrait le texte brut depuis un fichier uploadé (.docx, .txt, .md, .csv, .json, etc.)
+ * Extrait le texte brut depuis un fichier uploadé (.pdf, .docx, .txt, .md, .csv, .json, etc.)
  */
 export async function extractTextFromFile(file: File): Promise<string> {
   const fileName = file.name.toLowerCase();
 
-  // 1. Fichiers texte simples (.txt, .md, .csv, .json)
+  // 1. Fichiers PDF (.pdf)
+  if (fileName.endsWith('.pdf') || file.type === 'application/pdf') {
+    try {
+      const pdfText = await extractTextFromPdf(file);
+      if (pdfText && pdfText.trim().length > 10) {
+        return pdfText;
+      }
+    } catch (e) {
+      console.warn("Extraction PDF échouée:", e);
+    }
+  }
+
+  // 2. Fichiers texte simples (.txt, .md, .csv, .json)
   if (fileName.endsWith('.txt') || fileName.endsWith('.md') || fileName.endsWith('.csv') || fileName.endsWith('.json')) {
     return await file.text();
   }
 
-  // 2. Fichiers Word (.docx)
+  // 3. Fichiers Word (.docx)
   if (fileName.endsWith('.docx')) {
     try {
       const buffer = await file.arrayBuffer();

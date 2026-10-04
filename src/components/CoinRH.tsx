@@ -15,7 +15,9 @@ import {
   Gavel,
   ExternalLink,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  FileCheck,
+  Code2
 } from "lucide-react";
 import { extractTextFromFile, auditStatutoryDocument, FullLegalAuditResult } from "../services/statutoryAuditEngine";
 import { OfficialDocumentPreview } from "./OfficialDocumentPreview";

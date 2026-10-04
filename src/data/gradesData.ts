@@ -80,13 +80,17 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Promotion interne C vers B par Examen Professionnel",
-                echelonMinimum: 4,
+                descriptionVoie: "Promotion interne C vers B par Examen Professionnel (Décret n° 2012-924 art. 4-1°-a)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 7,
                 examenProfessionnelRequis: true,
-                piecesRequises: ["Examen pro Rédacteur", "7 ans de services publics dont au moins 4 ans en C"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté de nomination stagiaire B"]
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Rédacteur territorial",
+                  "Justificatif de 7 ans de services publics dont au moins 2 ans dans un cadre d emplois de la filière administrative en catégorie C",
+                  "Dossier professionnel et comptes-rendus EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté de nomination stagiaire Catégorie B"]
               }
             ]
           }
@@ -144,14 +148,32 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             explicationReclassement: "Passage en catégorie B administrative.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B au choix",
-                echelonMinimum: 5,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Rédacteur territorial",
+                  "Justificatif de 7 ans de services publics dont 2 ans en C administrative",
+                  "Dossier professionnel EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B au choix (dès 9 ans de services publics)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services publics", "Rapport hiérarchique valorisant"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 9 ans de services publics dont au moins 5 ans en C administrative",
+                  "Rapport hiérarchique circonstancié valorisant les compétences",
+                  "Attestations de formation CNFPT"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire"]
               }
             ]
           }
@@ -186,14 +208,32 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             explicationReclassement: "Évolution de carrière vers la catégorie B.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B au choix",
-                echelonMinimum: 4,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Rédacteur territorial",
+                  "Justificatif de 7 ans de services publics dont 2 ans en C administrative",
+                  "Dossier professionnel EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B au choix (dès 9 ans de services publics)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services publics", "Dossier EPA", "Attestations CNFPT"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 9 ans de services publics dont au moins 5 ans en C administrative",
+                  "Rapport circonstancié de l autorité territoriale",
+                  "Dossier EPA et attestations CNFPT"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire"]
               }
             ]
           }
@@ -282,20 +322,35 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Attaché territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Quotas départementaux stricts de promotion interne : 1 nomination pour 3 recrutements externes au niveau du CDG.",
+            ratioPromusPromouvablesExplication: "Quotas stricts de promotion interne gérés par le Centre de Gestion (Décret n° 87-1099 art. 5).",
             modaliteReclassement: "Reclassement en catégorie A avec conservation du traitement indiciaire (clause de sauvegarde indiciaire).",
             explicationReclassement: "Passage du cadre de catégorie B vers la catégorie A (fonctions de direction, stratégie et encadrement supérieur).",
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Promotion interne B -> A par Examen Professionnel",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: true,
                 piecesRequises: [
-                  "Lauréat de l examen professionnel Attaché du CDG",
-                  "Au moins 8 ans de services publics dont 4 ans en catégorie B"
+                  "Attestation de réussite à l examen professionnel d Attaché territorial",
+                  "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B",
+                  "Dossier de candidature valorisant les acquis de l expérience"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 10,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif de 10 ans de services effectifs en catégorie B dont au moins 5 ans dans le cadre des rédacteurs",
+                  "Rapport circonstancié de l autorité territoriale valorisant les fonctions d encadrement",
+                  "Comptes-rendus d entretiens professionnels récents"
                 ],
                 actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
               }
@@ -360,19 +415,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Attaché territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
-            modaliteReclassement: "Reclassement en A avec garantie de traitement.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 87-1099 art. 5).",
+            modaliteReclassement: "Reclassement en catégorie A avec garantie de traitement.",
             explicationReclassement: "Passage vers l encadrement supérieur.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Attaché territorial",
+                  "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B -> A au choix",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 10,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["Au moins 10 ans de services effectifs dont 5 ans en catégorie B", "Dossier professionnel"],
-                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 10 ans de services effectifs en catégorie B dont au moins 5 ans dans le cadre des rédacteurs",
+                  "Rapport circonstancié de l autorité territoriale",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
               }
             ]
           }
@@ -403,19 +475,32 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Attaché territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 87-1099 art. 5).",
             modaliteReclassement: "Reclassement avec reprise d indice en catégorie A.",
             explicationReclassement: "Passage vers l encadrement supérieur en catégorie A.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Attaché territorial",
+                  "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne au choix vers Attaché (Catégorie A)",
-                echelonMinimum: 4,
+                descriptionVoie: "Promotion interne au choix vers Attaché (dès 10 ans en B)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 10,
                 examenProfessionnelRequis: false,
                 piecesRequises: [
-                  "Justificatif de 10 ans de services effectifs dans un corps/cadre d emplois de catégorie B",
+                  "Justificatif de 10 ans de services effectifs dans un corps/cadre d emplois de catégorie B dont 5 ans comme rédacteur",
                   "Avis circonstancié de l autorité territoriale",
                   "Attestations de formation CNFPT"
                 ],
@@ -644,23 +729,42 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Examen professionnel (dès 7 ans de services)",
+                descriptionVoie: "Examen professionnel (dès 7 ans de services effectifs)",
                 echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteCadreAnnees: 7,
                 examenProfessionnelRequis: true,
-                piecesRequises: ["Attestation de réussite examen Agent de Maîtrise", "Justificatif de 7 ans de services effectifs dans le cadre d emplois", "Comptes-rendus EPA"],
-                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté de nomination stagiaire"]
-              },
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Agent de Maîtrise",
+                  "Justificatif de 7 ans de services effectifs accomplis dans un cadre d emplois technique ou d ATSEM",
+                  "Comptes-rendus d entretien professionnel annuel (EPA)"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté de nomination en qualité d agent de maîtrise stagiaire"]
+              }
+            ]
+          },
+          {
+            gradeCibleId: "technicien_classe_normale",
+            nomGradeCible: "Technicien territorial (Catégorie B)",
+            categorieCible: "B",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Quotas CDG pour l accès à la catégorie B (Décret n° 2010-1357 art. 8).",
+            modaliteReclassement: "Reclassement indiciaire en B avec garantie du traitement antérieur.",
+            explicationReclassement: "Accès à la catégorie B technique (conduite de chantiers et encadrement).",
+            conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Au choix (dès 9 ans de services)",
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Technicien B (dès 7 ans de services)",
                 echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteCadreAnnees: 9,
-                examenProfessionnelRequis: false,
-                piecesRequises: ["Justificatif de 9 ans de services effectifs dans le cadre d emplois", "Rapport hiérarchique circonstancié", "Comptes-rendus EPA"],
-                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté de nomination stagiaire"]
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Technicien territorial",
+                  "Justificatif de 7 ans de services publics dont au moins 4 ans dans la filière technique en catégorie C",
+                  "Dossier professionnel valorisant les acquis de l expérience"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -724,7 +828,11 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
                 ancienneteEchelonAnnees: 0,
                 ancienneteCadreAnnees: 7,
                 examenProfessionnelRequis: true,
-                piecesRequises: ["Attestation de réussite examen Agent de Maîtrise", "Justificatif de 7 ans de services effectifs dans le cadre d emplois", "Comptes-rendus EPA"],
+                piecesRequises: [
+                  "Attestation de réussite examen Agent de Maîtrise",
+                  "Justificatif de 7 ans de services effectifs dans le cadre d emplois",
+                  "Comptes-rendus EPA"
+                ],
                 actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
               },
               {
@@ -734,8 +842,50 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
                 ancienneteEchelonAnnees: 0,
                 ancienneteCadreAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["Justificatif de 9 ans de services effectifs dans le cadre d emplois", "Avis hiérarchique circonstancié", "Comptes-rendus EPA"],
+                piecesRequises: [
+                  "Justificatif de 9 ans de services effectifs dans le cadre d emplois",
+                  "Avis hiérarchique circonstancié",
+                  "Comptes-rendus EPA"
+                ],
                 actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+              }
+            ]
+          },
+          {
+            gradeCibleId: "technicien_classe_normale",
+            nomGradeCible: "Technicien territorial (Catégorie B)",
+            categorieCible: "B",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Quotas CDG pour l accès à la catégorie B (Décret n° 2010-1357 art. 8).",
+            modaliteReclassement: "Reclassement indiciaire en B avec garantie du traitement antérieur.",
+            explicationReclassement: "Accès à la catégorie B technique.",
+            conditions: [
+              {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Technicien B (dès 7 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Technicien territorial",
+                  "Justificatif de 7 ans de services publics dont au moins 4 ans dans la filière technique en catégorie C"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Au choix Technicien B (dès 8 ans de services effectifs)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre d emplois technique de catégorie C",
+                  "Rapport hiérarchique circonstancié",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -812,13 +962,17 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
               },
               {
                 typeVoie: "au_choix",
-                descriptionVoie: "Au choix Technicien B (dès 8 ans)",
-                echelonMinimum: 4,
+                descriptionVoie: "Au choix Technicien B (dès 8 ans de services effectifs)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services publics dont au moins 5 ans en C technique", "Rapport hiérarchique"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre d emplois technique de catégorie C",
+                  "Rapport hiérarchique de l autorité territoriale",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -878,19 +1032,37 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Technicien territorial (Catégorie B)",
             categorieCible: "B",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 2010-1357 art. 8).",
             modaliteReclassement: "Reclassement en B1 avec garantie indiciaire.",
-            explicationReclassement: "Passage en catégorie B technique.",
+            explicationReclassement: "Passage en catégorie B technique (conduite d opérations et encadrement).",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne Technicien B au choix",
-                echelonMinimum: 4,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Technicien B (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Technicien territorial",
+                  "Justificatif d au moins 7 ans de services publics dont 4 ans dans la filière technique en catégorie C",
+                  "Dossier professionnel et évaluations annuelles"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne Technicien B au choix (dès 8 ans de services effectifs)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["7 ans de services publics dont 4 ans en C", "Dossier professionnel"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif d au moins 8 ans de services effectifs accomplis dans le cadre d emplois des agents de maîtrise",
+                  "Rapport hiérarchique valorisant",
+                  "Comptes-rendus EPA récents"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -920,19 +1092,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Technicien territorial (Catégorie B)",
             categorieCible: "B",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Listes d aptitude établies par le CDG.",
+            ratioPromusPromouvablesExplication: "Listes d aptitude établies par le CDG (Décret n° 2010-1357 art. 8).",
             modaliteReclassement: "Reclassement en B avec garantie du traitement.",
-            explicationReclassement: "Passage en catégorie B.",
+            explicationReclassement: "Passage en catégorie B technique.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Examen professionnel Technicien B (dès 7 ans de services)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Technicien territorial",
+                  "Justificatif d au moins 7 ans de services publics dont 4 ans en C technique"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne Technicien au choix",
-                echelonMinimum: 4,
+                descriptionVoie: "Promotion interne Technicien au choix (dès 8 ans de services effectifs)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services publics", "Dossier professionnel"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif d au moins 8 ans de services effectifs accomplis dans le cadre d emplois des agents de maîtrise",
+                  "Avis circonstancié de l autorité territoriale",
+                  "Dossier professionnel EPA"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -1005,18 +1194,35 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Ingénieur territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (quotas stricts 1 pour 3).",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 2016-201 art. 4).",
             modaliteReclassement: "Reclassement en catégorie A avec sauvegarde indiciaire.",
-            explicationReclassement: "Passage vers l encadrement supérieur technique.",
+            explicationReclassement: "Passage vers l encadrement supérieur technique et la direction de projets.",
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Promotion interne B -> A par Examen Professionnel",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B technique)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: true,
-                piecesRequises: ["Examen professionnel Ingénieur territorial", "8 ans de services publics dont 4 ans en B"],
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Ingénieur territorial",
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre de catégorie B technique"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté de nomination stagiaire A"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B technique)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 10,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif de 10 ans de services effectifs en catégorie B technique dont au moins 5 ans dans le cadre des techniciens",
+                  "Rapport hiérarchique circonstancié",
+                  "Dossier EPA"
+                ],
                 actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté de nomination stagiaire A"]
               }
             ]
@@ -1080,19 +1286,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Ingénieur territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Listes d aptitude du CDG.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 2016-201 art. 4).",
             modaliteReclassement: "Reclassement en A avec garantie indiciaire.",
-            explicationReclassement: "Passage vers l encadrement supérieur.",
+            explicationReclassement: "Passage vers l encadrement supérieur technique.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B technique)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Ingénieur territorial",
+                  "Justificatif d au moins 8 ans de services effectifs en catégorie B technique"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne au choix vers Ingénieur (Catégorie A)",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne au choix vers Ingénieur (dès 10 ans en B technique)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 10,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["10 ans de services effectifs dont 5 ans en catégorie B", "Dossier professionnel"],
-                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 10 ans de services effectifs en B technique dont au moins 5 ans dans le cadre des techniciens",
+                  "Rapport hiérarchique circonstancié",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
               }
             ]
           }
@@ -1123,19 +1346,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Ingénieur territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
-            modaliteReclassement: "Reclassement en catégorie A.",
-            explicationReclassement: "Accès à la catégorie A technique.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 2016-201 art. 4).",
+            modaliteReclassement: "Reclassement en catégorie A avec reprise d indice.",
+            explicationReclassement: "Accès à la catégorie A technique (fonctions d ingénierie et de direction).",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B technique)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Ingénieur territorial",
+                  "Justificatif d au moins 8 ans de services effectifs en catégorie B technique"
+                ],
+                actesAdministratifs: ["Inscription liste d aptitude CDG", "Arrêté de nomination stagiaire A"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne au choix vers Ingénieur",
-                echelonMinimum: 4,
+                descriptionVoie: "Promotion interne au choix vers Ingénieur (dès 10 ans en B technique)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 10,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["10 ans de services effectifs dont 5 ans en catégorie B", "Rapport circonstancié"],
-                actesAdministratifs: ["Inscription liste d aptitude CDG", "Arrêté de nomination"]
+                piecesRequises: [
+                  "Justificatif de 10 ans de services effectifs en B technique dont 5 ans comme technicien",
+                  "Rapport hiérarchique circonstancié",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription liste d aptitude CDG", "Arrêté de nomination stagiaire A"]
               }
             ]
           }
@@ -1636,27 +1876,6 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
                 actesAdministratifs: ["Inscription tableau annuel d avancement", "Arrêté individuel"]
               }
             ]
-          },
-          {
-            gradeCibleId: "educateur_jeunes_enfants_normal",
-            nomGradeCible: "Éducateur de jeunes enfants (Catégorie A)",
-            categorieCible: "A",
-            typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG avec diplôme DEEJE.",
-            modaliteReclassement: "Reclassement en catégorie A.",
-            explicationReclassement: "Passage vers la conception de projets éducatifs et direction de structure.",
-            conditions: [
-              {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B -> A au choix",
-                echelonMinimum: 5,
-                ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
-                examenProfessionnelRequis: false,
-                piecesRequises: ["Diplôme d État d Éducateur de Jeunes Enfants", "8 ans de services publics"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
-              }
-            ]
           }
         ]
       },
@@ -1679,29 +1898,7 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
           { numero: 10, dureeAnnees: 3, indiceBrut: 684, indiceMajore: 574 },
           { numero: 11, dureeAnnees: 0, indiceBrut: 707, indiceMajore: 592, description: "Sommet Classe supérieure (IM 592)" }
         ],
-        perspectives: [
-          {
-            gradeCibleId: "educateur_jeunes_enfants_normal",
-            nomGradeCible: "Éducateur de jeunes enfants (Catégorie A)",
-            categorieCible: "A",
-            typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Listes d aptitude CDG.",
-            modaliteReclassement: "Reclassement en catégorie A.",
-            explicationReclassement: "Passage en catégorie A.",
-            conditions: [
-              {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne vers EJE",
-                echelonMinimum: 4,
-                ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
-                examenProfessionnelRequis: false,
-                piecesRequises: ["Diplôme DEEJE", "8 ans de services publics"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté de nomination"]
-              }
-            ]
-          }
-        ]
+        perspectives: []
       }
     ]
   },
@@ -2003,13 +2200,17 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Promotion interne B par Examen Professionnel",
-                echelonMinimum: 4,
+                descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 7,
                 examenProfessionnelRequis: true,
-                piecesRequises: ["Réussite examen pro Assistant de conservation CDG", "7 ans de services publics dont 4 ans en C"],
-                actesAdministratifs: ["Inscription liste d aptitude CDG", "Arrêté individuel de nomination stagiaire"]
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Assistant de conservation du patrimoine",
+                  "Justificatif de 7 ans de services publics dont au moins 2 ans dans un cadre d emplois de la filière culturelle en catégorie C",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -2062,19 +2263,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Assistant de conservation du patrimoine (Catégorie B)",
             categorieCible: "B",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Listes d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Listes d aptitude CDG (Décret n° 2011-1642 art. 5).",
             modaliteReclassement: "Reclassement en B avec garantie du traitement.",
-            explicationReclassement: "Évolution vers la catégorie B.",
+            explicationReclassement: "Évolution vers la catégorie B culturelle.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B au choix",
-                echelonMinimum: 5,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Assistant de conservation",
+                  "Justificatif de 7 ans de services publics dont 2 ans en C culturelle"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B au choix (dès 9 ans de services publics)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services effectifs", "Dossier EPA", "Attestations de formation CNFPT"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 9 ans de services publics dont au moins 5 ans dans la filière culturelle en catégorie C",
+                  "Dossier EPA",
+                  "Attestations de formation CNFPT"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -2104,19 +2322,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Assistant de conservation du patrimoine (Catégorie B)",
             categorieCible: "B",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Listes d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Listes d aptitude CDG (Décret n° 2011-1642 art. 5).",
             modaliteReclassement: "Reclassement en B avec garantie du traitement.",
             explicationReclassement: "Passage en catégorie B culturelle.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B au choix",
-                echelonMinimum: 4,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Assistant de conservation",
+                  "Justificatif de 7 ans de services publics dont 2 ans en C culturelle"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B au choix (dès 9 ans de services publics)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services effectifs", "Dossier professionnel"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 9 ans de services publics dont au moins 5 ans dans la filière culturelle en catégorie C",
+                  "Rapport hiérarchique circonstancié",
+                  "Dossier professionnel EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -2189,19 +2424,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Bibliothécaire territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Quotas CDG promotion interne B -> A.",
-            modaliteReclassement: "Reclassement en catégorie A avec clause de sauvegarde indiciaire.",
-            explicationReclassement: "Direction de médiathèque et pilotage de la politique documentaire.",
+            ratioPromusPromouvablesExplication: "Quotas CDG promotion interne B -> A (Décret n° 91-841 art. 5).",
+            modaliteReclassement: "Reclassement en catégorie A avec garantie indiciaire.",
+            explicationReclassement: "Passage vers les fonctions de direction de bibliothèque et de médiathèque.",
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Promotion interne B -> A par Examen Professionnel",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B culturelle)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: true,
-                piecesRequises: ["Examen pro Bibliothécaire CDG", "8 ans de services publics dont 4 ans en B"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel de nomination"]
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Bibliothécaire territorial",
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre de catégorie B de la filière culturelle"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B culturelle)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 10,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif d au moins 10 ans de services effectifs en B culturelle dont au moins 5 ans comme assistant de conservation",
+                  "Rapport circonstancié valorisant les projets culturels conduits",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
               }
             ]
           },
@@ -2210,19 +2462,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Attaché de conservation du patrimoine (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Quotas CDG promotion interne B -> A.",
-            modaliteReclassement: "Reclassement en A.",
+            ratioPromusPromouvablesExplication: "Quotas CDG promotion interne B -> A (Décret n° 91-845 art. 5).",
+            modaliteReclassement: "Reclassement en catégorie A avec garantie de traitement.",
             explicationReclassement: "Conservation et valorisation scientifique du patrimoine.",
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Promotion interne B -> A par Examen Professionnel",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B culturelle)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: true,
-                piecesRequises: ["Examen pro Attaché de conservation CDG", "8 ans de services publics dont 4 ans en B"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Attaché de conservation du patrimoine",
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre de catégorie B de la filière culturelle"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B culturelle)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 10,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif d au moins 10 ans de services effectifs en B culturelle dont 5 ans comme assistant de conservation",
+                  "Rapport hiérarchique de l autorité territoriale",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
               }
             ]
           }
@@ -2285,19 +2554,74 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Bibliothécaire territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
-            modaliteReclassement: "Reclassement en catégorie A.",
-            explicationReclassement: "Passage vers l encadrement supérieur en bibliothèque.",
+            ratioPromusPromouvablesExplication: "Quotas CDG promotion interne B -> A (Décret n° 91-841 art. 5).",
+            modaliteReclassement: "Reclassement en catégorie A avec garantie indiciaire.",
+            explicationReclassement: "Passage vers les fonctions de direction de bibliothèque et de médiathèque.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B culturelle)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Bibliothécaire territorial",
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre de catégorie B de la filière culturelle"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne au choix vers Bibliothécaire",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B culturelle)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 10,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["10 ans de services effectifs dont 5 ans en catégorie B", "Dossier professionnel"],
-                actesAdministratifs: ["Inscription liste d aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif d au moins 10 ans de services effectifs en B culturelle dont au moins 5 ans comme assistant de conservation",
+                  "Rapport circonstancié valorisant les projets culturels conduits",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              }
+            ]
+          },
+          {
+            gradeCibleId: "attache_conservation_normal",
+            nomGradeCible: "Attaché de conservation du patrimoine (Catégorie A)",
+            categorieCible: "A",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Quotas CDG promotion interne B -> A (Décret n° 91-845 art. 5).",
+            modaliteReclassement: "Reclassement en catégorie A avec garantie de traitement.",
+            explicationReclassement: "Conservation et valorisation scientifique du patrimoine.",
+            conditions: [
+              {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B culturelle)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Attaché de conservation du patrimoine",
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre de catégorie B de la filière culturelle"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B culturelle)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 10,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif d au moins 10 ans de services effectifs en B culturelle dont 5 ans comme assistant de conservation",
+                  "Rapport hiérarchique de l autorité territoriale",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
               }
             ]
           }
@@ -2328,19 +2652,74 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Bibliothécaire territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
-            modaliteReclassement: "Reclassement en catégorie A.",
-            explicationReclassement: "Passage en catégorie A culturelle.",
+            ratioPromusPromouvablesExplication: "Quotas CDG promotion interne B -> A (Décret n° 91-841 art. 5).",
+            modaliteReclassement: "Reclassement en catégorie A avec garantie indiciaire.",
+            explicationReclassement: "Passage vers les fonctions de direction de bibliothèque et de médiathèque.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B culturelle)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel de Bibliothécaire territorial",
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre de catégorie B de la filière culturelle"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne au choix vers Bibliothécaire",
-                echelonMinimum: 4,
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B culturelle)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 10,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["10 ans de services effectifs dont 5 ans en catégorie B", "Rapport hiérarchique"],
-                actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif d au moins 10 ans de services effectifs en B culturelle dont au moins 5 ans comme assistant de conservation",
+                  "Rapport circonstancié valorisant les projets culturels conduits",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              }
+            ]
+          },
+          {
+            gradeCibleId: "attache_conservation_normal",
+            nomGradeCible: "Attaché de conservation du patrimoine (Catégorie A)",
+            categorieCible: "A",
+            typePerspective: "promotion_interne",
+            ratioPromusPromouvablesExplication: "Quotas CDG promotion interne B -> A (Décret n° 91-845 art. 5).",
+            modaliteReclassement: "Reclassement en catégorie A avec garantie de traitement.",
+            explicationReclassement: "Conservation et valorisation scientifique du patrimoine.",
+            conditions: [
+              {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B culturelle)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Attaché de conservation du patrimoine",
+                  "Justificatif d au moins 8 ans de services effectifs dans un cadre de catégorie B de la filière culturelle"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B culturelle)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 10,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif d au moins 10 ans de services effectifs en B culturelle dont 5 ans comme assistant de conservation",
+                  "Rapport hiérarchique de l autorité territoriale",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
               }
             ]
           }
@@ -2584,23 +2963,17 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Promotion interne B par Examen Professionnel",
-                echelonMinimum: 4,
+                descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 7,
                 examenProfessionnelRequis: true,
-                piecesRequises: ["Réussite examen pro Animateur CDG", "7 ans de services publics dont 4 ans en C"],
-                actesAdministratifs: ["Inscription liste d aptitude CDG", "Arrêté individuel de nomination stagiaire"]
-              },
-              {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B au choix",
-                echelonMinimum: 5,
-                ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 9,
-                examenProfessionnelRequis: false,
-                piecesRequises: ["9 ans de services effectifs", "Dossier EPA", "Attestations de formation CNFPT"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Animateur territorial",
+                  "Justificatif de 7 ans de services publics dont au moins 2 ans dans la filière animation en catégorie C",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -2653,19 +3026,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Animateur territorial (Catégorie B)",
             categorieCible: "B",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Listes d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Listes d aptitude CDG (Décret n° 2011-558 art. 4).",
             modaliteReclassement: "Reclassement en B avec garantie du traitement.",
-            explicationReclassement: "Évolution vers la catégorie B.",
+            explicationReclassement: "Évolution vers la catégorie B animation.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B au choix",
-                echelonMinimum: 5,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Animateur territorial",
+                  "Justificatif de 7 ans de services publics dont 2 ans en C animation"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B au choix (dès 9 ans de services publics)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services effectifs", "Dossier EPA", "Attestations de formation CNFPT"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 9 ans de services publics dont au moins 5 ans dans la filière animation en catégorie C",
+                  "Dossier EPA",
+                  "Attestations de formation CNFPT"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -2695,19 +3085,36 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Animateur territorial (Catégorie B)",
             categorieCible: "B",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Listes d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Listes d aptitude CDG (Décret n° 2011-558 art. 4).",
             modaliteReclassement: "Reclassement en B avec garantie du traitement.",
             explicationReclassement: "Passage en catégorie B animation.",
             conditions: [
               {
-                typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B au choix",
-                echelonMinimum: 4,
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
-                ancienneteServicesPublicsAnnees: 8,
+                ancienneteServicesPublicsAnnees: 7,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Animateur territorial",
+                  "Justificatif de 7 ans de services publics dont 2 ans en C animation"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B au choix (dès 9 ans de services publics)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 9,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["8 ans de services effectifs", "Dossier professionnel"],
-                actesAdministratifs: ["Liste aptitude CDG", "Arrêté individuel"]
+                piecesRequises: [
+                  "Justificatif de 9 ans de services publics dont au moins 5 ans dans la filière animation en catégorie C",
+                  "Rapport hiérarchique valorisant",
+                  "Dossier EPA"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire B"]
               }
             ]
           }
@@ -2796,20 +3203,34 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Attaché territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Quotas départementaux stricts de promotion interne gérés au niveau du CDG.",
+            ratioPromusPromouvablesExplication: "Quotas stricts de promotion interne gérés par le Centre de Gestion (Décret n° 87-1099 art. 5).",
             modaliteReclassement: "Reclassement en catégorie A avec conservation du traitement indiciaire (clause de sauvegarde indiciaire).",
             explicationReclassement: "Passage du cadre de catégorie B vers la catégorie A (fonctions de direction, conception de politiques publiques et encadrement supérieur).",
             conditions: [
               {
                 typeVoie: "examen_professionnel",
-                descriptionVoie: "Promotion interne B -> A par Examen Professionnel",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 8,
                 examenProfessionnelRequis: true,
                 piecesRequises: [
-                  "Lauréat de l examen professionnel Attaché du CDG",
-                  "Au moins 8 ans de services publics dont 4 ans en catégorie B"
+                  "Attestation de réussite à l examen professionnel d Attaché territorial",
+                  "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
+                typeVoie: "au_choix",
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 10,
+                examenProfessionnelRequis: false,
+                piecesRequises: [
+                  "Justificatif d au moins 10 ans de services effectifs en catégorie B",
+                  "Rapport hiérarchique circonstancié",
+                  "Dossier professionnel EPA"
                 ],
                 actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
               }
@@ -2874,18 +3295,35 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Attaché territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 87-1099 art. 5).",
             modaliteReclassement: "Reclassement en A avec garantie de traitement.",
             explicationReclassement: "Passage vers l encadrement supérieur.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Attaché territorial",
+                  "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne B -> A au choix",
-                echelonMinimum: 6,
+                descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 10,
                 examenProfessionnelRequis: false,
-                piecesRequises: ["Au moins 10 ans de services effectifs dont 5 ans en catégorie B", "Dossier professionnel"],
+                piecesRequises: [
+                  "Justificatif d au moins 10 ans de services effectifs en catégorie B",
+                  "Dossier professionnel EPA",
+                  "Rapport hiérarchique de l autorité territoriale"
+                ],
                 actesAdministratifs: ["Inscription liste aptitude CDG", "Arrêté individuel"]
               }
             ]
@@ -2917,14 +3355,27 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
             nomGradeCible: "Attaché territorial (Catégorie A)",
             categorieCible: "A",
             typePerspective: "promotion_interne",
-            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG.",
+            ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 87-1099 art. 5).",
             modaliteReclassement: "Reclassement avec reprise d indice en catégorie A.",
             explicationReclassement: "Passage vers l encadrement supérieur en catégorie A.",
             conditions: [
               {
+                typeVoie: "examen_professionnel",
+                descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+                echelonMinimum: 1,
+                ancienneteEchelonAnnees: 0,
+                ancienneteServicesPublicsAnnees: 8,
+                examenProfessionnelRequis: true,
+                piecesRequises: [
+                  "Attestation de réussite à l examen professionnel d Attaché territorial",
+                  "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B"
+                ],
+                actesAdministratifs: ["Inscription sur liste d aptitude CDG", "Arrêté individuel de nomination stagiaire A"]
+              },
+              {
                 typeVoie: "au_choix",
-                descriptionVoie: "Promotion interne au choix vers Attaché (Catégorie A)",
-                echelonMinimum: 4,
+                descriptionVoie: "Promotion interne au choix vers Attaché (dès 10 ans en B)",
+                echelonMinimum: 1,
                 ancienneteEchelonAnnees: 0,
                 ancienneteServicesPublicsAnnees: 10,
                 examenProfessionnelRequis: false,

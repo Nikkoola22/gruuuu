@@ -1036,42 +1036,69 @@ export interface ParsePaySlipResult {
  * et en déduit les paramètres de simulation OpenFisca-France avec métadonnées détaillées
  */
 export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string): ParsePaySlipResult {
-  const t = rawText.toLowerCase();
+  const normalizedText = rawText.replace(/[\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]/g, ' ');
+  const t = normalizedText.toLowerCase();
   const detectedItems: string[] = [];
-  const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const lines = normalizedText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
-  // 1. Extraction Indice Majoré (IM)
-  let im = 382; // défaut Cat C
+  // 1. Extraction Indice Majoré (IM) - Heuristiques Multi-passes
+  let im = 382; // défaut
   let imFound = false;
 
-  const imMatch = t.match(/(?:inm|i\.m\.?|indice\s*(?:major[ée]|maj\.?|brut\/maj)?)\s*[:=.\s]*(\d{3})\b/i)
-    || t.match(/\bindice\s*[:=]\s*(\d{3})\b/i)
-    || t.match(/\bim\s*[:=]\s*(\d{3})\b/i)
-    || t.match(/majore[:\s]+(\d{3})\b/i);
-
-  if (imMatch && parseInt(imMatch[1], 10) >= 200 && parseInt(imMatch[1], 10) <= 900) {
-    im = parseInt(imMatch[1], 10);
-    imFound = true;
-    detectedItems.push(`Indice Majoré (IM) détecté : ${im}`);
-  } else {
-    // Heuristique 2 : recherche dans la ligne "traitement de base"
-    const tibLineMatch = t.match(/traitement(?:\s+de)?\s+base.*?(\d{3})\b/i);
-    if (tibLineMatch && parseInt(tibLineMatch[1], 10) >= 200 && parseInt(tibLineMatch[1], 10) <= 900) {
-      im = parseInt(tibLineMatch[1], 10);
+  // Passe A : Paire IB / IM (ex: 405 / 382 ou 405/382)
+  const pairMatch = t.match(/(\d{3})\s*[/\\-]\s*(\d{3})\b/);
+  if (pairMatch) {
+    const val2 = parseInt(pairMatch[2], 10);
+    const val1 = parseInt(pairMatch[1], 10);
+    if (val2 >= 250 && val2 <= 850 && val2 <= val1) {
+      im = val2;
       imFound = true;
-      detectedItems.push(`Indice Majoré (IM) déduit du libellé : ${im}`);
-    } else {
-      // Heuristique 3 : déduction à partir du montant brut du traitement (ex: 1880.50 € / 4.92278 = 382)
-      const montantTibMatch = t.match(/traitement(?:\s+de)?\s+base.*?([\d\s]+[,.]\d{2})/i)
-        || t.match(/traitement\s+indiciaire.*?([\d\s]+[,.]\d{2})/i);
-      if (montantTibMatch) {
-        const montant = parseFloat(montantTibMatch[1].replace(/\s/g, "").replace(",", "."));
-        if (montant >= 1000 && montant <= 5000) {
-          const calculatedIm = Math.round(montant / VALEUR_POINT_INDICE_MENSUEL);
-          if (calculatedIm >= 200 && calculatedIm <= 900) {
+      detectedItems.push(`Indice Majoré (IM) extrait de la paire IB/IM (${pairMatch[1]}/${pairMatch[2]}) : ${im}`);
+    }
+  }
+
+  // Passe B : Multiplication par la valeur du point d'indice (ex: 382 x 4.92278)
+  if (!imFound) {
+    const ptMatch = t.match(/(\d{3})\s*[*x×]\s*4[.,]922/i) || t.match(/4[.,]922\d*\s*[*x×]\s*(\d{3})/i);
+    if (ptMatch) {
+      const val = parseInt(ptMatch[1] || ptMatch[2], 10);
+      if (val >= 250 && val <= 850) {
+        im = val;
+        imFound = true;
+        detectedItems.push(`Indice Majoré (IM) détecté par multiplication (IM ${val} x 4,92278 €) : ${im}`);
+      }
+    }
+  }
+
+  // Passe C : Proximité immédiate d'un mot-clé d'indice (INM, IM, INDICE MAJORE, ECHELON... IM)
+  if (!imFound) {
+    const proxMatch = t.match(/(?:inm|indice\s*(?:major[ée]|maj\.?|r[ée]el)?|i\.m\.?|majore)[^0-9\n\r]{0,35}(\d{3})\b/i);
+    if (proxMatch) {
+      const val = parseInt(proxMatch[1], 10);
+      if (val >= 250 && val <= 850) {
+        im = val;
+        imFound = true;
+        detectedItems.push(`Indice Majoré (IM) détecté : ${im}`);
+      }
+    }
+  }
+
+  // Passe D : Rétro-calcul à partir du montant brut du traitement (ex: 1 880,50 € / 4,92278 = 382)
+  if (!imFound) {
+    for (const line of lines) {
+      const lineLower = line.toLowerCase();
+      if (lineLower.includes("traitement") && (lineLower.includes("base") || lineLower.includes("indiciaire") || lineLower.includes("brut"))) {
+        const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+          .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+          .filter(a => a >= 1000 && a <= 5500);
+
+        if (amounts.length > 0) {
+          const calculatedIm = Math.round(amounts[0] / VALEUR_POINT_INDICE_MENSUEL);
+          if (calculatedIm >= 250 && calculatedIm <= 850) {
             im = calculatedIm;
             imFound = true;
-            detectedItems.push(`Indice Majoré (IM) recalculé d'après le montant brut (${montant.toFixed(2)} €) : ${im}`);
+            detectedItems.push(`Indice Majoré (IM) déduit du montant brut (${amounts[0].toFixed(2)} €) : ${im}`);
+            break;
           }
         }
       }
@@ -1092,26 +1119,35 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
 
   // 3. Extraction NBI (Nouvelle Bonification Indiciaire)
   let nbi = 0;
-  const nbiMatch = t.match(/nbi\s*(?:points?|pts)?\s*[:=]?\s*(\d{1,3})/i)
-    || t.match(/bonification\s*(?:indiciaire)?\s*[:=]?\s*(\d{1,3})/i);
+  const nbiMatch = t.match(/nbi[^0-9\n\r]{0,20}(\d{1,3})\s*(?:points?|pts)?/i)
+    || t.match(/bonification\s*(?:indiciaire)?[^0-9\n\r]{0,20}(\d{1,3})/i);
   if (nbiMatch && parseInt(nbiMatch[1], 10) <= 100) {
     nbi = parseInt(nbiMatch[1], 10);
     if (nbi > 0) detectedItems.push(`Points NBI détectés : +${nbi} pts`);
   }
 
-  // 4. Extraction IFSE / Primes RIFSEEP
+  // 4. Extraction IFSE / Primes RIFSEEP (Heuristique Multi-passes)
   let ifse = 380;
   let ifseFound = false;
-  const ifseMatch = t.match(/ifse\s*(?:partie\s*fixe|mensuelle|principale)?\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
-    || t.match(/rifseep\s*(?:-\s*ifse)?\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
-    || t.match(/indemnit[ée]\s*(?:de\s*)?fonctions?\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
-    || t.match(/r[ée]gime\s*indemnitaire\s*[:=]?\s*([\d\s]+[,.]\d{2})/i);
-  if (ifseMatch) {
-    const val = parseFloat(ifseMatch[1].replace(/\s/g, "").replace(",", "."));
-    if (val >= 40 && val <= 3500) {
-      ifse = val;
-      ifseFound = true;
-      detectedItems.push(`Prime IFSE (RIFSEEP) détectée : ${ifse.toFixed(2)} €/mois`);
+
+  for (const line of lines) {
+    const lineLower = line.toLowerCase();
+    if (
+      lineLower.includes("ifse") ||
+      lineLower.includes("rifseep") ||
+      lineLower.includes("fonct") ||
+      lineLower.includes("indemnitaire")
+    ) {
+      const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+        .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+        .filter(a => a >= 40 && a <= 3500);
+
+      if (amounts.length > 0) {
+        ifse = amounts[amounts.length - 1]; // Dernier montant souvent la colonne montant
+        ifseFound = true;
+        detectedItems.push(`Prime IFSE (RIFSEEP) détectée : ${ifse.toFixed(2)} €/mois`);
+        break;
+      }
     }
   }
 

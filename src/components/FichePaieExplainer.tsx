@@ -101,6 +101,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   const [copiedAudit, setCopiedAudit] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const synthesisSectionRef = useRef<HTMLDivElement>(null);
 
   // Exécution du moteur de paie OpenFisca
   const result: FichePaieAnalyseResult = useMemo(() => {
@@ -174,6 +175,10 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
       } else {
         toast.info(`Fichier chargé (${text.length} caractères). Vous pouvez vérifier les paramètres ci-dessous.`);
       }
+
+      setTimeout(() => {
+        synthesisSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
     } catch (err) {
       console.error("Erreur de parsing de fiche de paie:", err);
       toast.error("Erreur lors de la lecture du fichier.");
@@ -207,6 +212,10 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
       setSelectedPresetId("custom");
       setShowAdvancedTuning(true);
       toast.success(`Texte analysé : ${parseResult.metadata.detectedItems.length} rubriques identifiées !`);
+
+      setTimeout(() => {
+        synthesisSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
     } finally {
       setIsParsing(false);
     }
@@ -699,53 +708,184 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
       </div>
 
       {/* ─────────────────────────────────────────────────────────────────────────────
-          BANDEAU DE RÉSULTAT DU FICHIER UPLOADÉ (LE CAS ÉCHÉANT)
+          BANDEAU DE RÉSULTAT DU FICHIER UPLOADÉ & CONTRÔLE DIRECT
       ───────────────────────────────────────────────────────────────────────────── */}
-      {uploadMetadata && (
-        <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 dark:from-emerald-950/30 dark:via-teal-950/20 dark:to-emerald-950/30 border border-emerald-300 dark:border-emerald-700/60 rounded-2xl p-5 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {uploadedFileName && (
+        <div className="bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 dark:from-slate-900 dark:via-orange-950/20 dark:to-slate-900 border-2 border-orange-500/50 rounded-2xl p-6 shadow-md space-y-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-orange-200 dark:border-orange-500/30">
             <div className="flex items-start gap-3">
-              <div className="p-2.5 bg-emerald-600 text-white rounded-xl shadow-sm shrink-0 mt-0.5">
-                <CheckCircle className="w-5 h-5" />
+              <div className="p-2.5 bg-orange-600 text-white rounded-xl shadow-sm shrink-0 mt-0.5">
+                <FileCheck className="w-5 h-5" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-extrabold text-emerald-900 dark:text-emerald-200 text-sm sm:text-base">
+                  <h3 className="font-extrabold text-slate-900 dark:text-white text-base sm:text-lg">
                     Bulletin analysé : {uploadedFileName}
                   </h3>
-                  <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-200 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200">
-                    {uploadMetadata.confidence === 'high' ? 'Précision Élevée' : 'Détection Réussie'}
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-600 text-white">
+                    Actif dans la synthèse
                   </span>
                 </div>
-                <p className="text-xs text-emerald-800/80 dark:text-emerald-300/80 mt-1">
-                  {uploadMetadata.summary} ({uploadMetadata.extractedLinesCount} lignes extraites du document)
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                  {uploadMetadata ? uploadMetadata.summary : "Données extraites du document."} Vérifiez ou ajustez ci-dessous pour actualiser la synthèse en temps réel.
                 </p>
-                <div className="flex flex-wrap items-center gap-2 mt-2">
-                  {uploadMetadata.detectedItems.map((item, idx) => (
-                    <span
-                      key={idx}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/90 dark:bg-slate-900/90 text-emerald-900 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 shadow-2xs"
-                    >
-                      <Check className="w-3 h-3 text-emerald-600 shrink-0" />
-                      <span>{item}</span>
-                    </span>
-                  ))}
-                </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0 self-end md:self-center">
-              <button
-                onClick={() => setShowRawTextModal(!showRawTextModal)}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 cursor-pointer"
-              >
-                {showRawTextModal ? "Fermer le texte extrait" : "Inspecter le texte brut"}
-              </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {uploadedRawText && (
+                <button
+                  onClick={() => setShowRawTextModal(!showRawTextModal)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 cursor-pointer"
+                >
+                  {showRawTextModal ? "Masquer le texte brut" : "Inspecter le texte extrait"}
+                </button>
+              )}
             </div>
           </div>
 
+          {/* 4 Curseurs & Inputs Directs Immédiats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+            {/* 1. Indice Majoré (IM) */}
+            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border-2 border-orange-400 dark:border-orange-500 shadow-sm">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                  Indice Majoré (IM)
+                </label>
+                <span className="text-[11px] font-mono text-orange-600 font-bold">
+                  {params.indiceMajore} pts
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setParams(prev => ({ ...prev, indiceMajore: Math.max(250, prev.indiceMajore - 1) }))}
+                  className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold text-sm cursor-pointer"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  min="250"
+                  max="850"
+                  value={params.indiceMajore}
+                  onChange={(e) => setParams(prev => ({ ...prev, indiceMajore: parseInt(e.target.value, 10) || 382 }))}
+                  className="w-full text-center font-black text-lg text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-slate-800/80 p-1.5 rounded-lg border border-orange-300 dark:border-orange-500/50 focus:ring-2 focus:ring-orange-500"
+                />
+                <button
+                  onClick={() => setParams(prev => ({ ...prev, indiceMajore: Math.min(850, prev.indiceMajore + 1) }))}
+                  className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold text-sm cursor-pointer"
+                >
+                  +
+                </button>
+              </div>
+              <span className="text-[10px] text-slate-500 block mt-1">
+                Traitement base : {(params.indiceMajore * VALEUR_POINT_INDICE_MENSUEL).toFixed(2)} €
+              </span>
+            </div>
+
+            {/* 2. IFSE Mensuelle */}
+            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border-2 border-emerald-400 dark:border-emerald-500 shadow-sm">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                  Prime IFSE (RIFSEEP)
+                </label>
+                <span className="text-[11px] font-mono text-emerald-600 font-bold">
+                  {params.ifse || 0} €
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <input
+                  type="number"
+                  step="10"
+                  min="0"
+                  max="4000"
+                  value={params.ifse || 0}
+                  onChange={(e) => setParams(prev => ({ ...prev, ifse: parseFloat(e.target.value) || 0 }))}
+                  className="w-full text-center font-black text-lg text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-slate-800/80 p-1.5 rounded-lg border border-emerald-300 dark:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500"
+                />
+                <span className="text-xs font-bold text-slate-500">€/mois</span>
+              </div>
+              <span className="text-[10px] text-slate-500 block mt-1">
+                Partie principale du RIFSEEP
+              </span>
+            </div>
+
+            {/* 3. Enfants à charge (SFT) */}
+            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                  Enfants SFT
+                </label>
+                <span className="text-[11px] font-mono text-purple-600 font-bold">
+                  {params.nbEnfantsSft || 0} enfant(s)
+                </span>
+              </div>
+              <select
+                value={params.nbEnfantsSft || 0}
+                onChange={(e) => setParams(prev => ({ ...prev, nbEnfantsSft: parseInt(e.target.value, 10) || 0 }))}
+                className="w-full font-bold text-xs p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+              >
+                <option value={0}>0 enfant (0 €)</option>
+                <option value={1}>1 enfant (2,29 €)</option>
+                <option value={2}>2 enfants (~73 €)</option>
+                <option value={3}>3 enfants (~181 €)</option>
+                <option value={4}>4+ enfants</option>
+              </select>
+              <span className="text-[10px] text-slate-500 block mt-1">
+                Supplément Familial
+              </span>
+            </div>
+
+            {/* 4. Prélèvement à la source */}
+            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                  Taux PAS (Impôt)
+                </label>
+                <span className="text-[11px] font-mono text-blue-600 font-bold">
+                  {params.tauxPas || 0} %
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <input
+                  type="number"
+                  step="0.5"
+                  min="0"
+                  max="45"
+                  value={params.tauxPas || 0}
+                  onChange={(e) => setParams(prev => ({ ...prev, tauxPas: parseFloat(e.target.value) || 0 }))}
+                  className="w-full text-center font-black text-lg text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-slate-800/80 p-1.5 rounded-lg border border-blue-300 dark:border-blue-500/50 focus:ring-2 focus:ring-blue-500"
+                />
+                <span className="text-xs font-bold text-slate-500">%</span>
+              </div>
+              <span className="text-[10px] text-slate-500 block mt-1">
+                Taux personnalisé DGFiP
+              </span>
+            </div>
+          </div>
+
+          {/* Détections automatiques du document */}
+          {uploadMetadata && uploadMetadata.detectedItems.length > 0 && (
+            <div className="pt-2">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
+                Rubriques automatiquement reconnues dans votre fichier :
+              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                {uploadMetadata.detectedItems.map((item, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/90 dark:bg-slate-900/90 text-emerald-900 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 shadow-2xs"
+                  >
+                    <Check className="w-3 h-3 text-emerald-600 shrink-0" />
+                    <span>{item}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
           {showRawTextModal && uploadedRawText && (
-            <div className="mt-4 pt-4 border-t border-emerald-200 dark:border-emerald-800/50">
+            <div className="mt-4 pt-4 border-t border-orange-200 dark:border-orange-800/50">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Texte brut extrait du document :</span>
                 <span className="text-xs text-slate-400 font-mono">{uploadedRawText.length} caractères</span>
@@ -761,10 +901,17 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
       {/* ─────────────────────────────────────────────────────────────────────────────
           3. 5 KPI SYNTHÈSE & BARRE VISUELLE "OÙ VA VOTRE SALAIRE ?"
       ───────────────────────────────────────────────────────────────────────────── */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div ref={synthesisSectionRef} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-slate-100 dark:border-slate-800 gap-4">
           <div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Synthèse Mensuelle Estimée</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Synthèse Mensuelle Estimée</span>
+              {uploadedFileName && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 animate-pulse">
+                  ✓ Recalculé d'après votre bulletin
+                </span>
+              )}
+            </div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-0.5">
               Décomposition Globale de la Rémunération
             </h2>

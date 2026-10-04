@@ -546,22 +546,38 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   </span>
                 </div>
 
-                {/* Choix du refus */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
-                    Nature de la décision défavorable contestée :
-                  </label>
-                  <select
-                    value={recoursData.motifRefus}
-                    onChange={(e) => setRecoursData({ ...recoursData, motifRefus: e.target.value as MotifRefus })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-orange-500"
-                  >
-                    <option value="teletravail">Refus d'autorisation de télétravail (Décret 2016-151)</option>
-                    <option value="temps_partiel">Refus de travail à temps partiel (L. 612-1 CGFP)</option>
-                    <option value="rupture_conventionnelle">Refus de rupture conventionnelle (Décret 2019-1593)</option>
-                    <option value="disponibilite">Refus de mise en disponibilité (L. 514-1 CGFP)</option>
-                    <option value="crep">Contestation du Compte-Rendu d'Entretien (CREP Décret 2014-1526)</option>
-                  </select>
+                {/* Choix du refus — Visibilité Renforcée */}
+                <div className="bg-gradient-to-br from-amber-500/20 via-orange-500/15 to-transparent border-2 border-orange-500/70 rounded-2xl p-4 shadow-lg shadow-orange-500/10 space-y-2.5 transition-all">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide flex items-center gap-2">
+                      <span className="p-1.5 rounded-lg bg-orange-500 text-slate-950 font-black shadow-xs">
+                        <Scale className="w-4 h-4" />
+                      </span>
+                      <span>Nature de la décision défavorable contestée :</span>
+                    </label>
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-orange-500 text-slate-950 font-bold animate-pulse">
+                      Étape Clé
+                    </span>
+                  </div>
+                  
+                  <div className="relative">
+                    <select
+                      value={recoursData.motifRefus}
+                      onChange={(e) => setRecoursData({ ...recoursData, motifRefus: e.target.value as MotifRefus })}
+                      className="w-full bg-slate-900 border-2 border-orange-400/80 hover:border-orange-400 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-extrabold text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-orange-400 cursor-pointer"
+                    >
+                      <option value="teletravail">🏢 Refus d'autorisation de télétravail (Décret 2016-151)</option>
+                      <option value="temps_partiel">⏱️ Refus de travail à temps partiel (L. 612-1 CGFP)</option>
+                      <option value="rupture_conventionnelle">🤝 Refus de rupture conventionnelle (Décret 2019-1593)</option>
+                      <option value="disponibilite">✈️ Refus de mise en disponibilité (L. 514-1 CGFP)</option>
+                      <option value="crep">📊 Contestation du Compte-Rendu d'Entretien (CREP Décret 2014-1526)</option>
+                    </select>
+                  </div>
+
+                  <p className="text-[11px] font-semibold text-amber-200/90 flex items-center gap-1.5">
+                    <Info className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                    <span>Sélectionnez le motif pour adapter instantanément les visas CGFP et la stratégie d'argumentation.</span>
+                  </p>
                 </div>
 
                 {/* Dates & Mention R. 421-5 */}
@@ -777,22 +793,38 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   <span>Dossier Circonstancié de la Victime</span>
                 </h3>
 
-                {/* Qualification */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
-                    Nature des atteintes subies :
-                  </label>
-                  <select
-                    value={protectionData.typeAtteinte}
-                    onChange={(e) => setProtectionData({ ...protectionData, typeAtteinte: e.target.value as TypeAtteinteProtection })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-emerald-500"
-                  >
-                    <option value="agression_physique">Violences physiques volontaires au travail</option>
-                    <option value="menaces_intimidations">Menaces de mort, intimidations verbales graves</option>
-                    <option value="diffamation_injures">Diffamation, outrages, propos injurieux publics</option>
-                    <option value="harcelement_moral">Harcèlement moral répété (Art. L. 133-2 CGFP)</option>
-                    <option value="harcelement_sexuel">Harcèlement sexuel ou sexiste (Art. L. 133-1 CGFP)</option>
-                  </select>
+                {/* Qualification des Atteintes — Visibilité Renforcée */}
+                <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-transparent border-2 border-emerald-500/70 rounded-2xl p-4 shadow-lg shadow-emerald-500/10 space-y-2.5 transition-all">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs sm:text-sm font-black text-emerald-300 uppercase tracking-wide flex items-center gap-2">
+                      <span className="p-1.5 rounded-lg bg-emerald-500 text-slate-950 font-black shadow-xs">
+                        <Shield className="w-4 h-4" />
+                      </span>
+                      <span>Nature des atteintes subies :</span>
+                    </label>
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 font-bold animate-pulse">
+                      Art. L. 134-1 CGFP
+                    </span>
+                  </div>
+
+                  <div className="relative">
+                    <select
+                      value={protectionData.typeAtteinte}
+                      onChange={(e) => setProtectionData({ ...protectionData, typeAtteinte: e.target.value as TypeAtteinteProtection })}
+                      className="w-full bg-slate-900 border-2 border-emerald-400/80 hover:border-emerald-400 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-extrabold text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-emerald-400 cursor-pointer"
+                    >
+                      <option value="agression_physique">🚨 Violences physiques volontaires au travail</option>
+                      <option value="menaces_intimidations">⚠️ Menaces de mort, intimidations verbales graves</option>
+                      <option value="diffamation_injures">📢 Diffamation, outrages, propos injurieux publics</option>
+                      <option value="harcelement_moral">🛑 Harcèlement moral répété (Art. L. 133-2 CGFP)</option>
+                      <option value="harcelement_sexuel">⛔ Harcèlement sexuel ou sexiste (Art. L. 133-1 CGFP)</option>
+                    </select>
+                  </div>
+
+                  <p className="text-[11px] font-semibold text-emerald-200/90 flex items-center gap-1.5">
+                    <Info className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>Déclenche la protection statutaire obligatoire et la prise en charge des frais de justice.</span>
+                  </p>
                 </div>
 
                 {/* Identité */}

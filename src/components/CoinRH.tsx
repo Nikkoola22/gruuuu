@@ -170,195 +170,6 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
       {/* Main Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-        {/* ─── SECTION MAJEURE : GUICHET D'AUTO-DÉFENSE SYNDICALE & CONTENTIEUX (DOCASSEMBLE) ─── */}
-        <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-2xl relative overflow-hidden transition-all ${
-          isLight
-            ? "bg-gradient-to-br from-white via-orange-50/50 to-amber-50/30 border-orange-300 shadow-orange-500/10"
-            : "bg-gradient-to-br from-[#0E1526] via-[#141b2d] to-[#1c1822] border-orange-500/40 shadow-2xl shadow-orange-950/20"
-        }`}>
-          {/* Lueur d'ambiance */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
-          
-          <div className="relative z-10 flex flex-col gap-6">
-            {/* Header du Guichet */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-orange-500/20">
-              <div className="flex items-start sm:items-center gap-4">
-                <div className="p-3.5 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-2xl shadow-lg shadow-orange-500/30 flex items-center justify-center shrink-0">
-                  <Gavel className="w-7 h-7" />
-                </div>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-orange-500/15 text-orange-400 border border-orange-500/30">
-                      <Sparkles className="w-3 h-3 text-orange-400" />
-                      Permanence Numérique 5 Minutes
-                    </span>
-                    <span className="bg-[#101b33] text-indigo-300 text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border border-indigo-500/40">
-                      Docassemble Legal Framework
-                    </span>
-                  </div>
-                  <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                    Guichet d'Auto-Défense Syndicale & Requêtes Contentieuses
-                  </h2>
-                  <p className={`text-xs sm:text-sm font-medium mt-1 max-w-3xl ${isLight ? "text-slate-600" : "text-slate-300"}`}>
-                    Exposez votre situation administrative et obtenez votre recours juridique certifié en 5 minutes : calcul automatisé des délais de forclusion (R. 421-5 CJA), recours gracieux contre les refus, demande formelle de protection fonctionnelle et requêtes prêtes pour Télérecours Citoyens.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 self-start lg:self-center shrink-0">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAutoDefenseInitialTab("recours");
-                    setIsAutoDefenseOpen(true);
-                  }}
-                  className="px-5 py-3 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-98 transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Ouvrir le Guichet Numérique</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Grille des 2 volets fondamentaux */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              
-              {/* Volet 1 : Guichet d'auto-défense syndicale pour les agents (Permanence numérique) */}
-              <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
-                isLight ? "bg-white border-amber-200 shadow-sm" : "bg-[#090D1A] border-amber-500/30"
-              }`}>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                      <Clock className="w-4 h-4" /> 1. Recours Précontentieux & Recevabilité CJA
-                    </span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                      R. 421-5 & CGFP
-                    </span>
-                  </div>
-
-                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
-                    Recours gracieux / hiérarchique & Protection Fonctionnelle
-                  </h3>
-
-                  <ul className="text-xs space-y-2 text-slate-600 dark:text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 font-bold shrink-0">•</span>
-                      <span><strong>Recours contre un refus :</strong> Télétravail, temps partiel, rupture conventionnelle, disponibilité, contestation du CREP.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 font-bold shrink-0">•</span>
-                      <span><strong>Contrôle automatique de recevabilité :</strong> Calcul Python/CJA de la date limite (+2 mois, interruption par recours gracieux, inopposabilité des délais selon l'art. R. 421-5 CJA et jurisprudence <em>Czabaj</em>).</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 font-bold shrink-0">•</span>
-                      <span><strong>Protection Fonctionnelle (Art. L. 134-1 CGFP) :</strong> Pour agents agressés, diffamés ou harcelés : chronologie des faits, témoins, et mise en demeure de statuer sous 2 mois.</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 pt-4 mt-2 border-t border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAutoDefenseInitialTab("recours");
-                      setIsAutoDefenseOpen(true);
-                    }}
-                    className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
-                  >
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>Recours Gracieux (5 min)</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAutoDefenseInitialTab("protection");
-                      setIsAutoDefenseOpen(true);
-                    }}
-                    className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Shield className="w-3.5 h-3.5" />
-                    <span>Protection Fonctionnelle</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Volet 2 : Génération de requêtes contentieuses (Tribunal Administratif / Télérecours) */}
-              <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
-                isLight ? "bg-white border-indigo-200 shadow-sm" : "bg-[#090D1A] border-indigo-500/30"
-              }`}>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-black uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
-                      <Scale className="w-4 h-4" /> 2. Requêtes Contentieuses TA & Télérecours
-                    </span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                      CJA & Télérecours
-                    </span>
-                  </div>
-
-                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
-                    Recours pour Excès de Pouvoir (REP) & Référé-Suspension
-                  </h3>
-
-                  <ul className="text-xs space-y-2 text-slate-600 dark:text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <span className="text-indigo-400 font-bold shrink-0">•</span>
-                      <span><strong>Recours pour Excès de Pouvoir (REP) :</strong> Sélection guidée des moyens de légalité externe (incompétence, vices de procédure CAP/CST, motivation L. 211-2 CRPA) et interne (erreur de droit, EMA, détournement de pouvoir).</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-indigo-400 font-bold shrink-0">•</span>
-                      <span><strong>Référé-suspension (Art. L. 521-1 CJA) :</strong> Génération conjointe avec qualification de l'urgence et doute sérieux quant à la légalité.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-indigo-400 font-bold shrink-0">•</span>
-                      <span><strong>Bordereau de pièces justificatives Télérecours :</strong> Indexation et numérotation conforme aux exigences de Télérecours Citoyens (Art. R. 414-5 CJA).</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 pt-4 mt-2 border-t border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAutoDefenseInitialTab("requete");
-                      setIsAutoDefenseOpen(true);
-                    }}
-                    className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
-                  >
-                    <Gavel className="w-3.5 h-3.5" />
-                    <span>Rédiger Requête REP & Référé</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAutoDefenseInitialTab("bordereau");
-                      setIsAutoDefenseOpen(true);
-                    }}
-                    className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-blue-400 hover:text-blue-300 border border-blue-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <FileCheck className="w-3.5 h-3.5" />
-                    <span>Bordereau de Pièces</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAutoDefenseInitialTab("docassemble");
-                      setIsAutoDefenseOpen(true);
-                    }}
-                    className="px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-400 border border-purple-500/30 text-xs font-mono transition-all flex items-center gap-1 cursor-pointer"
-                    title="Voir le code source Docassemble YAML / Python"
-                  >
-                    <Code2 className="w-3.5 h-3.5" />
-                    <span>.yml</span>
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
         {/* ─── MODULE 1 : VÉRIFICATION DE LÉGALITÉ ─── */}
         <div className={`rounded-3xl p-6 sm:p-7 border-2 shadow-xl relative overflow-hidden transition-all ${
           isLight
@@ -938,6 +749,195 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
             )}
           </div>
         )}
+
+        {/* ─── SECTION MAJEURE (EN BAS DE PAGE) : GUICHET D'AUTO-DÉFENSE SYNDICALE & CONTENTIEUX (DOCASSEMBLE) ─── */}
+        <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-2xl relative overflow-hidden transition-all ${
+          isLight
+            ? "bg-gradient-to-br from-white via-orange-50/50 to-amber-50/30 border-orange-300 shadow-orange-500/10"
+            : "bg-gradient-to-br from-[#0E1526] via-[#141b2d] to-[#1c1822] border-orange-500/40 shadow-2xl shadow-orange-950/20"
+        }`}>
+          {/* Lueur d'ambiance */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col gap-6">
+            {/* Header du Guichet */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-orange-500/20">
+              <div className="flex items-start sm:items-center gap-4">
+                <div className="p-3.5 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-2xl shadow-lg shadow-orange-500/30 flex items-center justify-center shrink-0">
+                  <Gavel className="w-7 h-7" />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-orange-500/15 text-orange-400 border border-orange-500/30">
+                      <Sparkles className="w-3 h-3 text-orange-400" />
+                      Permanence Numérique 5 Minutes
+                    </span>
+                    <span className="bg-[#101b33] text-indigo-300 text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border border-indigo-500/40">
+                      Docassemble Legal Framework
+                    </span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+                    Guichet d'Auto-Défense Syndicale & Requêtes Contentieuses
+                  </h2>
+                  <p className={`text-xs sm:text-sm font-medium mt-1 max-w-3xl ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+                    Exposez votre situation administrative et obtenez votre recours juridique certifié en 5 minutes : calcul automatisé des délais de forclusion (R. 421-5 CJA), recours gracieux contre les refus, demande formelle de protection fonctionnelle et requêtes prêtes pour Télérecours Citoyens.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 self-start lg:self-center shrink-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAutoDefenseInitialTab("recours");
+                    setIsAutoDefenseOpen(true);
+                  }}
+                  className="px-5 py-3 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-98 transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>Ouvrir le Guichet Numérique</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Grille des 2 volets fondamentaux */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              
+              {/* Volet 1 : Guichet d'auto-défense syndicale pour les agents (Permanence numérique) */}
+              <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+                isLight ? "bg-white border-amber-200 shadow-sm" : "bg-[#090D1A] border-amber-500/30"
+              }`}>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                      <Clock className="w-4 h-4" /> 1. Recours Précontentieux & Recevabilité CJA
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                      R. 421-5 & CGFP
+                    </span>
+                  </div>
+
+                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
+                    Recours gracieux / hiérarchique & Protection Fonctionnelle
+                  </h3>
+
+                  <ul className="text-xs space-y-2 text-slate-600 dark:text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 font-bold shrink-0">•</span>
+                      <span><strong>Recours contre un refus :</strong> Télétravail, temps partiel, rupture conventionnelle, disponibilité, contestation du CREP.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 font-bold shrink-0">•</span>
+                      <span><strong>Contrôle automatique de recevabilité :</strong> Calcul Python/CJA de la date limite (+2 mois, interruption par recours gracieux, inopposabilité des délais selon l'art. R. 421-5 CJA et jurisprudence <em>Czabaj</em>).</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 font-bold shrink-0">•</span>
+                      <span><strong>Protection Fonctionnelle (Art. L. 134-1 CGFP) :</strong> Pour agents agressés, diffamés ou harcelés : chronologie des faits, témoins, et mise en demeure de statuer sous 2 mois.</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 pt-4 mt-2 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAutoDefenseInitialTab("recours");
+                      setIsAutoDefenseOpen(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <Clock className="w-3.5 h-3.5" />
+                    <span>Recours Gracieux (5 min)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAutoDefenseInitialTab("protection");
+                      setIsAutoDefenseOpen(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Shield className="w-3.5 h-3.5" />
+                    <span>Protection Fonctionnelle</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Volet 2 : Génération de requêtes contentieuses (Tribunal Administratif / Télérecours) */}
+              <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+                isLight ? "bg-white border-indigo-200 shadow-sm" : "bg-[#090D1A] border-indigo-500/30"
+              }`}>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
+                      <Scale className="w-4 h-4" /> 2. Requêtes Contentieuses TA & Télérecours
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      CJA & Télérecours
+                    </span>
+                  </div>
+
+                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
+                    Recours pour Excès de Pouvoir (REP) & Référé-Suspension
+                  </h3>
+
+                  <ul className="text-xs space-y-2 text-slate-600 dark:text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-indigo-400 font-bold shrink-0">•</span>
+                      <span><strong>Recours pour Excès de Pouvoir (REP) :</strong> Sélection guidée des moyens de légalité externe (incompétence, vices de procédure CAP/CST, motivation L. 211-2 CRPA) et interne (erreur de droit, EMA, détournement de pouvoir).</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-indigo-400 font-bold shrink-0">•</span>
+                      <span><strong>Référé-suspension (Art. L. 521-1 CJA) :</strong> Génération conjointe avec qualification de l'urgence et doute sérieux quant à la légalité.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-indigo-400 font-bold shrink-0">•</span>
+                      <span><strong>Bordereau de pièces justificatives Télérecours :</strong> Indexation et numérotation conforme aux exigences de Télérecours Citoyens (Art. R. 414-5 CJA).</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 pt-4 mt-2 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAutoDefenseInitialTab("requete");
+                      setIsAutoDefenseOpen(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <Gavel className="w-3.5 h-3.5" />
+                    <span>Rédiger Requête REP & Référé</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAutoDefenseInitialTab("bordereau");
+                      setIsAutoDefenseOpen(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-blue-400 hover:text-blue-300 border border-blue-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <FileCheck className="w-3.5 h-3.5" />
+                    <span>Bordereau de Pièces</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAutoDefenseInitialTab("docassemble");
+                      setIsAutoDefenseOpen(true);
+                    }}
+                    className="px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-400 border border-purple-500/30 text-xs font-mono transition-all flex items-center gap-1 cursor-pointer"
+                    title="Voir le code source Docassemble YAML / Python"
+                  >
+                    <Code2 className="w-3.5 h-3.5" />
+                    <span>.yml</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
 
       </div>
 

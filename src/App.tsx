@@ -1535,30 +1535,25 @@ ${indicesFactuels}
           ref={calculatorsSectionRef}
           className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-950 dark:to-slate-900"
         >
-          {/* Header */}
-          <div className="sticky top-0 bg-white/95 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700/50 shadow-sm z-30 glass-banner">
-            <div className="max-w-6xl mx-auto px-4 py-4">
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={() => {
-                    if (activeCalculator) {
-                      setActiveCalculator(null)
-                      if (calculatorsSectionRef.current) {
-                        calculatorsSectionRef.current.scrollTop = 0
-                      }
-                    } else {
+          {/* Header (affiché uniquement sur la page d'accueil de la boîte à outils) */}
+          {!activeCalculator && (
+            <div className="sticky top-0 bg-white/95 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700/50 shadow-sm z-30 glass-banner">
+              <div className="max-w-6xl mx-auto px-4 py-4">
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={() => {
                       setChatState({ ...chatState, currentView: 'menu' })
-                    }
-                  }}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0"
-                >
-                  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                  <span>{activeCalculator ? 'Retour aux calculateurs' : 'Retour au menu'}</span>
-                </button>
-                <h2 className="text-xl font-bold text-slate-800 dark:text-white">Boîte à Outils CFDT</h2>
+                    }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <span>Retour au menu</span>
+                  </button>
+                  <h2 className="text-xl font-bold text-slate-800 dark:text-white">Boîte à Outils CFDT</h2>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Page d'accueil avec les 3 icônes */}
           {!activeCalculator && (
@@ -1819,27 +1814,72 @@ ${indicesFactuels}
           {/* Contenu du calculateur sélectionné */}
           {activeCalculator === 'primes' && (
             <Suspense fallback={<ViewLoader />}>
-              <div className="calc-tool-enter"><CalculateurPrimesV2 onClose={() => setActiveCalculator(null)} /></div>
+              <div className="calc-tool-enter py-6 px-4">
+                <CalculateurPrimesV2
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
             </Suspense>
           )}
           {activeCalculator === 'cia' && (
             <Suspense fallback={<ViewLoader />}>
-              <div className="calc-tool-enter"><CalculateurCIAV2 onClose={() => setActiveCalculator(null)} /></div>
+              <div className="calc-tool-enter py-6 px-4">
+                <CalculateurCIAV2
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
             </Suspense>
           )}
           {activeCalculator === 'sft' && (
             <Suspense fallback={<ViewLoader />}>
-              <div className="calc-tool-enter"><CalculateurSFTV2 onClose={() => setActiveCalculator(null)} /></div>
+              <div className="calc-tool-enter py-6 px-4">
+                <CalculateurSFTV2
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
             </Suspense>
           )}
           {activeCalculator === '13eme' && (
             <Suspense fallback={<ViewLoader />}>
-              <div className="calc-tool-enter"><Calculateur13emeV2 onClose={() => setActiveCalculator(null)} /></div>
+              <div className="calc-tool-enter py-6 px-4">
+                <Calculateur13emeV2
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
             </Suspense>
           )}
           {activeCalculator === 'courriers' && (
             <Suspense fallback={<ViewLoader />}>
-              <div className="calc-tool-enter"><CourriersAgentModule onClose={() => setActiveCalculator(null)} /></div>
+              <div className="calc-tool-enter py-6 px-4">
+                <CourriersAgentModule
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
             </Suspense>
           )}
         </section>

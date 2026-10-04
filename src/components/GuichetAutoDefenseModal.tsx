@@ -35,6 +35,7 @@ import {
   generateRecoursGracieux,
   generateDemandeProtectionFonctionnelle,
   generateSaisineInstanceParitaire,
+  getDefaultSaisineContent,
   generateRequeteTa,
   generateBordereauPieces,
   generateDocassembleYamlPackage,
@@ -139,7 +140,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
   // ─────────────────────────────────────────────────────────────
   // ÉTAT DU VOLET 3 : SAISINE DES INSTANCES PARITAIRES (CAP, CCP, F3SCT)
   // ─────────────────────────────────────────────────────────────
-  const [saisineData, setSaisineData] = useState<SaisineInstanceFormData>({
+  const initialCapCrep = getDefaultSaisineContent("cap", "crep");
+  const initialSaisineState: SaisineInstanceFormData = {
     instance: "cap",
     nomAgent: "DUPONT",
     prenomAgent: "Alexandre",
@@ -149,7 +151,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
     directionService: "Direction de l'Éducation et de l'Enfance",
     collectivite: "Ville de Gennevilliers",
     cigRattachement: "CIG Petite Couronne (92-93-94)",
-    destinataireInstance: "Monsieur le Président de la Commission Administrative Paritaire n°3 (Catégorie C) - CIG Petite Couronne",
+    destinataireInstance: initialCapCrep.destinataireInstance || "Monsieur le Président de la Commission Administrative Paritaire compétente - CIG Petite Couronne (92-93-94)",
     motifCap: "crep",
     motifCcp: "licenciement_contractuel_insuffisance",
     motifF3sct: "danger_grave_imminent",
@@ -158,21 +160,16 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
     dateDecisionRecoursPrealable: new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString().split("T")[0],
     dateIncidentDanger: new Date().toISOString().split("T")[0],
     lieuIncidentDanger: "Ateliers municipaux / Bâtiment principal",
-    faitsEtContexte: "L'entretien d'évaluation s'est déroulé dans un climat de tension manifeste. Le supérieur hiérarchique direct a subitement dégradé plusieurs appréciations et abaissé les coches de manière injustifiée.",
-    motifsInvoquesAdministration: "Baisse de rythme alléguée sans aucun élément factuel probant ni avertissement préalable au cours de l'année.",
-    argumentsAgent: "Contradiction totale entre les appréciations d'ensemble très élogieuses et les coches dépréciées. L'agent a atteint l'ensemble des objectifs fixés l'année précédente. Refus de dialogue et partialité.",
-    demandesAgent: "Révision des niveaux de maîtrise professionnelle pour les rétablir au niveau 'Excellent', et modification de l'appréciation générale littérale.",
+    faitsEtContexte: initialCapCrep.faitsEtContexte,
+    motifsInvoquesAdministration: initialCapCrep.motifsInvoquesAdministration,
+    argumentsAgent: initialCapCrep.argumentsAgent,
+    demandesAgent: initialCapCrep.demandesAgent,
     assistanceSyndicale: true,
     nomRepresentantSyndical: "Délégation Syndicale CFDT Territoriaux de Gennevilliers",
-    piecesJointes: [
-      "Compte-rendu d'évaluation professionnelle (CREP) complet",
-      "Recours hiérarchique préalable adressé à l'autorité territoriale",
-      "Courrier de rejet de l'autorité territoriale",
-      "Fiche de poste officielle et bilans d'activité"
-    ]
-  });
-
-  const [generatedSaisine, setGeneratedSaisine] = useState<SaisineInstanceResult | null>(null);
+    piecesJointes: initialCapCrep.piecesJointes
+  };
+  const [saisineData, setSaisineData] = useState<SaisineInstanceFormData>(initialSaisineState);
+  const [generatedSaisine, setGeneratedSaisine] = useState<SaisineInstanceResult | null>(() => generateSaisineInstanceParitaire(initialSaisineState));
 
   // ─────────────────────────────────────────────────────────────
   // ÉTAT DU VOLET 4 : REQUÊTE CONTENTIEUSE TA & RÉFÉRÉ
@@ -333,10 +330,42 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
     confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
   };
 
+  const applyMotifDefaults = (
+    newInstance: TypeInstanceParitaire,
+    newMotif: MotifSaisineCap | MotifSaisineCcp | MotifSaisineF3sct
+  ) => {
+    const defaults = getDefaultSaisineContent(newInstance, newMotif, saisineData.collectivite, saisineData.cigRattachement);
+    const updated: SaisineInstanceFormData = {
+      ...saisineData,
+      instance: newInstance,
+      statutAgent: defaults.statutAgent || saisineData.statutAgent,
+      destinataireInstance: defaults.destinataireInstance || saisineData.destinataireInstance,
+      motifCap: newInstance === "cap" ? (newMotif as MotifSaisineCap) : saisineData.motifCap,
+      motifCcp: newInstance === "ccp" ? (newMotif as MotifSaisineCcp) : saisineData.motifCcp,
+      motifF3sct: newInstance === "f3sct_cst" ? (newMotif as MotifSaisineF3sct) : saisineData.motifF3sct,
+      faitsEtContexte: defaults.faitsEtContexte,
+      motifsInvoquesAdministration: defaults.motifsInvoquesAdministration,
+      argumentsAgent: defaults.argumentsAgent,
+      demandesAgent: defaults.demandesAgent,
+      piecesJointes: defaults.piecesJointes
+    };
+    setSaisineData(updated);
+    const res = generateSaisineInstanceParitaire(updated);
+    setGeneratedSaisine(res);
+    toast.success(`Formulaire CGFP généré : ${res.titre}`);
+  };
+
+  // Synchronisation continue du formulaire officiel conforme CGFP dès toute modification
+  useEffect(() => {
+    const res = generateSaisineInstanceParitaire(saisineData);
+    setGeneratedSaisine(res);
+  }, [saisineData]);
+
   const handleGenerateSaisine = () => {
     const res = generateSaisineInstanceParitaire(saisineData);
     setGeneratedSaisine(res);
     confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
+    toast.success("Formulaire de saisine actualisé !");
   };
 
   const handleGenerateRequete = () => {
@@ -1149,11 +1178,12 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                           key={inst.id}
                           type="button"
                           onClick={() => {
-                            setSaisineData({
-                              ...saisineData,
-                              instance: inst.id as TypeInstanceParitaire,
-                              statutAgent: inst.id === "ccp" ? "contractuel_cdi" : "titulaire"
-                            });
+                            const targetMotif = inst.id === "cap"
+                              ? saisineData.motifCap || "crep"
+                              : inst.id === "ccp"
+                                ? saisineData.motifCcp || "licenciement_contractuel_insuffisance"
+                                : saisineData.motifF3sct || "danger_grave_imminent";
+                            applyMotifDefaults(inst.id as TypeInstanceParitaire, targetMotif as any);
                           }}
                           className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-1.5 ${
                             isChosen
@@ -1219,7 +1249,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                             type="radio"
                             name="motifCap"
                             checked={saisineData.motifCap === item.id}
-                            onChange={() => setSaisineData({ ...saisineData, motifCap: item.id as MotifSaisineCap })}
+                            onChange={() => applyMotifDefaults("cap", item.id as MotifSaisineCap)}
                             className="mt-0.5 text-rose-500"
                           />
                           <div>
@@ -1273,7 +1303,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                             type="radio"
                             name="motifCcp"
                             checked={saisineData.motifCcp === item.id}
-                            onChange={() => setSaisineData({ ...saisineData, motifCcp: item.id as MotifSaisineCcp })}
+                            onChange={() => applyMotifDefaults("ccp", item.id as MotifSaisineCcp)}
                             className="mt-0.5 text-rose-500"
                           />
                           <div>
@@ -1322,7 +1352,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                             type="radio"
                             name="motifF3sct"
                             checked={saisineData.motifF3sct === item.id}
-                            onChange={() => setSaisineData({ ...saisineData, motifF3sct: item.id as MotifSaisineF3sct })}
+                            onChange={() => applyMotifDefaults("f3sct_cst", item.id as MotifSaisineF3sct)}
                             className="mt-0.5 text-rose-500"
                           />
                           <div>

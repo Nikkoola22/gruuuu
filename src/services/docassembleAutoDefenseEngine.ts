@@ -641,6 +641,299 @@ Pièces jointes justificatives annexées :
 // 4. GÉNÉRATEUR DE SAISINE DES INSTANCES PARITAIRES (CAP, CCP, F3SCT / CST)
 // ─────────────────────────────────────────────────────────────
 
+export interface DefaultSaisineContent {
+  faitsEtContexte: string;
+  motifsInvoquesAdministration: string;
+  argumentsAgent: string;
+  demandesAgent: string;
+  piecesJointes: string[];
+  destinataireInstance?: string;
+  statutAgent?: "titulaire" | "stagiaire" | "contractuel_cdd" | "contractuel_cdi";
+}
+
+/**
+ * Fournit les contenus par défaut (faits, motifs de l'administration, arguments juridiques et demandes)
+ * adaptés au motif et à l'instance paritaire choisie.
+ */
+export function getDefaultSaisineContent(
+  instance: TypeInstanceParitaire,
+  motif: string,
+  collectivite: string = "Ville de Gennevilliers",
+  cigRattachement: string = "CIG Petite Couronne (92-93-94)"
+): DefaultSaisineContent {
+  if (instance === "cap") {
+    if (motif === "crep") {
+      return {
+        statutAgent: "titulaire",
+        destinataireInstance: `Monsieur / Madame le Président de la Commission Administrative Paritaire compétente - ${cigRattachement}`,
+        faitsEtContexte: `L'entretien d'évaluation professionnelle au titre de la campagne annuelle s'est tenu récemment. Le compte-rendu d'entretien professionnel (CREP) m'a été notifié. Dès notification, j'ai constaté une dégradation injustifiée de mes appréciations littérales et un abaissement incompréhensible des niveaux de maîtrise professionnelle par rapport aux années précédentes, sans qu'aucun reproche ni alerte n'ait été formulé durant l'année. Un recours hiérarchique préalable obligatoire a été adressé à l'autorité territoriale dans le délai de 15 jours francs, lequel a fait l'objet d'un refus.`,
+        motifsInvoquesAdministration: `Le supérieur hiérarchique direct prétend invoquer une 'baisse de dynamisme' et des 'difficultés de communication', sans apporter le moindre élément matériel probant ni fait circonstancié à l'appui de ces allégations.`,
+        argumentsAgent: `1. Discordance manifeste entre les appréciations générales littérales (qui soulignent la ponctualité, la disponibilité et la rigueur de l'agent) et les coches dégradées au niveau 'À développer'.
+2. Méconnaissance de la fiche de poste : les griefs formulés portent sur des tâches non inscrites au profil de poste contractuel ou statutaire de l'agent.
+3. Violation de l'article 5 du décret n° 2014-1526 : les points de reproche n'ont jamais été débattus contradictoirement lors de l'entretien.
+4. Erreur manifeste d'appréciation de la valeur professionnelle de l'agent au regard des objectifs atteints et des résultats réels obtenus au service des usagers.`,
+        demandesAgent: `1. Émission d'un avis très favorable de la CAP à la révision intégrale du Compte-Rendu d'Entretien Professionnel.
+2. Recommandation à l'autorité territoriale de rétablir les coches d'évaluation aux niveaux 'Maîtrisé' et 'Expert' sur l'ensemble des rubriques.
+3. Réécriture des appréciations littérales et suppression de toute mention dépréciative non étayée au dossier individuel de l'agent.`,
+        piecesJointes: [
+          "Compte-rendu d'évaluation professionnelle (CREP) contesté complet",
+          "Copie du recours hiérarchique préalable obligatoire adressé à l'autorité territoriale avec accusé de réception",
+          "Courrier de rejet de l'autorité territoriale (ou justificatif de rejet implicite)",
+          "CREP des trois années antérieures démontrant la constance de la manière de servir",
+          "Fiche de poste officielle de référence",
+          "Bilans d'activité et courriels professionnels attestant des résultats atteints"
+        ]
+      };
+    }
+
+    if (motif === "refus_formation") {
+      return {
+        statutAgent: "titulaire",
+        destinataireInstance: `Monsieur / Madame le Président de la Commission Administrative Paritaire compétente - ${cigRattachement}`,
+        faitsEtContexte: `Dans le cadre de mon projet d'évolution statutaire et de préparation aux concours de la fonction publique territoriale, j'ai sollicité une action de formation de perfectionnement inscrite au catalogue du CNFPT. Cette première demande a essuyé un premier refus. J'ai ensuite réitéré ma demande pour la session suivante, laquelle s'est vu opposer un second refus consécutif par décision de l'autorité territoriale.`,
+        motifsInvoquesAdministration: `L'administration oppose de manière stéréotypée les 'nécessités de service' et la charge de travail du service, sans préciser la gêne concrète qu'engendrerait une absence temporaire de courte durée.`,
+        argumentsAgent: `1. Violation de l'article 7 du décret n° 2007-1845 : le rejet d'une deuxième demande consécutive de formation de perfectionnement ne peut légalement intervenir qu'après avis obligatoire préalable de la CAP.
+2. Atteinte au droit statutaire fondamental à la formation continue garanti par l'article L. 421-1 du Code Général de la Fonction Publique.
+3. Possibilité démontrée d'organiser une continuité de service par roulement avec les collègues du pôle durant la session.
+4. Le refus répété compromet gravement l'égal accès de l'agent aux examens professionnels et concours territoriaux.`,
+        demandesAgent: `1. Avis défavorable de la CAP au maintien du refus opposé par l'autorité territoriale.
+2. Avis recommandant l'autorisation immédiate de départ en formation et l'inscription de l'agent à la prochaine session CNFPT (ou mobilisation des droits CPF).
+3. Inscription prioritaire de l'agent au plan de formation territorial de l'année.`,
+        piecesJointes: [
+          "Première demande de formation et décision de refus initiale",
+          "Seconde demande de formation et décision de refus réitéré",
+          "Programme officiel de la session de formation CNFPT",
+          "Fiche de poste de l'agent et projet professionnel formalisé",
+          "Historique des formations suivies sur les 3 dernières années"
+        ]
+      };
+    }
+
+    if (motif === "refus_temps_partiel") {
+      return {
+        statutAgent: "titulaire",
+        destinataireInstance: `Monsieur / Madame le Président de la Commission Administrative Paritaire compétente - ${cigRattachement}`,
+        faitsEtContexte: `Titulaire au sein de la collectivité, j'ai formulé une demande d'exercice des fonctions à temps partiel (ou d'autorisation de télétravail) pour concilier mes obligations familiales et mon activité professionnelle. L'autorité territoriale m'a notifié un refus unilatéral sans concertation préalable.`,
+        motifsInvoquesAdministration: `Motif d'organisation du service et obligation de continuité physique de l'accueil du public.`,
+        argumentsAgent: `1. Les nécessités de service invoquées ne sont aucunement caractérisées ni circonstanciées au regard des missions exercées.
+2. Faisabilité technique démontrée : les tâches administratives sont dématérialisées et compatibles avec le planning sollicité.
+3. Des agents exerçant des fonctions comparables bénéficient déjà d'aménagements similaires sans désorganisation du pôle.`,
+        demandesAgent: `1. Avis favorable de la CAP à l'octroi du temps partiel (ou de l'autorisation de télétravail) sollicité.
+2. Invitation de l'autorité territoriale à réexaminer la demande et à établir un calendrier d'exercice concerté.`,
+        piecesJointes: [
+          "Demande écrite initiale d'aménagement du temps de travail",
+          "Décision de refus de l'autorité territoriale",
+          "Fiche de poste et planning indicatif du service",
+          "Justificatifs personnels ou familiaux"
+        ]
+      };
+    }
+
+    // Licenciement insuffisance titulaire / stagiaire
+    return {
+      statutAgent: "titulaire",
+      destinataireInstance: `Monsieur / Madame le Président de la Commission Administrative Paritaire compétente - ${cigRattachement}`,
+      faitsEtContexte: `L'autorité territoriale m'a notifié l'engagement d'une procédure de licenciement pour insuffisance professionnelle et a saisi la CAP pour avis consultatif. J'exerce mes fonctions au service de la collectivité avec loyauté et dévouement constant depuis de nombreuses années.`,
+      motifsInvoquesAdministration: `Incapacité alléguée à satisfaire aux exigences du poste et prétendues lacunes professionnelles apparues soudainement.`,
+      argumentsAgent: `1. Absence totale d'insuffisance professionnelle avérée : la collectivité ne caractérise aucun manquement grave ou répété imputable à l'agent.
+2. Carence fautive de l'administration dans son obligation d'adaptation et d'accompagnement professionnel (Art. L. 421-1 CGFP).
+3. Défaut d'avertissement préalable, de mise en demeure ou de plan de progression individualisé.
+4. Mesure disproportionnée traduisant une volonté de sanction déguisée ou une animosité managériale.`,
+      demandesAgent: `1. Avis très défavorable de la CAP au projet de licenciement pour insuffisance professionnelle.
+2. Recommandation à l'autorité de maintenir l'agent dans ses fonctions ou de procéder à un reclassement statutaire sur un poste équivalent avec plan d'adaptation.`,
+      piecesJointes: [
+        "Courrier d'engagement de la procédure de licenciement",
+        "Rapport hiérarchique d'insuffisance professionnelle",
+        "Dossier individuel intégral et évaluations professionnelles antérieures",
+        "Attestations écrites de collègues et usagers attestant de la manière de servir"
+      ]
+    };
+  }
+
+  if (instance === "ccp") {
+    if (motif === "licenciement_contractuel_suppression") {
+      return {
+        statutAgent: "contractuel_cdi",
+        destinataireInstance: `Monsieur / Madame le Président de la Commission Consultative Paritaire - ${cigRattachement}`,
+        faitsEtContexte: `Agent contractuel au sein de la collectivité depuis plusieurs années, l'autorité territoriale m'a notifié son intention de prononcer mon licenciement pour suppression de poste ou réorganisation de service, préalablement à la saisine de la CCP pour avis obligatoire.`,
+        motifsInvoquesAdministration: `Suppression du besoin ou réorganisation interne adoptée par l'assemblée délibérante.`,
+        argumentsAgent: `1. Violation flagrante de l'obligation légale de reclassement préalable (Articles 39-3, 39-4 et 39-5 du décret n° 88-145) : l'autorité a l'obligation substantielle de rechercher activement et loyalement un emploi de reclassement équivalent avant tout licenciement.
+2. Absence d'offres formelles, écrites et personnalisées de reclassement sur des postes vacants existants au sein de la collectivité.
+3. Jurisprudence constante du Conseil d'État (CE 25 septembre 2013, n° 358487) : le licenciement intervenu sans démarche effective de reclassement est entaché d'une illégalité majeure justifiant son annulation.`,
+        demandesAgent: `1. Avis très défavorable de la CCP au projet de licenciement.
+2. Injonction à l'autorité territoriale de suspendre immédiatement la procédure de rupture de contrat.
+3. Obligation pour la collectivité de communiquer par écrit à l'agent la liste exhaustive des postes vacants et de formuler des propositions de reclassement effectives.`,
+        piecesJointes: [
+          "Contrat de travail initial et avenants successifs",
+          "Courrier de notification du projet de licenciement",
+          "Délibération municipale portant modification de l'organigramme",
+          "Tableau des vacances d'emplois de la collectivité et du CIG attestant de postes disponibles"
+        ]
+      };
+    }
+
+    if (motif === "licenciement_contractuel_inaptitude") {
+      return {
+        statutAgent: "contractuel_cdi",
+        destinataireInstance: `Monsieur / Madame le Président de la Commission Consultative Paritaire - ${cigRattachement}`,
+        faitsEtContexte: `Suite à un accident ou une altération de mon état de santé constatée par le médecin du travail, l'autorité territoriale a engagé une procédure de licenciement pour inaptitude physique sans mettre en œuvre les démarches indispensables de reclassement.`,
+        motifsInvoquesAdministration: `Inaptitude définitive aux fonctions actuelles sans aménagement jugé réalisable par la direction.`,
+        argumentsAgent: `1. Méconnaissance de l'article 13 du décret n° 88-145 : l'employeur public est tenu de proposer un reclassement adapté à l'état de santé avant tout licenciement.
+2. Refus injustifié de mettre en place les préconisations d'aménagements ergonomiques du médecin de prévention.
+3. Absence de saisine des dispositifs d'appui au maintien dans l'emploi ou du FIPHFP.`,
+        demandesAgent: `1. Avis défavorable de la CCP au licenciement pour inaptitude physique.
+2. Recommandation d'aménagement du poste de travail actuel ou de reclassement sur un poste administratif compatible avec les restrictions médicales.`,
+        piecesJointes: [
+          "Fiche d'inaptitude médicale et préconisations du médecin du travail",
+          "Contrat d'engagement contractuel",
+          "Courrier de convocation de l'autorité",
+          "Demandes d'aménagements de poste antérieures"
+        ]
+      };
+    }
+
+    if (motif === "recours_crep_contractuel") {
+      return {
+        statutAgent: "contractuel_cdi",
+        destinataireInstance: `Monsieur / Madame le Président de la Commission Consultative Paritaire - ${cigRattachement}`,
+        faitsEtContexte: `En application de l'article 1-4 du décret n° 88-145, l'agent contractuel a fait l'objet d'une évaluation professionnelle annuelle comportant des appréciations litigieuses. Un recours hiérarchique préalable a été formé auprès de l'autorité territoriale dans les délais, qui n'a pas donné satisfaction.`,
+        motifsInvoquesAdministration: `Appréciations contestées portant sur les résultats professionnels obtenus.`,
+        argumentsAgent: `Discordance manifeste d'évaluation, non-respect de la procédure contradictoire et objectifs irréalistes.`,
+        demandesAgent: `Avis de la CCP tendant à la rectification et réécriture des appréciations littérales et cotations.`,
+        piecesJointes: [
+          "Compte-rendu d'évaluation du contractuel contesté",
+          "Recours préalable adressé à l'autorité territoriale",
+          "Fiche de poste officielle",
+          "Justificatifs d'activité"
+        ]
+      };
+    }
+
+    if (motif === "non_renouvellement") {
+      return {
+        statutAgent: "contractuel_cdd",
+        destinataireInstance: `Monsieur / Madame le Président de la Commission Consultative Paritaire - ${cigRattachement}`,
+        faitsEtContexte: `Employé en continu depuis plusieurs années au moyen de CDD successifs sur un besoin pérenne de la collectivité, l'autorité m'a notifié le non-renouvellement de mon engagement alors que le poste subsiste et fait l'objet d'un nouveau recrutement externe.`,
+        motifsInvoquesAdministration: `Arrivée à échéance du terme du contrat d'engagement.`,
+        argumentsAgent: `1. Le non-renouvellement repose sur un motif étranger à l'intérêt du service (sanction déguisée ou discrimination).
+2. Non-respect du délai de prévenance prévu par l'article 38-1 du décret 88-145.
+3. Détournement de procédure portant atteinte au principe de continuité du service public.`,
+        demandesAgent: `Avis de la CCP recommandant le renouvellement de l'engagement contractuel ou sa requalification en CDI territorial.`,
+        piecesJointes: [
+          "Contrats de travail successifs",
+          "Courrier de notification de non-renouvellement",
+          "Fiche de poste et offre de recrutement publiée pour le même poste"
+        ]
+      };
+    }
+
+    // Licenciement insuffisance contractuel par défaut
+    return {
+      statutAgent: "contractuel_cdi",
+      destinataireInstance: `Monsieur / Madame le Président de la Commission Consultative Paritaire - ${cigRattachement}`,
+      faitsEtContexte: `Agent contractuel au sein de la collectivité, j'ai été convoqué à un entretien préalable au licenciement pour insuffisance professionnelle. Cette mesure brutale intervient sans qu'aucune mise en garde ni mesure d'accompagnement n'ait été formalisée au préalable.`,
+      motifsInvoquesAdministration: `Insuffisance professionnelle alléguée et retards prétendus dans l'exécution des missions.`,
+      argumentsAgent: `1. Absence totale de caractérisation d'une insuffisance professionnelle imputable à l'agent : la surcharge de travail structurelle du service n'a pas été compensée par l'employeur.
+2. Manquement de la collectivité à son obligation de formation et de tutorat de l'agent contractuel.
+3. Méconnaissance des droits de la défense et communication tardive du dossier individuel intégral (Art. L. 532-4 CGFP et Art. 42 décret 88-145).
+4. Mesure disproportionnée masquant une volonté de rupture unilatérale injustifiée.`,
+      demandesAgent: `1. Avis défavorable de la CCP au projet de licenciement pour insuffisance professionnelle.
+2. Maintien de l'agent dans ses fonctions avec mise en place d'un tutorat ou d'un aménagement de poste.`,
+      piecesJointes: [
+        "Contrat de travail initial et avenants",
+        "Courrier de convocation à l'entretien préalable",
+        "Rapport hiérarchique communiqué à la CCP",
+        "Comptes-rendus d'évaluation des années antérieures"
+      ]
+    };
+  }
+
+  // F3SCT / CST (Santé, Sécurité, DGI, Retrait)
+  if (motif === "droit_alerte_retrait") {
+    return {
+      statutAgent: "titulaire",
+      destinataireInstance: `Monsieur le Président de la F3SCT / CST et aux Représentants du Personnel - ${collectivite}`,
+      faitsEtContexte: `Face à une situation de travail présentant un danger grave et imminent pour ma vie ou ma santé (absence de protections collectives indispensables, matériel gravement défectueux ou menaces physiques graves et immédiates), j'ai exercé mon droit de retrait en me mettant en sécurité et en avertissant immédiatement ma hiérarchie directe.`,
+      motifsInvoquesAdministration: `L'autorité ou l'encadrement a contesté l'exercice du droit de retrait et menacé d'ordonner une reprise sous peine de sanction ou retenue sur traitement.`,
+      argumentsAgent: `1. Exercice régulier et légitime du droit de retrait au sens de l'article L. 136-1 du CGFP et de l'article 5-1 du décret n° 85-603 : l'agent avait un motif raisonnable de craindre pour sa sécurité.
+2. Protection légale absolue : l'article 5-1 alinéa 4 dispose qu'aucune sanction ni retenue de rémunération ne peut être appliquée à l'agent ayant exercé son droit de retrait dans ces conditions.
+3. L'exercice du droit de retrait n'a créé aucune situation de danger nouveau pour autrui.`,
+      demandesAgent: `1. Constat formel par la F3SCT de la légitimité de l'exercice du droit de retrait par l'agent.
+2. Rappel à l'autorité de l'interdiction de toute retenue sur traitement ou poursuite disciplinaire.
+3. Réalisation des aménagements de sécurité indispensables avant toute reprise des opérations.`,
+      piecesJointes: [
+        "Notification écrite de retrait adressée à la hiérarchie",
+        "Attestations de collègues témoins de la situation de danger",
+        "Photographies des équipements ou installations en cause",
+        "Certificats médicaux ou avis du médecin du travail"
+      ]
+    };
+  }
+
+  if (motif === "souffrance_travail_rps") {
+    return {
+      statutAgent: "titulaire",
+      destinataireInstance: `Monsieur le Président de la F3SCT / CST et aux Représentants du Personnel - ${collectivite}`,
+      faitsEtContexte: `Au sein du service, les agents sont confrontés à une dégradation profonde et continue de leurs conditions de travail, marquée par des pressions managériales abusives, des injonctions contradictoires permanentes et un climat de souffrance psychologique aiguë se traduisant par une multiplication d'arrêts maladie.`,
+      motifsInvoquesAdministration: `Déni hiérarchique qualifiant la détresse des personnels de simples 'difficultés d'adaptation individuelles'.`,
+      argumentsAgent: `1. Atteinte grave à la santé mentale et à la dignité des agents publics (Art. L. 133-2 et L. 134-5 du CGFP).
+2. Manquement de l'employeur territorial à son obligation de prévention des risques psychosociaux (RPS) et de protection de la santé au travail (Art. L. 4121-1 Code du travail).
+3. Nécessité impérieuse d'une intervention paritaire indépendante de la F3SCT pour objectiver la situation.`,
+      demandesAgent: `1. Inscription prioritaire de la situation du service à l'ordre du jour de la prochaine séance de la F3SCT.
+2. Désignation d'une délégation d'enquête paritaire F3SCT (Art. 67 du décret n° 2021-571) pour auditionner les personnels.
+3. Saisine en urgence du médecin de prévention et de l'ACFI pour diligenter un audit organisationnel.`,
+      piecesJointes: [
+        "Témoignages et attestations écrites des personnels du service",
+        "Statistiques des arrêts maladie et fiches de signalement SST",
+        "Avis d'alerte émis par le médecin de prévention",
+        "Échanges de courriels démontrant les dysfonctionnements managériaux"
+      ]
+    };
+  }
+
+  if (motif === "insalubrite_visite_locaux") {
+    return {
+      statutAgent: "titulaire",
+      destinataireInstance: `Monsieur le Président de la F3SCT / CST et aux Représentants du Personnel - ${collectivite}`,
+      faitsEtContexte: `Les locaux professionnels occupés par les agents présentent un état d'insalubrité avéré (infiltrations d'eau, moisissures massives, températures extrêmes, ventilation hors service ou suspicion de présence d'amiante dégradée), exposant quotidiennement les personnels à des risques sanitaires.`,
+      motifsInvoquesAdministration: `Reports constants des travaux d'entretien pour des contraintes budgétaires.`,
+      argumentsAgent: `1. Méconnaissance flagrante des règles impératives d'hygiène, de salubrité et de sécurité des lieux de travail.
+2. Droit de visite des locaux expressément conféré aux représentants de la F3SCT par l'article 62 du décret n° 2021-571.
+3. Risque d'apparition de pathologies professionnelles respiratoires ou dermatologiques graves.`,
+      demandesAgent: `1. Organisation sans délai d'une visite d'inspection des locaux par les membres de la F3SCT accompagnés de l'ACFI.
+2. Réalisation d'analyses techniques d'air et prélèvements structurels immédiats.
+3. Relocalisation provisoire des agents et exécution des travaux de remise aux normes sanitaires.`,
+      piecesJointes: [
+        "Photographies datées des désordres, moisissures et dégradations",
+        "Relevés de températures et d'humidité dans les bureaux",
+        "Signalements préalables au Registre Santé et Sécurité au Travail (RSST)",
+        "Avis du médecin de prévention"
+      ]
+    };
+  }
+
+  // DGI - Danger Grave et Imminent par défaut pour F3SCT
+  return {
+    statutAgent: "titulaire",
+    destinataireInstance: `Monsieur le Président de la F3SCT / CST et aux Représentants du Personnel - ${collectivite}`,
+    faitsEtContexte: `Une situation de danger grave et imminent pour l'intégrité physique et la santé des agents a été constatée sur le lieu de travail. La défaillance critique d'un équipement (ou l'absence d'EPI, un risque de chute de hauteur non protégé ou une exposition toxique) fait peser un péril immédiat sur les personnels.`,
+    motifsInvoquesAdministration: `La hiérarchie a différé l'arrêt des opérations en alléguant des impératifs de planning et de continuité de chantier.`,
+    argumentsAgent: `1. Violation de l'article 5-2 du décret n° 85-603 : obligation d'inscription immédiate sur le Registre spécial des DGI coté et paraphé.
+2. Obligation légale impérative pour l'autorité de diligenter sur le champ une enquête conjointe avec le représentant de la F3SCT (CFDT).
+3. Mise en jeu de la responsabilité pénale et administrative de la collectivité pour faute inexcusable en cas de survenance d'accident.`,
+    demandesAgent: `1. Inscription intégrale et immédiate du présent signalement au Registre spécial des DGI.
+2. Arrêt conservatoire d'urgence de la machine ou évacuation sécurisée de la zone de danger.
+3. Diligence immédiate de l'enquête conjointe obligatoire avec le représentant syndical CFDT désigné.
+4. Convocation sous 24 heures de la F3SCT en cas de divergence et transmission à l'ACFI.`,
+    piecesJointes: [
+      "Copie du signalement au registre des dangers graves et imminents (DGI)",
+      "Photographies probantes du matériel défectueux ou de la zone dangereuse",
+      "Attestations écrites des agents présents sur les lieux",
+      "Notice de sécurité de la machine et rapports antérieurs de visite F3SCT"
+    ]
+  };
+}
+
 export function generateSaisineInstanceParitaire(data: SaisineInstanceFormData): SaisineInstanceResult {
   const {
     instance,

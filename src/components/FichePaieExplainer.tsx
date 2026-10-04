@@ -29,9 +29,12 @@ import {
   Code,
   ClipboardPaste,
   FileCode,
-  CheckCircle
+  CheckCircle,
+  Layers,
+  BarChart3
 } from 'lucide-react';
 import { toast } from 'sonner';
+import CirilBulletinView from './CirilBulletinView';
 import {
   computeOpenFiscaPay,
   parseUploadedPaySlipWithMeta,
@@ -87,6 +90,9 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   const [inputMode, setInputMode] = useState<'upload' | 'paste'>('upload');
   const [pastedText, setPastedText] = useState<string>('');
   const [showRawTextModal, setShowRawTextModal] = useState<boolean>(false);
+
+  // Mode d'explication : 'simple' (Bulletin Ciril RH avec calques) ou 'complexe' (Synthèse & Audit OpenFisca)
+  const [explanationMode, setExplanationMode] = useState<'simple' | 'complexe'>('simple');
 
   // État des onglets et filtres
   const [activeTab, setActiveTab] = useState<'lignes' | 'conformite' | 'openfisca'>('lignes');
@@ -913,9 +919,78 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
       )}
 
       {/* ─────────────────────────────────────────────────────────────────────────────
-          3. 5 KPI SYNTHÈSE & BARRE VISUELLE "OÙ VA VOTRE SALAIRE ?"
+          SÉLECTEUR DE MODE : 1. EXPLICATION SIMPLE (CIRIL) vs 2. EXPLICATION COMPLEXE (SYNTHÈSE)
       ───────────────────────────────────────────────────────────────────────────── */}
-      <div ref={synthesisSectionRef} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div ref={synthesisSectionRef} className="space-y-6">
+        <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 p-1.5 rounded-2xl shadow-lg">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button
+              onClick={() => setExplanationMode('simple')}
+              className={`flex items-center justify-center gap-3 py-3 px-4 rounded-xl font-extrabold text-sm sm:text-base transition-all cursor-pointer ${
+                explanationMode === 'simple'
+                  ? 'bg-white dark:bg-slate-900 text-orange-600 dark:text-orange-400 shadow-md scale-[1.01]'
+                  : 'text-white/90 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              <Layers className="w-5 h-5 shrink-0" />
+              <div className="text-left">
+                <div className="font-black flex items-center gap-1.5">
+                  <span>1. Explication Simple</span>
+                  {explanationMode === 'simple' && <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />}
+                </div>
+                <div className="text-xs font-normal opacity-90">Bulletin Ciril RH officiel avec calques interactifs</div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setExplanationMode('complexe')}
+              className={`flex items-center justify-center gap-3 py-3 px-4 rounded-xl font-extrabold text-sm sm:text-base transition-all cursor-pointer ${
+                explanationMode === 'complexe'
+                  ? 'bg-white dark:bg-slate-900 text-orange-600 dark:text-orange-400 shadow-md scale-[1.01]'
+                  : 'text-white/90 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              <BarChart3 className="w-5 h-5 shrink-0" />
+              <div className="text-left">
+                <div className="font-black flex items-center gap-1.5">
+                  <span>2. Explication Complexe</span>
+                  {explanationMode === 'complexe' && <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />}
+                </div>
+                <div className="text-xs font-normal opacity-90">Synthèse mensuelle estimée, KPIs & OpenFisca</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {explanationMode === 'simple' ? (
+          <div className="space-y-6">
+            <CirilBulletinView
+              params={params}
+              result={result}
+              onUpdateParam={(key, val) => setParams(prev => ({ ...prev, [key]: val }))}
+            />
+
+            {/* Bannière d'accès direct vers l'explication complexe */}
+            <div className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                <Sparkles className="w-4 h-4 text-orange-500 shrink-0" />
+                <span>Vous souhaitez analyser les 11 rubriques ligne par ligne, le score de conformité et le code Python ?</span>
+              </div>
+              <button
+                onClick={() => {
+                  setExplanationMode('complexe');
+                  setTimeout(() => synthesisSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
+                }}
+                className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold shrink-0 cursor-pointer shadow-xs"
+              >
+                Passer à l'Explication Complexe (Synthèse) →
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            {/* 3. 5 KPI SYNTHÈSE & BARRE VISUELLE "OÙ VA VOTRE SALAIRE ?" */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-slate-100 dark:border-slate-800 gap-4">
           <div>
             <div className="flex items-center gap-2">
@@ -1369,6 +1444,26 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
           </pre>
         </div>
       )}
+
+      {/* Bannière de retour vers le bulletin Ciril simple */}
+      <div className="p-4 rounded-2xl bg-orange-50 dark:bg-slate-900 border border-orange-200 dark:border-orange-800/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+          <Layers className="w-4 h-4 text-orange-500 shrink-0" />
+          <span>Vous préférez une lecture visuelle directement sur la maquette officielle de paie Ciril RH ?</span>
+        </div>
+        <button
+          onClick={() => {
+            setExplanationMode('simple');
+            setTimeout(() => synthesisSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
+          }}
+          className="px-3.5 py-1.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold shrink-0 cursor-pointer shadow-xs"
+        >
+          ← Voir la fiche Ciril RH avec calques
+        </button>
+      </div>
+    </div>
+  )}
+</div>
     </div>
   );
 }

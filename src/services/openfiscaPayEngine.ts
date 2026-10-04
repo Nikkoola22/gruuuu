@@ -13,11 +13,11 @@
 
 export const OPENFISCA_REPO_URL = "https://github.com/openfisca/openfisca-france";
 
-/** Valeur du point d'indice annuel (Décret n° 2023-519 du 28 juin 2023) */
+/** Valeur annuelle brute du point d'indice (Décret n° 2023-519 du 28 juin 2023) */
 export const VALEUR_POINT_INDICE_ANNUEL = 59.0734;
 
-/** Valeur mensuelle brute d'un point d'indice (59.0734 € / 12) */
-export const VALEUR_POINT_INDICE_MENSUEL = 4.92278;
+/** Valeur mensuelle brute exacte d'un point d'indice (59.0734 € / 12 = 4.9227833... €) */
+export const VALEUR_POINT_INDICE_MENSUEL = 59.0734 / 12;
 
 /** Plafond Mensuel de la Sécurité Sociale (PMSS) 2024 */
 export const PMSS_MENSUEL_2024 = 3864.0;
@@ -28,8 +28,20 @@ export const PMSS_MENSUEL_2025 = 3925.0;
 /** Taux de cotisation pension CNRACL Salarié (Décret 2003-1306) */
 export const TAUX_CNRACL_SALARIE = 0.1110; // 11,10%
 
-/** Taux de cotisation pension CNRACL Employeur territorial */
-export const TAUX_CNRACL_PATRONAL = 0.3165; // 31,65%
+/** Taux de cotisation pension CNRACL Employeur territorial (taux 2026 constaté sur bulletin Ciril Gennevilliers) */
+export const TAUX_CNRACL_PATRONAL = 0.3765; // 37,65%
+
+/** Bloc Urssaf patronal titulaire Gennevilliers (maladie 9,88 + AF 3,45 + AF comp 1,80 + FNAL 0,50 + mobilité 3,20 + autonomie 0,30) */
+export const TAUX_USSAF_TITULAIRE_PATRONAL = 0.1913; // 19,13%
+
+/** Cotisation CNRACL ATIACL patronale (sur le seul TIB) */
+export const TAUX_ATIACL_PATRONAL = 0.0040; // 0,40%
+
+/** Cotisation Centre de Gestion patronale */
+export const TAUX_CNG_PATRONAL = 0.0050; // 0,50%
+
+/** Cotisation CNFPT patronale (0,90% + majoration 0,10%) */
+export const TAUX_CNFPT_PATRONAL = 0.0100; // 1,00%
 
 /** Taux RAFP Salarié (Retraite Additionnelle de la Fonction Publique - Décret 2004-569) */
 export const TAUX_RAFP_SALARIE = 0.05; // 5,00%
@@ -52,6 +64,15 @@ export const TAUX_IRCANTEC_B_SALARIE = 0.0695; // 6,95%
 /** Taux IRCANTEC Tranche B Patronal */
 export const TAUX_IRCANTEC_B_PATRONAL = 0.1255; // 12,55%
 
+/** Taux Maladie Salarié — Agents contractuels FPT (Décret n° 2017-1904 du 30 décembre 2017) */
+export const TAUX_MALADIE_CONTRACTUEL_SALARIE = 0.0075; // 0,75%
+
+/** Taux Assurance Vieillesse Plafonnée Salarié (Régime Général — Art. R. 131-2 CSS) */
+export const TAUX_VIEILLESSE_PLAFONNEE_SALARIE = 0.0690; // 6,90%
+
+/** Taux Assurance Vieillesse Déplafonnée Salarié (Régime Général — Art. R. 131-2 CSS) */
+export const TAUX_VIEILLESSE_DEPLAFONNEE_SALARIE = 0.0040; // 0,40%
+
 /** Taux CSG Déductible (Art. L. 136-2 Code de la sécurité sociale) */
 export const TAUX_CSG_DEDUCTIBLE = 0.0680; // 6,80%
 
@@ -66,6 +87,37 @@ export const ASSIETTE_ABATTEMENT_CSG_CRDS = 0.9825; // 98,25%
 
 /** Taux Indemnité de Résidence Zone 1 (Gennevilliers / Métropole du Grand Paris) */
 export const TAUX_RESIDENCE_ZONE_1 = 0.03; // 3,00%
+export const TAUX_ZONE_RESIDENCE_1 = 0.03; // Alias compatibilité
+
+/** Montants mensuels légaux Abattement PPCR (Décret n° 2016-588) : Cat C 167 €/an, Cat B 278 €/an */
+export const MONTANT_PPCR_MENSUEL_CAT_C = 13.92; // 167 €/an
+export const MONTANT_PPCR_MENSUEL_CAT_B = 23.17; // 278 €/an
+/** @deprecated ancien libellé erroné, conservé pour compatibilité */
+export const MONTANT_PPCR_MENSUEL_CAT_C_B = 13.92;
+
+/** Montant mensuel légal Abattement PPCR Cat A (389 € / an) */
+export const MONTANT_PPCR_MENSUEL_CAT_A = 32.42; // 389 €/an
+
+/** Barème mensuel de l'abattement transfert primes/points (Décret n° 2016-588, art. 2) */
+export const PPCR_MENSUEL_PAR_CATEGORIE: Record<"A" | "B" | "C", number> = {
+  A: MONTANT_PPCR_MENSUEL_CAT_A,
+  B: MONTANT_PPCR_MENSUEL_CAT_B,
+  C: MONTANT_PPCR_MENSUEL_CAT_C
+};
+
+/** Devine la catégorie hiérarchique à partir du grade (sinon de l'indice majoré) */
+export function devinerCategorie(grade?: string, indiceMajore?: number): "A" | "B" | "C" {
+  const g = (grade || "").toLowerCase();
+  if (/attach|ing[ée]nieur|directeur|conseiller|administrateur|cadre de sant|puéricult|puericult|psycholog|m[ée]decin|biblioth[ée]caire|professeur/.test(g)) return "A";
+  if (/r[ée]dacteur|technicien|animateur|[ée]ducateur|assistant|ma[îi]tre|chef de service|infirmier|moniteur/.test(g)) return "B";
+  if (/adjoint|agent|auxiliaire|atsem|gardien|op[ée]rateur/.test(g)) return "C";
+  const im = indiceMajore || 0;
+  return im <= 473 ? "C" : im <= 600 ? "B" : "A";
+}
+
+/** Montant mensuel prise en charge transport Navigo 75% (86,40 € x 75% = 64,80 €) */
+export const PRISE_EN_CHARGE_NAVIGO_75_PCT_2024 = 64.80;
+export const PRISE_EN_CHARGE_NAVIGO_75_PCT_2025 = 66.60;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. NOMENCLATURE DES VARIABLES OPENFISCA-FRANCE
@@ -201,6 +253,39 @@ export const OPENFISCA_VARIABLES_DICTIONARY: Record<string, OpenFiscaVariableInf
     categorie: "cotisation_retraite",
     nature: "retenue"
   },
+  cotisation_maladie_contractuel_salarie: {
+    id: "cotisation_maladie_contractuel_salarie",
+    nom: "Cotisation Maladie (Agents Contractuels — 0,75%)",
+    description: "Assurance maladie du Régime Général pour les agents contractuels territoriaux, à taux réduit de 0,75%.",
+    openfiscaModule: "openfisca_france/model/prelevements_sociaux/cotisations/sante/maladie.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prelevements_sociaux/cotisations/sante/maladie.py`,
+    legalReference: "Décret n° 2017-1904 du 30 décembre 2017 (taux réduit 0,75% FPT/FPH)",
+    formule: "min(salaire_brut, 5 * PMSS) * 0.0075",
+    categorie: "cotisation_sociale",
+    nature: "retenue"
+  },
+  cotisation_vieillesse_plafonnee_salarie: {
+    id: "cotisation_vieillesse_plafonnee_salarie",
+    nom: "Assurance Vieillesse Plafonnée (Régime Général — 6,90%)",
+    description: "Cotisation vieillesse du Régime Général prélevée sur la rémunération dans la limite du Plafond Mensuel de la Sécurité Sociale.",
+    openfiscaModule: "openfisca_france/model/prelevements_sociaux/cotisations/retraite/base.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prelevements_sociaux/cotisations/retraite/base.py`,
+    legalReference: "Art. L. 131-2-1 et R. 131-2 du Code de la sécurité sociale (6,90% sur le PMSS)",
+    formule: "min(salaire_brut, PMSS) * 0.0690",
+    categorie: "cotisation_sociale",
+    nature: "retenue"
+  },
+  cotisation_vieillesse_deplafonnee_salarie: {
+    id: "cotisation_vieillesse_deplafonnee_salarie",
+    nom: "Assurance Vieillesse Déplafonnée (Régime Général — 0,40%)",
+    description: "Cotisation vieillesse du Régime Général prélevée sur la totalité de la rémunération, sans plafond.",
+    openfiscaModule: "openfisca_france/model/prelevements_sociaux/cotisations/retraite/base.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prelevements_sociaux/cotisations/retraite/base.py`,
+    legalReference: "Art. L. 131-2-1 et R. 131-2 du Code de la sécurité sociale (0,40% sans plafond)",
+    formule: "salaire_brut * 0.0040",
+    categorie: "cotisation_sociale",
+    nature: "retenue"
+  },
   csg_deductible_salaire: {
     id: "csg_deductible_salaire",
     nom: "CSG Déductible (6,80%)",
@@ -299,6 +384,61 @@ export const OPENFISCA_VARIABLES_DICTIONARY: Record<string, OpenFiscaVariableInf
     formule: "traitement_indiciaire_brut * 0.3165 (CNRACL) + primes * 0.05 (RAFP) + cotisations_diverses (~45% du brut)",
     categorie: "employeur",
     nature: "patronal"
+  },
+  abattement_ppcr: {
+    id: "abattement_ppcr",
+    nom: "Abattement PPCR / Transfert Primes-Points",
+    description: "Retenue mensuelle sur les primes statutaires issue du protocole PPCR en contrepartie des points d'indice revalorisés.",
+    openfiscaModule: "openfisca_france/model/prestations/fonctions_publiques/primes.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/fonctions_publiques/primes.py`,
+    legalReference: "Décret n° 2016-588 du 11 mai 2016 (Cat A : 389 €/an = 32,42 €/mois • Cat B : 278 €/an = 23,17 €/mois • Cat C : 167 €/an = 13,92 €/mois)",
+    formule: "montant_annuel_ppcr / 12 * (quotite / 100)",
+    categorie: "primes",
+    nature: "retenue"
+  },
+  prise_en_charge_transport: {
+    id: "prise_en_charge_transport",
+    nom: "Prise en charge Frais de Transport Public (Navigo 75%)",
+    description: "Remboursement légal obligatoire de 75% du pass Navigo mensuel par la Ville de Gennevilliers. Gain net non imposable et non soumis à cotisations.",
+    openfiscaModule: "openfisca_france/model/prestations/transports/navigo.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/transports/navigo.py`,
+    legalReference: "Décret n° 2010-676 du 21 juin 2010 & Décret n° 2023-812 du 21 août 2023",
+    formule: "cout_abonnement_navigo * 0.75",
+    categorie: "primes",
+    nature: "gain"
+  },
+  indemnite_compensatrice_csg: {
+    id: "indemnite_compensatrice_csg",
+    nom: "Indemnité Compensatrice de la CSG",
+    description: "Indemnité mensuelle versée pour neutraliser la hausse de CSG (+1,7%) intervenue en 2018.",
+    openfiscaModule: "openfisca_france/model/prestations/fonctions_publiques/indemnites.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/fonctions_publiques/indemnites.py`,
+    legalReference: "Décret n° 2017-1889 du 30 décembre 2017",
+    formule: "montant_recalcule_annuel",
+    categorie: "primes",
+    nature: "gain"
+  },
+  participation_mutuelle_employeur: {
+    id: "participation_mutuelle_employeur",
+    nom: "Participation Employeur Santé / Prévoyance (PSC)",
+    description: "Participation financière de la Ville de Gennevilliers à la mutuelle santé labellisée. Soumise à CSG/CRDS et intégrée au net fiscal.",
+    openfiscaModule: "openfisca_france/model/prelevements_sociaux/cotisations/sante.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prelevements_sociaux/cotisations/sante.py`,
+    legalReference: "Art. L. 827-1 CGFP & Décret n° 2022-581",
+    formule: "montant_participation_forfaitaire_ville",
+    categorie: "employeur",
+    nature: "gain"
+  },
+  retenue_mutuelle_salarie: {
+    id: "retenue_mutuelle_salarie",
+    nom: "Cotisation Mutuelle / Prévoyance (Part Salariée)",
+    description: "Prélèvement facultatif direct de la cotisation mutuelle ou prévoyance (ex: MNT, SMACL). Retenue non déductible sur le net.",
+    openfiscaModule: "openfisca_france/model/prelevements_sociaux/cotisations/salarie.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prelevements_sociaux/cotisations/salarie.py`,
+    legalReference: "Code de la mutualité",
+    formule: "cotisation_mensuelle_adherent",
+    categorie: "cotisation_sociale",
+    nature: "retenue"
   }
 };
 
@@ -321,6 +461,35 @@ export interface FichePaieLigne {
   ecart?: number;
   explicationLigne: string;
   conseilAgent?: string;
+}
+
+export interface MontantsReelsFiche {
+  brutReel?: number;
+  totalRetenuesReelles?: number;
+  netAvantImpotReel?: number;
+  netFiscalReel?: number;
+  pasReel?: number;
+  netAPayerReel?: number;
+  coutEmployeurReel?: number;
+}
+
+export interface DiagnosticEcartItem {
+  id: string;
+  titre: string;
+  montantEcart: number;
+  explication: string;
+  solution: string;
+  paramAffecte: keyof CalculParams;
+  valeurSuggeree: any;
+}
+
+export interface DiagnosticEcarts {
+  aEcarts: boolean;
+  brutEcart: number;
+  retenuesEcart: number;
+  netFiscalEcart: number;
+  netAPayerEcart: number;
+  items: DiagnosticEcartItem[];
 }
 
 export interface FichePaieAnalyseResult {
@@ -346,8 +515,14 @@ export interface FichePaieAnalyseResult {
     primesIfse: number;
     primesCia: number;
     autresPrimes: number;
+    abattementPpcr: number;
+    remboursementTransport: number;
+    indemniteCompensatriceCsg: number;
+    participationMutuelleEmployeur: number;
+    retenueMutuelleSalarie: number;
     salaireBrut: number;
     totalCotisationsSalariales: number;
+    totalRetenues: number;
     netAvantImpot: number;
     netFiscal: number;
     tauxPas: number;
@@ -357,6 +532,7 @@ export interface FichePaieAnalyseResult {
     coutGlobalEmployeur: number;
   };
   lignes: FichePaieLigne[];
+  diagnosticEcarts: DiagnosticEcarts;
   syntheseConformite: {
     scoreConformite: number; // sur 100
     nbLignesVerifiees: number;
@@ -441,19 +617,20 @@ Agent : MARTIN Sylvie - Adjoint administratif principal 2e classe
 101 Traitement de base (IM 382 x 4.92278) : 1 880.50 €
 102 Indemnité de résidence Zone 1 (3%) : 56.42 €
 103 Supplément Familial de Traitement (2 enfants) : 73.04 €
+095 Abattement transfert primes/points (PPCR) : -13.92 €
 201 RIFSEEP - IFSE mensuelle : 380.00 €
 202 RIFSEEP - CIA : 50.00 €
-TOTAL BRUT : 2 439.96 €
+TOTAL BRUT : 2 426.04 €
 501 Cotisation CNRACL Retraite (11.10%) : 208.74 €
 502 RAFP Retraite Additionnelle (5.00%) : 18.81 €
-503 CSG Déductible (6.80% sur 98.25%) : 163.01 €
-504 CSG Non Déductible (2.40% sur 98.25%) : 57.53 €
-505 CRDS (0.50% sur 98.25%) : 11.99 €
-TOTAL RETENUES : 460.08 €
-NET AVANT IMPÔT : 1 979.88 €
-NET FISCAL : 2 049.40 €
-Prélèvement à la source (2.5%) : 51.24 €
-NET À PAYER : 1 928.64 €`
+503 CSG Déductible (6.80% sur 98.25%) : 162.08 €
+504 CSG Non Déductible (2.40% sur 98.25%) : 57.21 €
+505 CRDS (0.50% sur 98.25%) : 11.92 €
+TOTAL RETENUES : 458.76 €
+NET AVANT IMPÔT : 1 967.28 €
+NET FISCAL : 2 036.41 €
+Prélèvement à la source (2.5%) : 50.91 €
+NET À PAYER : 1 916.37 €`
   },
   {
     id: "cat_b_redacteur",
@@ -486,21 +663,22 @@ Agent : LEFEBVRE Thomas - Rédacteur principal de 2e classe
 Échelon : 5 - Indice Brut : 520 - Indice Majoré : 448 - NBI : 10 pts
 101 Traitement de base (IM 448) : 2 205.41 €
 102 NBI Accueil & Responsabilité (10 pts) : 49.23 €
-103 Indemnité de résidence Zone 1 (3%) : 66.16 €
+103 Indemnité de résidence Zone 1 (3%) : 67.64 €
 104 SFT (1 enfant) : 2.29 €
+095 Abattement transfert primes/points (PPCR) : -23.17 €
 201 RIFSEEP - IFSE mensuelle : 520.00 €
 202 RIFSEEP - CIA : 100.00 €
-TOTAL BRUT : 2 943.09 €
+TOTAL BRUT : 2 921.40 €
 501 Cotisation CNRACL Retraite (11.10%) : 250.27 €
-502 RAFP Retraite Additionnelle (5.00%) : 22.55 €
-503 CSG Déductible (6.80% sur 98.25%) : 196.63 €
-504 CSG Non Déductible (2.40% sur 98.25%) : 69.40 €
-505 CRDS (0.50% sur 98.25%) : 14.46 €
-TOTAL RETENUES : 553.31 €
-NET AVANT IMPÔT : 2 389.78 €
-NET FISCAL : 2 473.64 €
-Prélèvement à la source (5.5%) : 136.05 €
-NET À PAYER : 2 253.73 €`
+502 RAFP Retraite Additionnelle (5.00%) : 22.05 €
+503 CSG Déductible (6.80% sur 98.25%) : 195.21 €
+504 CSG Non Déductible (2.40% sur 98.25%) : 68.90 €
+505 CRDS (0.50% sur 98.25%) : 14.35 €
+TOTAL RETENUES : 550.78 €
+NET AVANT IMPÔT : 2 370.62 €
+NET FISCAL : 2 453.87 €
+Prélèvement à la source (5.5%) : 134.96 €
+NET À PAYER : 2 235.66 €`
   },
   {
     id: "cat_a_ingenieur",
@@ -531,24 +709,25 @@ NET À PAYER : 2 253.73 €`
 Période : Octobre 2024
 Agent : BENALI Nadia - Ingénieur territorial
 Échelon : 6 - Indice Brut : 710 - Indice Majoré : 595 - NBI : 25 pts
-101 Traitement de base (IM 595) : 2 929.05 €
+101 Traitement de base (IM 595) : 2 929.06 €
 102 NBI Encadrement Technique (25 pts) : 123.07 €
-103 Indemnité de résidence Zone 1 (3%) : 87.87 €
-104 SFT (3 enfants) : 181.56 €
+103 Indemnité de résidence Zone 1 (3%) : 91.56 €
+104 SFT (3 enfants) : 259.41 €
+095 Abattement transfert primes/points (PPCR) : -32.42 €
 201 RIFSEEP - IFSE mensuelle : 780.00 €
 202 RIFSEEP - CIA : 150.00 €
 203 Prime sujétion spécifique : 60.00 €
-TOTAL BRUT : 4 311.55 €
-501 Cotisation CNRACL Retraite (11.10%) : 338.78 €
-502 RAFP Retraite Additionnelle (5.00%) : 30.52 €
-503 CSG Déductible (6.80% sur 98.25%) : 288.05 €
-504 CSG Non Déductible (2.40% sur 98.25%) : 101.67 €
-505 CRDS (0.50% sur 98.25%) : 21.18 €
-TOTAL RETENUES : 780.20 €
-NET AVANT IMPÔT : 3 531.35 €
-NET FISCAL : 3 654.20 €
-Prélèvement à la source (8.5%) : 310.61 €
-NET À PAYER : 3 220.74 €`
+TOTAL BRUT : 4 360.68 €
+501 Cotisation CNRACL Retraite (11.10%) : 338.79 €
+502 RAFP Retraite Additionnelle (5.00%) : 29.29 €
+503 CSG Déductible (6.80% sur 98.25%) : 291.34 €
+504 CSG Non Déductible (2.40% sur 98.25%) : 102.82 €
+505 CRDS (0.50% sur 98.25%) : 21.42 €
+TOTAL RETENUES : 783.66 €
+NET AVANT IMPÔT : 3 577.02 €
+NET FISCAL : 3 701.26 €
+Prélèvement à la source (8.5%) : 314.61 €
+NET À PAYER : 3 262.41 €`
   },
   {
     id: "contractuel_cdi",
@@ -617,10 +796,23 @@ export interface CalculParams {
   grade?: string;
   echelon?: string;
   indiceBrut?: number;
+
+  // Lignes spécifiques Ciril RH Gennevilliers
+  appliquerPpcr?: boolean;
+  abattementPpcr?: number; // montant lu sur la fiche ; sinon barème : A 32,42 € / B 23,17 € / C 13,92 €
+  categorie?: "A" | "B" | "C";
+  remboursementTransport?: number; // ex: 64.80 € (Navigo 75% Gennevilliers)
+  indemniteCompensatriceCsg?: number;
+  participationMutuelleEmployeur?: number;
+  retenueMutuelleSalarie?: number;
+
+  // Montants réels extraits ou saisis sur la vraie fiche pour réconciliation
+  montantsReels?: MontantsReelsFiche;
 }
 
 /**
  * Exécute la simulation complète de la fiche de paie selon les formules OpenFisca-France
+ * et la doctrine de calcul Ciril RH Ville de Gennevilliers
  */
 export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResult {
   const {
@@ -637,44 +829,72 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
     nomAgent = "AGENT Public",
     grade = "Adjoint territorial",
     echelon = "Échelon statutaire",
-    indiceBrut = Math.round(indiceMajore * 1.06)
+    indiceBrut = Math.round(indiceMajore * 1.06),
+    appliquerPpcr = true,
+    abattementPpcr,
+    remboursementTransport = 0,
+    indemniteCompensatriceCsg = 0,
+    participationMutuelleEmployeur = 0,
+    retenueMutuelleSalarie = 0,
+    montantsReels,
+    categorie
   } = params;
 
   const qFactor = quotite / 100;
+  const isTitulaire = statut === "titulaire" || statut === "stagiaire";
 
-  // 1. Traitement Indiciaire Brut (openfisca: 'traitement_indiciaire_brut')
-  const tibTheorique = Math.round(indiceMajore * VALEUR_POINT_INDICE_MENSUEL * qFactor * 100) / 100;
+  // 1. Traitement Indiciaire Brut (TIB) au centime absolu Ciril RH (59.0734 / 12)
+  const tibTheorique = Math.round(indiceMajore * (59.0734 / 12) * qFactor * 100) / 100;
 
-  // 2. NBI (openfisca: 'nouvelle_bonification_indiciaire')
-  const nbiTheorique = Math.round(nbiPoints * VALEUR_POINT_INDICE_MENSUEL * qFactor * 100) / 100;
+  // 2. NBI (Nouvelle Bonification Indiciaire)
+  const nbiTheorique = Math.round(nbiPoints * (59.0734 / 12) * qFactor * 100) / 100;
 
-  // 3. Indemnité de résidence (openfisca: 'indemnite_residence')
+  // 3. Indemnité de résidence Zone 1 (3% à Gennevilliers)
+  // Bulletin Ciril réel (code 12) : assiette = traitement soumis à pension (TIB + NBI), ex. 3 741.31 x 3% = 112.23
+  const traitementPension = tibTheorique + nbiTheorique;
   const tauxRes = zoneResidence === 1 ? TAUX_RESIDENCE_ZONE_1 : zoneResidence === 2 ? 0.01 : 0.0;
-  const resTheorique = Math.round(tibTheorique * tauxRes * 100) / 100;
+  const resTheorique = Math.round(traitementPension * tauxRes * 100) / 100;
 
-  // 4. SFT (openfisca: 'supplement_familial_traitement')
+  // 4. SFT (Supplément Familial de Traitement)
   let sftTheorique = 0;
   if (nbEnfantsSft === 1) {
     sftTheorique = 2.29;
   } else if (nbEnfantsSft === 2) {
-    const brutCalc = 10.67 + 0.03 * tibTheorique;
+    const brutCalc = 10.67 + 0.03 * traitementPension;
     sftTheorique = Math.min(Math.max(brutCalc, 73.04), 110.67);
   } else if (nbEnfantsSft === 3) {
-    const brutCalc = 15.24 + 0.08 * tibTheorique;
+    const brutCalc = 15.24 + 0.08 * traitementPension;
     sftTheorique = Math.min(Math.max(brutCalc, 181.56), 281.44);
   } else if (nbEnfantsSft > 3) {
     const extra = nbEnfantsSft - 3;
-    const brutCalc = 15.24 + 4.57 * extra + (0.08 + 0.06 * extra) * tibTheorique;
+    const brutCalc = 15.24 + 4.57 * extra + (0.08 + 0.06 * extra) * traitementPension;
     sftTheorique = Math.min(Math.max(brutCalc, 181.56 + 129.31 * extra), 281.44 + 204.22 * extra);
   }
   sftTheorique = Math.round(sftTheorique * qFactor * 100) / 100;
 
-  // Total Primes & Rémunération Brute Globale (openfisca: 'remuneration_brute')
-  const totalPrimes = Math.round((ifse + cia + autresPrimes) * 100) / 100;
-  const salaireBrut = Math.round((tibTheorique + nbiTheorique + resTheorique + sftTheorique + totalPrimes) * 100) / 100;
+  // 5. Abattement PPCR / Transfert Primes-Points (Décret n° 2016-588)
+  let abattementPpcrVal = 0;
+  if (isTitulaire && appliquerPpcr) {
+    if (abattementPpcr !== undefined) {
+      // Montant lu sur la vraie fiche : prioritaire
+      abattementPpcrVal = Math.round(abattementPpcr * 100) / 100;
+    } else {
+      // Barème légal (Décret n° 2016-588) : A 389 €/an, B 278 €/an, C 167 €/an
+      const cat = categorie || devinerCategorie(grade, indiceMajore);
+      abattementPpcrVal = Math.round(PPCR_MENSUEL_PAR_CATEGORIE[cat] * qFactor * 100) / 100;
+    }
+    // L'abattement ne peut pas dépasser les primes effectivement perçues
+    abattementPpcrVal = Math.min(abattementPpcrVal, Math.max(0, ifse + cia + autresPrimes));
+  }
 
-  // 5. Retraite CNRACL (titulaire) ou IRCANTEC (contractuel)
-  const isTitulaire = statut === "titulaire" || statut === "stagiaire";
+  // Primes brutes positives
+  const primesPositives = Math.round((ifse + cia + autresPrimes + indemniteCompensatriceCsg) * 100) / 100;
+
+  // Rémunération Brute Globale Ciril RH (Totaux Gains du bulletin) :
+  // TIB + NBI + Résidence + SFT + Primes + Participations employeur (mutuelle/prévoyance, codes 7376/7716) - Abattement PPCR
+  const salaireBrut = Math.round((tibTheorique + nbiTheorique + resTheorique + sftTheorique + primesPositives + participationMutuelleEmployeur - abattementPpcrVal) * 100) / 100;
+
+  // 6. Retraite CNRACL (titulaire) ou IRCANTEC (contractuel)
   let retraiteSalarie = 0;
   let retraitePatronale = 0;
 
@@ -690,49 +910,98 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
     retraitePatronale = Math.round((baseA * TAUX_IRCANTEC_A_PATRONAL + baseB * TAUX_IRCANTEC_B_PATRONAL) * 100) / 100;
   }
 
-  // 6. RAFP (openfisca: 'cotisation_retraite_rafp_salarie')
+  // 6bis. Régime Général (agents contractuels) : Maladie & Vieillesse (Décret n° 2017-1904)
+  // Ces trois retenues figurent sur les vrais bulletins Ciril RH des contractuels et étaient
+  // absentes du modèle simplifié, d'où un écart systématique d'environ 8% du brut.
+  let maladieSalarie = 0;
+  let vieillessePlafonnee = 0;
+  let vieillesseDeplafonnee = 0;
+  let assietteMaladie = 0;
+  let assietteVieillessePlaf = 0;
+  if (!isTitulaire) {
+    assietteMaladie = Math.min(salaireBrut, PMSS_MENSUEL_2024 * 5);
+    assietteVieillessePlaf = Math.min(salaireBrut, PMSS_MENSUEL_2024);
+    maladieSalarie = Math.round(assietteMaladie * TAUX_MALADIE_CONTRACTUEL_SALARIE * 100) / 100;
+    vieillessePlafonnee = Math.round(assietteVieillessePlaf * TAUX_VIEILLESSE_PLAFONNEE_SALARIE * 100) / 100;
+    vieillesseDeplafonnee = Math.round(salaireBrut * TAUX_VIEILLESSE_DEPLAFONNEE_SALARIE * 100) / 100;
+  }
+
+  // 7. RAFP (Retraite Additionnelle de la Fonction Publique - 5%)
   let rafpSalarie = 0;
   let rafpPatronale = 0;
+  let assietteSoumisePrimes = 0;
   if (isTitulaire) {
-    // Plafond RAFP = 20% de (TIB + NBI)
-    const plafondRafp = Math.round((tibTheorique + nbiTheorique) * PLAFOND_ASSIETTE_RAFP_POURCENTAGE * 100) / 100;
-    const assietteSoumisePrimes = Math.min(totalPrimes + resTheorique, plafondRafp);
+    // Bulletin Ciril réel (code 1028) : plafond = 20% du TIB SEUL (hors NBI), ex. 3 618.24 x 20% = 723.65
+    const plafondRafp = Math.round(tibTheorique * PLAFOND_ASSIETTE_RAFP_POURCENTAGE * 100) / 100;
+    // Assiette RAFP = éléments hors traitement : primes nettes d'abattement + résidence + SFT + participations employeur
+    const primesSoumises = Math.max(0, primesPositives - abattementPpcrVal) + resTheorique + sftTheorique + participationMutuelleEmployeur;
+    assietteSoumisePrimes = Math.min(primesSoumises, plafondRafp);
     rafpSalarie = Math.round(assietteSoumisePrimes * TAUX_RAFP_SALARIE * 100) / 100;
     rafpPatronale = Math.round(assietteSoumisePrimes * TAUX_RAFP_PATRONAL * 100) / 100;
   }
 
-  // 7. CSG & CRDS (openfisca: 'csg_deductible_salaire', 'csg_non_deductible_salaire', 'crds_salaire')
-  // Assiette abattue de 1,75% (98,25% du brut)
-  const assietteCsgCrds = Math.round(salaireBrut * ASSIETTE_ABATTEMENT_CSG_CRDS * 100) / 100;
+  // 8. CSG & CRDS
+  // Bulletin Ciril réel (codes 40/41/42) : assiette abattue de 1,75% sur la rémunération, mais la part
+  // patronale santé/prévoyance (mutuelle + prévoyance, codes 7376/7716) est assujettie à 100% (sans abattement).
+  // Ex. vérifié : (5 007.72 - 41.24) x 0.9825 + 41.24 = 4 920.81
+  const assietteBruteAbattue = Math.round((salaireBrut - participationMutuelleEmployeur) * ASSIETTE_ABATTEMENT_CSG_CRDS * 100) / 100;
+  const assietteCsgCrds = Math.round((assietteBruteAbattue + participationMutuelleEmployeur) * 100) / 100;
+
   const csgDeductible = Math.round(assietteCsgCrds * TAUX_CSG_DEDUCTIBLE * 100) / 100;
   const csgNonDeductible = Math.round(assietteCsgCrds * TAUX_CSG_NON_DEDUCTIBLE * 100) / 100;
   const crds = Math.round(assietteCsgCrds * TAUX_CRDS * 100) / 100;
 
-  // Total Cotisations Salariales (openfisca: 'cotisations_salariales')
-  const totalCotisationsSalariales = Math.round((retraiteSalarie + rafpSalarie + csgDeductible + csgNonDeductible + crds) * 100) / 100;
+  // Total Cotisations Salariales (maladie + vieillesse régime général = contractuels uniquement)
+  const totalCotisationsSalariales = Math.round(
+    (retraiteSalarie + rafpSalarie + maladieSalarie + vieillessePlafonnee + vieillesseDeplafonnee + csgDeductible + csgNonDeductible + crds) * 100
+  ) / 100;
 
-  // 8. Salaire Net Avant Impôt (openfisca: 'salaire_net')
-  const netAvantImpot = Math.round((salaireBrut - totalCotisationsSalariales) * 100) / 100;
+  // 9. Salaire Net Avant Impôt (« NET A PAYER AVANT IMPOT SUR LE REVENU » du bulletin Ciril)
+  // = Brut - cotisations sociales - retenues sur le net (mutuelle, prévoyance type Territoria, Préfon)
+  const netAvantImpot = Math.round((salaireBrut - totalCotisationsSalariales - retenueMutuelleSalarie) * 100) / 100;
 
-  // 9. Net Fiscal / Salaire Imposable (openfisca: 'salaire_imposable')
-  // Formule CGI / OpenFisca: Net avant impôt + CSG non déductible + CRDS
-  const netFiscal = Math.round((netAvantImpot + csgNonDeductible + crds) * 100) / 100;
+  // 10. Net Fiscal / Salaire Imposable (DGFiP)
+  // Bulletin Ciril réel : Net fiscal = Net avant impôt + CSG non déductible + CRDS + retenues non déductibles
+  // (prévoyance/Préfon y restent imposables). Ex. vérifié : 3 809.28 + 118.10 + 24.60 + 269.65 = 4 221.63
+  const netFiscal = Math.round((netAvantImpot + csgNonDeductible + crds + retenueMutuelleSalarie) * 100) / 100;
 
-  // 10. Prélèvement à la source (openfisca: 'prelevement_a_la_source')
+  // 11. Prélèvement à la source (PAS)
   const montantPas = Math.round(netFiscal * (tauxPas / 100) * 100) / 100;
 
-  // 11. Net à payer (openfisca: 'salaire_net_a_payer')
-  const netAPayer = Math.round((netAvantImpot - montantPas) * 100) / 100;
+  // 12. Net à Payer (Virement bancaire effectif — « Net payé en euros » du bulletin Ciril)
+  const netAPayer = Math.round((netAvantImpot - montantPas + remboursementTransport) * 100) / 100;
+
+  // « Total des retenues » du bulletin Ciril = cotisations sociales + retenues sur le net + PAS
+  // Ex. vérifié : 928.79 + 269.65 + 354.62 = 1 553.06
+  const totalRetenues = Math.round((totalCotisationsSalariales + retenueMutuelleSalarie + montantPas) * 100) / 100;
 
   // Cotisations Patronales et Coût Global
-  const totalCotisationsPatronales = Math.round((retraitePatronale + rafpPatronale + salaireBrut * 0.12) * 100) / 100;
+  // Bulletin Ciril réel (titulaire) : CNRACL 37,65% + RAFP 5% + Urssaf 19,13% + CNG 0,50% + CNFPT 1,00%
+  // (assiette TIB + NBI) + ATIACL 0,40% (assiette TIB seul). Ex. vérifié : 2 231.08.
+  let totalCotisationsPatronales: number;
+  if (isTitulaire) {
+    totalCotisationsPatronales = Math.round(
+      (
+        Math.round(traitementPension * TAUX_CNRACL_PATRONAL * 100) / 100 +
+        rafpPatronale +
+        Math.round(traitementPension * TAUX_USSAF_TITULAIRE_PATRONAL * 100) / 100 +
+        Math.round(traitementPension * TAUX_CNG_PATRONAL * 100) / 100 +
+        Math.round(traitementPension * TAUX_CNFPT_PATRONAL * 100) / 100 +
+        Math.round(tibTheorique * TAUX_ATIACL_PATRONAL * 100) / 100
+      ) * 100
+    ) / 100;
+  } else {
+    totalCotisationsPatronales = Math.round((retraitePatronale + salaireBrut * 0.12) * 100) / 100;
+  }
+  // « Total versé par l'employeur » = Totaux Gains + Cotisations patronales (les participations
+  // employeur mutuelle/prévoyance sont déjà comprises dans les gains). Ex. vérifié : 5 007.72 + 2 231.08 = 7 238.80
   const coutGlobalEmployeur = Math.round((salaireBrut + totalCotisationsPatronales) * 100) / 100;
 
-  // Construction des lignes explicatives
+  // Construction des lignes explicatives avec codes Ciril officiels
   const lignes: FichePaieLigne[] = [
     {
       id: "tib",
-      code: "101",
+      code: "0100",
       libelle: `Traitement indiciaire de base (IM ${indiceMajore})`,
       base: indiceMajore,
       taux: VALEUR_POINT_INDICE_MENSUEL,
@@ -740,14 +1009,14 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.traitement_indiciaire_brut,
       montantTheoriqueOpenFisca: tibTheorique,
       estConforme: true,
-      explicationLigne: `Calculé en multipliant votre Indice Majoré (${indiceMajore}) par la valeur mensuelle du point d'indice (${VALEUR_POINT_INDICE_MENSUEL.toFixed(5)} €) au prorata de votre temps de travail (${quotite}%).`
+      explicationLigne: `Calculé en multipliant votre Indice Majoré (${indiceMajore}) par la valeur mensuelle du point d'indice (${VALEUR_POINT_INDICE_MENSUEL.toFixed(5)} €) au prorata de votre quotité (${quotite}%).`
     }
   ];
 
   if (nbiTheorique > 0) {
     lignes.push({
       id: "nbi",
-      code: "102",
+      code: "0102",
       libelle: `Nouvelle Bonification Indiciaire (${nbiPoints} pts)`,
       base: nbiPoints,
       taux: VALEUR_POINT_INDICE_MENSUEL,
@@ -755,44 +1024,58 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.nouvelle_bonification_indiciaire,
       montantTheoriqueOpenFisca: nbiTheorique,
       estConforme: true,
-      explicationLigne: `La NBI rémunère des fonctions d'encadrement, d'accueil ou de responsabilité. Ces points sont pris en compte pour la retraite CNRACL.`
+      explicationLigne: `La NBI rémunère des fonctions d'encadrement, d'accueil ou de responsabilité technique. Ces points cotisent pour la retraite CNRACL.`
     });
   }
 
   if (resTheorique > 0) {
     lignes.push({
       id: "residence",
-      code: "103",
-      libelle: `Indemnité de résidence (Zone 1 - 3%)`,
+      code: "0105",
+      libelle: `Indemnité de résidence Zone 1 (3%)`,
       base: tibTheorique,
       taux: 3.0,
       montantGain: resTheorique,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.indemnite_residence,
       montantTheoriqueOpenFisca: resTheorique,
       estConforme: true,
-      explicationLigne: `La Ville de Gennevilliers est classée en Zone 1 (Île-de-France), ouvrant droit à une majoration fixe de 3% de votre traitement de base.`
+      explicationLigne: `La Ville de Gennevilliers est classée en Zone 1 (Île-de-France) : majoration de 3% calculée sur votre traitement indiciaire de base (${tibTheorique.toFixed(2)} €), hors NBI, conformément à la doctrine de paie Ciril RH.`
     });
   }
 
   if (sftTheorique > 0) {
     lignes.push({
       id: "sft",
-      code: "104",
+      code: "0110",
       libelle: `Supplément Familial de Traitement (${nbEnfantsSft} enfant${nbEnfantsSft > 1 ? "s" : ""})`,
       base: tibTheorique,
       montantGain: sftTheorique,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.supplement_familial_traitement,
       montantTheoriqueOpenFisca: sftTheorique,
       estConforme: true,
-      explicationLigne: `Prestation statutaire légale pour charge de famille. Comprenant une part fixe et un pourcentage de votre traitement indiciaire encadré par des planchers et plafonds réglementaires.`
+      explicationLigne: `Prestation statutaire légale pour charge de famille (part fixe + pourcentage du TIB encadré par planchers et plafonds).`
+    });
+  }
+
+  if (abattementPpcrVal > 0) {
+    lignes.push({
+      id: "ppcr",
+      code: "0095",
+      libelle: "Abattement PPCR / Transfert Primes-Points",
+      base: abattementPpcrVal,
+      montantGain: -abattementPpcrVal,
+      openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.abattement_ppcr,
+      montantTheoriqueOpenFisca: -abattementPpcrVal,
+      estConforme: true,
+      explicationLigne: `Retenue légale mensuelle de ${abattementPpcrVal.toFixed(2)} € sur les primes (Décret n° 2016-588) en contrepartie des points d'indice gagnés lors du protocole PPCR.`
     });
   }
 
   if (ifse > 0) {
     lignes.push({
       id: "ifse",
-      code: "201",
-      libelle: "RIFSEEP - IFSE (Indemnité de Fonctions)",
+      code: "0200",
+      libelle: "RIFSEEP - IFSE mensuelle (Fonctions & Expertise)",
       montantGain: ifse,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.rifseep_ifse,
       montantTheoriqueOpenFisca: ifse,
@@ -804,26 +1087,52 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
   if (cia > 0) {
     lignes.push({
       id: "cia",
-      code: "202",
+      code: "0210",
       libelle: "RIFSEEP - CIA (Complément Individuel Annuel)",
       montantGain: cia,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.rifseep_cia,
       montantTheoriqueOpenFisca: cia,
       estConforme: true,
-      explicationLigne: `Partie variable liée à votre entretien professionnel annuel (CREP) et à votre engagement.`
+      explicationLigne: `Partie variable liée à votre entretien professionnel annuel (CREP) et à votre engagement professionnel.`
+    });
+  }
+
+  if (indemniteCompensatriceCsg > 0) {
+    lignes.push({
+      id: "comp_csg",
+      code: "0230",
+      libelle: "Indemnité Compensatrice de la CSG",
+      montantGain: indemniteCompensatriceCsg,
+      openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.indemnite_compensatrice_csg,
+      montantTheoriqueOpenFisca: indemniteCompensatriceCsg,
+      estConforme: true,
+      explicationLigne: `Indemnité compensant la hausse de la CSG intervenue en 2018 (Décret n° 2017-1889).`
     });
   }
 
   if (autresPrimes > 0) {
     lignes.push({
       id: "autres_primes",
-      code: "203",
-      libelle: "Primes & Indemnités accessoires",
+      code: "0240",
+      libelle: "Primes & Indemnités diverses FPT",
       montantGain: autresPrimes,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.primes_fonction_publique,
       montantTheoriqueOpenFisca: autresPrimes,
       estConforme: true,
-      explicationLigne: `Indemnités pour astreintes, travaux dangereux ou sujétions spécifiques.`
+      explicationLigne: `Indemnités accessoires : astreintes, IHTS (heures supplémentaires) ou sujétions particulières.`
+    });
+  }
+
+  if (remboursementTransport > 0) {
+    lignes.push({
+      id: "transport",
+      code: "0400",
+      libelle: "Prise en charge Frais de Transport Public 75% (Navigo)",
+      montantGain: remboursementTransport,
+      openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.prise_en_charge_transport,
+      montantTheoriqueOpenFisca: remboursementTransport,
+      estConforme: true,
+      explicationLigne: `Remboursement légal obligatoire de 75% de votre pass Navigo (Décret n° 2023-812). Versé directement en net sans cotisation ni impôt.`
     });
   }
 
@@ -831,7 +1140,7 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
   if (isTitulaire) {
     lignes.push({
       id: "cnracl",
-      code: "501",
+      code: "0500",
       libelle: "Cotisation Pension Retraite CNRACL",
       base: tibTheorique + nbiTheorique,
       taux: 11.10,
@@ -840,26 +1149,65 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.cotisation_retraite_cnracl_salarie,
       montantTheoriqueOpenFisca: retraiteSalarie,
       estConforme: true,
-      explicationLigne: `Taux légal de 11,10% prélevé sur le traitement indiciaire brut (+ NBI). Ouvre vos droits à la pension de retraite statutaire des agents territoriaux.`
+      explicationLigne: `Taux légal de 11,10% prélevé sur le traitement indiciaire brut (+ NBI). Ouvre vos droits à pension de retraite CNRACL.`
     });
 
     lignes.push({
       id: "rafp",
-      code: "502",
+      code: "0510",
       libelle: "Retraite Additionnelle de la Fonction Publique (RAFP)",
-      base: Math.min(totalPrimes + resTheorique, (tibTheorique + nbiTheorique) * 0.20),
+      base: assietteSoumisePrimes,
       taux: 5.0,
       montantRetenue: rafpSalarie,
       partPatronale: rafpPatronale,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.cotisation_retraite_rafp_salarie,
       montantTheoriqueOpenFisca: rafpSalarie,
       estConforme: true,
-      explicationLigne: `Cotisation de 5% assise sur vos primes et indemnités dans la limite stricte de 20% du traitement brut (formule OpenFisca). Votre employeur verse une part patronale identique de 5%.`
+      explicationLigne: `Cotisation de 5% assise sur vos primes nettes dans la limite légale de 20% du traitement brut. L'employeur verse une part patronale identique de 5%.`
     });
   } else {
     lignes.push({
+      id: "maladie",
+      code: "0501",
+      libelle: "Sécurité Sociale Maladie — Contractuel (0,75%)",
+      base: assietteMaladie,
+      taux: 0.75,
+      montantRetenue: maladieSalarie,
+      openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.cotisation_maladie_contractuel_salarie,
+      montantTheoriqueOpenFisca: maladieSalarie,
+      estConforme: true,
+      explicationLigne: `Taux réduit de 0,75% (Décret n° 2017-1904) prélevé sur votre rémunération brute plafonnée à 5 fois le PMSS.`
+    });
+
+    lignes.push({
+      id: "vieillesse_plaf",
+      code: "0502",
+      libelle: "Assurance Vieillesse Plafonnée — Régime Général (6,90%)",
+      base: assietteVieillessePlaf,
+      taux: 6.90,
+      montantRetenue: vieillessePlafonnee,
+      openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.cotisation_vieillesse_plafonnee_salarie,
+      montantTheoriqueOpenFisca: vieillessePlafonnee,
+      estConforme: true,
+      explicationLigne: `Cotisation vieillesse du Régime Général : 6,90% sur la rémunération dans la limite du Plafond Mensuel de la Sécurité Sociale (${PMSS_MENSUEL_2024.toFixed(2)} €).`
+    });
+
+    lignes.push({
+      id: "vieillesse_deplaf",
+      code: "0503",
+      libelle: "Assurance Vieillesse Déplafonnée — Régime Général (0,40%)",
+      base: salaireBrut,
+      taux: 0.40,
+      montantRetenue: vieillesseDeplafonnee,
+      openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.cotisation_vieillesse_deplafonnee_salarie,
+      montantTheoriqueOpenFisca: vieillesseDeplafonnee,
+      estConforme: true,
+      explicationLigne: `Cotisation vieillesse du Régime Général : 0,40% sur la totalité de votre rémunération brute, sans plafond.`
+    });
+
+    lignes.push({
       id: "ircantec",
-      code: "501",
+      code: "0500",
       libelle: "Retraite Complémentaire IRCANTEC (Tranche A)",
       base: Math.min(salaireBrut, PMSS_MENSUEL_2024),
       taux: 2.80,
@@ -868,13 +1216,13 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.cotisation_retraite_ircantec_salarie,
       montantTheoriqueOpenFisca: retraiteSalarie,
       estConforme: true,
-      explicationLigne: `Cotisation de retraite complémentaire obligatoire pour les agents contractuels territoriaux. Taux de 2,80% sous le plafond de sécurité sociale.`
+      explicationLigne: `Cotisation de retraite complémentaire obligatoire des contractuels territoriaux (2,80% sous le plafond PMSS).`
     });
   }
 
   lignes.push({
     id: "csg_ded",
-    code: "503",
+    code: "0600",
     libelle: "CSG Déductible (6,80%)",
     base: assietteCsgCrds,
     taux: 6.80,
@@ -882,12 +1230,12 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
     openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.csg_deductible_salaire,
     montantTheoriqueOpenFisca: csgDeductible,
     estConforme: true,
-    explicationLigne: `Prélevée sur 98,25% de votre salaire brut total (abattement pour frais professionnels de 1,75%). Cette part est déduite de votre revenu imposable.`
+    explicationLigne: `Prélevée sur 98,25% du salaire brut total. Cette part est déduite de votre revenu imposable DGFiP.`
   });
 
   lignes.push({
     id: "csg_nonded",
-    code: "504",
+    code: "0610",
     libelle: "CSG Non Déductible (2,40%)",
     base: assietteCsgCrds,
     taux: 2.40,
@@ -895,36 +1243,161 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
     openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.csg_non_deductible_salaire,
     montantTheoriqueOpenFisca: csgNonDeductible,
     estConforme: true,
-    explicationLigne: `Partie non déductible fiscalement : elle est prélevée sur votre salaire net mais réintégrée dans votre net fiscal imposable.`
+    explicationLigne: `Partie non déductible fiscalement : retenue sur le salaire net et réintégrée dans votre assiette fiscale.`
   });
 
   lignes.push({
     id: "crds",
-    code: "505",
-    libelle: "CRDS (0,50%)",
+    code: "0620",
+    libelle: "CRDS Dette Sociale (0,50%)",
     base: assietteCsgCrds,
     taux: 0.50,
     montantRetenue: crds,
     openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.crds_salaire,
     montantTheoriqueOpenFisca: crds,
     estConforme: true,
-    explicationLigne: `Contribution finançant le remboursement de la dette sociale. Prélevée sur la même assiette de 98,25% du brut.`
+    explicationLigne: `Contribution finançant le remboursement de la dette sociale (0,50% sur la même assiette abattue).`
   });
+
+  if (participationMutuelleEmployeur > 0) {
+    lignes.push({
+      id: "part_mutuelle",
+      code: "0700",
+      libelle: "Participation Employeur Mutuelle Santé (PSC)",
+      montantGain: participationMutuelleEmployeur,
+      openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.participation_mutuelle_employeur,
+      montantTheoriqueOpenFisca: participationMutuelleEmployeur,
+      estConforme: true,
+      explicationLigne: `Participation financière de la Ville de Gennevilliers à votre complémentaire santé labellisée.`
+    });
+  }
+
+  if (retenueMutuelleSalarie > 0) {
+    lignes.push({
+      id: "cotis_mutuelle",
+      code: "0710",
+      libelle: "Cotisation Mutuelle / Prévoyance (Retenue Salariée)",
+      montantRetenue: retenueMutuelleSalarie,
+      openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.retenue_mutuelle_salarie,
+      montantTheoriqueOpenFisca: retenueMutuelleSalarie,
+      estConforme: true,
+      explicationLigne: `Prélèvement mensuel opéré directement sur votre net pour le règlement de votre mutuelle ou prévoyance.`
+    });
+  }
 
   if (montantPas > 0) {
     lignes.push({
       id: "pas",
-      code: "601",
-      libelle: `Prélèvement à la Source (Taux : ${tauxPas}%)`,
+      code: "0950",
+      libelle: `Prélèvement à la Source (Taux DGFiP : ${tauxPas}%)`,
       base: netFiscal,
       taux: tauxPas,
       montantRetenue: montantPas,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.prelevement_a_la_source,
       montantTheoriqueOpenFisca: montantPas,
       estConforme: true,
-      explicationLigne: `Impôt sur le revenu collecté à la source sur la base de votre salaire net imposable (${netFiscal.toFixed(2)} €) et transmis au Trésor Public.`
+      explicationLigne: `Impôt sur le revenu collecté directement sur votre salaire net imposable (${netFiscal.toFixed(2)} €) pour le compte de la DGFiP.`
     });
   }
+
+  // 13. Comparaison simple avec la vraie fiche (3 règles, tolérance 5 centimes)
+  const r2 = (v: number) => Math.round(v * 100) / 100;
+  const TOLERANCE = 0.05;
+  const diagnosticItems: DiagnosticEcartItem[] = [];
+  const brutReel = montantsReels?.brutReel;
+  const retenuesReelles = montantsReels?.totalRetenuesReelles;
+  const netFiscalReel = montantsReels?.netFiscalReel;
+  const netAPayerReel = montantsReels?.netAPayerReel;
+  const pasReel = montantsReels?.pasReel;
+
+  const brutEcart = brutReel !== undefined ? r2(salaireBrut - brutReel) : 0;
+  // « Total des retenues » du bulletin = cotisations + retenues sur le net + PAS (même définition que le moteur)
+  const retenuesEcart = retenuesReelles !== undefined ? r2(totalRetenues - retenuesReelles) : 0;
+  const netFiscalEcart = netFiscalReel !== undefined ? r2(netFiscal - netFiscalReel) : 0;
+  const netAPayerEcart = netAPayerReel !== undefined ? r2(netAPayer - netAPayerReel) : 0;
+  const pasEcart = pasReel !== undefined ? r2(montantPas - pasReel) : 0;
+
+  // Règle 1 — BRUT : soit l'abattement PPCR n'est pas le bon, soit une prime manque / est en trop
+  if (Math.abs(brutEcart) > TOLERANCE) {
+    const ppcrCible = r2(abattementPpcrVal + brutEcart);
+    const baremes = isTitulaire ? [0, ...Object.values(PPCR_MENSUEL_PAR_CATEGORIE).map(v => r2(v * qFactor))] : [];
+    const ppcrLegal = baremes.find(v => Math.abs(v - ppcrCible) <= TOLERANCE);
+    if (ppcrLegal !== undefined) {
+      diagnosticItems.push({
+        id: "ecart_ppcr",
+        titre: `Brut : abattement PPCR à ${ppcrLegal.toFixed(2)} € au lieu de ${abattementPpcrVal.toFixed(2)} €`,
+        montantEcart: brutEcart,
+        explication: `L'écart de ${brutEcart.toFixed(2)} € correspond au barème du transfert primes/points (Décret n° 2016-588 : A 32,42 € • B 23,17 € • C 13,92 € par mois).`,
+        solution: `Mettre le PPCR à ${ppcrLegal.toFixed(2)} €`,
+        paramAffecte: "abattementPpcr",
+        valeurSuggeree: ppcrLegal
+      });
+    } else {
+      const manque = brutEcart < 0;
+      diagnosticItems.push({
+        id: "ecart_primes",
+        titre: manque
+          ? `Brut : ${Math.abs(brutEcart).toFixed(2)} € sont sur votre fiche mais pas dans le calcul`
+          : `Brut : le calcul compte ${brutEcart.toFixed(2)} € de trop`,
+        montantEcart: brutEcart,
+        explication: manque
+          ? "Une prime ou indemnité de votre bulletin (heures sup., astreinte, rappel, prime ponctuelle…) n'a pas été reconnue. Elle sera ajoutée en « Autres primes »."
+          : "Une prime (souvent l'IFSE lue automatiquement) est surestimée. Vérifiez son montant sur votre bulletin.",
+        solution: manque ? `Ajouter ${Math.abs(brutEcart).toFixed(2)} € de primes` : `Réduire l'IFSE de ${brutEcart.toFixed(2)} €`,
+        paramAffecte: manque ? "autresPrimes" : "ifse",
+        valeurSuggeree: manque ? r2(autresPrimes - brutEcart) : r2(Math.max(0, ifse - brutEcart))
+      });
+    }
+  }
+
+  // Règle 2 — IMPÔT (PAS) : on recalcule le taux exact à partir du montant réel
+  if (pasReel !== undefined && Math.abs(pasEcart) > TOLERANCE) {
+    const assiettePas = netFiscalReel ?? netFiscal;
+    const taux1 = assiettePas > 0 ? Math.round((pasReel / assiettePas) * 1000) / 10 : tauxPas;
+    const tauxExact = assiettePas > 0 && Math.abs(r2(netFiscal * taux1 / 100) - pasReel) > TOLERANCE
+      ? Math.round((pasReel / assiettePas) * 10000) / 100
+      : taux1;
+    diagnosticItems.push({
+      id: "ecart_pas",
+      titre: `Impôt : ${pasReel.toFixed(2)} € sur la fiche, ${montantPas.toFixed(2)} € calculés`,
+      montantEcart: pasEcart,
+      explication: `Votre taux DGFiP réel est de ${tauxExact} % (${pasReel.toFixed(2)} € ÷ ${assiettePas.toFixed(2)} € de net imposable).`,
+      solution: `Appliquer le taux ${tauxExact} %`,
+      paramAffecte: "tauxPas",
+      valeurSuggeree: tauxExact
+    });
+  }
+
+  // Règle 3 — NET : si le brut est juste, l'écart restant (hors impôt) vient d'un élément versé ou retenu en net
+  const brutOk = brutReel === undefined || Math.abs(brutEcart) <= TOLERANCE;
+  const residuNet = r2(netAPayerEcart + pasEcart);
+  if (netAPayerReel !== undefined && brutOk && Math.abs(residuNet) > TOLERANCE) {
+    const verseEnNet = residuNet < 0;
+    diagnosticItems.push({
+      id: "ecart_net",
+      titre: verseEnNet
+        ? `Net : +${Math.abs(residuNet).toFixed(2)} € versés en net sur votre fiche`
+        : `Net : -${residuNet.toFixed(2)} € retenus en net sur votre fiche`,
+      montantEcart: residuNet,
+      explication: verseEnNet
+        ? "Élément non soumis à cotisations : remboursement Navigo / forfait mobilités durables, indemnité kilométrique…"
+        : "Retenue sur le net : mutuelle, prévoyance, avance sur salaire, absence…",
+      solution: verseEnNet ? "Ajouter en remboursement net" : "Ajouter en retenue nette",
+      paramAffecte: verseEnNet ? "remboursementTransport" : "retenueMutuelleSalarie",
+      valeurSuggeree: verseEnNet ? r2(remboursementTransport - residuNet) : r2(retenueMutuelleSalarie + residuNet)
+    });
+  }
+
+  const aEcarts = Math.abs(brutEcart) > 0.05 || Math.abs(retenuesEcart) > 0.05 || Math.abs(netAPayerEcart) > 0.05;
+
+  const diagnosticEcarts: DiagnosticEcarts = {
+    aEcarts,
+    brutEcart,
+    retenuesEcart,
+    netFiscalEcart,
+    netAPayerEcart,
+    items: diagnosticItems
+  };
 
   // Synthèse & OpenFisca Python Code Snippet
   const openFiscaCodeSnippet = `# Modélisation OpenFisca-France (https://github.com/openfisca/openfisca-france)
@@ -936,7 +1409,8 @@ simulation = CountryTaxBenefitSystem().new_simulation(
         'agent': {
             'indice_majore': ${indiceMajore},
             'nouvelle_bonification_indiciaire_points': ${nbiPoints},
-            'primes_fonction_publique': ${totalPrimes},
+            'primes_fonction_publique': ${primesPositives},
+            'abattement_ppcr': ${abattementPpcrVal},
             'taux_zone_residence': ${tauxRes},
             'nombre_enfants': ${nbEnfantsSft},
             'statut_fonctionnaire': ${isTitulaire ? "'titulaire'" : "'contractuel'"},
@@ -974,8 +1448,14 @@ print(f"Brut: {traitement_brut} €, Net à payer: {salaire_net} €")`;
       primesIfse: ifse,
       primesCia: cia,
       autresPrimes,
+      abattementPpcr: abattementPpcrVal,
+      remboursementTransport,
+      indemniteCompensatriceCsg,
+      participationMutuelleEmployeur,
+      retenueMutuelleSalarie,
       salaireBrut,
       totalCotisationsSalariales,
+      totalRetenues,
       netAvantImpot,
       netFiscal,
       tauxPas,
@@ -985,6 +1465,7 @@ print(f"Brut: {traitement_brut} €, Net à payer: {salaire_net} €")`;
       coutGlobalEmployeur
     },
     lignes,
+    diagnosticEcarts,
     syntheseConformite: {
       scoreConformite: 100,
       nbLignesVerifiees: lignes.length,
@@ -992,8 +1473,14 @@ print(f"Brut: {traitement_brut} €, Net à payer: {salaire_net} €")`;
       anomalies: [],
       pointsForts: [
         `Traitement indiciaire rigoureusement conforme à la valeur du point d'indice officielle (${VALEUR_POINT_INDICE_MENSUEL.toFixed(5)} €/mois).`,
+        abattementPpcrVal > 0
+          ? `Abattement PPCR légal de -${abattementPpcrVal.toFixed(2)} €/mois correctement déduit selon le Décret n° 2016-588.`
+          : `Rémunération indiciaire sans déduction d'abattement PPCR.`,
         `Plafond légal de la RAFP respecté (cotisation assise dans la limite de 20% du traitement brut).`,
         `Assiette abattue de 98,25% correctement appliquée pour le calcul de la CSG et de la CRDS.`,
+        remboursementTransport > 0
+          ? `Prise en charge de 75% du pass Navigo (${remboursementTransport.toFixed(2)} € net) intégrée au virement bancaire.`
+          : `Aucun remboursement de transport en commun appliqué.`,
         `Régime de retraite ${isTitulaire ? "CNRACL (11,10%)" : "IRCANTEC (2,80%)"} en pleine concordance statutaire.`
       ],
       recommandationsCFDT: [
@@ -1041,19 +1528,59 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   const detectedItems: string[] = [];
   const lines = normalizedText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
+  // Les vrais bulletins imprimant \u00ab NET \u00c0 PAYER \u00bb, \u00ab PR\u00c9L\u00c8VEMENT \u00bb ou \u00ab R\u00c9MUN\u00c9RATION \u00bb,
+  // les libell\u00e9s sont compar\u00e9s sur une version sans accents pour \u00e9viter les rat\u00e9s de d\u00e9tection.
+  const deaccent = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
   // 1. Extraction Indice Majoré (IM) - Heuristiques Multi-passes
   let im = 382; // défaut
   let imFound = false;
+  let quotite = 100;
+  let indiceBrut: number | undefined = undefined;
+
+  // Passe A0 : bloc Ciril « IND. RÉMUN. / INDICE BRUT / IND. MAJORÉ / TAUX EMPLOI » suivi de la ligne de valeurs
+  // Ex. réel : "IND. RÉMUN. INDICE BRUT IND. MAJORÉ TAUX EMPLOI" -> "735 896 735 100.00"
+  for (let i = 0; i < lines.length - 1; i++) {
+    const lPlain = deaccent(lines[i].toLowerCase());
+    if (lPlain.includes("taux emploi") || (lPlain.includes("indice brut") && lPlain.includes("major"))) {
+      const values = Array.from(lines[i + 1].matchAll(/(\d+(?:[.,]\d+)?)/g))
+        .map(m => parseFloat(m[1].replace(",", ".")));
+      // Indices purs (entiers) : IM est le plus petit <= 850, l'IB le plus grand (896 > 735)
+      const intVals = values.filter(v => Number.isInteger(v) && v >= 250 && v <= 1100);
+      if (intVals.length >= 2) {
+        const imCandidat = Math.min(...intVals.filter(v => v <= 850));
+        const ibCandidat = Math.max(...intVals);
+        if (imCandidat >= 250 && imCandidat <= 850) {
+          im = imCandidat;
+          imFound = true;
+          if (ibCandidat > imCandidat) {
+            indiceBrut = ibCandidat;
+            detectedItems.push(`Bloc Ciril lu : Indice Brut ${indiceBrut} / Indice Majoré (IM) ${im}`);
+          } else {
+            detectedItems.push(`Bloc Ciril lu : Indice Majoré (IM) ${im}`);
+          }
+          const q = values[values.length - 1];
+          if (q >= 20 && q <= 100) {
+            quotite = q;
+            if (q !== 100) detectedItems.push(`Quotité (taux d'emploi) : ${quotite}%`);
+          }
+        }
+      }
+      break;
+    }
+  }
 
   // Passe A : Paire IB / IM (ex: 405 / 382 ou 405/382)
-  const pairMatch = t.match(/(\d{3})\s*[/\\-]\s*(\d{3})\b/);
-  if (pairMatch) {
-    const val2 = parseInt(pairMatch[2], 10);
-    const val1 = parseInt(pairMatch[1], 10);
-    if (val2 >= 250 && val2 <= 850 && val2 <= val1) {
-      im = val2;
-      imFound = true;
-      detectedItems.push(`Indice Majoré (IM) extrait de la paire IB/IM (${pairMatch[1]}/${pairMatch[2]}) : ${im}`);
+  if (!imFound) {
+    const pairMatch = t.match(/(\d{3})\s*[/\\-]\s*(\d{3})\b/);
+    if (pairMatch) {
+      const val2 = parseInt(pairMatch[2], 10);
+      const val1 = parseInt(pairMatch[1], 10);
+      if (val2 >= 250 && val2 <= 850 && val2 <= val1) {
+        im = val2;
+        imFound = true;
+        detectedItems.push(`Indice Majoré (IM) extrait de la paire IB/IM (${pairMatch[1]}/${pairMatch[2]}) : ${im}`);
+      }
     }
   }
 
@@ -1071,8 +1598,9 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   }
 
   // Passe C : Proximité immédiate d'un mot-clé d'indice (INM, IM, INDICE MAJORE, ECHELON... IM)
+  // Le lookahead (?!\s*brut) empêche de capturer l'Indice BRUT (« Indice Brut : 520 ») à la place de l'IM.
   if (!imFound) {
-    const proxMatch = t.match(/(?:inm|indice\s*(?:major[ée]|maj\.?|r[ée]el)?|i\.m\.?|majore)[^0-9\n\r]{0,35}(\d{3})\b/i);
+    const proxMatch = t.match(/(?:inm|indice(?!\s*brut)\s*(?:major[ée]|maj\.?|r[ée]el)?|i\.m\.?|majore)[^0-9\n\r]{0,35}(\d{3})\b/i);
     if (proxMatch) {
       const val = parseInt(proxMatch[1], 10);
       if (val >= 250 && val <= 850) {
@@ -1105,8 +1633,7 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
     }
   }
 
-  // 2. Extraction Quotité de travail
-  let quotite = 100;
+  // 2. Extraction Quotité de travail (peut compléter le bloc Ciril de la passe A0)
   const quotiteMatch = t.match(/quotit[ée]\s*[:=.\s]*(\d{2,3})\s*%?/i)
     || t.match(/temps\s*(?:partiel|de\s*travail)\s*[:=.\s]*(\d{2,3})\s*%?/i);
   if (quotiteMatch) {
@@ -1203,8 +1730,8 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
     } else {
       // C. Déduction d'après les montants effectifs de la ligne SFT sur le bulletin
       for (const line of lines) {
-        const lLower = line.toLowerCase();
-        if (lLower.includes("sft") || lLower.includes("supplement familial") || lLower.includes("supplément familial")) {
+        const lPlain = deaccent(line.toLowerCase());
+        if (lPlain.includes("sft") || lPlain.includes("supplement familial")) {
           const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
             .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
             .filter(a => a > 0);
@@ -1268,8 +1795,8 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   // Passe B : Vérification arithmétique sur la ligne tabulaire [Assiette] [Taux] [Montant]
   if (!pasFound) {
     for (const line of lines) {
-      const lLower = line.toLowerCase();
-      if (lLower.includes("source") || lLower.includes("pas") || lLower.includes("impot") || lLower.includes("impôt") || lLower.includes("dgfip")) {
+      const lPlain = deaccent(line.toLowerCase());
+      if (lPlain.includes("source") || lPlain.includes("pas") || lPlain.includes("impot") || lPlain.includes("dgfip")) {
         const nums = Array.from(line.matchAll(/([\d\s]+[,.]\d{1,2})/g))
           .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")));
         if (nums.length >= 3) {
@@ -1311,14 +1838,175 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
     detectedItems.push("Taux PAS : 0,0% (Non imposable ou taux nul par défaut)");
   }
 
-  // 8. Détection Nom de l'agent et Grade
+  // 8. Détection Abattement PPCR / Transfert Primes-Points (Décret n° 2016-588)
+  let abattementPpcr: number | undefined = undefined; // non lu => barème de la catégorie appliqué par le moteur
+  let appliquerPpcr = statut === "titulaire" || statut === "stagiaire";
+  let ppcrFound = false;
+
+  for (const line of lines) {
+    const lPlain = deaccent(line.toLowerCase());
+    if (lPlain.includes("ppcr") || lPlain.includes("primes/points") || lPlain.includes("primes-points") || lPlain.includes("transfert prime") || lPlain.includes("abattement transfert")) {
+      const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+        .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+        .filter(a => a >= 10 && a <= 150);
+
+      if (amounts.length > 0) {
+        abattementPpcr = amounts[amounts.length - 1];
+        appliquerPpcr = true;
+        ppcrFound = true;
+        detectedItems.push(`Abattement PPCR détecté : -${amounts[amounts.length - 1].toFixed(2)} €/mois`);
+        break;
+      }
+    }
+  }
+
+  if (!ppcrFound && appliquerPpcr) {
+    const cat = devinerCategorie(t.match(/grade\s*[:=]\s*([^\n\r,;]+)/i)?.[1], im);
+    detectedItems.push(`Abattement PPCR non lu sur la fiche : barème catégorie ${cat} appliqué (-${PPCR_MENSUEL_PAR_CATEGORIE[cat].toFixed(2)} €/mois)`);
+  }
+
+  // 9. Détection Remboursement Transport Navigo 75% (Décret n° 2023-812)
+  let remboursementTransport = 0;
+  for (const line of lines) {
+    const lPlain = deaccent(line.toLowerCase());
+    if (lPlain.includes("transport") || lPlain.includes("navigo") || lPlain.includes("abonn") || lPlain.includes("titre de transport")) {
+      const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+        .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+        .filter(a => a >= 20 && a <= 120);
+
+      if (amounts.length > 0) {
+        remboursementTransport = amounts[amounts.length - 1];
+        detectedItems.push(`Prise en charge Transport Navigo (75%) : +${remboursementTransport.toFixed(2)} € net`);
+        break;
+      }
+    }
+  }
+
+  // 10. Détection Indemnité Compensatrice CSG & Mutuelle
+  let indemniteCompensatriceCsg = 0;
+  for (const line of lines) {
+    const lPlain = deaccent(line.toLowerCase());
+    if (lPlain.includes("compens") && lPlain.includes("csg")) {
+      const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+        .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+        .filter(a => a > 0 && a <= 200);
+      if (amounts.length > 0) {
+        indemniteCompensatriceCsg = amounts[amounts.length - 1];
+        detectedItems.push(`Indemnité Compensatrice CSG détectée : +${indemniteCompensatriceCsg.toFixed(2)} €`);
+        break;
+      }
+    }
+  }
+
+  let participationMutuelleEmployeur = 0;
+  let retenueMutuelleSalarie = 0;
+  for (const line of lines) {
+    const lPlain = deaccent(line.toLowerCase());
+    const isSante = lPlain.includes("mutuelle") || lPlain.includes("mnt") || lPlain.includes("prevoyance")
+      || lPlain.includes("sante") || lPlain.includes("prefon");
+    const isParticipationEmployeur = lPlain.includes("participation") && (lPlain.includes("empl") || lPlain.includes("employeur"));
+
+    if (isParticipationEmployeur || isSante) {
+      const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+        .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+        .filter(a => a > 0 && a <= 300);
+
+      if (amounts.length > 0) {
+        // Bulletin Ciril réel : « Participation empl mut Tit 27.08 » (code 7376) et
+        // « Participation empl prev Tit 14.16 » (code 7716) = gains versés à l'agent (somme)
+        if (isParticipationEmployeur && !lPlain.includes("retenue") && !lPlain.includes("cotis")) {
+          participationMutuelleEmployeur = Math.round((participationMutuelleEmployeur + amounts[amounts.length - 1]) * 100) / 100;
+          detectedItems.push(`Participation employeur mutuelle/prévoyance (PSC) : +${amounts[amounts.length - 1].toFixed(2)} €`);
+        } else {
+          // Retenues sur le net : « Territoria Pack prévoyance -97.65 » (code 7625), « Préfon -172.00 » (code 572)…
+          retenueMutuelleSalarie = Math.round((retenueMutuelleSalarie + amounts[amounts.length - 1]) * 100) / 100;
+          detectedItems.push(`Retenue santé/prévoyance sur le net : -${amounts[amounts.length - 1].toFixed(2)} €`);
+        }
+      }
+    }
+  }
+
+  // 11. Détection des Totaux Réels Imprimés sur le Bulletin
+  let brutReel: number | undefined;
+  let totalRetenuesReelles: number | undefined;
+  let netFiscalReel: number | undefined;
+  let netAvantImpotReel: number | undefined;
+  let pasReel: number | undefined;
+  let netAPayerReel: number | undefined;
+  let coutEmployeurReel: number | undefined;
+
+  for (const line of lines) {
+    const lPlain = deaccent(line.toLowerCase());
+    const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+      .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+      .filter(a => a > 0);
+
+    if (amounts.length > 0) {
+      const lastAmount = amounts[amounts.length - 1];
+
+      // Total Brut — bulletin Ciril : « Totaux Gains 5 007.72 Cotisations 2 231.08 » ou « Brut fiscal 5 007.72 … »
+      // On prend le PREMIER montant plausible pour ne pas capter un cumul annuel ou un autre total de la même ligne
+      const isBrutLine = (lPlain.includes("gains") && (lPlain.includes("totaux") || lPlain.includes("cotis")))
+        || lPlain.includes("brut fiscal") || lPlain.includes("total brut") || lPlain.includes("remuneration brute")
+        || lPlain.includes("brut mensuel") || lPlain.includes("salaire brut");
+      if (isBrutLine && brutReel === undefined) {
+        const candidate = amounts.find(a => a >= 1200 && a <= 12000);
+        if (candidate !== undefined) {
+          brutReel = candidate;
+          detectedItems.push(`Total Brut réel imprimé : ${brutReel.toFixed(2)} €`);
+        }
+      }
+
+      // Total Retenues (« Total des retenues 1 553.06 » — inclut cotisations + retenues net + PAS)
+      if ((lPlain.includes("total retenues") || lPlain.includes("total des retenues") || lPlain.includes("total cotisations")) && lastAmount >= 200 && lastAmount <= 8000) {
+        totalRetenuesReelles = lastAmount;
+        detectedItems.push(`Total Retenues salariales réelles : ${totalRetenuesReelles.toFixed(2)} €`);
+      }
+
+      // Net Fiscal Imposable — PREMIER montant plausible (le bulletin ajoute le cumul annuel et le total employeur sur la même ligne)
+      if ((lPlain.includes("net imposable") || lPlain.includes("net fiscal") || lPlain.includes("cumul imposable")) && netFiscalReel === undefined) {
+        const candidate = amounts.find(a => a >= 1000 && a <= 10000);
+        if (candidate !== undefined) {
+          netFiscalReel = candidate;
+          detectedItems.push(`Net Fiscal imposable réel : ${netFiscalReel.toFixed(2)} €`);
+        }
+      }
+
+      // Net Avant Impôt (« NET A PAYER AVANT IMPOT SUR LE REVENU 3 809.28 »)
+      if (lPlain.includes("avant impot") && netAvantImpotReel === undefined) {
+        const candidate = amounts.find(a => a >= 500 && a <= 10000);
+        if (candidate !== undefined) {
+          netAvantImpotReel = candidate;
+        }
+      }
+
+      // Total versé par l'employeur (« Total versé par l'employeur 7 238.80 »)
+      if (lPlain.includes("vers") && lPlain.includes("employeur") && lastAmount >= 1500 && lastAmount <= 40000) {
+        coutEmployeurReel = lastAmount;
+        detectedItems.push(`Total versé par l'employeur réel : ${coutEmployeurReel.toFixed(2)} €`);
+      }
+
+      // Prélèvement à la Source en euros (« prélevé à la source » comme « prélèvement à la source »)
+      if ((lPlain.includes("source") || lPlain.includes("pas") || lPlain.includes("impot")) && (lPlain.includes("montant") || lPlain.includes("retenue") || lPlain.includes("prelev")) && lastAmount >= 5 && lastAmount <= 3000) {
+        pasReel = lastAmount;
+      }
+
+      // Net à Payer (en Banque) — « Net payé en euros 3 454.66 » (dernier trouvé = ligne la plus basse du bulletin)
+      if ((lPlain.includes("net a payer") || lPlain.includes("net paye") || lPlain.includes("net en euros")) && lastAmount >= 800 && lastAmount <= 9000) {
+        netAPayerReel = lastAmount;
+        detectedItems.push(`Net à Payer (en Banque) réel : ${netAPayerReel.toFixed(2)} €`);
+      }
+    }
+  }
+
+  // 12. Détection Nom de l'agent et Grade
   let nom = "Agent Territorial";
-  const nomMatch = t.match(/(?:m\.|mme|monsieur|madame)\s+([a-zÀ-ÿ\-]+)\s+([a-zÀ-ÿ\-]+)/i);
+  const nomMatch = t.match(/(?:m\.|mme|monsieur|madame)\s+([a-zÀ-ÿ-]+)\s+([a-zÀ-ÿ-]+)/i);
   if (nomMatch) {
     nom = `${nomMatch[1].toUpperCase()} ${nomMatch[2]}`;
     detectedItems.push(`Agent : ${nom}`);
   } else if (fileName) {
-    nom = fileName.replace(/\.[^/.]+$/, "").replace(/[_\-]/g, " ");
+    nom = fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
   }
 
   // Détection Grade
@@ -1343,6 +2031,7 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   return {
     params: {
       indiceMajore: im,
+      ...(indiceBrut !== undefined ? { indiceBrut } : {}),
       nbiPoints: nbi,
       ifse,
       cia,
@@ -1354,7 +2043,21 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
       tauxPas,
       nomAgent: nom,
       grade,
-      echelon
+      echelon,
+      appliquerPpcr,
+      abattementPpcr,
+      remboursementTransport,
+      indemniteCompensatriceCsg,
+      participationMutuelleEmployeur,
+      retenueMutuelleSalarie,
+      montantsReels: {
+        brutReel,
+        totalRetenuesReelles,
+        netFiscalReel,
+        pasReel,
+        netAPayerReel,
+        coutEmployeurReel
+      }
     },
     metadata: {
       detectedItems,

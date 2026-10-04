@@ -1,912 +1,687 @@
-import React, { useState } from 'react';
-import {
-  FileText,
-  Info,
-  CheckCircle2,
-  HelpCircle,
-  Eye,
-  EyeOff,
-  Layers,
-  Building,
-  ShieldCheck,
-  Scale,
-  Sparkles,
-  ChevronRight,
-  Printer,
-  Download,
-  Percent,
-  Coins
-} from 'lucide-react';
+import { useState } from 'react';
+import { BookOpen } from 'lucide-react';
 import {
   CalculParams,
-  FichePaieAnalyseResult,
-  VALEUR_POINT_INDICE_MENSUEL,
-  TAUX_ZONE_RESIDENCE_1,
-  TAUX_CNRACL_SALARIE,
-  TAUX_CNRACL_PATRONAL,
-  TAUX_RAFP_SALARIE,
-  TAUX_RAFP_PATRONAL,
-  TAUX_CSG_DEDUCTIBLE,
-  TAUX_CSG_NON_DEDUCTIBLE,
-  TAUX_CRDS,
-  ASSIETTE_ABATTEMENT_CSG_CRDS
+  FichePaieAnalyseResult
 } from '../services/openfiscaPayEngine';
 
 export interface CirilBulletinViewProps {
   params: CalculParams;
   result: FichePaieAnalyseResult;
-  onUpdateParam?: (key: keyof CalculParams, value: any) => void;
+  onUpdateParam?: (key: keyof CalculParams, value: unknown) => void;
+  onApplyMultiParams?: (newParams: Partial<CalculParams>) => void;
 }
 
-export type CalqueId = 'all' | 'statut' | 'traitement' | 'rifseep' | 'retraite' | 'csg' | 'pas' | 'net';
+// ─────────────────────────────────────────────────────────────────────────────
+// Codes et libellés réels du bulletin Ciril « Mairie de Gennevilliers »
+// (mêmes références que le document papier : 8, 9, 12, 1591, 1735, 40/41/42, 47, 1028…)
+// ─────────────────────────────────────────────────────────────────────────────
+const RUBRIQUES_CIRIL: Record<string, { code: string; libelle: string }> = {
+  tib: { code: '8', libelle: 'Traitement de base indiciaire' },
+  nbi: { code: '9', libelle: 'NBI Titulaire' },
+  residence: { code: '12', libelle: 'Indemnité de Résidence Tit.' },
+  sft: { code: '11', libelle: 'Supplément Familial de Traitement' },
+  ppcr: { code: '1735', libelle: 'Transfert primes/points Tit.' },
+  ifse: { code: '1591', libelle: 'IFSE Tit.' },
+  cia: { code: '1592', libelle: 'CIA Tit.' },
+  comp_csg: { code: '1860', libelle: 'Indemnité Compens. CSG Tit' },
+  autres_primes: { code: '1690', libelle: 'Primes diverses Tit.' },
+  transport: { code: '1510', libelle: 'Prise en charge transport' },
+  cnracl: { code: '47', libelle: 'Retraite CNRACL Titulaire' },
+  rafp: { code: '1028', libelle: 'Retraite additionnelle FP' },
+  ircantec: { code: '472', libelle: 'Retraite IRCANTEC' },
+  maladie: { code: '501', libelle: 'Urssaf Maladie' },
+  vieillesse_plaf: { code: '502', libelle: 'Vieillesse plafonnée' },
+  vieillesse_deplaf: { code: '503', libelle: 'Vieillesse déplafonnée' },
+  csg_nonded: { code: '40', libelle: 'CSG Non déductible Titulaire' },
+  csg_ded: { code: '41', libelle: 'CSG Déductible Titulaire' },
+  crds: { code: '42', libelle: 'CRDS Non déductible Titulaire' },
+  part_mutuelle: { code: '7376', libelle: 'Participation empl mut Tit' },
+  cotis_mutuelle: { code: '572', libelle: 'Préfon / Territoria prévoyance' },
+  pas: { code: '995', libelle: 'Impôt sur le revenu prélevé à la source' }
+};
 
-export interface CalqueDefinition {
-  id: CalqueId;
-  numero: number;
+// ─────────────────────────────────────────────────────────────────────────────
+// EXPLICATIONS « GRAND PUBLIC » DE CHAQUE RUBRIQUE (compréhensibles sans jargon)
+// Clé = identifiant de ligne du moteur de calcul
+// simple    : l'explication en une phrase d'ami
+// pourquoi  : à quoi sert la ligne / comment le montant est décidé
+// verifier  : ce que l'agent doit contrôler sur son propre bulletin
+// attention : le piège ou l'anomalie fréquente
+// reference : la base légale
+// ─────────────────────────────────────────────────────────────────────────────
+const CODES_EXPLIQUES: Record<string, {
   titre: string;
-  badgeLabel: string;
-  colorBorder: string;
-  colorBg: string;
-  colorText: string;
-  accentBg: string;
-  vulgarisationSimple: string;
-  formuleChiffree: string;
-  conseilCFDT: string;
-  referenceLegale: string;
-}
-
-export const CALQUES_CIRIL: CalqueDefinition[] = [
-  {
-    id: 'statut',
-    numero: 1,
-    titre: "Carte d'identité statutaire (Matricule, Grade & Indice)",
-    badgeLabel: "1. Statut & Échelon",
-    colorBorder: "border-blue-500",
-    colorBg: "bg-blue-50/70 dark:bg-blue-950/40",
-    colorText: "text-blue-700 dark:text-blue-300",
-    accentBg: "bg-blue-600",
-    vulgarisationSimple: "C'est votre carte d'identité dans la fonction publique. Votre Indice Majoré (INM) est le chiffre magique qui détermine la valeur brute de votre travail chaque mois.",
-    formuleChiffree: "Indice Brut : {IB} • Indice Majoré : {IM} • Échelon : {ECHELON} • Temps : {QUOTITE}%",
-    conseilCFDT: "Vérifiez que votre échelon correspond bien à votre dernier arrêté d'avancement d'échelon. Si vous avez changé d'échelon récemment, la mairie doit effectuer un rappel de salaire.",
-    referenceLegale: "Art. L. 712-1 du Code Général de la Fonction Publique (CGFP)"
+  simple: string;
+  pourquoi?: string;
+  verifier?: string;
+  attention?: string;
+  reference?: string;
+}> = {
+  tib: {
+    titre: "Votre salaire de base",
+    simple: "La partie fixe de votre salaire, calculée avec votre indice (le chiffre qui résume votre grade et votre ancienneté) : indice × valeur du point. Elle est protégée par votre statut : la Ville ne peut pas la réduire.",
+    pourquoi: "C'est la base de tout : l'indemnité de résidence, le supplément familial et l'essentiel de vos droits à la retraite se calculent à partir de ce montant.",
+    verifier: "Comparez votre Indice Majoré avec votre dernier arrêté d'avancement. Après un changement d'échelon, la mairie doit appliquer le nouvel indice et verser un rappel de salaire.",
+    attention: "Un indice oublié après un avancement ou une promotion est l'anomalie la plus fréquente : elle coûte plusieurs dizaines d'euros chaque mois.",
+    reference: "Art. L. 712-1 du Code général de la fonction publique"
   },
-  {
-    id: 'traitement',
-    numero: 2,
-    titre: "Traitement indiciaire de base & Résidence Zone 1 (3%)",
-    badgeLabel: "2. Traitement & 3% Résidence",
-    colorBorder: "border-emerald-500",
-    colorBg: "bg-emerald-50/70 dark:bg-emerald-950/40",
-    colorText: "text-emerald-700 dark:text-emerald-300",
-    accentBg: "bg-emerald-600",
-    vulgarisationSimple: "Votre salaire de base national. Il est égal à votre Indice Majoré multiplié par la valeur du point d'indice (4,92278 €/mois). À Gennevilliers, la ville est en Zone 1 : vous avez droit obligatoirement à 3% supplémentaires d'indemnité de résidence.",
-    formuleChiffree: "{IM} × 4,92278 € = {TIB} € + (3% résidence = {RESIDENCE} €)",
-    conseilCFDT: "L'indemnité de résidence de 3% est obligatoire à Gennevilliers (Île-de-France Zone 1). Elle doit figurer sur chaque bulletin sans exception.",
-    referenceLegale: "Art. L. 712-1 CGFP & Circulaire ministérielle FP/7 n° 1996 du 12 mars 2001"
+  nbi: {
+    titre: "Des points d'indice en plus (NBI)",
+    simple: "Des points offerts à certains agents pour des fonctions particulières (responsabilité, accueil du public, technicité). Ils s'ajoutent à votre salaire de base et cotisent pour votre retraite.",
+    pourquoi: "La NBI est attachée à des fonctions listées par décret. Elle devient définitive tant que vous occupez la fonction.",
+    verifier: "Si vous exercez une fonction ouvrant droit à NBI et qu'elle n'apparaît pas sur votre bulletin, interrogez votre service RH.",
+    reference: "Loi n° 91-73 du 18 janvier 1991 et décrets d'application"
   },
-  {
-    id: 'rifseep',
-    numero: 3,
-    titre: "Régime Indemnitaire RIFSEEP (IFSE mensuelle & CIA annuel)",
-    badgeLabel: "3. Primes RIFSEEP",
-    colorBorder: "border-purple-500",
-    colorBg: "bg-purple-50/70 dark:bg-purple-950/40",
-    colorText: "text-purple-700 dark:text-purple-300",
-    accentBg: "bg-purple-600",
-    vulgarisationSimple: "Vos primes territoriales fixées par la Ville de Gennevilliers. L'IFSE est versée tous les mois selon votre cadre d'emplois et groupe de fonctions. Le CIA est un complément lié à votre évaluation professionnelle annuelle (CREP).",
-    formuleChiffree: "IFSE mensuelle : {IFSE} € + CIA : {CIA} €",
-    conseilCFDT: "La CFDT veille à ce que votre IFSE ne puisse jamais être diminuée sans motif valable et revendique son intégration pleine dans le calcul de vos droits à retraite.",
-    referenceLegale: "Décret n° 2014-513 & Délibération cadre du Conseil Municipal de Gennevilliers"
+  residence: {
+    titre: "L'indemnité de résidence (+3%)",
+    simple: "Un bonus de 3 % de votre salaire de base parce que vous travaillez en Île-de-France (zone 1), où la vie est plus chère. Obligatoire pour tous les agents à Gennevilliers.",
+    pourquoi: "La France compte 3 zones d'indemnité de résidence : la zone 1 (3 %) est la plus élevée. Gennevilliers y est classée.",
+    verifier: "L'indemnité doit figurer sur chaque bulletin, calculée sur votre traitement indiciaire brut, NBI incluse.",
+    reference: "Décret n° 2001-43 du 17 janvier 2001"
   },
-  {
-    id: 'retraite',
-    numero: 4,
-    titre: "Cotisations Retraite (Pension CNRACL 11,10% & RAFP 5%)",
-    badgeLabel: "4. Retraite CNRACL & RAFP",
-    colorBorder: "border-rose-500",
-    colorBg: "bg-rose-50/70 dark:bg-rose-950/40",
-    colorText: "text-rose-700 dark:text-rose-300",
-    accentBg: "bg-rose-600",
-    vulgarisationSimple: "Votre épargne retraite obligatoire. Vous cotisez 11,10% de votre traitement brut pour votre future pension de fonctionnaire (CNRACL). En plus, la Ville de Gennevilliers verse 31,65% de cotisation patronale pour vous garantir cette pension !",
-    formuleChiffree: "Retraite CNRACL (11,10%) : -{CNRACL} € • RAFP (5% primes) : -{RAFP} €",
-    conseilCFDT: "Chaque trimestre travaillé à la Ville de Gennevilliers vous donne des droits à la CNRACL. Le régime additionnel RAFP (retraite par points) permet de cotiser aussi sur vos primes RIFSEEP (dans la limite de 20% du traitement).",
-    referenceLegale: "Décret n° 2003-1306 du 26 décembre 2003 & Décret n° 2004-569 (RAFP)"
+  sft: {
+    titre: "Le supplément familial de traitement (SFT)",
+    simple: "Une aide de la mairie si vous avez des enfants à charge. Plus vous avez d'enfants, plus elle augmente ; elle dépend aussi de votre salaire de base.",
+    pourquoi: "Elle s'ajoute aux prestations familiales de la CAF : part fixe + part proportionnelle au traitement, avec plancher et plafond.",
+    verifier: "Signalez tout changement (naissance, enfant n'étant plus à charge) : un trop-versé peut être réclamé plus tard.",
+    reference: "Décret n° 85-1148 du 4 octobre 1985"
   },
-  {
-    id: 'csg',
-    numero: 5,
-    titre: "Sécurité Sociale & Solidarité (CSG Déductible, Non déd. & CRDS)",
-    badgeLabel: "5. Sécurité Sociale & CSG",
-    colorBorder: "border-amber-500",
-    colorBg: "bg-amber-50/70 dark:bg-amber-950/40",
-    colorText: "text-amber-700 dark:text-amber-300",
-    accentBg: "bg-amber-600",
-    vulgarisationSimple: "Vos contributions de solidarité nationale. Elles financent l'Assurance Maladie, la branche famille et le remboursement de la dette sociale. Elles sont calculées sur 98,25% de votre rémunération globale (abattement de 1,75% pour frais professionnels).",
-    formuleChiffree: "Assiette abattue 98,25% ({ASSIETTE_CSG} €) : CSG déd. (6,8%) : -{CSG_DED} € • CSG non déd. (2,4%) : -{CSG_ND} € • CRDS (0,5%) : -{CRDS} €",
-    conseilCFDT: "La CSG déductible (6,80%) est automatiquement retirée de vos revenus soumis à l'impôt. La CSG non déductible et la CRDS sont réintégrées dans votre net fiscal imposable.",
-    referenceLegale: "Art. L. 136-1 à L. 136-8 du Code de la Sécurité Sociale & Ordonnance n° 96-50"
+  ppcr: {
+    titre: "L'abattement PPCR (retenue)",
+    simple: "Une petite retenue mensuelle (entre 13,92 € et 32,42 € selon votre catégorie) créée en 2017. En échange, le point d'indice a été augmenté : c'est le « transfert primes-points », payé par tous les agents concernés.",
+    pourquoi: "Le protocole PPCR a revalorisé le point d'indice en 2017. En contrepartie, une retenue sur les primes a été mise en place pour tous les agents ayant bénéficié de la revalorisation.",
+    verifier: "Le montant dépend de votre catégorie hiérarchique : 13,92 € en catégorie C, 23,17 € en B, 32,42 € en A (prorata en temps partiel).",
+    attention: "En cas d'absence longue (maladie, temps partiel), la retenue doit être ajustée au prorata : vérifiez-la après un changement de situation.",
+    reference: "Décret n° 2016-588 du 11 mai 2016"
   },
-  {
-    id: 'pas',
-    numero: 6,
-    titre: "Prélèvement à la Source de l'Impôt sur le Revenu (PAS)",
-    badgeLabel: "6. Impôt à la Source (PAS)",
-    colorBorder: "border-orange-500",
-    colorBg: "bg-orange-50/70 dark:bg-orange-950/40",
-    colorText: "text-orange-700 dark:text-orange-300",
-    accentBg: "bg-orange-600",
-    vulgarisationSimple: "Votre impôt sur le revenu prélevé en direct. La Ville de Gennevilliers applique le taux exact que le Trésor Public (DGFiP) lui transmet chaque mois pour vous. La mairie ne connaît pas vos autres revenus, juste ce pourcentage.",
-    formuleChiffree: "Net fiscal imposable ({NET_FISCAL} €) × Taux DGFiP ({TAUX_PAS}%) = -{MONTANT_PAS} €",
-    conseilCFDT: "Si vos revenus familiaux changent (mariage, naissance, baisse de revenus), vous pouvez modifier votre taux en temps réel sur impots.gouv.fr sans attendre l'année suivante.",
-    referenceLegale: "Art. 204 A et suivants du Code Général des Impôts (CGI)"
+  ifse: {
+    titre: "L'IFSE : votre prime principale",
+    simple: "Votre prime mensuelle liée à votre poste : elle récompense vos responsabilités, vos sujétions et votre expertise. Son montant vient de la grille RIFSEEP de la Ville selon votre métier et vos fonctions.",
+    pourquoi: "Depuis le RIFSEEP, l'IFSE remplace les anciennes primes. Elle est fixée par un groupe de fonctions, révisé à chaque changement de poste.",
+    verifier: "Comparez votre montant avec la grille de votre filière métier, publiée par la Ville.",
+    attention: "Après une mobilité interne, l'ancien groupe de fonctions est parfois resté appliqué : faites vérifier le vôtre.",
+    reference: "Décret n° 2014-513 du 20 mai 2014 et délibération de la Ville"
   },
-  {
-    id: 'net',
-    numero: 7,
-    titre: "Net à payer viré sur votre compte bancaire & Coût Employeur",
-    badgeLabel: "7. Net Payé & Coût Ville",
-    colorBorder: "border-indigo-500",
-    colorBg: "bg-indigo-50/70 dark:bg-indigo-950/40",
-    colorText: "text-indigo-700 dark:text-indigo-300",
-    accentBg: "bg-indigo-600",
-    vulgarisationSimple: "Le montant final viré sur votre compte bancaire par la Ville de Gennevilliers à la fin du mois. En dessous, vous pouvez aussi voir le coût réel employeur (votre salaire brut + ~37% de cotisations patronales prises en charge par la commune).",
-    formuleChiffree: "Net viré en banque : {NET_A_PAYER} € • Coût total Ville de Gennevilliers : {COUT_EMPLOYEUR} €",
-    conseilCFDT: "Conservez votre bulletin de paie sans limitation de durée (sous format électronique sécurisé ou papier). Il vous servira lors de votre départ en retraite.",
-    referenceLegale: "Art. L. 3243-2 du Code du travail & Décret n° 2016-1073"
+  cia: {
+    titre: "Le CIA : votre bonus annuel",
+    simple: "La part variable de votre prime : elle dépend de votre entretien professionnel annuel et de votre manière de servir. Elle est souvent versée étalée sur l'année.",
+    pourquoi: "Le complément individuel annuel récompense l'engagement et les résultats, à partir de votre évaluation annuelle (CREP).",
+    verifier: "Votre entretien professionnel influence directement ce montant : préparez-le et gardez une trace écrite de vos objectifs.",
+    reference: "Décret n° 2014-513 du 20 mai 2014"
+  },
+  comp_csg: {
+    titre: "L'indemnité compensatrice CSG",
+    simple: "Un petit dédommagement versé par l'employeur pour compenser la hausse de la CSG (un impôt social) intervenue en 2018.",
+    pourquoi: "Quand la CSG est passée de 7,5 % à 9,2 % en 2018, cette indemnité a été créée pour limiter la perte de revenu des agents.",
+    verifier: "Elle est fixe et mensuelle pour les agents éligibles : si elle disparaît sans explication, signalez-le.",
+    reference: "Décret n° 2017-1889 du 30 décembre 2017"
+  },
+  autres_primes: {
+    titre: "Les autres primes",
+    simple: "Heures supplémentaires, astreintes, sujétions particulières… toutes les primes ponctuelles qui s'ajoutent ce mois-ci.",
+    pourquoi: "Ces montants varient d'un mois à l'autre selon vos activités réelles du mois.",
+    verifier: "Conservez vos relevés d'astreintes et de heures supplémentaires : les erreurs de comptabilisation sont fréquentes."
+  },
+  transport: {
+    titre: "Le remboursement transport (Navigo)",
+    simple: "La Ville rembourse 75 % de votre abonnement de transport. C'est versé en net, sans cotisations ni impôt : c'est un plus direct sur votre compte en banque.",
+    pourquoi: "L'employeur public doit couvrir 75 % du coût des abonnements de transport public de ses agents.",
+    verifier: "Le remboursement est calculé au prorata de votre temps de travail. Il ne doit subir aucune retenue.",
+    reference: "Décret n° 2023-812 du 21 août 2023"
+  },
+  cnracl: {
+    titre: "Votre retraite (CNRACL)",
+    simple: "Vous cotisez 11,10 % de votre salaire de base (+ NBI) pour votre future pension de fonctionnaire. La Ville y ajoute bien plus (37,65 %) : chaque bulletin enrichit votre retraite.",
+    pourquoi: "La CNRACL est le régime de retraite des fonctionnaires territoriaux et hospitaliers. Vos droits se construisent trimestriellement.",
+    verifier: "La cotisation porte sur le traitement + la NBI, jamais sur vos primes (elles cotisent à la RAFP).",
+    attention: "Consultez votre relevé de carrière sur info-retraite.fr tous les 5 ans : un trimestre manqué se régularise plus facilement tôt.",
+    reference: "Décret n° 2003-1306 du 26 décembre 2003"
+  },
+  ircantec: {
+    titre: "Votre retraite (IRCANTEC)",
+    simple: "Vous cotisez pour votre retraite complémentaire (2,80 % sous le plafond de la Sécurité sociale, 6,95 % au-delà). C'est le régime des agents contractuels.",
+    pourquoi: "L'IRCANTEC complète le régime général : ensemble, ils remplacent la CNRACL des titulaires.",
+    verifier: "Vérifiez que les tranches sont bien appliquées : sous le plafond PMSS à 2,80 %, au-delà à 6,95 %.",
+    reference: "Convention du 23 décembre 1970 (IRCANTEC)"
+  },
+  maladie: {
+    titre: "La Sécurité sociale (maladie)",
+    simple: "Une cotisation volontairement très réduite (0,75 %) qui finance vos remboursements de santé, vos arrêts maladie et vos congés maternité.",
+    pourquoi: "Depuis 2018, les agents contractuels de la fonction publique paient un taux maladie réduit, bien plus bas que le régime général.",
+    reference: "Décret n° 2017-1904 du 30 décembre 2017"
+  },
+  vieillesse_plaf: {
+    titre: "La retraite de base du régime général",
+    simple: "6,90 % prélevés dans la limite du plafond mensuel de la Sécurité sociale. C'est l'équivalent de la CNRACL pour les agents contractuels.",
+    pourquoi: "Cette cotisation ouvre des droits à la retraite de base de la Sécurité sociale (CNAV).",
+    verifier: "La base ne peut pas dépasser le plafond mensuel de la Sécurité sociale (PMSS) : contrôlez-le si votre salaire est élevé.",
+    reference: "Art. L. 131-2-1 du Code de la sécurité sociale"
+  },
+  vieillesse_deplaf: {
+    titre: "La retraite du régime général (part déplafonnée)",
+    simple: "0,40 % calculé sur la totalité de votre salaire, sans aucun plafond.",
+    pourquoi: "Cette petite part complète la cotisation plafonnée : elle porte sur toute la rémunération.",
+    reference: "Art. L. 131-2-1 du Code de la sécurité sociale"
+  },
+  rafp: {
+    titre: "La retraite additionnelle (RAFP)",
+    simple: "5 % pris sur vos primes (plafonné à 20 % de votre salaire de base). La Ville verse exactement la même somme que vous : à la retraite, tout cela se transforme en points qui s'ajoutent à votre pension.",
+    pourquoi: "Le RAFP est le seul régime qui capitalise vos primes pour la retraite : chaque euro cotisé achète des points, versés en complément de pension.",
+    verifier: "L'assiette est limitée à 20 % de votre traitement indiciaire brut annuel : au-delà, vos primes ne cotisent plus.",
+    attention: "Si vos primes cotisent « à vide » (aucune retenue RAFP visible), signalez-le : c'est une perte sèche pour votre retraite.",
+    reference: "Décret n° 2004-569 du 18 juin 2004"
+  },
+  csg_ded: {
+    titre: "La CSG déductible",
+    simple: "Un impôt social qui finance la Sécurité sociale et la famille. Cette partie (6,80 %) a un avantage : elle réduit votre impôt sur le revenu.",
+    pourquoi: "La CSG finance aujourd'hui une grande partie de la protection sociale française (santé, famille, fonds de solidarité vieillesse).",
+    verifier: "L'assiette est 98,25 % de votre rémunération (abattement de 1,75 % pour frais professionnels), plus la part patronale de votre mutuelle.",
+    reference: "Art. L. 136-1 et suivants du Code de la sécurité sociale"
+  },
+  csg_nonded: {
+    titre: "La CSG non déductible",
+    simple: "L'autre part de la CSG (2,40 %) : elle ne réduit pas votre impôt et est même ajoutée à votre revenu imposable.",
+    pourquoi: "La CSG se partage en deux : cette part n'offre aucun avantage fiscal, contrairement à la partie déductible.",
+    verifier: "Elle figure bien dans votre net imposable (visible dans la base de l'impôt à la source).",
+    reference: "Art. L. 136-1 et suivants du Code de la sécurité sociale"
+  },
+  crds: {
+    titre: "La CRDS",
+    simple: "0,50 % pour aider à rembourser la dette sociale. Elle est prélevée sur la même base que la CSG.",
+    pourquoi: "Créée en 1996, cette contribution finance le remboursement de la dette de la Sécurité sociale.",
+    reference: "Ordonnance n° 96-50 du 24 janvier 1996"
+  },
+  part_mutuelle: {
+    titre: "La participation employeur (santé)",
+    simple: "La part que la Ville paie à votre place pour votre mutuelle et votre prévoyance. Elle apparaît comme un gain : c'est de l'argent dédié à votre protection sociale.",
+    pourquoi: "Dans le cadre du PSC (Protection Sociale Complémentaire), l'employeur finance une part de votre complémentaire santé labellisée.",
+    verifier: "Cette part est soumise à CSG/CRDS : c'est normal de la voir dans le brut, avant les retenues.",
+    reference: "Art. L. 827-1 du Code général de la fonction publique"
+  },
+  cotis_mutuelle: {
+    titre: "Votre part mutuelle / prévoyance",
+    simple: "La part de votre mutuelle, de votre prévoyance (Territoria) ou de votre épargne retraite (Préfon) qui reste à votre charge. Elle est prélevée directement sur votre net.",
+    pourquoi: "Territoria couvre la prévoyance (arrêts, invalidité) ; la Préfon est une épargne retraite volontaire à effet de levier fiscal.",
+    verifier: "Ces retenues sont facultatives ou liées à votre affiliation : en cas de double retenue (ancienne et nouvelle mutuelle), réagissez vite."
+  },
+  pas: {
+    titre: "L'impôt à la source (PAS)",
+    simple: "Votre impôt sur le revenu, prélevé directement par la mairie pour le compte de l'administration fiscale, au taux qui vous a été communiqué. Ce taux dépend de votre situation (revenus du foyer, enfants…).",
+    pourquoi: "Depuis 2020, l'employeur collecte l'impôt au moment du paiement : la DGFiP lui transmet votre taux, il ne connaît pas vos autres revenus.",
+    verifier: "Comparez le taux du bulletin avec votre avis d'imposition. Après un changement de situation, vous pouvez le modifier en temps réel sur impots.gouv.fr.",
+    attention: "Le taux s'applique sur le net imposable (pas sur le brut) : si le montant prélevé semble décalé, vérifiez d'abord la base.",
+    reference: "Art. 204 A et suivants du Code général des impôts"
   }
-];
+};
 
-export default function CirilBulletinView({ params, result, onUpdateParam }: CirilBulletinViewProps) {
-  const [showOverlays, setShowOverlays] = useState<boolean>(true);
-  const [activeCalqueId, setActiveCalqueId] = useState<CalqueId>('all');
-  const [selectedZone, setSelectedZone] = useState<CalqueId | null>('statut');
+// ─────────────────────────────────────────────────────────────────────────────
+// Lignes de cotisations patronales affichées à droite du tableau (titulaires),
+// avec les taux observés sur les bulletins Ciril de la Ville (2026)
+// ─────────────────────────────────────────────────────────────────────────────
+type Patronale = { code: string; libelle: string; base: number; taux: number; montant: number };
+
+const r2 = (v: number) => Math.round(v * 100) / 100;
+
+export default function CirilBulletinView({ params, result }: CirilBulletinViewProps) {
+  // Rubrique sélectionnée : son explication « en clair » s'affiche dans le panneau de droite
+  const [selectedLigneId, setSelectedLigneId] = useState<string | null>(null);
 
   const { agent, totaux, lignes } = result;
 
-  // Calculs formatés pour les calques - 100% sécurisé contre undefined / null / NaN
+  // Format Ciril : espace des milliers + point décimal (« 3 618.24 », « -415.29 »)
+  const fCiril = (v: number | undefined | null) => {
+    if (v === undefined || v === null || isNaN(Number(v))) return '0.00';
+    return Math.abs(Number(v)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  };
+  // Format FR classique pour le panneau explicatif (virgule décimale)
   const formatCur = (val: number | undefined | null) => {
     if (val === undefined || val === null || isNaN(Number(val))) return '0,00';
     return Number(val).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const getGain = (id: string) => (lignes || []).find(l => l.id === id)?.montantGain || 0;
-  const getRetenue = (id: string) => (lignes || []).find(l => l.id === id)?.montantRetenue || 0;
-  const getPatronale = (id: string) => (lignes || []).find(l => l.id === id)?.partPatronale || 0;
+  const isTitulaire = agent.statut !== 'contractuel';
+  const pensionBase = r2((totaux.traitementBase || 0) + (totaux.nbi || 0));
 
-  const tibVal = getGain('tib') || totaux?.traitementBase || 0;
-  const resVal = getGain('residence') || totaux?.indemniteResidence || 0;
-  const sftVal = getGain('sft') || totaux?.sft || 0;
-  const ifseVal = getGain('ifse') || totaux?.primesIfse || 0;
-  const ciaVal = getGain('cia') || totaux?.primesCia || 0;
-  const retraiteVal = getRetenue('cnracl') || getRetenue('ircantec') || (tibVal * 0.111);
-  const retraitePatronaleVal = getPatronale('cnracl') || getPatronale('ircantec') || (tibVal * TAUX_CNRACL_PATRONAL);
-  const rafpVal = getRetenue('rafp') || 0;
-  const rafpPatronaleVal = getPatronale('rafp') || rafpVal;
-  const csgDedVal = getRetenue('csg_ded') || 0;
-  const csgNdVal = getRetenue('csg_nonded') || 0;
-  const crdsVal = getRetenue('crds') || 0;
-  const assietteCsg = Math.round((totaux?.salaireBrut || 0) * ASSIETTE_ABATTEMENT_CSG_CRDS * 100) / 100;
-  const pasVal = getRetenue('pas') || totaux?.montantPas || 0;
+  // Période de paie du mois courant
+  const now = new Date();
+  const annee = now.getFullYear();
+  const moisNum = now.getMonth() + 1;
+  const dernierJour = new Date(annee, moisNum, 0).getDate();
+  const moisNom = now.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  const p2 = (n: number) => String(n).padStart(2, '0');
+  const periode = `01-${p2(moisNum)}-${annee} - ${p2(dernierJour)}-${p2(moisNum)}-${annee}`;
 
-  const activeCalqueDef = CALQUES_CIRIL.find(c => c.id === (selectedZone || 'statut')) || CALQUES_CIRIL[0];
+  const selectedLigne = selectedLigneId ? (lignes || []).find(l => l.id === selectedLigneId) : null;
 
-  // Remplacement dynamique des variables dans les formules des calques
-  const getRenderedFormule = (calque: CalqueDefinition) => {
-    return calque.formuleChiffree
-      .replace('{IB}', String(agent?.indiceBrut || Math.round((agent?.indiceMajore || 382) * 1.06)))
-      .replace('{IM}', String(agent?.indiceMajore || 382))
-      .replace('{ECHELON}', agent?.echelon || 'Échelon 4')
-      .replace('{QUOTITE}', String(agent?.quotite || 100))
-      .replace('{TIB}', formatCur(tibVal))
-      .replace('{RESIDENCE}', formatCur(resVal))
-      .replace('{IFSE}', formatCur(ifseVal))
-      .replace('{CIA}', formatCur(ciaVal))
-      .replace('{CNRACL}', formatCur(retraiteVal))
-      .replace('{RAFP}', formatCur(rafpVal))
-      .replace('{ASSIETTE_CSG}', formatCur(assietteCsg))
-      .replace('{CSG_DED}', formatCur(csgDedVal))
-      .replace('{CSG_ND}', formatCur(csgNdVal))
-      .replace('{CRDS}', formatCur(crdsVal))
-      .replace('{NET_FISCAL}', formatCur(totaux?.netFiscal))
-      .replace('{TAUX_PAS}', String(totaux?.tauxPas || 0))
-      .replace('{MONTANT_PAS}', formatCur(pasVal))
-      .replace('{NET_A_PAYER}', formatCur(totaux?.netAPayer))
-      .replace('{COUT_EMPLOYEUR}', formatCur(totaux?.coutGlobalEmployeur));
+  // Lignes patronales du bulletin (titulaires uniquement), dans l'ordre du document papier
+  const patronalesAvantCnracl: Patronale[] = isTitulaire ? [
+    { code: '43', libelle: 'Urssaf Maladie Titulaire', base: pensionBase, taux: 9.88, montant: r2(pensionBase * 0.0988) },
+    { code: '44', libelle: 'Urssaf Allocation Familial Tit', base: pensionBase, taux: 3.45, montant: r2(pensionBase * 0.0345) },
+    { code: '4082', libelle: 'Urssaf Alloc.Familial Comp Tit', base: pensionBase, taux: 1.8, montant: r2(pensionBase * 0.018) },
+    { code: '1250', libelle: 'Urssaf FNALtotalité Titulaire', base: pensionBase, taux: 0.5, montant: r2(pensionBase * 0.005) },
+    { code: '46', libelle: 'Urssaf Mobilité Titulaire', base: pensionBase, taux: 3.2, montant: r2(pensionBase * 0.032) },
+    { code: '389', libelle: 'Urssaf solid.autonomiePP Tit.', base: pensionBase, taux: 0.3, montant: r2(pensionBase * 0.003) }
+  ] : [];
+  const patronalesApresRafp: Patronale[] = isTitulaire ? [
+    { code: '49', libelle: 'CNRACL ATIACL', base: totaux.traitementBase || 0, taux: 0.4, montant: r2((totaux.traitementBase || 0) * 0.004) },
+    { code: '50', libelle: 'Centre de gestion Titulaire', base: pensionBase, taux: 0.5, montant: r2(pensionBase * 0.005) },
+    { code: '52', libelle: 'C.N.F.P.T Titulaire', base: pensionBase, taux: 0.9, montant: r2(pensionBase * 0.009) },
+    { code: '1965', libelle: 'C.N.F.P.T Majoration Titulaire', base: pensionBase, taux: 0.1, montant: r2(pensionBase * 0.001) }
+  ] : [];
+
+  // Construit la liste d'affichage du tableau : lignes du moteur + patronales intercalées
+  type Aff = { ligne?: (typeof lignes)[number]; patronale?: Patronale };
+  const affichage: Aff[] = [];
+  for (const l of lignes || []) {
+    if (l.id === 'pas') continue; // bloc impôt séparé, comme sur le document papier
+    if (isTitulaire && l.id === 'cnracl') {
+      for (const p of patronalesAvantCnracl) affichage.push({ patronale: p });
+    }
+    affichage.push({ ligne: l });
+    if (isTitulaire && l.id === 'rafp') {
+      for (const p of patronalesApresRafp) affichage.push({ patronale: p });
+    }
+  }
+
+  // Rendu d'une ligne de rubrique (cliquable → panneau explicatif)
+  const renderLigne = (ligne: (typeof lignes)[number]) => {
+    const rub = RUBRIQUES_CIRIL[ligne.id];
+    const isRetenue = ligne.montantRetenue !== undefined || (ligne.montantGain !== undefined && ligne.montantGain < 0);
+    const montantAbsolu = isRetenue
+      ? (ligne.montantGain !== undefined && ligne.montantGain < 0 ? -ligne.montantGain : ligne.montantRetenue)
+      : ligne.montantGain;
+    const selected = selectedLigneId === ligne.id;
+    let baseAff = ligne.base !== undefined ? fCiril(ligne.base) : '';
+    let tauxAff = ligne.taux !== undefined ? ligne.taux.toFixed(4) : '';
+    if ((ligne.id === 'ifse' || ligne.id === 'cia' || ligne.id === 'comp_csg') && ligne.base === undefined) {
+      baseAff = fCiril(ligne.montantGain);
+      tauxAff = '100.0000';
+    }
+    return (
+      <tr
+        key={ligne.id}
+        onClick={() => setSelectedLigneId(prev => (prev === ligne.id ? null : ligne.id))}
+        className={`cursor-pointer transition-colors ${selected ? 'bg-slate-200/70' : 'hover:bg-slate-100'}`}
+      >
+        <td className="px-1.5 py-[3px] font-mono text-slate-500">{rub?.code ?? ''}</td>
+        <td className="px-1.5 py-[3px]">{rub?.libelle ?? ligne.libelle}</td>
+        <td className="px-1 py-[3px] text-right font-mono">{baseAff}</td>
+        <td className="px-1 py-[3px] text-right font-mono">{tauxAff}</td>
+        <td className="px-1.5 py-[3px] text-right font-mono">
+          {isRetenue ? '-' : ''}{fCiril(montantAbsolu)}
+        </td>
+        {ligne.partPatronale !== undefined && ligne.partPatronale > 0 ? (
+          <>
+            <td className="px-1 py-[3px] text-right font-mono text-slate-500">
+              {ligne.id === 'cnracl' ? '37.6500' : '5.0000'}
+            </td>
+            <td className="px-1.5 py-[3px] text-right font-mono text-slate-500">{fCiril(ligne.partPatronale)}</td>
+          </>
+        ) : (
+          <>
+            <td className="px-1 py-[3px]" />
+            <td className="px-1.5 py-[3px]" />
+          </>
+        )}
+      </tr>
+    );
   };
 
-  const isZoneActive = (zoneId: CalqueId) => {
-    if (!showOverlays) return false;
-    if (activeCalqueId === 'all') return true;
-    return activeCalqueId === zoneId;
-  };
-
-  const isZoneSelected = (zoneId: CalqueId) => {
-    return selectedZone === zoneId;
-  };
+  // Rendu d'une ligne patronale (information, non cliquable)
+  const renderPatronale = (p: Patronale) => (
+    <tr key={`pat-${p.code}`} className="text-slate-400">
+      <td className="px-1.5 py-[3px] font-mono">{p.code}</td>
+      <td className="px-1.5 py-[3px]">{p.libelle}</td>
+      <td className="px-1 py-[3px] text-right font-mono">{fCiril(p.base)}</td>
+      <td className="px-1 py-[3px] text-right font-mono">{p.taux.toFixed(4)}</td>
+      <td className="px-1.5 py-[3px] text-right font-mono">{fCiril(p.montant)}</td>
+      <td className="px-1 py-[3px]" />
+      <td className="px-1.5 py-[3px]" />
+    </tr>
+  );
 
   return (
     <div className="space-y-6">
-      {/* ─────────────────────────────────────────────────────────────────────────────
-          1. BANDEAU DE COMMANDE DES CALQUES D'EXPLICATION
-      ───────────────────────────────────────────────────────────────────────────── */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400">
-              <Layers className="w-6 h-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">
-                  Bulletin Officiel Ciril RH • Ville de Gennevilliers
-                </h3>
-                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                  Civil RH / Ciril GROUP
-                </span>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        {/* ─────────────────────────────────────────────────────────────────────────
+            LE BULLETIN DE PAIE — MISE EN FORME FIDÈLE AU DOCUMENT CIRIL ORIGINAL
+        ───────────────────────────────────────────────────────────────────────── */}
+        <div className="lg:col-span-8">
+          <div className="bg-white text-slate-900 border border-slate-400 rounded-md shadow-xl overflow-hidden text-[11px] leading-snug">
+
+            {/* En-tête : BULLETIN DE PAIE + employeur */}
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 pt-3 pb-2">
+              <h1 className="text-xl font-bold tracking-tight text-slate-900">BULLETIN DE PAIE</h1>
+              <div className="text-right text-[10px] leading-snug text-slate-700">
+                <p className="font-bold text-[12px]">1 Mairie de Gennevilliers</p>
+                <p>177 Avenue Gabriel Péri</p>
+                <p>92230 GENNEVILLIERS</p>
+                <p>N° URSSAF : 117000001513122049</p>
+                <p>N° SIRET : 219200367 00015 - Code APE 8411Z</p>
+                <p>Convention collective : Statut de la Fonction publique</p>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                Cliquez sur n'importe quel calque ou zone surlignée du bulletin pour afficher son explication simple et son calcul certifié.
+            </div>
+            <div className="px-4 pb-2 text-[10px] text-slate-500 capitalize">
+              {moisNom}
+            </div>
+
+            {/* Cartouche d'identification (encadrés, comme l'original) */}
+            <div className="mx-4 mb-2 border border-slate-500 text-[10px]">
+              <div className="grid grid-cols-3 border-b border-slate-400">
+                <div className="px-2 py-1 border-r border-slate-400">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Matricule</span>
+                  <span className="font-bold">—</span>
+                </div>
+                <div className="px-2 py-1 border-r border-slate-400">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">SFT</span>
+                  <span className="font-bold">{params.nbEnfantsSft || 0}</span>
+                </div>
+                <div className="px-2 py-1">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Période de paie</span>
+                  <span className="font-bold">{periode}</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 border-b border-slate-400">
+                <div className="px-2 py-1 border-r border-slate-400">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">N° Sécurite Sociale</span>
+                  <span className="font-bold">—</span>
+                </div>
+                <div className="px-2 py-1 border-r border-slate-400">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Position Administrative</span>
+                  <span className="font-bold">{isTitulaire ? 'Titulaire CNRACL' : 'Contractuel IRCANTEC'}</span>
+                </div>
+                <div className="px-2 py-1">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Emploi / Grade</span>
+                  <span className="font-bold">{agent.grade || '—'}</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-3">
+                <div className="px-2 py-1 border-r border-slate-400">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Echelon</span>
+                  <span className="font-bold">{agent.echelon || '—'}</span>
+                </div>
+                <div className="px-2 py-1 border-r border-slate-400">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Service</span>
+                  <span className="font-bold">—</span>
+                </div>
+                <div className="px-2 py-1">
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Agent</span>
+                  <span className="font-bold uppercase">{agent.nom}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Ligne des indices */}
+            <div className="mx-4 mb-2 grid grid-cols-4 border border-slate-500 text-center">
+              <div className="px-1 py-1 border-r border-slate-400">
+                <span className="block text-[8px] uppercase tracking-wide text-slate-500">Ind. Rémun.</span>
+                <span className="font-black text-[13px]">{agent.indiceMajore}</span>
+              </div>
+              <div className="px-1 py-1 border-r border-slate-400">
+                <span className="block text-[8px] uppercase tracking-wide text-slate-500">Indice Brut</span>
+                <span className="font-black text-[13px]">{agent.indiceBrut ?? '—'}</span>
+              </div>
+              <div className="px-1 py-1 border-r border-slate-400">
+                <span className="block text-[8px] uppercase tracking-wide text-slate-500">Ind. Majoré</span>
+                <span className="font-black text-[13px]">{agent.indiceMajore}</span>
+              </div>
+              <div className="px-1 py-1">
+                <span className="block text-[8px] uppercase tracking-wide text-slate-500">Taux Emploi</span>
+                <span className="font-black text-[13px]">{agent.quotite ?? 100}</span>
+              </div>
+            </div>
+
+            {/* Tableau des rubriques */}
+            <div className="mx-4 mb-2 border border-slate-500">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-slate-100 text-[8px] uppercase tracking-wide text-slate-600">
+                    <th className="px-1.5 py-1 text-left font-bold border-b border-slate-400 w-10">Code</th>
+                    <th className="px-1.5 py-1 text-left font-bold border-b border-slate-400">Libellé</th>
+                    <th className="px-1 py-1 text-right font-bold border-b border-l border-slate-400">Base ou Nombre</th>
+                    <th className="px-1 py-1 text-right font-bold border-b border-slate-400">Taux</th>
+                    <th className="px-1.5 py-1 text-right font-bold border-b border-slate-400">Montant</th>
+                    <th className="px-1 py-1 text-right font-bold border-b border-l border-slate-400">Taux</th>
+                    <th className="px-1.5 py-1 text-right font-bold border-b border-slate-400">Montant</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {affichage.map(({ ligne, patronale }) =>
+                    ligne ? renderLigne(ligne) : renderPatronale(patronale as Patronale)
+                  )}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t border-slate-500 font-bold bg-slate-50">
+                    <td className="px-1.5 py-1" colSpan={2}>Totaux</td>
+                    <td className="px-1 py-1" />
+                    <td className="px-1 py-1" />
+                    <td className="px-1.5 py-1 text-right font-mono">{fCiril(totaux.salaireBrut)}</td>
+                    <td className="px-1 py-1" />
+                    <td className="px-1.5 py-1 text-right font-mono text-slate-500">{fCiril(totaux.totalCotisationsPatronales)}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            {/* NET A PAYER AVANT IMPÔT */}
+            <div className="mx-4 mb-2 border border-slate-500 flex justify-between items-center px-2 py-1.5">
+              <span className="font-bold uppercase text-[10px] tracking-wide">Net a payer avant impot sur le revenu</span>
+              <span className="font-black font-mono text-[13px]">{fCiril(totaux.netAvantImpot)}</span>
+            </div>
+
+            {/* Impôt sur le revenu (PAS) */}
+            <div className="mx-4 mb-2 border border-slate-500">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-slate-100 text-[8px] uppercase tracking-wide text-slate-600">
+                    <th className="px-1.5 py-1 text-left font-bold border-b border-slate-400">Impôt sur le revenu</th>
+                    <th className="px-1 py-1 text-right font-bold border-b border-l border-slate-400">Base</th>
+                    <th className="px-1 py-1 text-right font-bold border-b border-slate-400">Taux personnalisé</th>
+                    <th className="px-1.5 py-1 text-right font-bold border-b border-slate-400">Montant</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className={selectedLigneId === 'pas' ? 'bg-slate-200/70' : 'hover:bg-slate-100 cursor-pointer'}
+                      onClick={() => setSelectedLigneId(prev => (prev === 'pas' ? null : 'pas'))}>
+                    <td className="px-1.5 py-1 font-mono text-slate-500">995</td>
+                    <td className="px-1 py-1 text-right font-mono">{fCiril(totaux.netFiscal)}</td>
+                    <td className="px-1 py-1 text-right font-mono">{totaux.tauxPas.toFixed(2)}</td>
+                    <td className="px-1.5 py-1 text-right font-mono">-{fCiril(totaux.montantPas)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Cumuls & paiement */}
+            <div className="mx-4 mb-2 border border-slate-500">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-slate-100 text-[8px] uppercase tracking-wide text-slate-600">
+                    <th className="px-1.5 py-1 text-left font-bold border-b border-slate-400">Cumuls</th>
+                    <th className="px-1 py-1 text-right font-bold border-b border-l border-slate-400">Mensuels</th>
+                    <th className="px-1 py-1 text-right font-bold border-b border-slate-400">Annuels</th>
+                    <th className="px-1.5 py-1 text-left font-bold border-b border-l border-slate-400">Paiement</th>
+                  </tr>
+                </thead>
+                <tbody className="text-mono">
+                  <tr className="border-b border-slate-300">
+                    <td className="px-1.5 py-1">Brut fiscal</td>
+                    <td className="px-1 py-1 text-right font-mono">{fCiril(totaux.salaireBrut)}</td>
+                    <td className="px-1 py-1 text-right font-mono">{fCiril((totaux.salaireBrut || 0) * 12)}</td>
+                    <td className="px-1.5 py-1 border-l border-slate-300">
+                      <span className="text-slate-500">Virement Magnétique</span>
+                      <span className="float-right font-bold">Total des retenues</span>
+                    </td>
+                    <td className="px-1.5 py-1 text-right font-mono font-bold">{fCiril(totaux.totalRetenues)}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-1.5 py-1">Net fiscal</td>
+                    <td className="px-1 py-1 text-right font-mono">{fCiril(totaux.netFiscal)}</td>
+                    <td className="px-1 py-1 text-right font-mono">{fCiril((totaux.netFiscal || 0) * 12)}</td>
+                    <td className="px-1.5 py-1 border-l border-slate-300">
+                      <span className="text-slate-500">—</span>
+                      <span className="float-right font-bold">Total versé par l'employeur</span>
+                    </td>
+                    <td className="px-1.5 py-1 text-right font-mono font-bold">{fCiril(totaux.coutGlobalEmployeur)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Net payé en euros */}
+            <div className="mx-4 mb-2 border-2 border-slate-700 flex justify-between items-center px-3 py-2">
+              <div>
+                <span className="block text-[9px] uppercase tracking-wide text-slate-500">Avantage en nature</span>
+                <span className="block text-[10px] text-slate-500">—</span>
+              </div>
+              <div className="text-right">
+                <span className="block text-[9px] uppercase tracking-wide text-slate-500">Net payé en euros</span>
+                <span className="font-black text-xl font-mono">{fCiril(totaux.netAPayer)}</span>
+              </div>
+            </div>
+
+            {/* Nombre d'heures + observations */}
+            <div className="mx-4 mb-2 flex justify-between items-center text-[10px] border border-slate-400 px-2 py-1">
+              <span>
+                Nombre d'heures : <b className="font-mono">151.67</b>
+                <span className="text-slate-400"> (durée légale mensuelle)</span>
+              </span>
+              <span className="text-slate-400">salebulind 5.6.35</span>
+            </div>
+            <div className="mx-4 mb-3 border border-slate-400 px-2 py-1">
+              <span className="block text-[8px] uppercase tracking-wide text-slate-500">Observations</span>
+              <p className="text-[9px] uppercase text-slate-700 leading-snug">
+                Dans votre intérêt et pour vous aider à faire valoir vos droits, conservez ce bulletin de paie sans limitation de durée.
               </p>
             </div>
           </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => setShowOverlays(prev => !prev)}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                showOverlays
-                  ? 'bg-orange-600 text-white shadow-sm hover:bg-orange-700'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
-              }`}
-            >
-              {showOverlays ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-              <span>{showOverlays ? 'Calques Activés' : 'Bulletin Vierge Pur'}</span>
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-medium cursor-pointer"
-              title="Imprimer le bulletin annoté"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              <span>Imprimer</span>
-            </button>
-          </div>
         </div>
 
-        {/* Boutons de sélection rapide des calques */}
-        {showOverlays && (
-          <div className="pt-4">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
-              Filtrer les repères explicatifs :
-            </span>
-            <div className="flex flex-wrap items-center gap-1.5">
-              <button
-                onClick={() => { setActiveCalqueId('all'); setSelectedZone(null); }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  activeCalqueId === 'all'
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
-                }`}
-              >
-                👁️ Tous les 7 calques
-              </button>
-              {CALQUES_CIRIL.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => {
-                    setActiveCalqueId(c.id);
-                    setSelectedZone(c.id);
-                  }}
-                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                    selectedZone === c.id
-                      ? `${c.accentBg} text-white shadow-sm ring-2 ring-offset-1 ring-orange-400`
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                  }`}
-                >
-                  <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px]">
-                    {c.numero}
-                  </span>
-                  <span>{c.badgeLabel}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────────────────────
-          2. LE VÉRITABLE BULLETIN DE PAIE CIRIL RH (CIVIL RH GENNEVILLIERS)
-      ───────────────────────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Colonne Principale : Fiche Ciril RH A4 Réaliste */}
-        <div className="lg:col-span-8 bg-white dark:bg-slate-950 border-2 border-slate-300 dark:border-slate-700 rounded-2xl shadow-xl overflow-hidden font-mono text-slate-900 dark:text-slate-100">
-          {/* Bandeau d'en-tête supérieur Ciril */}
-          <div className="p-5 border-b-2 border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-              <div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-orange-600 shrink-0" />
-                  <span className="font-black text-sm tracking-wider uppercase text-slate-900 dark:text-white">
-                    VILLE DE GENNEVILLIERS
-                  </span>
-                </div>
-                <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 space-y-0.5">
-                  <p>177, avenue Gabriel Péri - 92230 GENNEVILLIERS</p>
-                  <p>SIRET : 219 200 368 00014 • APE : 8411Z • URSSAF : 920 120 000</p>
-                  <p className="font-semibold text-slate-700 dark:text-slate-300">
-                    Direction des Ressources Humaines • Gestion de la Paie
-                  </p>
-                </div>
+        {/* ─────────────────────────────────────────────────────────────────────────
+            PANNEAU « EN CLAIR » : L'EXPLICATION DE LA RUBRIQUE CHOISIE
+        ───────────────────────────────────────────────────────────────────────── */}
+        <div className="lg:col-span-4">
+          <div className="p-5 rounded-2xl border-2 border-orange-200 dark:border-orange-900/60 bg-white dark:bg-slate-900 shadow-md sticky top-6">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 shrink-0">
+                <BookOpen className="w-5 h-5" />
               </div>
-
-              <div className="text-right sm:text-right w-full sm:w-auto p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs">
-                <div className="font-black text-slate-800 dark:text-slate-200 uppercase tracking-wide">
-                  BULLETIN DE PAIE
-                </div>
-                <div className="text-[11px] text-orange-600 font-bold mt-0.5">
-                  Logiciel : Ciril Civil RH
-                </div>
-                <div className="text-[11px] text-slate-500 mt-0.5">
-                  Période : {new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }).toUpperCase()}
-                </div>
-                <div className="text-[10px] text-slate-400">
-                  Règlement : Virement fin de mois
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ─────────────────────────────────────────────────────────────────────────────
-              CARTOUCHE 1 : SITUATION ADMINISTRATIVE CIRIL (CALQUE 1)
-          ───────────────────────────────────────────────────────────────────────────── */}
-          <div
-            onClick={() => setSelectedZone('statut')}
-            className={`p-4 border-b-2 border-slate-300 dark:border-slate-700 transition-all cursor-pointer relative ${
-              isZoneActive('statut')
-                ? 'bg-blue-50/40 dark:bg-blue-950/20 hover:bg-blue-50/70'
-                : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-            } ${isZoneSelected('statut') ? 'ring-2 ring-inset ring-blue-500 bg-blue-50/80 dark:bg-blue-950/40' : ''}`}
-          >
-            {showOverlays && (
-              <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-600 text-white shadow-xs animate-pulse">
-                <span>Calque 1</span>
-                <HelpCircle className="w-3 h-3" />
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Matricule</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">014829</span>
-              </div>
-              <div className="sm:col-span-2">
-                <span className="text-[10px] text-slate-400 block uppercase">Nom et Prénom</span>
-                <span className="font-extrabold text-slate-900 dark:text-white uppercase">
-                  {agent.nom || "MARTIN Sylvie"}
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Temps / Quotité</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">{agent.quotite}% (35h00)</span>
-              </div>
-
-              <div className="sm:col-span-2">
-                <span className="text-[10px] text-slate-400 block uppercase">Grade / Emploi</span>
-                <span className="font-semibold text-slate-800 dark:text-slate-200">
-                  {agent.grade || "Adjoint administratif territorial"}
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Échelon</span>
-                <span className="font-bold text-blue-600 dark:text-blue-400">
-                  {agent.echelon || "Échelon 4"}
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Indice Brut / INM</span>
-                <span className="font-black text-orange-600 dark:text-orange-400 text-sm">
-                  {agent.indiceBrut || Math.round(agent.indiceMajore * 1.06)} / {agent.indiceMajore}
-                </span>
-              </div>
-
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Caisse Retraite</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">{agent.caisseRetraite}</span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Zone Résidence</span>
-                <span className="font-bold text-emerald-600 dark:text-emerald-400">Zone 1 (3%)</span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Enfants SFT</span>
-                <span className="font-bold text-purple-600 dark:text-purple-400">{agent.nbEnfantsSft || 0} enfant(s)</span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Statut Statutaire</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200 capitalize">{agent.statut}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* ─────────────────────────────────────────────────────────────────────────────
-              CORPS DU TABLEAU : RUBRIQUES DE PAIE CIRIL RH
-          ───────────────────────────────────────────────────────────────────────────── */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="bg-slate-100 dark:bg-slate-900 border-b border-slate-300 dark:border-slate-700 text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400">
-                  <th className="py-2.5 px-3 w-14">Code</th>
-                  <th className="py-2.5 px-3">Désignation de la Rubrique</th>
-                  <th className="py-2.5 px-2 text-right">Base</th>
-                  <th className="py-2.5 px-2 text-right">Taux Sal.</th>
-                  <th className="py-2.5 px-3 text-right text-emerald-700 dark:text-emerald-400">Part Salariale (Gain)</th>
-                  <th className="py-2.5 px-3 text-right text-rose-700 dark:text-rose-400">Retenue</th>
-                  <th className="py-2.5 px-2 text-right hidden sm:table-cell">Taux Pat.</th>
-                  <th className="py-2.5 px-3 text-right hidden sm:table-cell text-slate-500">Charges Pat.</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-800/80">
-                {/* ─────────────────────────────────────────────────────────────
-                    SECTION 1 : TRAITEMENT DE BASE & RÉSIDENCE (CALQUE 2)
-                ───────────────────────────────────────────────────────────── */}
-                <tr
-                  onClick={() => setSelectedZone('traitement')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('traitement')
-                      ? 'bg-emerald-50/50 dark:bg-emerald-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('traitement') ? 'bg-emerald-100/70 dark:bg-emerald-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2 px-3 font-mono text-slate-400">0100</td>
-                  <td className="py-2 px-3">
-                    <div className="flex items-center gap-1.5">
-                      {showOverlays && (
-                        <span className="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[9px] font-bold shrink-0">
-                          2
-                        </span>
-                      )}
-                      <span>Traitement de base (IM {agent.indiceMajore})</span>
-                    </div>
-                  </td>
-                  <td className="py-2 px-2 text-right">{agent.indiceMajore}</td>
-                  <td className="py-2 px-2 text-right font-mono text-[11px]">{VALEUR_POINT_INDICE_MENSUEL.toFixed(4)}</td>
-                  <td className="py-2 px-3 text-right font-bold text-emerald-600 dark:text-emerald-400">
-                    {formatCur(totaux.traitementBase)}
-                  </td>
-                  <td className="py-2 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                  <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                </tr>
-
-                <tr
-                  onClick={() => setSelectedZone('traitement')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('traitement')
-                      ? 'bg-emerald-50/50 dark:bg-emerald-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('traitement') ? 'bg-emerald-100/70 dark:bg-emerald-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2 px-3 font-mono text-slate-400">0105</td>
-                  <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
-                    Indemnité de résidence Zone 1
-                  </td>
-                  <td className="py-2 px-2 text-right">{formatCur(totaux.traitementBase)}</td>
-                  <td className="py-2 px-2 text-right">3,000 %</td>
-                  <td className="py-2 px-3 text-right font-bold text-emerald-600 dark:text-emerald-400">
-                    {formatCur(totaux.indemniteResidence)}
-                  </td>
-                  <td className="py-2 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                  <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                </tr>
-
-                {totaux.sft > 0 && (
-                  <tr
-                    onClick={() => setSelectedZone('traitement')}
-                    className={`transition-colors cursor-pointer ${
-                      isZoneActive('traitement')
-                        ? 'bg-emerald-50/50 dark:bg-emerald-950/20'
-                        : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                    }`}
-                  >
-                    <td className="py-2 px-3 font-mono text-slate-400">0110</td>
-                    <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
-                      Supplément Familial de Traitement ({agent.nbEnfantsSft} enf.)
-                    </td>
-                    <td className="py-2 px-2 text-right">{formatCur(totaux.traitementBase)}</td>
-                    <td className="py-2 px-2 text-right">-</td>
-                    <td className="py-2 px-3 text-right font-bold text-emerald-600 dark:text-emerald-400">
-                      {formatCur(totaux.sft)}
-                    </td>
-                    <td className="py-2 px-3 text-right text-slate-300">-</td>
-                    <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                    <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                  </tr>
-                )}
-
-                {/* ─────────────────────────────────────────────────────────────
-                    SECTION 2 : RIFSEEP (IFSE & CIA) (CALQUE 3)
-                ───────────────────────────────────────────────────────────── */}
-                <tr
-                  onClick={() => setSelectedZone('rifseep')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('rifseep')
-                      ? 'bg-purple-50/50 dark:bg-purple-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('rifseep') ? 'bg-purple-100/70 dark:bg-purple-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2 px-3 font-mono text-slate-400">0200</td>
-                  <td className="py-2 px-3">
-                    <div className="flex items-center gap-1.5">
-                      {showOverlays && (
-                        <span className="w-4 h-4 rounded-full bg-purple-600 text-white flex items-center justify-center text-[9px] font-bold shrink-0">
-                          3
-                        </span>
-                      )}
-                      <span className="font-semibold">RIFSEEP - IFSE mensuelle</span>
-                    </div>
-                  </td>
-                  <td className="py-2 px-2 text-right">Fixe</td>
-                  <td className="py-2 px-2 text-right">-</td>
-                  <td className="py-2 px-3 text-right font-bold text-purple-600 dark:text-purple-400">
-                    {formatCur(ifseVal)}
-                  </td>
-                  <td className="py-2 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                  <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                </tr>
-
-                {ciaVal > 0 && (
-                  <tr
-                    onClick={() => setSelectedZone('rifseep')}
-                    className={`transition-colors cursor-pointer ${
-                      isZoneActive('rifseep')
-                        ? 'bg-purple-50/50 dark:bg-purple-950/20'
-                        : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                    }`}
-                  >
-                    <td className="py-2 px-3 font-mono text-slate-400">0210</td>
-                    <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
-                      RIFSEEP - CIA (Complément Individuel Annuel)
-                    </td>
-                    <td className="py-2 px-2 text-right">-</td>
-                    <td className="py-2 px-2 text-right">-</td>
-                    <td className="py-2 px-3 text-right font-bold text-purple-600 dark:text-purple-400">
-                      {formatCur(ciaVal)}
-                    </td>
-                    <td className="py-2 px-3 text-right text-slate-300">-</td>
-                    <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                    <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                  </tr>
-                )}
-
-                {/* ─────────────────────────────────────────────────────────────
-                    SECTION 3 : COTISATIONS RETRAITE (CALQUE 4)
-                ───────────────────────────────────────────────────────────── */}
-                <tr
-                  onClick={() => setSelectedZone('retraite')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('retraite')
-                      ? 'bg-rose-50/50 dark:bg-rose-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('retraite') ? 'bg-rose-100/70 dark:bg-rose-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2 px-3 font-mono text-slate-400">0500</td>
-                  <td className="py-2 px-3">
-                    <div className="flex items-center gap-1.5">
-                      {showOverlays && (
-                        <span className="w-4 h-4 rounded-full bg-rose-600 text-white flex items-center justify-center text-[9px] font-bold shrink-0">
-                          4
-                        </span>
-                      )}
-                      <span>Retraite CNRACL (Pension)</span>
-                    </div>
-                  </td>
-                  <td className="py-2 px-2 text-right">{formatCur(tibVal)}</td>
-                  <td className="py-2 px-2 text-right">11,100 %</td>
-                  <td className="py-2 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(retraiteVal)}
-                  </td>
-                  <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-600">31,650 %</td>
-                  <td className="py-2 px-3 text-right hidden sm:table-cell font-mono text-slate-600">
-                    {formatCur(retraitePatronaleVal)}
-                  </td>
-                </tr>
-
-                <tr
-                  onClick={() => setSelectedZone('retraite')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('retraite')
-                      ? 'bg-rose-50/50 dark:bg-rose-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('retraite') ? 'bg-rose-100/70 dark:bg-rose-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2 px-3 font-mono text-slate-400">0510</td>
-                  <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
-                    Retraite Additionnelle RAFP (Primes)
-                  </td>
-                  <td className="py-2 px-2 text-right">{formatCur(ifseVal + ciaVal)}</td>
-                  <td className="py-2 px-2 text-right">5,000 %</td>
-                  <td className="py-2 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(rafpVal)}
-                  </td>
-                  <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-600">5,000 %</td>
-                  <td className="py-2 px-3 text-right hidden sm:table-cell font-mono text-slate-600">
-                    {formatCur(rafpPatronaleVal)}
-                  </td>
-                </tr>
-
-                {/* ─────────────────────────────────────────────────────────────
-                    SECTION 4 : SÉCURITÉ SOCIALE CSG / CRDS (CALQUE 5)
-                ───────────────────────────────────────────────────────────── */}
-                <tr
-                  onClick={() => setSelectedZone('csg')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('csg')
-                      ? 'bg-amber-50/50 dark:bg-amber-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('csg') ? 'bg-amber-100/70 dark:bg-amber-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2 px-3 font-mono text-slate-400">0600</td>
-                  <td className="py-2 px-3">
-                    <div className="flex items-center gap-1.5">
-                      {showOverlays && (
-                        <span className="w-4 h-4 rounded-full bg-amber-600 text-white flex items-center justify-center text-[9px] font-bold shrink-0">
-                          5
-                        </span>
-                      )}
-                      <span>CSG Déductible (6,80%)</span>
-                    </div>
-                  </td>
-                  <td className="py-2 px-2 text-right">{formatCur(assietteCsg)}</td>
-                  <td className="py-2 px-2 text-right">6,800 %</td>
-                  <td className="py-2 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(csgDedVal)}
-                  </td>
-                  <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                  <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                </tr>
-
-                <tr
-                  onClick={() => setSelectedZone('csg')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('csg')
-                      ? 'bg-amber-50/50 dark:bg-amber-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('csg') ? 'bg-amber-100/70 dark:bg-amber-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2 px-3 font-mono text-slate-400">0610</td>
-                  <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
-                    CSG Non Déductible (2,40%)
-                  </td>
-                  <td className="py-2 px-2 text-right">{formatCur(assietteCsg)}</td>
-                  <td className="py-2 px-2 text-right">2,400 %</td>
-                  <td className="py-2 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(csgNdVal)}
-                  </td>
-                  <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                  <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                </tr>
-
-                <tr
-                  onClick={() => setSelectedZone('csg')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('csg')
-                      ? 'bg-amber-50/50 dark:bg-amber-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('csg') ? 'bg-amber-100/70 dark:bg-amber-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2 px-3 font-mono text-slate-400">0620</td>
-                  <td className="py-2 px-3 pl-8 text-slate-700 dark:text-slate-300">
-                    CRDS Dette Sociale (0,50%)
-                  </td>
-                  <td className="py-2 px-2 text-right">{formatCur(assietteCsg)}</td>
-                  <td className="py-2 px-2 text-right">0,500 %</td>
-                  <td className="py-2 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2 px-3 text-right font-bold text-rose-600 dark:text-rose-400">
-                    {formatCur(crdsVal)}
-                  </td>
-                  <td className="py-2 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                  <td className="py-2 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                </tr>
-
-                {/* ─────────────────────────────────────────────────────────────
-                    SECTION 5 : PRÉLÈVEMENT À LA SOURCE (CALQUE 6)
-                ───────────────────────────────────────────────────────────── */}
-                <tr
-                  onClick={() => setSelectedZone('pas')}
-                  className={`transition-colors cursor-pointer ${
-                    isZoneActive('pas')
-                      ? 'bg-orange-50/50 dark:bg-orange-950/20'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900'
-                  } ${isZoneSelected('pas') ? 'bg-orange-100/70 dark:bg-orange-950/50 font-bold' : ''}`}
-                >
-                  <td className="py-2.5 px-3 font-mono text-slate-400">0950</td>
-                  <td className="py-2.5 px-3">
-                    <div className="flex items-center gap-1.5">
-                      {showOverlays && (
-                        <span className="w-4 h-4 rounded-full bg-orange-600 text-white flex items-center justify-center text-[9px] font-bold shrink-0">
-                          6
-                        </span>
-                      )}
-                      <span className="font-bold text-slate-900 dark:text-white">
-                        Prélèvement à la Source (Taux DGFiP : {totaux?.tauxPas || 0}%)
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-2.5 px-2 text-right font-semibold">{formatCur(totaux?.netFiscal)}</td>
-                  <td className="py-2.5 px-2 text-right font-bold text-orange-600 dark:text-orange-400">
-                    {totaux?.tauxPas || 0}%
-                  </td>
-                  <td className="py-2.5 px-3 text-right text-slate-300">-</td>
-                  <td className="py-2.5 px-3 text-right font-extrabold text-orange-600 dark:text-orange-400 text-sm">
-                    {formatCur(pasVal)}
-                  </td>
-                  <td className="py-2.5 px-2 text-right hidden sm:table-cell text-slate-400">-</td>
-                  <td className="py-2.5 px-3 text-right hidden sm:table-cell text-slate-400">-</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* ─────────────────────────────────────────────────────────────────────────────
-              PIED DU BULLETIN CIRIL RH : ENCADRÉ NET & TOTAUX (CALQUE 7)
-          ───────────────────────────────────────────────────────────────────────────── */}
-          <div
-            onClick={() => setSelectedZone('net')}
-            className={`p-4 border-t-2 border-slate-300 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900 transition-all cursor-pointer relative ${
-              isZoneActive('net') ? 'hover:bg-indigo-50/50' : ''
-            } ${isZoneSelected('net') ? 'ring-2 ring-inset ring-indigo-500 bg-indigo-50/70 dark:bg-indigo-950/40' : ''}`}
-          >
-            {showOverlays && (
-              <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-600 text-white shadow-xs animate-pulse">
-                <span>Calque 7</span>
-                <HelpCircle className="w-3 h-3" />
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mb-3">
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Total Brut</span>
-                <span className="font-extrabold text-slate-900 dark:text-white text-sm">
-                  {formatCur(totaux.salaireBrut)} €
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Total Retenues Salariales</span>
-                <span className="font-bold text-rose-600 dark:text-rose-400 text-sm">
-                  -{formatCur(totaux.totalCotisationsSalariales)} €
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Net Imposable (Fiscal)</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">
-                  {formatCur(totaux.netFiscal)} €
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Net Avant Impôt</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200">
-                  {formatCur(totaux.netAvantImpot)} €
-                </span>
-              </div>
-            </div>
-
-            {/* ENCADRÉ OFFICIEL CIRIL : LE NET PAYÉ EN EUROS */}
-            <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
-              <div className="text-center sm:text-left">
-                <span className="text-[11px] font-black uppercase tracking-wider text-emerald-100 block">
-                  NET PAYÉ EN EUROS (Virement Bancaire)
-                </span>
-                <span className="text-[11px] text-emerald-200">
-                  Montant viré sur votre compte bancaire à la fin du mois
-                </span>
-              </div>
-              <div className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                {formatCur(totaux.netAPayer)} €
-              </div>
-            </div>
-
-            {/* Coût employeur & Charges patronales */}
-            <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-3 border-t border-slate-200 dark:border-slate-800 mt-3">
-              <div>
-                Charges Patronales Ville de Gennevilliers : <span className="font-bold text-slate-700 dark:text-slate-300">{formatCur(totaux.totalCotisationsPatronales)} €</span>
-              </div>
-              <div>
-                Coût Global Employeur : <span className="font-bold text-slate-700 dark:text-slate-300">{formatCur(totaux.coutGlobalEmployeur)} €</span>
-              </div>
-            </div>
-
-            {/* Mention légale Ciril */}
-            <div className="text-[9px] text-slate-400 text-center pt-2 italic">
-              « Pour vous aider à faire valoir vos droits, conservez ce bulletin de paie sans limitation de durée » — Art. L. 3243-2 Code du travail
-            </div>
-          </div>
-        </div>
-
-        {/* Colonne Droite : Le Calque Explicatif Actif (Panneau Pédagogique) */}
-        <div className="lg:col-span-4 space-y-4">
-          <div className={`p-5 rounded-2xl border-2 ${activeCalqueDef.colorBorder} ${activeCalqueDef.colorBg} shadow-md space-y-4 sticky top-6`}>
-            <div className="flex items-center justify-between gap-2 border-b pb-3 border-slate-200 dark:border-slate-700">
-              <div className="flex items-center gap-2">
-                <span className={`w-6 h-6 rounded-full ${activeCalqueDef.accentBg} text-white flex items-center justify-center text-xs font-black`}>
-                  {activeCalqueDef.numero}
-                </span>
-                <span className="text-xs font-black uppercase tracking-wider text-slate-500">
-                  Explication du Calque {activeCalqueDef.numero}/7
-                </span>
-              </div>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/80 dark:bg-slate-900/80 ${activeCalqueDef.colorText} border border-current`}>
-                {activeCalqueDef.badgeLabel}
-              </span>
-            </div>
-
-            <div>
-              <h4 className="font-black text-base text-slate-900 dark:text-white leading-tight">
-                {activeCalqueDef.titre}
+              <h4 className="font-extrabold text-slate-900 dark:text-white text-sm leading-snug">
+                Chaque ligne de votre bulletin, expliquée simplement
               </h4>
-              <p className="text-xs text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">
-                {activeCalqueDef.vulgarisationSimple}
-              </p>
             </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              Aucun jargon : comprenez d'où vient chaque euro, ligne par ligne, comme un ami vous l'expliquerait.
+            </p>
 
-            {/* Formule Chiffrée Réelle */}
-            <div className="p-3 bg-white/90 dark:bg-slate-900/90 rounded-xl border border-slate-200 dark:border-slate-800 text-xs space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                Calcul exact sur votre bulletin :
-              </span>
-              <div className="font-mono font-bold text-slate-900 dark:text-white text-xs break-words">
-                {getRenderedFormule(activeCalqueDef)}
-              </div>
-            </div>
+            {(() => {
+              if (!selectedLigne) {
+                return (
+                  <div className="mt-4 p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 text-center">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                      👈 Cliquez sur une rubrique du bulletin pour lire son explication en clair ici.
+                    </p>
+                  </div>
+                );
+              }
+              const expl = CODES_EXPLIQUES[selectedLigne.id];
+              const isRetenue = selectedLigne.montantRetenue !== undefined || (selectedLigne.montantGain !== undefined && selectedLigne.montantGain < 0);
+              const montantAbsolu = isRetenue
+                ? (selectedLigne.montantGain !== undefined && selectedLigne.montantGain < 0 ? -selectedLigne.montantGain : selectedLigne.montantRetenue)
+                : selectedLigne.montantGain;
+              const list = lignes || [];
+              const idx = list.findIndex(l => l.id === selectedLigne.id);
+              const goto = (delta: number) => {
+                if (list.length === 0) return;
+                const next = list[(idx + delta + list.length) % list.length];
+                setSelectedLigneId(next.id);
+              };
+              const sensMontant = isRetenue ? '− ' : '+ ';
+              return (
+                <>
+                  <div className="mt-4 flex items-center justify-between text-[11px] font-bold text-slate-400">
+                    <button
+                      onClick={() => goto(-1)}
+                      className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+                    >
+                      ‹ Précédente
+                    </button>
+                    <span className="font-mono">{idx + 1} / {list.length}</span>
+                    <button
+                      onClick={() => goto(1)}
+                      className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+                    >
+                      Suivante ›
+                    </button>
+                  </div>
 
-            {/* Conseil CFDT Gennevilliers */}
-            <div className="p-3 bg-orange-50/80 dark:bg-orange-950/40 rounded-xl border border-orange-200 dark:border-orange-800 text-xs space-y-1">
-              <div className="flex items-center gap-1.5 text-orange-800 dark:text-orange-300 font-bold">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Point de vigilance CFDT Gennevilliers :</span>
-              </div>
-              <p className="text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">
-                {activeCalqueDef.conseilCFDT}
-              </p>
-            </div>
+                  <div className={`mt-3 rounded-2xl border-2 overflow-hidden ${isRetenue ? 'border-rose-200 dark:border-rose-900' : 'border-emerald-200 dark:border-emerald-900'}`}>
+                    <div className={`px-4 py-3.5 ${isRetenue ? 'bg-rose-50 dark:bg-rose-950/30' : 'bg-emerald-50 dark:bg-emerald-950/30'}`}>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                          Rubrique {RUBRIQUES_CIRIL[selectedLigne.id]?.code ?? selectedLigne.code ?? '—'}
+                        </span>
+                        <span className={`font-mono font-black text-lg ${isRetenue ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                          {sensMontant}{formatCur(montantAbsolu)} €
+                        </span>
+                      </div>
+                      <h5 className={`font-extrabold text-base mt-1.5 ${isRetenue ? 'text-rose-900 dark:text-rose-200' : 'text-emerald-900 dark:text-emerald-200'}`}>
+                        {expl?.titre || selectedLigne.libelle}
+                      </h5>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      <p className="text-[13px] leading-relaxed text-slate-700 dark:text-slate-300">
+                        {expl?.simple || selectedLigne.explicationLigne}
+                      </p>
 
-            {/* Référence légale */}
-            <div className="flex items-center gap-1.5 text-[10px] text-slate-500 pt-1">
-              <Scale className="w-3 h-3 text-slate-400 shrink-0" />
-              <span className="italic">{activeCalqueDef.referenceLegale}</span>
-            </div>
+                      {expl?.pourquoi && (
+                        <div className="text-[12px] leading-relaxed text-slate-600 dark:text-slate-300">
+                          <span className="font-bold text-slate-500 dark:text-slate-400">💡 Bon à savoir — </span>
+                          {expl.pourquoi}
+                        </div>
+                      )}
 
-            {/* Navigation rapide entre les 7 calques */}
-            <div className="pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
-              <button
-                onClick={() => {
-                  const idx = CALQUES_CIRIL.findIndex(c => c.id === activeCalqueDef.id);
-                  const prevIdx = (idx - 1 + CALQUES_CIRIL.length) % CALQUES_CIRIL.length;
-                  setSelectedZone(CALQUES_CIRIL[prevIdx].id);
-                }}
-                className="px-2.5 py-1 rounded bg-white dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 cursor-pointer"
-              >
-                ← Précédent
-              </button>
-              <span className="text-[11px] font-mono text-slate-400">
-                {activeCalqueDef.numero} / 7
-              </span>
-              <button
-                onClick={() => {
-                  const idx = CALQUES_CIRIL.findIndex(c => c.id === activeCalqueDef.id);
-                  const nextIdx = (idx + 1) % CALQUES_CIRIL.length;
-                  setSelectedZone(CALQUES_CIRIL[nextIdx].id);
-                }}
-                className="px-2.5 py-1 rounded bg-white dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 cursor-pointer"
-              >
-                Suivant →
-              </button>
-            </div>
+                      {expl?.verifier && (
+                        <div className="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 text-[12px] leading-relaxed text-blue-900 dark:text-blue-200">
+                          ✅ <b>À vérifier sur votre bulletin — </b>{expl.verifier}
+                        </div>
+                      )}
+
+                      {expl?.attention && (
+                        <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 text-[12px] leading-relaxed text-amber-900 dark:text-amber-200">
+                          ⚠️ <b>Attention — </b>{expl.attention}
+                        </div>
+                      )}
+
+                      {selectedLigne.base !== undefined && selectedLigne.taux !== undefined && (
+                        <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-mono text-[11px] text-slate-600 dark:text-slate-300">
+                          {selectedLigne.id === 'tib' || selectedLigne.id === 'nbi'
+                            ? `Indice ${formatCur(selectedLigne.base)} × ${selectedLigne.taux.toFixed(5).replace('.', ',')} € le point → ${sensMontant}${formatCur(montantAbsolu)} €`
+                            : `Base ${formatCur(selectedLigne.base)} € × Taux ${selectedLigne.taux.toLocaleString('fr-FR')} % → ${sensMontant}${formatCur(montantAbsolu)} €`}
+                        </div>
+                      )}
+
+                      {selectedLigne.partPatronale !== undefined && selectedLigne.partPatronale > 0 && (
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                          En plus, la Ville verse <b className="text-slate-700 dark:text-slate-300">{formatCur(selectedLigne.partPatronale)} €</b> de sa part (cotisation employeur).
+                        </p>
+                      )}
+
+                      {expl?.reference && (
+                        <div className="text-[10px] text-slate-400 italic border-t border-slate-200 dark:border-slate-800 pt-2">
+                          📜 Référence : {expl.reference}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+
+            <p className="mt-3 text-[10px] text-slate-400 italic">
+              Cliquez ici ou directement sur une ligne du bulletin.
+            </p>
           </div>
         </div>
       </div>

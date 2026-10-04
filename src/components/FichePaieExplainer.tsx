@@ -1,35 +1,22 @@
 import React, { useState, useMemo, useRef } from 'react';
 import {
-  FileText,
   Upload,
   Sparkles,
   CheckCircle2,
-  AlertTriangle,
   ExternalLink,
-  Download,
   Copy,
-  Printer,
   Check,
   Info,
   ShieldCheck,
   ChevronDown,
   ChevronUp,
   FileSpreadsheet,
-  Coins,
   Calculator,
   ArrowLeft,
   RefreshCw,
-  HelpCircle,
-  FileCheck,
-  Percent,
-  TrendingDown,
-  Building,
-  UserCheck,
   Sliders,
   Code,
   ClipboardPaste,
-  FileCode,
-  CheckCircle,
   Layers,
   BarChart3
 } from 'lucide-react';
@@ -40,14 +27,12 @@ import {
   parseUploadedPaySlipWithMeta,
   FICHE_PAIE_PRESETS,
   OPENFISCA_REPO_URL,
-  VALEUR_POINT_INDICE_MENSUEL,
   type CalculParams,
   type FichePaieAnalyseResult,
   type FichePaieLigne,
   type ParseMetadata
 } from '../services/openfiscaPayEngine';
 import { extractTextFromFile } from '../services/statutoryAuditEngine';
-import { exportToOfficialDocx } from '../utils/docxExport';
 
 interface FichePaieExplainerProps {
   onClose?: () => void;
@@ -81,7 +66,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   // Fichier uploadé (le cas échéant)
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [uploadedRawText, setUploadedRawText] = useState<string | null>(null);
-  const [uploadMetadata, setUploadMetadata] = useState<ParseMetadata | null>(null);
+  const [, setUploadMetadata] = useState<ParseMetadata | null>(null);
   const [isParsing, setIsParsing] = useState<boolean>(false);
   const [parsingStatus, setParsingStatus] = useState<string>("");
   const [dragActive, setDragActive] = useState<boolean>(false);
@@ -104,7 +89,6 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   });
   const [showAdvancedTuning, setShowAdvancedTuning] = useState<boolean>(false);
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
-  const [copiedAudit, setCopiedAudit] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const synthesisSectionRef = useRef<HTMLDivElement>(null);
@@ -259,86 +243,6 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
     return result.lignes.filter(l => l.openFiscaVar.categorie === categoryFilter);
   }, [result.lignes, categoryFilter]);
 
-  // Export DOCX officiel
-  const handleExportDocx = async () => {
-    const rawReport = `VILLE DE GENNEVILLIERS - SECTION SYNDICALE CFDT
-AUDIT ET EXPLICATION DE FICHE DE PAIE • MODÈLE OPENFISCA-FRANCE
-Date d'analyse : ${result.dateAnalyse}
-Agent : ${result.agent.nom} (${result.agent.grade} - ${result.agent.echelon})
-Statut : ${result.agent.statut.toUpperCase()} • Régime Retraite : ${result.agent.caisseRetraite}
-Indice Majoré : ${result.agent.indiceMajore} • Point d'indice mensuel : ${VALEUR_POINT_INDICE_MENSUEL.toFixed(5)} €
-Quotité : ${result.agent.quotite}% • Zone de résidence : Zone 1 (3%) • Enfants SFT : ${result.agent.nbEnfantsSft}
-
-============================================================
-1. SYNTHÈSE DES TOTAUX
-============================================================
-- Traitement Indiciaire Brut (TIB) : ${result.totaux.traitementBase.toFixed(2)} €
-- Nouvelle Bonification Indiciaire : ${result.totaux.nbi.toFixed(2)} €
-- Indemnité de Résidence Zone 1 (3%) : ${result.totaux.indemniteResidence.toFixed(2)} €
-- Supplément Familial de Traitement : ${result.totaux.sft.toFixed(2)} €
-- Primes RIFSEEP (IFSE + CIA) : ${(result.totaux.primesIfse + result.totaux.primesCia).toFixed(2)} €
-- TOTAL BRUT RÉMUNÉRATION : ${result.totaux.salaireBrut.toFixed(2)} €
-- Total Retenues et Cotisations Salariales : -${result.totaux.totalCotisationsSalariales.toFixed(2)} €
-- SALAIRE NET AVANT IMPÔT : ${result.totaux.netAvantImpot.toFixed(2)} €
-- Net Fiscal / Imposable DGFiP : ${result.totaux.netFiscal.toFixed(2)} €
-- Prélèvement à la Source (${result.totaux.tauxPas}%) : -${result.totaux.montantPas.toFixed(2)} €
-- SALAIRE NET À PAYER (EN BANQUE) : ${result.totaux.netAPayer.toFixed(2)} €
-- Cotisations Patronales Ville : ${result.totaux.totalCotisationsPatronales.toFixed(2)} €
-- Coût Global Employeur : ${result.totaux.coutGlobalEmployeur.toFixed(2)} €
-
-============================================================
-2. AUDIT DE CONFORMITÉ STATUTAIRE (Score : ${result.syntheseConformite.scoreConformite}/100)
-============================================================
-Points de contrôle validés :
-${result.syntheseConformite.pointsForts.map(p => ` [OK] ${p}`).join('\n')}
-
-Recommandations syndicales CFDT :
-${result.syntheseConformite.recommandationsCFDT.map(r => ` - ${r}`).join('\n')}
-
-============================================================
-3. DÉCOMPTE LIGNE PAR LIGNE
-============================================================
-${result.lignes.map(l => `[${l.code || 'DIV'}] ${l.libelle}
-   OpenFisca Variable : ${l.openFiscaVar.id} (${l.openFiscaVar.nom})
-   Base : ${l.base !== undefined ? l.base : '-'} | Taux : ${l.taux !== undefined ? (l.taux < 1 ? (l.taux * 100).toFixed(2) + '%' : l.taux) : '-'}
-   Gain : ${l.montantGain !== undefined ? l.montantGain.toFixed(2) + ' €' : '-'} | Retenue : ${l.montantRetenue !== undefined ? '-' + l.montantRetenue.toFixed(2) + ' €' : '-'}
-   Base légale : ${l.openFiscaVar.legalReference}
-   Formule : ${l.openFiscaVar.formule}
-   Explication : ${l.explicationLigne}
-   ${l.conseilAgent ? 'Conseil CFDT : ' + l.conseilAgent : ''}
-`).join('\n------------------------------------------------------------\n')}
-`;
-
-    try {
-      await exportToOfficialDocx({
-        title: `Audit_Fiche_Paie_${result.agent.nom.replace(/\s+/g, "_")}`,
-        content: rawReport,
-        rawText: rawReport,
-        docType: 'decision'
-      });
-      toast.success("Document Word (.docx) généré et téléchargé !");
-    } catch (e) {
-      console.error(e);
-      toast.error("Erreur lors de la génération du document Word.");
-    }
-  };
-
-  const handleCopyAudit = () => {
-    const text = `AUDIT FICHE DE PAIE CFDT GENNEVILLIERS (Moteur OpenFisca-France)
-Agent : ${result.agent.nom} • Indice Majoré : ${result.agent.indiceMajore}
-Traitement Brut : ${result.totaux.salaireBrut.toFixed(2)} €
-Cotisations Salariales : -${result.totaux.totalCotisationsSalariales.toFixed(2)} €
-Net Avant Impôt : ${result.totaux.netAvantImpot.toFixed(2)} €
-Prélèvement à la Source (${result.totaux.tauxPas}%) : -${result.totaux.montantPas.toFixed(2)} €
-Net à Payer en Banque : ${result.totaux.netAPayer.toFixed(2)} €
-Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
-
-    navigator.clipboard.writeText(text);
-    setCopiedAudit(true);
-    toast.success("Synthèse copiée dans le presse-papier !");
-    setTimeout(() => setCopiedAudit(false), 2000);
-  };
-
   const handleCopyCode = () => {
     navigator.clipboard.writeText(result.openFiscaCodeSnippet);
     setCopiedCode(true);
@@ -361,26 +265,6 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-800 dark:bg-orange-500/20 dark:text-orange-400 border border-orange-200 dark:border-orange-500/30">
-                <FileCheck className="w-3.5 h-3.5" />
-                Explicateur & Audit de Bulletin
-              </span>
-              <a
-                href={OPENFISCA_REPO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors"
-                title="Consulter le modèle de calcul ouvert officiel"
-              >
-                <span>Modèle OpenFisca-France</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                <Building className="w-3 h-3" />
-                Ville de Gennevilliers
-              </span>
-            </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Comprenez Votre Fiche de Paie
             </h1>
@@ -390,38 +274,16 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
+          {onClose && (
             <button
-              onClick={handleExportDocx}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              onClick={onClose}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0"
+              title="Retour aux calculateurs"
             >
-              <Download className="w-4 h-4" />
-              <span>Télécharger (.docx)</span>
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              <span>Retour</span>
             </button>
-            <button
-              onClick={handleCopyAudit}
-              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all cursor-pointer"
-            >
-              {copiedAudit ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
-              <span>{copiedAudit ? 'Copié' : 'Copier'}</span>
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all cursor-pointer"
-            >
-              <Printer className="w-4 h-4" />
-              <span>Imprimer</span>
-            </button>
-            {onClose && (
-              <button
-                onClick={onClose}
-                className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-all cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>Fermer</span>
-              </button>
-            )}
-          </div>
+          )}
         </div>
       </div>
 
@@ -548,6 +410,12 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
                   </button>
                 </div>
               </div>
+            )}
+
+            {showRawTextModal && uploadedRawText && (
+              <pre className="mt-2 max-h-44 overflow-y-auto p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-[10px] font-mono text-slate-600 dark:text-slate-300 whitespace-pre-wrap">
+                {uploadedRawText}
+              </pre>
             )}
           </div>
 
@@ -712,211 +580,6 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
           )}
         </div>
       </div>
-
-      {/* ─────────────────────────────────────────────────────────────────────────────
-          BANDEAU DE RÉSULTAT DU FICHIER UPLOADÉ & CONTRÔLE DIRECT
-      ───────────────────────────────────────────────────────────────────────────── */}
-      {uploadedFileName && (
-        <div className="bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 dark:from-slate-900 dark:via-orange-950/20 dark:to-slate-900 border-2 border-orange-500/50 rounded-2xl p-6 shadow-md space-y-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-orange-200 dark:border-orange-500/30">
-            <div className="flex items-start gap-3">
-              <div className="p-2.5 bg-orange-600 text-white rounded-xl shadow-sm shrink-0 mt-0.5">
-                <FileCheck className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-extrabold text-slate-900 dark:text-white text-base sm:text-lg">
-                    Bulletin analysé : {uploadedFileName}
-                  </h3>
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-600 text-white">
-                    Actif dans la synthèse
-                  </span>
-                </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                  {uploadMetadata ? uploadMetadata.summary : "Données extraites du document."} Vérifiez ou ajustez ci-dessous pour actualiser la synthèse en temps réel.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 shrink-0">
-              {uploadedRawText && (
-                <button
-                  onClick={() => setShowRawTextModal(!showRawTextModal)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 cursor-pointer"
-                >
-                  {showRawTextModal ? "Masquer le texte brut" : "Inspecter le texte extrait"}
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* 4 Curseurs & Inputs Directs Immédiats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
-            {/* 1. Indice Majoré (IM) */}
-            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border-2 border-orange-400 dark:border-orange-500 shadow-sm">
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
-                  Indice Majoré (IM)
-                </label>
-                <span className="text-[11px] font-mono text-orange-600 font-bold">
-                  {params.indiceMajore} pts
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setParams(prev => ({ ...prev, indiceMajore: Math.max(250, prev.indiceMajore - 1) }))}
-                  className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold text-sm cursor-pointer"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  min="250"
-                  max="850"
-                  value={params.indiceMajore}
-                  onChange={(e) => setParams(prev => ({ ...prev, indiceMajore: parseInt(e.target.value, 10) || 382 }))}
-                  className="w-full text-center font-black text-lg text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-slate-800/80 p-1.5 rounded-lg border border-orange-300 dark:border-orange-500/50 focus:ring-2 focus:ring-orange-500"
-                />
-                <button
-                  onClick={() => setParams(prev => ({ ...prev, indiceMajore: Math.min(850, prev.indiceMajore + 1) }))}
-                  className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold text-sm cursor-pointer"
-                >
-                  +
-                </button>
-              </div>
-              <span className="text-[10px] text-slate-500 block mt-1">
-                Traitement base : {(params.indiceMajore * VALEUR_POINT_INDICE_MENSUEL).toFixed(2)} €
-              </span>
-            </div>
-
-            {/* 2. IFSE Mensuelle */}
-            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border-2 border-emerald-400 dark:border-emerald-500 shadow-sm">
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
-                  Prime IFSE (RIFSEEP)
-                </label>
-                <span className="text-[11px] font-mono text-emerald-600 font-bold">
-                  {params.ifse || 0} €
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <input
-                  type="number"
-                  step="10"
-                  min="0"
-                  max="4000"
-                  value={params.ifse || 0}
-                  onChange={(e) => setParams(prev => ({ ...prev, ifse: parseFloat(e.target.value) || 0 }))}
-                  className="w-full text-center font-black text-lg text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-slate-800/80 p-1.5 rounded-lg border border-emerald-300 dark:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500"
-                />
-                <span className="text-xs font-bold text-slate-500">€/mois</span>
-              </div>
-              <span className="text-[10px] text-slate-500 block mt-1">
-                Partie principale du RIFSEEP
-              </span>
-            </div>
-
-            {/* 3. Enfants à charge (SFT) */}
-            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
-                  Enfants SFT
-                </label>
-                <span className="text-[11px] font-mono text-purple-600 font-bold">
-                  {params.nbEnfantsSft || 0} enfant(s)
-                </span>
-              </div>
-              <select
-                value={params.nbEnfantsSft || 0}
-                onChange={(e) => setParams(prev => ({ ...prev, nbEnfantsSft: parseInt(e.target.value, 10) || 0 }))}
-                className="w-full font-bold text-xs p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
-              >
-                <option value={0}>0 enfant (0 €)</option>
-                <option value={1}>1 enfant (2,29 €)</option>
-                <option value={2}>2 enfants (~73 €)</option>
-                <option value={3}>3 enfants (~181 €)</option>
-                <option value={4}>4+ enfants</option>
-              </select>
-              <span className="text-[10px] text-slate-500 block mt-1">
-                Supplément Familial
-              </span>
-            </div>
-
-            {/* 4. Prélèvement à la source */}
-            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-blue-400 dark:border-blue-500 shadow-sm">
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
-                  Taux PAS (Impôt)
-                </label>
-                <span className="text-[11px] font-mono text-blue-600 font-bold">
-                  {params.tauxPas || 0} %
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => setParams(prev => ({ ...prev, tauxPas: Math.max(0, Math.round(((prev.tauxPas || 0) - 0.1) * 10) / 10) }))}
-                  className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold text-xs cursor-pointer"
-                  title="-0.1%"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="45"
-                  value={params.tauxPas || 0}
-                  onChange={(e) => setParams(prev => ({ ...prev, tauxPas: parseFloat(e.target.value) || 0 }))}
-                  className="w-full text-center font-black text-lg text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-slate-800/80 p-1.5 rounded-lg border border-blue-300 dark:border-blue-500/50 focus:ring-2 focus:ring-blue-500"
-                />
-                <button
-                  onClick={() => setParams(prev => ({ ...prev, tauxPas: Math.min(45, Math.round(((prev.tauxPas || 0) + 0.1) * 10) / 10) }))}
-                  className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold text-xs cursor-pointer"
-                  title="+0.1%"
-                >
-                  +
-                </button>
-                <span className="text-xs font-bold text-slate-500">%</span>
-              </div>
-              <span className="text-[10px] text-slate-500 block mt-1">
-                Taux personnalisé DGFiP
-              </span>
-            </div>
-          </div>
-
-          {/* Détections automatiques du document */}
-          {uploadMetadata && uploadMetadata.detectedItems.length > 0 && (
-            <div className="pt-2">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
-                Rubriques automatiquement reconnues dans votre fichier :
-              </span>
-              <div className="flex flex-wrap items-center gap-2">
-                {uploadMetadata.detectedItems.map((item, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/90 dark:bg-slate-900/90 text-emerald-900 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 shadow-2xs"
-                  >
-                    <Check className="w-3 h-3 text-emerald-600 shrink-0" />
-                    <span>{item}</span>
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {showRawTextModal && uploadedRawText && (
-            <div className="mt-4 pt-4 border-t border-orange-200 dark:border-orange-800/50">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Texte brut extrait du document :</span>
-                <span className="text-xs text-slate-400 font-mono">{uploadedRawText.length} caractères</span>
-              </div>
-              <pre className="p-3 bg-white/80 dark:bg-slate-950 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-300 max-h-48 overflow-y-auto whitespace-pre-wrap border border-slate-200 dark:border-slate-800">
-                {uploadedRawText}
-              </pre>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* ─────────────────────────────────────────────────────────────────────────────
           SÉLECTEUR DE MODE : 1. EXPLICATION SIMPLE (CIRIL) vs 2. EXPLICATION COMPLEXE (SYNTHÈSE)

@@ -633,7 +633,7 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
     nbEnfantsSft = 0,
     quotite = 100,
     statut = "titulaire",
-    tauxPas = 2.5,
+    tauxPas = 0,
     nomAgent = "AGENT Public",
     grade = "Adjoint territorial",
     echelon = "Échelon statutaire",
@@ -1175,33 +1175,140 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
     detectedItems.push("Statut : Fonctionnaire Titulaire (Pension CNRACL 11,10% & RAFP)");
   }
 
-  // 6. Détection SFT / Enfants à charge
+  // 6. Détection SFT / Enfants à charge (Heuristique Multi-passes)
   let nbEnfants = 0;
-  if (t.includes("sft") || t.includes("famille") || t.includes("supplément familial") || t.includes("supplement familial")) {
-    const enfMatch = t.match(/(\d)\s*(?:enfant|charge)/i)
-      || t.match(/sft\s*[:=]?\s*(\d)/i);
-    if (enfMatch) {
-      nbEnfants = parseInt(enfMatch[1], 10);
+  let sftDetected = false;
+
+  // A. Détection explicite de l'absence d'enfants ou 0 enfant
+  if (
+    /\b0\s*(?:enfant|charge|enf\b)/i.test(t) ||
+    /(?:nb\s*d['’]?|nombre\s*d['’]?|nb\s*)?enfants?\s*[:=]?\s*0\b/i.test(t) ||
+    /(?:charges?\s*de\s*famille|charges?)\s*[:=]?\s*0\b/i.test(t) ||
+    /\bsft\s*[:=]?\s*(?:non|aucun|0\b|néant|neant)/i.test(t) ||
+    /sans\s*enfant/i.test(t)
+  ) {
+    nbEnfants = 0;
+    sftDetected = true;
+    detectedItems.push("Enfants à charge (SFT) : 0 enfant (aucun supplément versé)");
+  } else {
+    // B. Détection explicite d'un nombre d'enfants > 0
+    const enfCountMatch = t.match(/(?:nb\s*d['’]?|nombre\s*d['’]?|nb\s*)?enfants?(?:\s*à\s*charge)?\s*[:=]?\s*([1-9])\b/i)
+      || t.match(/\b([1-9])\s*(?:enfants?\s*à\s*charge|enfants?\s*charge|enfants?\b)/i)
+      || t.match(/\bsft\s*(?:\([^)]*\)|[a-z\s]*)\s*[:=]?\s*([1-9])\s*(?:enf|enfant)?\b/i);
+
+    if (enfCountMatch) {
+      nbEnfants = parseInt(enfCountMatch[1], 10);
+      sftDetected = true;
+      detectedItems.push(`Supplément Familial (SFT) : ${nbEnfants} enfant(s) pris en compte`);
     } else {
-      // Déduction d'après les montants types du SFT
-      if (t.includes("73.04") || t.includes("73,04")) nbEnfants = 2;
-      else if (t.includes("181.56") || t.includes("181,56")) nbEnfants = 3;
-      else nbEnfants = 1;
+      // C. Déduction d'après les montants effectifs de la ligne SFT sur le bulletin
+      for (const line of lines) {
+        const lLower = line.toLowerCase();
+        if (lLower.includes("sft") || lLower.includes("supplement familial") || lLower.includes("supplément familial")) {
+          const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+            .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+            .filter(a => a > 0);
+
+          if (amounts.length > 0) {
+            const sftAmt = amounts[amounts.length - 1];
+            if (sftAmt >= 1 && sftAmt < 15) {
+              nbEnfants = 1;
+              sftDetected = true;
+              detectedItems.push(`Supplément Familial (SFT) : 1 enfant déduit du montant (${sftAmt.toFixed(2)} €)`);
+            } else if (sftAmt >= 60 && sftAmt < 160) {
+              nbEnfants = 2;
+              sftDetected = true;
+              detectedItems.push(`Supplément Familial (SFT) : 2 enfants déduit du montant (${sftAmt.toFixed(2)} €)`);
+            } else if (sftAmt >= 160 && sftAmt < 330) {
+              nbEnfants = 3;
+              sftDetected = true;
+              detectedItems.push(`Supplément Familial (SFT) : 3 enfants déduit du montant (${sftAmt.toFixed(2)} €)`);
+            } else if (sftAmt >= 330) {
+              nbEnfants = 4;
+              sftDetected = true;
+              detectedItems.push(`Supplément Familial (SFT) : 4+ enfants déduit du montant (${sftAmt.toFixed(2)} €)`);
+            }
+          }
+          break;
+        }
+      }
     }
-    if (nbEnfants > 0) detectedItems.push(`Supplément Familial (SFT) : ${nbEnfants} enfant(s) pris en compte`);
   }
 
-  // 7. Détection Taux PAS (Prélèvement à la Source)
-  let tauxPas = 2.5;
-  const pasMatch = t.match(/taux\s*(?:pas|personnalis[ée]|imposition)?\s*[:=]?\s*([\d]+[,.]\d{1,2})\s*%/i)
-    || t.match(/source\s*[:=]?\s*([\d]+[,.]\d{1,2})\s*%/i)
-    || t.match(/taux\s*moyen\s*[:=]?\s*([\d]+[,.]\d{1,2})\s*%/i);
-  if (pasMatch) {
-    const val = parseFloat(pasMatch[1].replace(",", "."));
-    if (val >= 0 && val <= 45) {
-      tauxPas = val;
-      detectedItems.push(`Taux Prélèvement à la Source (PAS) : ${tauxPas}%`);
+  if (!sftDetected && nbEnfants === 0) {
+    detectedItems.push("Enfants à charge (SFT) : 0 enfant");
+  }
+
+  // 7. Détection Taux PAS (Prélèvement à la Source - Multi-passes)
+  let tauxPas = 0;
+  let pasFound = false;
+
+  // Passe A : Mots-clés explicites de taux avec décimale (avec ou sans le symbole %)
+  const pasRegexList = [
+    /(?:taux|tx)\s*(?:personnalis[ée]|non\s*personnalis[ée]|transmis(?:\s*par)?\s*(?:la\s*)?dgfip|dgfip|bar[èe]me|neutre|appliqu[ée]|imposition|d['’]imposition|effectif|r[ée]el|retenu|calcul[ée]|pr[ée]l[èe]vement|de\s*pr[ée]l[èe]vement|pas|source)\s*[:=]?\s*(\d{1,2}[.,]\d{1,2})\s*%?/i,
+    /(?:pr[ée]l[èe]vement\s*(?:[àa]\s*la\s*)?source|imp[ôo]t\s*(?:sur\s*le\s*revenu)?\s*pr[ée]lev[ée]|p\.?a\.?s\.?|retenue\s*[àa]\s*la\s*source)[^%\n\r]{0,60}?(?:taux|tx)?\s*[:=]?\s*(\d{1,2}[.,]\d{1,2})\s*%/i,
+    /(?:taux|tx)\s*[:=]\s*(\d{1,2}[.,]\d{1,2})\s*%/i,
+    /(?:taux|tx)\s*[:=]\s*(\d{1,2}[.,]\d{1,2})\b/i
+  ];
+
+  for (const reg of pasRegexList) {
+    const m = t.match(reg);
+    if (m) {
+      const val = parseFloat(m[1].replace(",", "."));
+      // Ne pas confondre avec les taux sociaux légaux fixes
+      if (val >= 0.1 && val <= 45 && val !== 11.1 && val !== 98.25 && val !== 6.8 && val !== 2.4 && val !== 0.5 && val !== 5.0 && val !== 2.8 && val !== 6.95) {
+        tauxPas = val;
+        pasFound = true;
+        detectedItems.push(`Taux Prélèvement à la Source (PAS) détecté : ${tauxPas}%`);
+        break;
+      }
     }
+  }
+
+  // Passe B : Vérification arithmétique sur la ligne tabulaire [Assiette] [Taux] [Montant]
+  if (!pasFound) {
+    for (const line of lines) {
+      const lLower = line.toLowerCase();
+      if (lLower.includes("source") || lLower.includes("pas") || lLower.includes("impot") || lLower.includes("impôt") || lLower.includes("dgfip")) {
+        const nums = Array.from(line.matchAll(/([\d\s]+[,.]\d{1,2})/g))
+          .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")));
+        if (nums.length >= 3) {
+          for (let i = 0; i < nums.length - 2; i++) {
+            const assiette = nums[i];
+            const candidateRate = nums[i + 1];
+            const montant = nums[i + 2];
+            if (assiette >= 500 && candidateRate > 0 && candidateRate <= 45 && montant > 0) {
+              const expectedMontant = assiette * (candidateRate / 100);
+              if (Math.abs(expectedMontant - montant) < 1.0) {
+                tauxPas = candidateRate;
+                pasFound = true;
+                detectedItems.push(`Taux PAS certifié par calcul (${assiette.toFixed(2)} € x ${tauxPas}% = ${montant.toFixed(2)} €)`);
+                break;
+              }
+            }
+          }
+        }
+      }
+      if (pasFound) break;
+    }
+  }
+
+  // Passe C : Recherche globale de tout taux non-social dans le document
+  if (!pasFound) {
+    const allPercents = Array.from(t.matchAll(/(\d{1,2}[.,]\d{1,2})\s*%/g))
+      .map(m => parseFloat(m[1].replace(",", ".")))
+      .filter(p => ![11.1, 5, 5.0, 6.8, 2.4, 0.5, 98.25, 2.8, 6.95, 3, 3.0, 1, 1.0, 20, 100, 80, 50].includes(p));
+
+    if (allPercents.length > 0) {
+      tauxPas = allPercents[0];
+      pasFound = true;
+      detectedItems.push(`Taux PAS extrait du bulletin : ${tauxPas}%`);
+    }
+  }
+
+  if (!pasFound) {
+    tauxPas = 0;
+    detectedItems.push("Taux PAS : 0,0% (Non imposable ou taux nul par défaut)");
   }
 
   // 8. Détection Nom de l'agent et Grade

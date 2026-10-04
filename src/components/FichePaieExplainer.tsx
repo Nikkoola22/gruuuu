@@ -679,10 +679,10 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
                 <input
                   type="range"
                   min="0"
-                  max="25"
-                  step="0.5"
+                  max="35"
+                  step="0.1"
                   value={params.tauxPas || 0}
-                  onChange={(e) => setParams(prev => ({ ...prev, tauxPas: parseFloat(e.target.value) }))}
+                  onChange={(e) => setParams(prev => ({ ...prev, tauxPas: parseFloat(e.target.value) || 0 }))}
                   className="w-full accent-orange-600 cursor-pointer"
                 />
               </div>
@@ -837,7 +837,7 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
             </div>
 
             {/* 4. Prélèvement à la source */}
-            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-blue-400 dark:border-blue-500 shadow-sm">
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
                   Taux PAS (Impôt)
@@ -847,15 +847,29 @@ Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setParams(prev => ({ ...prev, tauxPas: Math.max(0, Math.round(((prev.tauxPas || 0) - 0.1) * 10) / 10) }))}
+                  className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold text-xs cursor-pointer"
+                  title="-0.1%"
+                >
+                  -
+                </button>
                 <input
                   type="number"
-                  step="0.5"
+                  step="0.1"
                   min="0"
                   max="45"
                   value={params.tauxPas || 0}
                   onChange={(e) => setParams(prev => ({ ...prev, tauxPas: parseFloat(e.target.value) || 0 }))}
                   className="w-full text-center font-black text-lg text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-slate-800/80 p-1.5 rounded-lg border border-blue-300 dark:border-blue-500/50 focus:ring-2 focus:ring-blue-500"
                 />
+                <button
+                  onClick={() => setParams(prev => ({ ...prev, tauxPas: Math.min(45, Math.round(((prev.tauxPas || 0) + 0.1) * 10) / 10) }))}
+                  className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold text-xs cursor-pointer"
+                  title="+0.1%"
+                >
+                  +
+                </button>
                 <span className="text-xs font-bold text-slate-500">%</span>
               </div>
               <span className="text-[10px] text-slate-500 block mt-1">

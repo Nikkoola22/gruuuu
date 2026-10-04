@@ -81,6 +81,76 @@ export interface ProtectionFonctionnelleFormData {
   detailsPrejudice: string;
 }
 
+export type TypeInstanceParitaire = "cap" | "ccp" | "f3sct_cst";
+
+export type MotifSaisineCap = 
+  | "crep"
+  | "refus_formation"
+  | "refus_temps_partiel"
+  | "refus_teletravail"
+  | "licenciement_insuffisance";
+
+export type MotifSaisineCcp = 
+  | "licenciement_contractuel_insuffisance"
+  | "licenciement_contractuel_suppression"
+  | "licenciement_contractuel_inaptitude"
+  | "licenciement_contractuel_disciplinaire"
+  | "recours_crep_contractuel"
+  | "non_renouvellement";
+
+export type MotifSaisineF3sct = 
+  | "danger_grave_imminent"
+  | "droit_alerte_retrait"
+  | "souffrance_travail_rps"
+  | "insalubrite_visite_locaux";
+
+export interface SaisineInstanceFormData {
+  instance: TypeInstanceParitaire;
+  nomAgent: string;
+  prenomAgent: string;
+  matricule?: string;
+  statutAgent: "titulaire" | "stagiaire" | "contractuel_cdd" | "contractuel_cdi";
+  grade: string;
+  directionService: string;
+  collectivite: string;
+  cigRattachement: string;
+  destinataireInstance: string;
+  
+  motifCap?: MotifSaisineCap;
+  motifCcp?: MotifSaisineCcp;
+  motifF3sct?: MotifSaisineF3sct;
+  
+  dateNotificationDecision: string;
+  dateRecoursPrealable?: string;
+  dateDecisionRecoursPrealable?: string;
+  dateIncidentDanger?: string;
+  lieuIncidentDanger?: string;
+  
+  faitsEtContexte: string;
+  motifsInvoquesAdministration: string;
+  argumentsAgent: string;
+  demandesAgent: string;
+  
+  assistanceSyndicale: boolean;
+  nomRepresentantSyndical?: string;
+  
+  piecesJointes: string[];
+}
+
+export interface SaisineInstanceResult {
+  titre: string;
+  sousTitre: string;
+  texteOfficiel: string;
+  delaisEtProcedure: {
+    delaiLegal: string;
+    autoriteCompetente: string;
+    effetJuridique: string;
+    avertissement?: string;
+  };
+  fondementsJuridiques: string[];
+  piecesRequises: string[];
+}
+
 export interface RequeteContentieuseFormData {
   typeRequete: "rep_seul" | "rep_et_refere";
   juridiction: string; // ex: Tribunal Administratif de Cergy-Pontoise
@@ -568,7 +638,456 @@ Pièces jointes justificatives annexées :
 }
 
 // ─────────────────────────────────────────────────────────────
-// 4. GÉNÉRATEUR DE REQUÊTES CONTENTIEUSES (TA / TÉLÉRECOURS)
+// 4. GÉNÉRATEUR DE SAISINE DES INSTANCES PARITAIRES (CAP, CCP, F3SCT / CST)
+// ─────────────────────────────────────────────────────────────
+
+export function generateSaisineInstanceParitaire(data: SaisineInstanceFormData): SaisineInstanceResult {
+  const {
+    instance,
+    nomAgent,
+    prenomAgent,
+    matricule,
+    statutAgent,
+    grade,
+    directionService,
+    collectivite,
+    cigRattachement,
+    destinataireInstance,
+    motifCap,
+    motifCcp,
+    motifF3sct,
+    dateNotificationDecision,
+    dateRecoursPrealable,
+    dateDecisionRecoursPrealable,
+    dateIncidentDanger,
+    lieuIncidentDanger,
+    faitsEtContexte,
+    motifsInvoquesAdministration,
+    argumentsAgent,
+    demandesAgent,
+    assistanceSyndicale,
+    nomRepresentantSyndical,
+    piecesJointes
+  } = data;
+
+  const dateAujourdhui = new Date().toLocaleDateString("fr-FR");
+  let titre = "";
+  let sousTitre = "";
+  let texteOfficiel = "";
+  let delaisEtProcedure = {
+    delaiLegal: "",
+    autoriteCompetente: "",
+    effetJuridique: "",
+    avertissement: ""
+  };
+  let fondementsJuridiques: string[] = [];
+  let piecesRequises: string[] = [];
+
+  // ==========================================
+  // 1. CAP : COMMISSION ADMINISTRATIVE PARITAIRE
+  // ==========================================
+  if (instance === "cap") {
+    const autoriteCible = destinataireInstance || `Monsieur / Madame le Président de la Commission Administrative Paritaire compétente (${cigRattachement || collectivite})`;
+
+    if (motifCap === "crep") {
+      titre = "Saisine de la Commission Administrative Paritaire (CAP) en révision du CREP";
+      sousTitre = "Recours de l'agent en contestation de son Compte-Rendu d'Entretien Professionnel annuel (Art. L. 543-1 CGFP & Décret 2014-1526)";
+      delaisEtProcedure = {
+        delaiLegal: "1 mois calendaire à compter de la notification de la réponse au recours hiérarchique préalable (ou au terme des 2 mois valant rejet implicite).",
+        autoriteCompetente: autoriteCible,
+        effetJuridique: "La CAP émet un avis motivé proposant la révision du CREP. L'autorité territoriale communique à l'agent un compte-rendu définitif.",
+        avertissement: "ATTENTION : Le recours hiérarchique préalable auprès de l'autorité territoriale dans les 15 jours francs suivant la notification initiale du CREP est une condition obligatoire de recevabilité !"
+      };
+      fondementsJuridiques = [
+        "Article L. 543-1 du Code Général de la Fonction Publique (CGFP)",
+        "Décret n° 2014-1526 du 16 décembre 2014 relatif à l'appréciation de la valeur professionnelle des fonctionnaires territoriaux (Articles 6 et 7)",
+        "Décret n° 89-229 du 17 avril 1989 relatif aux commissions administratives paritaires de la FPT"
+      ];
+      piecesRequises = [
+        "Copie intégrale du Compte-Rendu d'Entretien Professionnel (CREP) contesté revêtu des signatures",
+        "Copie du recours hiérarchique préalable obligatoire adressé à l'autorité territoriale et accusé de réception",
+        "Copie de la réponse de l'autorité territoriale ou justificatif de l'expiration du délai de rejet implicite",
+        "Fiche de poste officielle de référence",
+        "Éléments probants (rapports d'activité, bilans chiffrés, courriels de félicitations ou attestations)"
+      ];
+
+      texteOfficiel = `DOSSIER DE SAISINE DE LA COMMISSION ADMINISTRATIVE PARITAIRE (CAP)
+RECOURS EN RÉVISION DU COMPTE-RENDU D'ÉVALUATION PROFESSIONNELLE (CREP)
+En application de l'article L. 543-1 du CGFP et de l'article 7 du décret n° 2014-1526 du 16 décembre 2014
+
+À l'attention de :
+${autoriteCible}
+Secrétariat de la Commission Administrative Paritaire
+
+AGENT REQUÉRANT(E) :
+Nom et prénom : ${prenomAgent} ${nomAgent}
+Matricule : ${matricule || "Non renseigné"}
+Qualité : Fonctionnaire titulaire
+Grade : ${grade}
+Direction / Service : ${directionService}
+Collectivité employeur : ${collectivite}
+Rattachement paritaire : ${cigRattachement}
+Assistance syndicale souhaitée : ${assistanceSyndicale ? `OUI (défense assurée par ${nomRepresentantSyndical || "la délégation CFDT Territoriaux"})` : "NON"}
+
+Fait à ${collectivite}, le ${dateAujourdhui}
+
+OBJET : Saisine de la CAP compétente en révision du Compte-Rendu d'Entretien Professionnel (CREP)
+RÉFÉRENCES :
+- Date de notification du CREP initial contesté : ${dateNotificationDecision}
+- Date du recours hiérarchique préalable obligatoire : ${dateRecoursPrealable || "Dans les 15 jours francs légaux"}
+- Date de la décision de rejet (explicite ou implicite) : ${dateDecisionRecoursPrealable || "Notification reçue / Rejet implicite intervenu"}
+
+Monsieur / Madame le Président de la Commission, Mesdames et Messieurs les Membres de la CAP,
+
+J'ai l'honneur de saisir la Commission Administrative Paritaire compétente, en application des dispositions combinées de l'article L. 543-1 du Code Général de la Fonction Publique et de l'article 7 du décret n° 2014-1526 du 16 décembre 2014, afin de solliciter la révision de mon compte-rendu d'entretien professionnel au titre de la dernière campagne d'évaluation.
+
+I. RECEVABILITÉ RATIONE TEMPORIS DU RECOURS DEVANT LA CAP
+1. L'entretien professionnel s'est tenu et le compte-rendu m'a été notifié en date du ${dateNotificationDecision}.
+2. Conformément à l'article 7 du décret n° 2014-1526, j'ai formé un recours hiérarchique préalable obligatoire auprès de l'autorité territoriale en date du ${dateRecoursPrealable || "[date du recours]"}.
+3. L'autorité territoriale a rejeté ma demande en date du ${dateDecisionRecoursPrealable || "[date de rejet ou expiration du délai de 2 mois]"}.
+4. La présente saisine de la CAP intervient ainsi dans le délai légal d'un mois fixé par les textes réglementaires. Elle est donc parfaitement recevable.
+
+II. EXPOSÉ DES MOTIFS ET DISCUSSION TECHNIQUE
+La révision sollicitée se fonde sur les vices et incohérences manifestes affectant l'évaluation :
+
+1. Rappel des faits et de la manière de servir :
+${faitsEtContexte || "L'agent effectue ses missions avec une constante conscience professionnelle. Aucun manquement n'a été constaté ni formalisé au cours de l'année."}
+
+2. Motifs ou appréciations contestées :
+${motifsInvoquesAdministration || "Le compte-rendu comporte des appréciations dépréciatives infondées ou des coches en régression sans justification objective."}
+
+3. Arguments démontrant l'incohérence et l'illégalité des appréciations :
+${argumentsAgent || "Discordance manifeste entre les appréciations littérales et les niveaux d'évaluation retenus. Imputation de griefs étrangers à la fiche de poste ou non abordés lors de l'entretien. Fixation d'objectifs inadaptés ou rétroactifs."}
+
+III. CONCLUSIONS ET DEMANDES FORMÉES AUPRÈS DE LA CAP
+Au vu de l'ensemble de ces éléments et des pièces probantes jointes au présent dossier, je sollicite respectueusement de la Commission Administrative Paritaire qu'elle émette :
+
+1. UN AVIS FAVORABLE à la révision de mon Compte-Rendu d'Entretien Professionnel ;
+2. UNE PROPOSITION à l'attention de l'autorité territoriale tendant à :
+   - ${demandesAgent || "Rectifier les coches relatives aux compétences professionnelles et réécrire les appréciations littérales du supérieur hiérarchique direct conformément à la réalité de la manière de servir."}
+3. L'autorisation d'être entendu(e) par la commission, assisté(e) de mon représentant syndical désigné.
+
+Je vous remercie de bien vouloir inscrire l'examen de ma situation à l'ordre du jour de la prochaine séance de la CAP et de m'en notifier la date.
+
+Signature :
+
+${prenomAgent} ${nomAgent}
+
+Pièces jointes annexées :
+${piecesJointes.map((p, i) => `${i + 1}. ${p}`).join("\n") || "- CREP contesté\n- Recours hiérarchique préalable\n- Réponse de l'autorité / avis de réception"}`;
+    } else if (motifCap === "refus_formation") {
+      titre = "Saisine de la CAP suite à un refus réitéré de formation professionnelle";
+      sousTitre = "Recours de l'agent en contestation de refus de formation / mobilisation CPF (Art. L. 422-1 et s. CGFP & Décret 2007-1845)";
+      delaisEtProcedure = {
+        delaiLegal: "Saisine possible dès notification du 2ème refus consécutif opposé à l'agent.",
+        autoriteCompetente: autoriteCible,
+        effetJuridique: "Avis obligatoire de la CAP avant que l'autorité ne puisse légalement opposer un second refus consécutif.",
+        avertissement: "Le refus opposé à une action de formation de perfectionnement ou à une préparation aux concours après un 1er refus impose la saisine obligatoire de la CAP !"
+      };
+      fondementsJuridiques = [
+        "Articles L. 421-1, L. 422-1 et suivants du Code Général de la Fonction Publique",
+        "Décret n° 2007-1845 du 26 décembre 2007 relatif à la formation professionnelle tout au long de la vie des agents territoriaux (Articles 7, 10, 14, 25)",
+        "Décret n° 89-229 du 17 avril 1989 relatif aux CAP territoriales"
+      ];
+      piecesRequises = [
+        "Copie de la première demande de formation et de la décision de refus",
+        "Copie de la seconde demande de formation et de la décision de refus",
+        "Projet d'évolution professionnelle ou de préparation de concours/examen pro",
+        "Fiche de poste et avis éventuel du CNFPT"
+      ];
+
+      texteOfficiel = `DOSSIER DE SAISINE DE LA COMMISSION ADMINISTRATIVE PARITAIRE (CAP)
+CONTESTATION DE REFUS RÉITÉRÉ DE FORMATION PROFESSIONNELLE OU DE COMPTE PERSONNEL DE FORMATION (CPF)
+Articles L. 422-1 et s. du CGFP & Décret n° 2007-1845 du 26 décembre 2007
+
+À l'attention de :
+${autoriteCible}
+Secrétariat de la Commission Administrative Paritaire
+
+AGENT REQUÉRANT(E) :
+Nom et prénom : ${prenomAgent} ${nomAgent}
+Matricule : ${matricule || "Non renseigné"}
+Grade : ${grade}
+Direction / Service : ${directionService}
+Collectivité employeur : ${collectivite}
+Assistance syndicale : ${assistanceSyndicale ? `Assistance demandée par ${nomRepresentantSyndical || "la CFDT Territoriaux"}` : "Sans assistance"}
+
+Fait à ${collectivite}, le ${dateAujourdhui}
+
+OBJET : Saisine de la CAP - Recours contre le refus répété de départ en formation professionnelle
+DÉCISION CONTESTÉE : Décision de refus notifiée le ${dateNotificationDecision} (faisant suite à un précédent refus)
+
+Monsieur / Madame le Président, Mesdames et Messieurs les Membres de la CAP,
+
+J'ai l'honneur de saisir la Commission Administrative Paritaire en raison du refus réitéré opposé par l'autorité territoriale à mes demandes de formation professionnelle.
+
+I. RAPPEL DU DROIT STATUTAIRE À LA FORMATION
+Aux termes de l'article L. 421-1 du CGFP, les fonctionnaires ont droit à la formation professionnelle tout au long de leur carrière.
+En outre, l'article 7 du décret n° 2007-1845 prévoit que le rejet d'une deuxième demande consécutive pour une formation de perfectionnement ou de préparation aux examens professionnels ne peut intervenir sans consultation préalable de la CAP.
+
+II. EXPOSÉ DE LA SITUATION
+1. Historique des demandes formulées :
+${faitsEtContexte || "L'agent a sollicité une inscription à une formation indispensable à sa progression de carrière et à l'exercice de ses missions."}
+
+2. Motifs opposés par la collectivité :
+« ${motifsInvoquesAdministration || "Nécessités de service non circonstanciées ou quota dépassé."} »
+
+3. Moyens démontrant l'infondé du refus :
+${argumentsAgent || "L'absence de l'agent ne cause aucune désorganisation insurmontable du service. La session demandée est essentielle à l'adaptation aux nouvelles compétences requises par le poste."}
+
+III. CONCLUSIONS
+Le requérant sollicite qu'il plaise à la Commission Administrative Paritaire :
+1. ÉMETTRE UN AVIS DÉFAVORABLE au maintien du refus opposé par l'autorité territoriale ;
+2. RECOMMANDER l'autorisation de départ en formation ou la mobilisation des droits acquis au titre du CPF pour la session sollicitée ;
+3. ${demandesAgent || "Demander à la collectivité d'inscrire prioritairement l'agent à la prochaine session CNFPT."}
+
+Signature :
+
+${prenomAgent} ${nomAgent}`;
+    } else {
+      titre = `Saisine de la CAP (${motifCap === "licenciement_insuffisance" ? "Défense insuffisance professionnelle" : "Contestation refus statutaire"})`;
+      sousTitre = "Saisine de la Commission Administrative Paritaire de la Fonction Publique Territoriale";
+      delaisEtProcedure = {
+        delaiLegal: "Délai statutaire (généralement 1 à 2 mois selon la décision notifiée).",
+        autoriteCompetente: autoriteCible,
+        effetJuridique: "Avis obligatoire communiqué à l'autorité territoriale avant décision exécutoire.",
+        avertissement: "L'avis de la CAP constitue une garantie substantielle pour l'agent (CE Danthony)."
+      };
+      fondementsJuridiques = [
+        "Code Général de la Fonction Publique (Articles L. 261-1 et suivants)",
+        "Décret n° 89-229 du 17 avril 1989 relatif aux CAP territoriales"
+      ];
+      piecesRequises = ["Décision contestée", "Dossier individuel de l'agent", "Observations écrites"];
+
+      texteOfficiel = `DOSSIER DE SAISINE DE LA COMMISSION ADMINISTRATIVE PARITAIRE (CAP)
+AGENT : ${prenomAgent} ${nomAgent} - Grade : ${grade}
+Collectivité : ${collectivite} - CIG : ${cigRattachement}
+Date : ${dateAujourdhui}
+
+OBJET : Saisine de la CAP compétente relative à la situation statutaire de l'agent
+DÉCISION DU : ${dateNotificationDecision}
+
+Monsieur / Madame le Président, Mesdames et Messieurs les Membres de la CAP,
+
+${faitsEtContexte}
+
+Motifs de contestation :
+${argumentsAgent}
+
+Demandes à la CAP :
+${demandesAgent}
+
+Signature :
+${prenomAgent} ${nomAgent}`;
+    }
+  }
+
+  // ==========================================
+  // 2. CCP : COMMISSION CONSULTATIVE PARITAIRE (CONTRACTUELS)
+  // ==========================================
+  else if (instance === "ccp") {
+    const autoriteCible = destinataireInstance || `Monsieur / Madame le Président de la Commission Consultative Paritaire (${cigRattachement || collectivite})`;
+
+    let libelleCcp = "";
+    if (motifCcp === "licenciement_contractuel_insuffisance") libelleCcp = "Licenciement pour insuffisance professionnelle";
+    else if (motifCcp === "licenciement_contractuel_suppression") libelleCcp = "Licenciement pour suppression d'emploi et manquement à l'obligation de reclassement";
+    else if (motifCcp === "licenciement_contractuel_inaptitude") libelleCcp = "Licenciement pour inaptitude physique après refus/absence de reclassement";
+    else if (motifCcp === "licenciement_contractuel_disciplinaire") libelleCcp = "Licenciement pour motif disciplinaire";
+    else if (motifCcp === "recours_crep_contractuel") libelleCcp = "Contestation de l'évaluation professionnelle du contractuel";
+    else libelleCcp = "Contestation de non-renouvellement de contrat";
+
+    titre = `Mémoire d'observations et Saisine de la CCP - ${libelleCcp}`;
+    sousTitre = "Défense de l'agent contractuel de droit public territorial (Décret n° 88-145 du 15 février 1988 & CGFP)";
+    delaisEtProcedure = {
+      delaiLegal: "Consultation obligatoire de la CCP préalablement à la notification du licenciement (Art. 39-1 décret 88-145). Droit de consultation du dossier et production d'observations écrites.",
+      autoriteCompetente: autoriteCible,
+      effetJuridique: "Avis obligatoire de la CCP. L'absence de consultation ou la méconnaissance des droits de la défense vicie substantiellement la décision de licenciement.",
+      avertissement: "OBLIGATION LÉGALE : En cas de suppression de poste ou inaptitude, l'employeur DOIT justifier par écrit de l'impossibilité de reclasser l'agent (Art. 39-3 décret 88-145) !"
+    };
+    fondementsJuridiques = [
+      "Article L. 262-1 et L. 553-1 du Code Général de la Fonction Publique",
+      "Décret n° 88-145 du 15 février 1988 relatif aux agents contractuels territoriaux (Articles 39-1 à 39-5, 40 et 42)",
+      "Décret n° 2016-1858 du 23 décembre 2016 relatif aux commissions consultatives paritaires de la FPT",
+      "Article L. 532-4 du CGFP (Droit à la communication intégrale du dossier individuel)",
+      "Jurisprudence CE, 25 septembre 2013, n° 358487 (Garanties de reclassement du contractuel)"
+    ];
+    piecesRequises = [
+      "Copie du contrat de travail en cours et des avenants successifs",
+      "Lettre de convocation à l'entretien préalable de licenciement",
+      "Compte-rendu de l'entretien préalable et courrier de saisine de la CCP par l'employeur",
+      "Rapport d'insuffisance professionnelle ou délibération portant suppression du poste",
+      "Historique des évaluations professionnelles (CREP) et justificatifs de formations",
+      "Preuve de l'absence d'offres loyales de reclassement (le cas échéant)"
+    ];
+
+    texteOfficiel = `MÉMOIRE D'OBSERVATIONS EN DÉFENSE DEVANT LA COMMISSION CONSULTATIVE PARITAIRE (CCP)
+INSTANCE PRÉALABLE AU PROJET DE LICENCIEMENT D'UN AGENT CONTRACTUEL
+Articles 39-1 et suivants du décret n° 88-145 du 15 février 1988 & Article L. 262-1 du CGFP
+
+À l'attention de :
+${autoriteCible}
+Secrétariat de la CCP
+
+AGENT CONCERNÉ(E) :
+Nom et prénom : ${prenomAgent} ${nomAgent}
+Statut : Agent contractuel de droit public territorial (${statutAgent === "contractuel_cdi" ? "CDI" : "CDD"})
+Emploi / Grade d'assimilation : ${grade}
+Direction et affectation : ${directionService}
+Collectivité employeur : ${collectivite}
+Rattachement CCP : ${cigRattachement}
+Défense assurée avec l'assistance de : ${assistanceSyndicale ? (nomRepresentantSyndical || "la délégation syndicale CFDT Territoriaux") : "Personnellement"}
+
+Fait à ${collectivite}, le ${dateAujourdhui}
+
+OBJET : Mémoire en défense et observations présentées à la CCP concernant le projet de : ${libelleCcp}
+DATE DE CONVOCATION / NOTIFICATION : ${dateNotificationDecision}
+
+Monsieur / Madame le Président de la CCP, Mesdames et Messieurs les Représentants,
+
+L'autorité territoriale envisage de prononcer à l'encontre de ${prenomAgent} ${nomAgent} une mesure de licenciement pour : ${libelleCcp}.
+En application de l'article 39-1 du décret n° 88-145 du 15 février 1988, la présente instance a été saisie pour avis. 
+Par le présent mémoire, l'agent entend faire valoir ses observations et démontrer l'infondé et l'irrégularité du projet de licenciement.
+
+I. RAPPEL DU PARCOURS ET DU CONTEXTE PROFESSIONNEL
+${prenomAgent} ${nomAgent} est employé(e) au sein de la collectivité ${collectivite} depuis plusieurs années en qualité de contractuel(le).
+Au cours de son engagement contractuel, l'agent a constamment apporté sa force de travail et son professionnalisme à la réalisation des missions du service public.
+${faitsEtContexte || "L'agent n'a jamais fait l'objet de sanctions disciplinaires ni d'alertes formelles préalables sur sa manière de servir."}
+
+II. RÉFUTATION DES MOTIFS ALLÉGUÉS PAR LA COLLECTIVITÉ
+L'autorité territoriale prétend justifier la rupture de contrat par les éléments suivants :
+« ${motifsInvoquesAdministration || "Insuffisance professionnelle alléguée ou suppression de poste sans proposition de réaffectation."} »
+
+Or, ces griefs ne résistent pas à une analyse factuelle et juridique rigoureuse :
+${argumentsAgent || `1. Absence de caractérisation d'une insuffisance professionnelle : la collectivité n'établit aucune carence imputable à l'agent mais une surcharge structurelle de travail non compensée.
+2. Manquement absolu à l'obligation de formation et d'accompagnement.
+3. Absence totale de recherche de reclassement loyal et sérieux en violation de l'article 39-3 du décret 88-145.`}
+
+${motifCcp === "licenciement_contractuel_suppression" || motifCcp === "licenciement_contractuel_inaptitude" ? `III. SUR LA VIOLATION CARACTÉRISÉE DE L'OBLIGATION LÉGALE DE RECLASSEMENT (ART. 39-3 ET 39-4 DÉCRET 88-145)
+Il est de jurisprudence constante (CE 25 septembre 2013, n° 358487) que l'autorité territoriale ne peut licencier un contractuel pour suppression de poste ou inaptitude sans avoir préalablement cherché à le reclasser sur un autre emploi équivalent. 
+En l'espèce, aucune proposition formelle, précise et écrite d'emploi de reclassement n'a été formulée à l'agent avant l'engagement de la présente procédure.` : ""}
+
+IV. CONCLUSIONS ET DEMANDES SOUMISES À LA CCP
+Au vu de l'ensemble des éléments de fait et de droit exposés ci-dessus, ${prenomAgent} ${nomAgent} sollicite qu'il plaise à la Commission Consultative Paritaire :
+
+1. ÉMETTRE UN AVIS DÉFAVORABLE au projet de licenciement soumis par la collectivité ${collectivite} ;
+2. RECOMMANDER À L'AUTORITÉ TERRITORIALE :
+   - ${demandesAgent || "Le maintien de l'agent dans ses fonctions ou son affectation sur un poste adapté, assorti d'un plan d'accompagnement professionnel."}
+3. ENJOINDRE à la collectivité, à titre subsidiaire, de mettre en œuvre sans délai une recherche active et formalisée de postes de reclassement.
+
+Signature :
+
+${prenomAgent} ${nomAgent}
+Assistance syndicale : ${nomRepresentantSyndical || "Section CFDT Territoriaux"}
+
+Pièces jointes annexées :
+${piecesJointes.map((p, i) => `${i + 1}. ${p}`).join("\n") || "- Contrat de travail initial et avenants\n- Fiche d'évaluation\n- Courrier de convocation de l'autorité"}`;
+  }
+
+  // ==========================================
+  // 3. F3SCT / CST : FORMATION SPÉCIALISÉE EN SANTÉ, SÉCURITÉ ET CONDITIONS DE TRAVAIL
+  // ==========================================
+  else {
+    const autoriteCible = destinataireInstance || `Monsieur le Président de la F3SCT / CST et aux Représentants du Personnel (${collectivite})`;
+
+    let libelleF3sct = "";
+    if (motifF3sct === "danger_grave_imminent") libelleF3sct = "Signalement de Danger Grave et Imminent (DGI) - Inscription au Registre Spécial";
+    else if (motifF3sct === "droit_alerte_retrait") libelleF3sct = "Droit d'alerte et constat d'exercice légitime du Droit de Retrait";
+    else if (motifF3sct === "souffrance_travail_rps") libelleF3sct = "Alerte pour Risques Psychosociaux (RPS), harcèlement et souffrance au travail";
+    else libelleF3sct = "Insalubrité, risque amiante / toxique et demande de visite d'inspection des locaux";
+
+    titre = `Saisine F3SCT / CST - ${libelleF3sct}`;
+    sousTitre = "Procédure d'Alerte Santé, Sécurité & Enquête Conjointe F3SCT (Décret n° 85-603 du 10 juin 1985 & Décret 2021-571)";
+    delaisEtProcedure = {
+      delaiLegal: "URGENCE ABSOLUE : Inscription immédiate au registre DGI. Enquête conjointe immédiate obligatoire avec un membre de la F3SCT. Réunion sous 24h en cas de désaccord.",
+      autoriteCompetente: `Formation Spécialisée en Santé, Sécurité et Conditions de Travail (F3SCT) du CST de ${collectivite}`,
+      effetJuridique: "Déclenchement immédiat de l'enquête conjointe (Art. 5-2 décret 85-603). Protection absolue contre toute retenue ou sanction si droit de retrait exercé (Art. 5-1 al. 4).",
+      avertissement: "OBLIGATION LÉGALE : Le chef de service a l'obligation de consigner le signalement au registre spécial DGI coté et paraphé sous peine de faute engageant la responsabilité de l'administration !"
+    };
+    fondementsJuridiques = [
+      "Articles L. 136-1, L. 253-1 à L. 253-5 du Code Général de la Fonction Publique",
+      "Décret n° 85-603 du 10 juin 1985 relatif à l'hygiène et à la sécurité du travail dans la FPT (Articles 5-1 à 5-4 : DGI, droit de retrait et registre)",
+      "Décret n° 2021-571 du 3 décembre 2021 relatif aux comités sociaux territoriaux et formations spécialisées (Articles 60 à 68)",
+      "Code du Travail (Livre III de la 4ème partie applicable par renvoi : Articles L. 4131-1 et s.)"
+    ];
+    piecesRequises = [
+      "Fiche de signalement au Registre Spécial des DGI (coté et paraphé)",
+      "Photos / constatations matérielles du danger (locaux, matériels défectueux, produits)",
+      "Témoignages écrits de collègues ou d'usagers présents",
+      "Avis du médecin de prévention / du travail ou certificats médicaux",
+      "Historique des fiches de signalement SST antérieures restées sans suite"
+    ];
+
+    texteOfficiel = `NOTIFICATION OFFICIELLE DE SAISINE DE LA F3SCT / CST
+SIGNALEMENT AU REGISTRE SPÉCIAL DES DANGERS GRAVES ET IMMINENTS (DGI)
+OU DEMANDE D'ENQUÊTE CONJOINTE ET DROIT D'ALERTE EN MATIÈRE DE CONDITIONS DE TRAVAIL
+Articles 5-1 à 5-4 du décret n° 85-603 du 10 juin 1985 & Articles 60 à 68 du décret n° 2021-571 du 3 décembre 2021
+
+DESTINATAIRES CONJOINTS :
+1. Monsieur / Madame le Président de la F3SCT / CST (${collectivite})
+2. Monsieur / Madame le Secrétaire de la F3SCT (Représentant des personnels)
+3. À l'attention de l'ACFI (Agent Chargé des Fonctions d'Inspection en Santé et Sécurité)
+4. Copie officielle : Section syndicale CFDT Territoriaux (${collectivite})
+
+SIGNALANT / AGENT CONCERNÉ :
+Nom et prénom : ${prenomAgent} ${nomAgent}
+Qualité : ${grade}
+Direction / Affectation : ${directionService}
+Poste et localisation du danger : ${lieuIncidentDanger || directionService}
+Date et heure du constat : ${dateIncidentDanger || dateNotificationDecision || dateAujourdhui}
+Assistance syndicale : ${assistanceSyndicale ? `Accompagné(e) par ${nomRepresentantSyndical || "un représentant syndical CFDT siégeant à la F3SCT"}` : "Démarche individuelle"}
+
+OBJET : ${libelleF3sct.toUpperCase()}
+CARACTÈRE D'URGENCE : IMMÉDIAT
+
+Monsieur le Président, Mesdames et Messieurs les Membres de la F3SCT,
+
+En application des prérogatives conférées par les articles 5-1 et suivants du décret n° 85-603 du 10 juin 1985 modifié, j'ai l'honneur de notifier formellement la survenance d'une situation de danger grave et imminent pour la santé physique et mentale des agents, et d'exiger le déclenchement des procédures d'enquête conjointe obligatoires.
+
+I. DESCRIPTION CIRCONSTANCIÉE DE LA SITUATION DANGEREUSE OU DE L'ATTEINTE
+1. Nature exacte du péril / risque :
+${faitsEtContexte || "Présence d'un risque grave et imminent pour la sécurité des personnels ou dégradation brutale des conditions d'exercice."}
+
+2. Localisation et postes de travail affectés :
+Lieu précis : ${lieuIncidentDanger || "Locaux du service " + directionService}
+Équipements, locaux ou comportements en cause : ${motifsInvoquesAdministration || "Installations non conformes, défaut d'équipements de protection ou situation de tension extrême."}
+
+3. Conséquences immédiates sur la santé et la sécurité :
+${argumentsAgent || "Risque avéré d'accident grave du travail, intoxication, défaillance matérielle ou détresse psychologique aiguë entraînant une incapacité immédiate."}
+
+II. EXERCICE DU DROIT D'ALERTE ET DROIT DE RETRAIT (LE CAS ÉCHÉANT)
+${motifF3sct === "droit_alerte_retrait" || motifF3sct === "danger_grave_imminent" ? `L'agent soussigné informe l'autorité qu'il a un motif raisonnable de penser que la situation de travail présente un danger grave et imminent pour sa vie ou sa santé.
+Conformément à l'article 5-1 alinéa 4 du décret n° 85-603, AUCUNE SANCTION, NI AUCUNE RETENUE SUR TRAITEMENT OU SALAIRE ne peut être légalement appliquée à l'agent ayant exercé son droit de retrait dans ces conditions. L'agent reste à disposition de l'employeur pour toute mission compatible avec sa mise en sécurité.` : "Le présent signalement vise à prévenir la survenance d'accidents du travail ou de maladies professionnelles en exigeant une intervention paritaire de la F3SCT."}
+
+III. DEMANDES FORMELLES ET MESURES CONSERVATOIRES D'URGENCE EXIGÉES
+En application des dispositions légales impératives prévues aux articles 5-2 et 5-3 du décret n° 85-603 et du décret n° 2021-571, il est formellement requis :
+
+1. L'INSCRIPTION IMMÉDIATE et intégrale du présent signalement sur le Registre Spécial des DGI coté et paraphé ;
+2. LE DÉCLENCHEMENT SANS DÉLAI d'une ENQUÊTE CONJOINTE sur les lieux du danger associant le chef de service et le représentant désigné de la F3SCT (CFDT) ;
+3. LA MISE EN SÉCURITÉ immédiate du poste de travail et l'arrêt conservatoire des opérations à risque ;
+4. ${demandesAgent || "La convocation en urgence de la Formation Spécialisée (F3SCT) dans les 24 heures en cas de divergence sur les mesures à adopter, et l'information de l'ACFI."}
+
+Fait à ${collectivite}, le ${dateAujourdhui}
+
+Signature du déclarant / agent :
+
+${prenomAgent} ${nomAgent}
+
+Pour les représentants du personnel siégeant à la F3SCT :
+${nomRepresentantSyndical || "Section CFDT Territoriaux"}`;
+  }
+
+  return {
+    titre,
+    sousTitre,
+    texteOfficiel,
+    delaisEtProcedure,
+    fondementsJuridiques,
+    piecesRequises
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// 5. GÉNÉRATEUR DE REQUÊTES CONTENTIEUSES (TA / TÉLÉRECOURS)
 // ─────────────────────────────────────────────────────────────
 
 export function generateRequeteTa(data: RequeteContentieuseFormData): {
@@ -819,8 +1338,10 @@ Signature du requérant`;
 // ─────────────────────────────────────────────────────────────
 // 6. GÉNÉRATEUR DU CODE ET SCRIPT DOCASSEMBLE (.YML)
 // ─────────────────────────────────────────────────────────────
+// 6. GÉNÉRATEUR DU CODE ET SCRIPT DOCASSEMBLE (.YML)
+// ─────────────────────────────────────────────────────────────
 
-export function generateDocassembleYamlPackage(scenario: "recours_gracieux" | "requete_ta" | "protection_fonctionnelle"): string {
+export function generateDocassembleYamlPackage(scenario: "recours_gracieux" | "requete_ta" | "protection_fonctionnelle" | "saisine_instances"): string {
   if (scenario === "recours_gracieux") {
     return `---
 metadata:
@@ -933,6 +1454,119 @@ subquestion: |
   Téléchargez votre courrier officiel conforme, imprimez-le et envoyez-le en Recommandé avec Accusé de Réception (LRAR) à votre employeur territorial.
 buttons:
   - Terminer: exit
+`;
+  }
+
+  if (scenario === "saisine_instances") {
+    return `---
+metadata:
+  title: Docassemble - Saisine des Instances Paritaires (CAP, CCP, F3SCT)
+  short title: Saisine Instances Paritaires
+  description: Générateur automatisé de formulaires officiels de saisine de la CAP (CREP, formation), de la CCP (licenciement d'un contractuel) et de la F3SCT (dangers graves et imminents, droit d'alerte).
+  authors:
+    - name: CFDT Territoriaux
+      organization: Fonction Publique Territoriale
+  version: 3.0
+---
+modules:
+  - docassemble.base.util
+  - datetime
+---
+code: |
+  # Moteur Python de calcul des délais de saisine paritaire
+  from datetime import date, timedelta
+
+  def verifier_delai_cap_crep(date_reponse_recours):
+      # Règle statutaire : saisine de la CAP dans un délai de 30 jours (1 mois)
+      date_limite = date_reponse_recours + timedelta(days=30)
+      jours_restants = (date_limite - date.today()).days
+      return {
+          "date_limite": date_limite,
+          "jours_restants": jours_restants,
+          "statut": "recevable" if jours_restants >= 0 else "forclos"
+      }
+---
+question: |
+  Sélectionnez l'instance paritaire territoriale compétente
+fields:
+  - Instance paritaire à saisir: instance_choisie
+    choices:
+      - 🏛️ Commission Administrative Paritaire (CAP - Fonctionnaires titulaires) : cap
+      - 🤝 Commission Consultative Paritaire (CCP - Agents contractuels de droit public) : ccp
+      - 🚨 Formation Spécialisée Santé, Sécurité & Conditions de Travail (F3SCT / CST) : f3sct
+---
+question: |
+  Objet précis de la saisine
+fields:
+  - Objet du recours CAP: motif_cap
+    show if:
+      variable: instance_choisie
+      is: cap
+    choices:
+      - Recours en révision du Compte-Rendu d'Entretien Professionnel (CREP - Art. L. 543-1 CGFP): cap_crep
+      - Refus réitéré de formation professionnelle ou de compte personnel de formation (CPF): cap_formation
+      - Refus de travail à temps partiel ou d'autorisation de télétravail: cap_temps_partiel
+      - Mémoire en défense lors d'un projet de licenciement pour insuffisance professionnelle: cap_insuffisance
+  - Objet de la saisine CCP: motif_ccp
+    show if:
+      variable: instance_choisie
+      is: ccp
+    choices:
+      - Mémoire d'observations - Licenciement contractuel pour insuffisance professionnelle: ccp_licenciement_insuffisance
+      - Mémoire d'observations - Licenciement contractuel pour suppression de poste (obligation reclassement): ccp_licenciement_suppression
+      - Mémoire d'observations - Licenciement contractuel pour inaptitude physique: ccp_licenciement_inaptitude
+      - Recours en révision de l'évaluation professionnelle de l'agent contractuel: ccp_crep
+  - Objet de l'alerte F3SCT / CST: motif_f3sct
+    show if:
+      variable: instance_choisie
+      is: f3sct
+    choices:
+      - Signalement de Danger Grave et Imminent (DGI - Registre spécial obligatoire Art. 5-2): f3sct_dgi
+      - Constat d'exercice du Droit de Retrait et mise en sécurité (Art. L. 136-1 CGFP): f3sct_retrait
+      - Alerte pour Risques Psychosociaux (RPS), harcèlement moral et souffrance au travail: f3sct_rps
+      - Demande d'inspection et de visite des locaux pour insalubrité ou danger chimique: f3sct_visite
+---
+question: |
+  Identité de l'agent et Collectivité de rattachement
+fields:
+  - Nom de l'agent: agent.name.last
+  - Prénom de l'agent: agent.name.first
+  - Grade ou emploi: agent_grade
+  - Direction ou Service d'affectation: agent_direction
+  - Collectivité employeur: collectivite_nom
+    default: Ville de Gennevilliers
+  - Centre de gestion de rattachement (CAP/CCP): centre_gestion
+    default: CIG Petite Couronne (92-93-94)
+  - Date de notification de la décision contestée ou date du danger: date_evenement
+    datatype: date
+  - Assistance syndicale souhaitée ?: assistance_syndicale
+    datatype: yesno
+    default: True
+---
+question: |
+  Exposé des faits et arguments à soumettre aux commissaires paritaires
+fields:
+  - Circonstances et déroulé des faits: faits_contexte
+    inputtype: textarea
+  - Motifs opposés par l'administration territoriale: motifs_administration
+    inputtype: textarea
+  - Arguments juridiques et statutaires invoqués par l'agent: arguments_defense
+    inputtype: textarea
+  - Demandes précises et mesures sollicitées auprès de l'instance: conclusions_demandes
+    inputtype: textarea
+---
+attachment:
+  name: Formulaire_Officiel_Saisine_Instance_Paritaire
+  filename: Saisine_\${ instance_choisie }_\${ agent.name.last }.docx
+  docx template file: modele_saisine_instance.docx
+---
+mandatory: True
+question: |
+  Votre formulaire officiel de saisine est prêt
+subquestion: |
+  Le document officiel et conforme aux dispositions du Code Général de la Fonction Publique est prêt à être transmis au secrétariat de l'instance paritaire et notifié à l'autorité territoriale.
+buttons:
+  - Télécharger le formulaire (.docx): exit
 `;
   }
 

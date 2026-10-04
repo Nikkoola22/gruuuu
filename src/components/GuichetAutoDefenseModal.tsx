@@ -24,7 +24,9 @@ import {
   Check,
   AlertOctagon,
   HelpCircle,
-  FileCode
+  FileCode,
+  Users,
+  Landmark
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { toast } from "sonner";
@@ -32,6 +34,7 @@ import {
   calculateRecevabiliteCja,
   generateRecoursGracieux,
   generateDemandeProtectionFonctionnelle,
+  generateSaisineInstanceParitaire,
   generateRequeteTa,
   generateBordereauPieces,
   generateDocassembleYamlPackage,
@@ -39,6 +42,12 @@ import {
   RecoursGracieuxFormData,
   TypeAtteinteProtection,
   ProtectionFonctionnelleFormData,
+  TypeInstanceParitaire,
+  MotifSaisineCap,
+  MotifSaisineCcp,
+  MotifSaisineF3sct,
+  SaisineInstanceFormData,
+  SaisineInstanceResult,
   RequeteContentieuseFormData,
   PieceTeleRecours
 } from "../services/docassembleAutoDefenseEngine";
@@ -46,14 +55,14 @@ import { exportToOfficialDocx } from "../utils/docxExport";
 
 interface GuichetAutoDefenseModalProps {
   onClose: () => void;
-  defaultTab?: "recours" | "protection" | "requete" | "bordereau" | "docassemble";
+  defaultTab?: "recours" | "protection" | "instances" | "requete" | "bordereau" | "docassemble";
 }
 
 export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = ({
   onClose,
   defaultTab = "recours"
 }) => {
-  const [activeTab, setActiveTab] = useState<"recours" | "protection" | "requete" | "bordereau" | "docassemble">(defaultTab);
+  const [activeTab, setActiveTab] = useState<"recours" | "protection" | "instances" | "requete" | "bordereau" | "docassemble">(defaultTab);
 
   // ─────────────────────────────────────────────────────────────
   // ÉTAT DU VOLET 1 : RECOURS GRACIEUX & CONTRÔLE DE RECEVABILITÉ
@@ -128,7 +137,45 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
   } | null>(null);
 
   // ─────────────────────────────────────────────────────────────
-  // ÉTAT DU VOLET 3 : REQUÊTE CONTENTIEUSE TA & RÉFÉRÉ
+  // ÉTAT DU VOLET 3 : SAISINE DES INSTANCES PARITAIRES (CAP, CCP, F3SCT)
+  // ─────────────────────────────────────────────────────────────
+  const [saisineData, setSaisineData] = useState<SaisineInstanceFormData>({
+    instance: "cap",
+    nomAgent: "DUPONT",
+    prenomAgent: "Alexandre",
+    matricule: "GEN-84920",
+    statutAgent: "titulaire",
+    grade: "Adjoint administratif principal de 1ère classe",
+    directionService: "Direction de l'Éducation et de l'Enfance",
+    collectivite: "Ville de Gennevilliers",
+    cigRattachement: "CIG Petite Couronne (92-93-94)",
+    destinataireInstance: "Monsieur le Président de la Commission Administrative Paritaire n°3 (Catégorie C) - CIG Petite Couronne",
+    motifCap: "crep",
+    motifCcp: "licenciement_contractuel_insuffisance",
+    motifF3sct: "danger_grave_imminent",
+    dateNotificationDecision: new Date(Date.now() - 20 * 24 * 3600 * 1000).toISOString().split("T")[0],
+    dateRecoursPrealable: new Date(Date.now() - 10 * 24 * 3600 * 1000).toISOString().split("T")[0],
+    dateDecisionRecoursPrealable: new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString().split("T")[0],
+    dateIncidentDanger: new Date().toISOString().split("T")[0],
+    lieuIncidentDanger: "Ateliers municipaux / Bâtiment principal",
+    faitsEtContexte: "L'entretien d'évaluation s'est déroulé dans un climat de tension manifeste. Le supérieur hiérarchique direct a subitement dégradé plusieurs appréciations et abaissé les coches de manière injustifiée.",
+    motifsInvoquesAdministration: "Baisse de rythme alléguée sans aucun élément factuel probant ni avertissement préalable au cours de l'année.",
+    argumentsAgent: "Contradiction totale entre les appréciations d'ensemble très élogieuses et les coches dépréciées. L'agent a atteint l'ensemble des objectifs fixés l'année précédente. Refus de dialogue et partialité.",
+    demandesAgent: "Révision des niveaux de maîtrise professionnelle pour les rétablir au niveau 'Excellent', et modification de l'appréciation générale littérale.",
+    assistanceSyndicale: true,
+    nomRepresentantSyndical: "Délégation Syndicale CFDT Territoriaux de Gennevilliers",
+    piecesJointes: [
+      "Compte-rendu d'évaluation professionnelle (CREP) complet",
+      "Recours hiérarchique préalable adressé à l'autorité territoriale",
+      "Courrier de rejet de l'autorité territoriale",
+      "Fiche de poste officielle et bilans d'activité"
+    ]
+  });
+
+  const [generatedSaisine, setGeneratedSaisine] = useState<SaisineInstanceResult | null>(null);
+
+  // ─────────────────────────────────────────────────────────────
+  // ÉTAT DU VOLET 4 : REQUÊTE CONTENTIEUSE TA & RÉFÉRÉ
   // ─────────────────────────────────────────────────────────────
   const [requeteData, setRequeteData] = useState<RequeteContentieuseFormData>({
     typeRequete: "rep_et_refere",
@@ -264,14 +311,15 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
   } | null>(null);
 
   // ─────────────────────────────────────────────────────────────
-  // ÉTAT DU VOLET 5 : DOCASSEMBLE (.YML)
+  // ÉTAT DU VOLET 6 : DOCASSEMBLE (.YML)
   // ─────────────────────────────────────────────────────────────
-  const [docassembleScenario, setDocassembleScenario] = useState<"recours_gracieux" | "requete_ta" | "protection_fonctionnelle">("recours_gracieux");
+  const [docassembleScenario, setDocassembleScenario] = useState<"recours_gracieux" | "requete_ta" | "protection_fonctionnelle" | "saisine_instances">("recours_gracieux");
   const docassembleYaml = generateDocassembleYamlPackage(docassembleScenario);
 
   // Initialisation par défaut
   useEffect(() => {
     handleGenerateRecours();
+    handleGenerateSaisine();
   }, []);
 
   const handleGenerateRecours = () => {
@@ -282,6 +330,12 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
   const handleGenerateProtection = () => {
     const res = generateDemandeProtectionFonctionnelle(protectionData);
     setGeneratedProtection(res);
+    confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
+  };
+
+  const handleGenerateSaisine = () => {
+    const res = generateSaisineInstanceParitaire(saisineData);
+    setGeneratedSaisine(res);
     confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
   };
 
@@ -402,7 +456,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
         </div>
       </header>
 
-      {/* ─── NAVIGATION DES 5 ONGLETS DU GUICHET ─── */}
+      {/* ─── NAVIGATION DES 6 ONGLETS DU GUICHET ─── */}
       <div className="shrink-0 bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2 overflow-x-auto">
         <div className="flex items-center gap-2 min-w-max">
           {[
@@ -421,22 +475,29 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
               badge: "L. 134-1 CGFP"
             },
             {
+              id: "instances",
+              label: "3. Saisine Instances (CAP, CCP, F3SCT)",
+              icon: Users,
+              color: "text-rose-400",
+              badge: "CAP • CCP • F3SCT"
+            },
+            {
               id: "requete",
-              label: "3. Requête TA & Référé L. 521-1",
+              label: "4. Requête TA & Référé L. 521-1",
               icon: Gavel,
               color: "text-indigo-400",
               badge: "REP + Référé"
             },
             {
               id: "bordereau",
-              label: "4. Bordereau Télérecours",
+              label: "5. Bordereau Télérecours",
               icon: FileCheck,
               color: "text-blue-400",
               badge: "Norme CJA"
             },
             {
               id: "docassemble",
-              label: "5. Script Docassemble (YAML/Python)",
+              label: "6. Script Docassemble (YAML/Python)",
               icon: FileCode,
               color: "text-purple-400",
               badge: ".yml Export"
@@ -452,6 +513,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   setActiveTab(tab.id as any);
                   if (tab.id === "recours" && !generatedRecours) handleGenerateRecours();
                   if (tab.id === "protection" && !generatedProtection) handleGenerateProtection();
+                  if (tab.id === "instances" && !generatedSaisine) handleGenerateSaisine();
                   if (tab.id === "requete" && !generatedRequete) handleGenerateRequete();
                   if (tab.id === "bordereau" && !generatedBordereau) handleGenerateBordereau();
                 }}
@@ -1017,7 +1079,539 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            ONGLET 3 : REQUÊTE TRIBUNAL ADMINISTRATIF & RÉFÉRÉ L. 521-1
+            ONGLET 3 : SAISINE DES INSTANCES PARITAIRES (CAP, CCP, F3SCT)
+        ═══════════════════════════════════════════════════════════ */}
+        {activeTab === "instances" && (
+          <div className="space-y-6 animate-in fade-in duration-150">
+            {/* Header info instances */}
+            <div className="bg-rose-950/40 border-2 border-rose-500/40 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-start gap-3.5">
+                <div className="p-3 rounded-xl bg-slate-900 border border-rose-500/30 text-rose-400 shrink-0">
+                  <Users className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <span className="text-xs font-black uppercase tracking-wider text-rose-400">
+                      Saisine des Instances Paritaires Territoriales
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                      CAP • CCP • F3SCT / CST
+                    </span>
+                  </div>
+                  <h2 className="text-base sm:text-lg font-black text-white">
+                    Génération des formulaires de saisine : CAP, CCP et F3SCT
+                  </h2>
+                  <p className="text-xs text-slate-300 max-w-2xl mt-0.5">
+                    Sécurisez vos démarches statutaires : recours évaluation (CREP) et refus de formation (CAP), contestation du licenciement d'un contractuel (CCP), et droit d'alerte, droit de retrait et inscription au registre spécial DGI (F3SCT).
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="text-xs text-rose-300 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-rose-500/30 font-bold">
+                  Code Général de la Fonction Publique
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* Colonne gauche : Formulaire de Saisine */}
+              <div className="lg:col-span-5 space-y-4">
+                {/* 1. Sélection de l'Instance Paritaire */}
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-300 block">
+                    1. Sélection de l'instance paritaire compétente
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {[
+                      {
+                        id: "cap",
+                        title: "CAP",
+                        desc: "Fonctionnaires titulaires & stagiaires",
+                        badge: "CREP • Formation"
+                      },
+                      {
+                        id: "ccp",
+                        title: "CCP",
+                        desc: "Agents contractuels de droit public",
+                        badge: "Licenciement • Droits"
+                      },
+                      {
+                        id: "f3sct_cst",
+                        title: "F3SCT / CST",
+                        desc: "Santé, Sécurité & Conditions de travail",
+                        badge: "DGI • Retrait • RPS"
+                      }
+                    ].map((inst) => {
+                      const isChosen = saisineData.instance === inst.id;
+                      return (
+                        <button
+                          key={inst.id}
+                          type="button"
+                          onClick={() => {
+                            setSaisineData({
+                              ...saisineData,
+                              instance: inst.id as TypeInstanceParitaire,
+                              statutAgent: inst.id === "ccp" ? "contractuel_cdi" : "titulaire"
+                            });
+                          }}
+                          className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-1.5 ${
+                            isChosen
+                              ? "bg-rose-500/15 border-rose-500 text-white shadow-md shadow-rose-500/10"
+                              : "bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-black text-sm">{inst.title}</span>
+                            <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${
+                              isChosen ? "bg-rose-500 text-white" : "bg-slate-800 text-slate-400"
+                            }`}>
+                              {inst.badge}
+                            </span>
+                          </div>
+                          <p className="text-[11px] leading-tight line-clamp-2">{inst.desc}</p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 2. Objet précis de la Saisine selon l'instance */}
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
+                  <label className="text-xs font-black uppercase tracking-wider text-rose-300 block">
+                    2. Objet et motif de la saisine
+                  </label>
+
+                  {/* Options CAP */}
+                  {saisineData.instance === "cap" && (
+                    <div className="space-y-2">
+                      {[
+                        {
+                          id: "crep",
+                          label: "Recours révision Compte-Rendu d'Entretien Professionnel (CREP)",
+                          ref: "Art. L. 543-1 CGFP & Décret 2014-1526"
+                        },
+                        {
+                          id: "refus_formation",
+                          label: "Refus réitéré de formation professionnelle ou compte CPF",
+                          ref: "Art. L. 422-1 CGFP & Décret 2007-1845"
+                        },
+                        {
+                          id: "refus_temps_partiel",
+                          label: "Refus d'autorisation de temps partiel ou télétravail",
+                          ref: "Art. L. 612-1 CGFP & Décret 2004-777"
+                        },
+                        {
+                          id: "licenciement_insuffisance",
+                          label: "Défense en cas de licenciement pour insuffisance professionnelle",
+                          ref: "Art. L. 553-1 CGFP & Décret 89-229"
+                        }
+                      ].map((item) => (
+                        <label
+                          key={item.id}
+                          className={`flex items-start gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-all ${
+                            saisineData.motifCap === item.id
+                              ? "bg-rose-500/10 border-rose-500/60 text-white"
+                              : "bg-slate-950/40 border-slate-800/80 text-slate-300 hover:border-slate-700"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="motifCap"
+                            checked={saisineData.motifCap === item.id}
+                            onChange={() => setSaisineData({ ...saisineData, motifCap: item.id as MotifSaisineCap })}
+                            className="mt-0.5 text-rose-500"
+                          />
+                          <div>
+                            <span className="font-bold block">{item.label}</span>
+                            <span className="text-[10px] text-slate-400">{item.ref}</span>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Options CCP */}
+                  {saisineData.instance === "ccp" && (
+                    <div className="space-y-2">
+                      {[
+                        {
+                          id: "licenciement_contractuel_insuffisance",
+                          label: "Mémoire en défense : Licenciement pour insuffisance professionnelle",
+                          ref: "Décret n° 88-145 Art. 39-1 & Art. L. 553-1 CGFP"
+                        },
+                        {
+                          id: "licenciement_contractuel_suppression",
+                          label: "Licenciement pour suppression d'emploi (Manquement obligation de reclassement)",
+                          ref: "Décret n° 88-145 Art. 39-3 & Jurisprudence CE 2013"
+                        },
+                        {
+                          id: "licenciement_contractuel_inaptitude",
+                          label: "Licenciement pour inaptitude physique (Reclassement non proposé)",
+                          ref: "Décret n° 88-145 Art. 13 & Art. L. 826-1 CGFP"
+                        },
+                        {
+                          id: "recours_crep_contractuel",
+                          label: "Recours en révision de l'évaluation professionnelle du contractuel",
+                          ref: "Décret n° 88-145 Art. 1-4"
+                        },
+                        {
+                          id: "non_renouvellement",
+                          label: "Contestation du non-renouvellement abusif de contrat",
+                          ref: "Jurisprudence Conseil d'État"
+                        }
+                      ].map((item) => (
+                        <label
+                          key={item.id}
+                          className={`flex items-start gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-all ${
+                            saisineData.motifCcp === item.id
+                              ? "bg-rose-500/10 border-rose-500/60 text-white"
+                              : "bg-slate-950/40 border-slate-800/80 text-slate-300 hover:border-slate-700"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="motifCcp"
+                            checked={saisineData.motifCcp === item.id}
+                            onChange={() => setSaisineData({ ...saisineData, motifCcp: item.id as MotifSaisineCcp })}
+                            className="mt-0.5 text-rose-500"
+                          />
+                          <div>
+                            <span className="font-bold block">{item.label}</span>
+                            <span className="text-[10px] text-slate-400">{item.ref}</span>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Options F3SCT / CST */}
+                  {saisineData.instance === "f3sct_cst" && (
+                    <div className="space-y-2">
+                      {[
+                        {
+                          id: "danger_grave_imminent",
+                          label: "Signalement Danger Grave et Imminent (DGI) - Inscription au Registre spécial",
+                          ref: "Décret 85-603 Art. 5-2 & Enquête conjointe obligatoire"
+                        },
+                        {
+                          id: "droit_alerte_retrait",
+                          label: "Constat d'exercice du Droit de Retrait et Droit d'Alerte",
+                          ref: "Art. L. 136-1 CGFP & Décret 85-603 Art. 5-1 (Protection contre sanction)"
+                        },
+                        {
+                          id: "souffrance_travail_rps",
+                          label: "Risques Psychosociaux (RPS), harcèlement et souffrance au travail",
+                          ref: "Décret 2021-571 Art. 61 & Délégation d'enquête paritaire"
+                        },
+                        {
+                          id: "insalubrite_visite_locaux",
+                          label: "Insalubrité, amiante, risques matériels et demande de visite d'inspection",
+                          ref: "Décret 2021-571 Art. 62 (Droit de visite des membres F3SCT)"
+                        }
+                      ].map((item) => (
+                        <label
+                          key={item.id}
+                          className={`flex items-start gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-all ${
+                            saisineData.motifF3sct === item.id
+                              ? "bg-rose-500/10 border-rose-500/60 text-white"
+                              : "bg-slate-950/40 border-slate-800/80 text-slate-300 hover:border-slate-700"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="motifF3sct"
+                            checked={saisineData.motifF3sct === item.id}
+                            onChange={() => setSaisineData({ ...saisineData, motifF3sct: item.id as MotifSaisineF3sct })}
+                            className="mt-0.5 text-rose-500"
+                          />
+                          <div>
+                            <span className="font-bold block">{item.label}</span>
+                            <span className="text-[10px] text-slate-400">{item.ref}</span>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Encadré d'alerte procédurale */}
+                  <div className="p-3 rounded-xl bg-slate-950 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2">
+                    <Info className="w-4 h-4 shrink-0 text-amber-400 mt-0.5" />
+                    <div>
+                      {saisineData.instance === "cap" && saisineData.motifCap === "crep" && (
+                        <span><strong>Délai strict de saisine :</strong> La saisine de la CAP doit impérativement intervenir dans le <strong>délai d'un mois</strong> suivant la notification du refus de votre recours hiérarchique (ou après 2 mois de rejet implicite).</span>
+                      )}
+                      {saisineData.instance === "cap" && saisineData.motifCap === "refus_formation" && (
+                        <span><strong>Garantie légale :</strong> Le 2ème refus consécutif d'une formation de perfectionnement ou de préparation concours ne peut être légalement opposé qu'après avis obligatoire de la CAP.</span>
+                      )}
+                      {saisineData.instance === "ccp" && (
+                        <span><strong>Obligation préalable de reclassement :</strong> L'employeur doit obligatoirement justifier devant la CCP de recherches écrites et loyales de reclassement (Art. 39-3 décret 88-145).</span>
+                      )}
+                      {saisineData.instance === "f3sct_cst" && (
+                        <span><strong>Procédure d'urgence DGI :</strong> L'inscription au registre spécial est un droit fondamental. Elle oblige l'autorité à mener une <strong>enquête conjointe immédiate</strong> avec le représentant désigné de la F3SCT.</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Données administratives de l'agent & rattachement */}
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-300 block">
+                    3. Informations de l'agent & Instance
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <span className="text-[11px] text-slate-400 block mb-1">Nom :</span>
+                      <input
+                        type="text"
+                        value={saisineData.nomAgent}
+                        onChange={(e) => setSaisineData({ ...saisineData, nomAgent: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-slate-400 block mb-1">Prénom :</span>
+                      <input
+                        type="text"
+                        value={saisineData.prenomAgent}
+                        onChange={(e) => setSaisineData({ ...saisineData, prenomAgent: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <span className="text-[11px] text-slate-400 block mb-1">Grade / Fonction :</span>
+                      <input
+                        type="text"
+                        value={saisineData.grade}
+                        onChange={(e) => setSaisineData({ ...saisineData, grade: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-slate-400 block mb-1">Direction / Service :</span>
+                      <input
+                        type="text"
+                        value={saisineData.directionService}
+                        onChange={(e) => setSaisineData({ ...saisineData, directionService: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <span className="text-[11px] text-slate-400 block mb-1">Collectivité employeur :</span>
+                      <input
+                        type="text"
+                        value={saisineData.collectivite}
+                        onChange={(e) => setSaisineData({ ...saisineData, collectivite: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-slate-400 block mb-1">CIG / CDG de rattachement :</span>
+                      <input
+                        type="text"
+                        value={saisineData.cigRattachement}
+                        onChange={(e) => setSaisineData({ ...saisineData, cigRattachement: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Dates spécifiques */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div>
+                      <span className="text-[11px] text-slate-400 block mb-1">
+                        {saisineData.instance === "f3sct_cst" ? "Date du constat du danger :" : "Date décision / notification :"}
+                      </span>
+                      <input
+                        type="date"
+                        value={saisineData.dateNotificationDecision}
+                        onChange={(e) => setSaisineData({ ...saisineData, dateNotificationDecision: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+
+                    {saisineData.instance === "cap" && saisineData.motifCap === "crep" && (
+                      <div>
+                        <span className="text-[11px] text-slate-400 block mb-1">Date recours préalable :</span>
+                        <input
+                          type="date"
+                          value={saisineData.dateRecoursPrealable || ""}
+                          onChange={(e) => setSaisineData({ ...saisineData, dateRecoursPrealable: e.target.value })}
+                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+                    )}
+
+                    {saisineData.instance === "f3sct_cst" && (
+                      <div>
+                        <span className="text-[11px] text-slate-400 block mb-1">Lieu précis du danger :</span>
+                        <input
+                          type="text"
+                          value={saisineData.lieuIncidentDanger || ""}
+                          onChange={(e) => setSaisineData({ ...saisineData, lieuIncidentDanger: e.target.value })}
+                          placeholder="Atelier, quai de chargement, bureau..."
+                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 4. Faits, motifs et arguments */}
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-300 block">
+                    4. Exposé des faits et moyens de défense
+                  </label>
+
+                  <div>
+                    <span className="text-[11px] text-slate-400 block mb-1">Circonstances factuelles détaillées :</span>
+                    <textarea
+                      rows={3}
+                      value={saisineData.faitsEtContexte}
+                      onChange={(e) => setSaisineData({ ...saisineData, faitsEtContexte: e.target.value })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white leading-relaxed"
+                    />
+                  </div>
+
+                  <div>
+                    <span className="text-[11px] text-slate-400 block mb-1">Motifs allégués par l'administration :</span>
+                    <textarea
+                      rows={2}
+                      value={saisineData.motifsInvoquesAdministration}
+                      onChange={(e) => setSaisineData({ ...saisineData, motifsInvoquesAdministration: e.target.value })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white leading-relaxed"
+                    />
+                  </div>
+
+                  <div>
+                    <span className="text-[11px] text-slate-400 block mb-1">Arguments de l'agent (violation des textes, disproportion) :</span>
+                    <textarea
+                      rows={3}
+                      value={saisineData.argumentsAgent}
+                      onChange={(e) => setSaisineData({ ...saisineData, argumentsAgent: e.target.value })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white leading-relaxed"
+                    />
+                  </div>
+
+                  <div>
+                    <span className="text-[11px] text-slate-400 block mb-1">Mesures et conclusions demandées à l'instance :</span>
+                    <textarea
+                      rows={2}
+                      value={saisineData.demandesAgent}
+                      onChange={(e) => setSaisineData({ ...saisineData, demandesAgent: e.target.value })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white leading-relaxed"
+                    />
+                  </div>
+
+                  {/* Assistance syndicale CFDT */}
+                  <label className="flex items-center gap-2 pt-2 border-t border-slate-800 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={saisineData.assistanceSyndicale}
+                      onChange={(e) => setSaisineData({ ...saisineData, assistanceSyndicale: e.target.checked })}
+                      className="rounded text-rose-500"
+                    />
+                    <span className="text-xs text-slate-200 font-bold">
+                      Assistance de la délégation syndicale CFDT lors de la séance
+                    </span>
+                  </label>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleGenerateSaisine}
+                  className="w-full py-3.5 bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700 hover:from-rose-500 hover:to-pink-500 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg shadow-rose-600/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Users className="w-4 h-4" />
+                  <span>Générer le Dossier Officiel de Saisine</span>
+                </button>
+              </div>
+
+              {/* Colonne droite : Aperçu Officiel A4 et Pièces */}
+              <div className="lg:col-span-7 flex flex-col space-y-4">
+                {/* Barre d'action rapide */}
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="p-2 rounded-lg bg-rose-500/20 text-rose-400">
+                      <FileText className="w-4 h-4" />
+                    </span>
+                    <div>
+                      <h4 className="text-xs font-bold text-white">Formulaire Officiel Conforme CGFP</h4>
+                      <p className="text-[10px] text-slate-400">Prêt pour notification à l'instance et à l'autorité</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(generatedSaisine?.texteOfficiel || "")}
+                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-700"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>Copier</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleExportDocx(generatedSaisine?.titre || "Saisine_Instance_Paritaire", generatedSaisine?.texteOfficiel || "")}
+                      className="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Exporter (.docx)</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Encadré d'information légale & pièces requises */}
+                {generatedSaisine && (
+                  <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 text-xs space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-rose-400 uppercase tracking-wider text-[11px] flex items-center gap-1">
+                        <Scale className="w-3.5 h-3.5" /> Textes & Procédure applicables
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-mono">
+                        {generatedSaisine.delaisEtProcedure.autoriteCompetente}
+                      </span>
+                    </div>
+
+                    <p className="text-slate-300 text-[11px] leading-relaxed">
+                      <strong>Délai légal :</strong> {generatedSaisine.delaisEtProcedure.delaiLegal}
+                    </p>
+
+                    <div className="pt-2 border-t border-slate-800">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
+                        Pièces obligatoires à joindre au dossier :
+                      </span>
+                      <ul className="space-y-1">
+                        {generatedSaisine.piecesRequises.map((piece, idx) => (
+                          <li key={idx} className="flex items-start gap-1.5 text-[11px] text-slate-300">
+                            <CheckCircle2 className="w-3 h-3 text-rose-400 shrink-0 mt-0.5" />
+                            <span>{piece}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
+                {/* Aperçu Feuille A4 */}
+                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-4 border-slate-800 shadow-2xl overflow-x-auto min-h-[540px]">
+                  <pre className="whitespace-pre-wrap font-serif text-slate-900 select-text">
+                    {generatedSaisine?.texteOfficiel || "Chargement du formulaire de saisine..."}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════
+            ONGLET 4 : REQUÊTE TRIBUNAL ADMINISTRATIF & RÉFÉRÉ L. 521-1
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === "requete" && (
           <div className="space-y-6 animate-in fade-in duration-150">
@@ -1490,7 +2084,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-purple-500"
                 >
                   <option value="recours_gracieux">Interview 1 : Recours Gracieux & Calcul R. 421-5 CJA</option>
-                  <option value="requete_ta">Interview 2 : Requête Contentieuse Tribunal Administratif</option>
+                  <option value="saisine_instances">Interview 2 : Saisine Instances Paritaires (CAP, CCP, F3SCT)</option>
+                  <option value="requete_ta">Interview 3 : Requête Contentieuse Tribunal Administratif</option>
                 </select>
               </div>
 

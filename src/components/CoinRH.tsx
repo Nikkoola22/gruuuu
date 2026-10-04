@@ -17,7 +17,8 @@ import {
   Clock,
   AlertTriangle,
   FileCheck,
-  Code2
+  Code2,
+  Users
 } from "lucide-react";
 import { extractTextFromFile, auditStatutoryDocument, FullLegalAuditResult } from "../services/statutoryAuditEngine";
 import { OfficialDocumentPreview } from "./OfficialDocumentPreview";
@@ -40,7 +41,7 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
   const [uploadedFile, setUploadedFile] = useState<{ name: string; size: number; content: string } | null>(null);
   const [isMemoireOpen, setIsMemoireOpen] = useState<boolean>(false);
   const [isAutoDefenseOpen, setIsAutoDefenseOpen] = useState<boolean>(false);
-  const [autoDefenseInitialTab, setAutoDefenseInitialTab] = useState<"recours" | "protection" | "requete" | "bordereau" | "docassemble">("recours");
+  const [autoDefenseInitialTab, setAutoDefenseInitialTab] = useState<"recours" | "protection" | "instances" | "requete" | "bordereau" | "docassemble">("recours");
   const statutResultRef = useRef<HTMLDivElement>(null);
 
   // Jurisprudence search state
@@ -780,7 +781,7 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
                     Guichet d'Auto-Défense Syndicale & Requêtes Contentieuses
                   </h2>
                   <p className={`text-xs sm:text-sm font-medium mt-1 max-w-3xl ${isLight ? "text-slate-600" : "text-slate-300"}`}>
-                    Exposez votre situation administrative et obtenez votre recours juridique certifié en 5 minutes : calcul automatisé des délais de forclusion (R. 421-5 CJA), recours gracieux contre les refus, demande formelle de protection fonctionnelle et requêtes prêtes pour Télérecours Citoyens.
+                    Exposez votre situation administrative et obtenez votre recours juridique certifié en 5 minutes : calcul automatisé des délais de forclusion (R. 421-5 CJA), recours gracieux contre les refus, saisine des instances paritaires (CAP, CCP, F3SCT), demande formelle de protection fonctionnelle et requêtes prêtes pour Télérecours Citoyens.
                   </p>
                 </div>
               </div>
@@ -800,8 +801,8 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
               </div>
             </div>
 
-            {/* Grille des 2 volets fondamentaux */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Grille des 3 volets fondamentaux */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
               
               {/* Volet 1 : Guichet d'auto-défense syndicale pour les agents (Permanence numérique) */}
               <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
@@ -863,14 +864,74 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
                 </div>
               </div>
 
-              {/* Volet 2 : Génération de requêtes contentieuses (Tribunal Administratif / Télérecours) */}
+              {/* Volet 2 : Saisine des Instances Paritaires (CAP, CCP, F3SCT / CST) */}
+              <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
+                isLight ? "bg-white border-rose-200 shadow-sm" : "bg-[#090D1A] border-rose-500/30"
+              }`}>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+                      <Users className="w-4 h-4" /> 2. Saisine Instances Paritaires
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                      CAP • CCP • F3SCT
+                    </span>
+                  </div>
+
+                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
+                    CAP (CREP & Formation), CCP (Contractuels) et F3SCT (DGI)
+                  </h3>
+
+                  <ul className="text-xs space-y-2 text-slate-600 dark:text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-rose-400 font-bold shrink-0">•</span>
+                      <span><strong>CAP (Fonctionnaires) :</strong> Saisine en révision de l'évaluation professionnelle annuelle (délai strict d'1 mois post-recours hiérarchique) et recours refus successifs de formation / CPF.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-rose-400 font-bold shrink-0">•</span>
+                      <span><strong>CCP (Contractuels) :</strong> Mémoire d'observations préalable en cas de licenciement (insuffisance pro, suppression d'emploi sans reclassement loyal Art. 39-3, inaptitude physique).</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-rose-400 font-bold shrink-0">•</span>
+                      <span><strong>F3SCT / CST (Santé & Sécurité) :</strong> Signalement Danger Grave et Imminent (DGI - Registre spécial obligatoire Art. 5-2), droit d'alerte, exercice du droit de retrait et enquête conjointe.</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 pt-4 mt-2 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAutoDefenseInitialTab("instances");
+                      setIsAutoDefenseOpen(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <Users className="w-3.5 h-3.5" />
+                    <span>Saisir la CAP / CCP</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAutoDefenseInitialTab("instances");
+                      setIsAutoDefenseOpen(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-rose-300 hover:text-white border border-rose-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Alerte DGI / F3SCT</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Volet 3 : Génération de requêtes contentieuses (Tribunal Administratif / Télérecours) */}
               <div className={`p-5 rounded-2xl border flex flex-col justify-between transition-all ${
                 isLight ? "bg-white border-indigo-200 shadow-sm" : "bg-[#090D1A] border-indigo-500/30"
               }`}>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
-                      <Scale className="w-4 h-4" /> 2. Requêtes Contentieuses TA & Télérecours
+                      <Scale className="w-4 h-4" /> 3. Requêtes Contentieuses TA & Télérecours
                     </span>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
                       CJA & Télérecours

@@ -3,8 +3,7 @@ import {
   ArrowLeft, 
   RotateCcw,
   ExternalLink,
-  ShieldCheck,
-  Lock
+  ShieldCheck
 } from "lucide-react";
 
 interface SimulateurCarriereProps {
@@ -131,29 +130,6 @@ export const SimulateurCarriere: React.FC<SimulateurCarriereProps> = ({ onClose,
             </div>
           </div>
         )}
-
-        {/* Overlay de blocage avec message clignotant Bientôt pour vous */}
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md text-white p-6 text-center select-none">
-          <div className="inline-flex items-center gap-3 px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white font-black text-xl sm:text-3xl shadow-2xl shadow-orange-500/50 border-2 border-white/90 animate-pulse">
-            <Lock className="w-7 h-7 sm:w-8 sm:h-8 shrink-0" />
-            <span className="tracking-wider uppercase">Bientôt pour vous</span>
-            <span className="relative flex h-3.5 w-3.5 sm:h-4 sm:w-4">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-80"></span>
-              <span className="relative inline-flex rounded-full h-3.5 w-3.5 sm:h-4 sm:w-4 bg-white"></span>
-            </span>
-          </div>
-          <p className="mt-4 text-xs sm:text-sm font-bold text-white bg-slate-900/90 px-5 py-2.5 rounded-full border border-white/20 shadow-xl max-w-md">
-            🔒 Le simulateur de carrière est en cours de déploiement pour votre collectivité.
-          </p>
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-6 inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm border border-white/20 transition-all hover:scale-105 active:scale-95 shadow-lg cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Retour au menu principal</span>
-          </button>
-        </div>
 
         {/* Embedded Application */}
         <iframe

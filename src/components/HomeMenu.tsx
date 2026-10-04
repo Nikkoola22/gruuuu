@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import { Bot, ArrowRight, Rss, Radio, Calculator, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, BookOpen, Scale, Landmark, GraduationCap, Gamepad2, FileText, Clock, Briefcase, ExternalLink as ExternalLinkIcon, PlayCircle, Sparkles, Laptop, Palette, FileSignature, Award, TrendingUp, CheckCircle2, Zap, Download, Eye, Lock } from "lucide-react"
+import { Bot, ArrowRight, Rss, Radio, Calculator, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, BookOpen, Scale, Landmark, GraduationCap, Gamepad2, FileText, Clock, Briefcase, ExternalLink as ExternalLinkIcon, PlayCircle, Sparkles, Laptop, Palette, FileSignature, Award, TrendingUp, CheckCircle2, Zap, Download, Eye } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { BorderBeam } from "./ui/BorderBeam.tsx"
 import type { ChatbotState } from "../App.tsx"
@@ -1049,8 +1049,8 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
 
         </div>
 
-        {/* --- BLOC CARRIÈRE FULL-WIDTH : VOS COLLÈGUES DE LA CFDT DE GENNEVILLIERS VOUS AIDENT POUR VOTRE CARRIÈRE (VERROUILLÉ / BIENTÔT POUR VOUS) --- */}
-        <div className="relative w-full bg-gradient-to-br from-white via-orange-50/40 to-amber-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-orange-950/20 rounded-3xl p-6 sm:p-8 border-2 border-orange-200/80 dark:border-orange-500/30 shadow-2xl shadow-orange-500/10 dark:shadow-orange-950/30 overflow-hidden mb-12">
+        {/* --- BLOC CARRIÈRE FULL-WIDTH : VOS COLLÈGUES DE LA CFDT DE GENNEVILLIERS VOUS AIDENT POUR VOTRE CARRIÈRE --- */}
+        <div className="relative w-full bg-gradient-to-br from-white via-orange-50/40 to-amber-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-orange-950/20 rounded-3xl p-6 sm:p-8 border-2 border-orange-200/80 dark:border-orange-500/30 shadow-2xl shadow-orange-500/10 dark:shadow-orange-950/30 transition-all duration-300 hover:border-orange-400 dark:hover:border-orange-400/60 overflow-hidden group mb-12">
           {/* Lueur d'ambiance en arrière-plan */}
           <div className="absolute -top-24 -right-24 w-80 h-80 bg-gradient-to-br from-orange-400/20 to-amber-400/10 dark:from-orange-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-amber-400/15 to-orange-500/10 dark:from-indigo-600/10 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
@@ -1058,38 +1058,21 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
           {/* Bordure lumineuse animée */}
           <BorderBeam size={260} duration={14} delay={0} colorFrom="#f97316" colorTo="#fbbf24" />
 
-          {/* Overlay de blocage avec message clignotant "Bientôt pour vous" */}
-          <div className="absolute inset-0 z-30 bg-slate-900/40 dark:bg-slate-950/65 backdrop-blur-[2.5px] flex flex-col items-center justify-center p-6 text-center select-none cursor-not-allowed">
-            <div className="flex flex-col items-center max-w-lg mx-auto">
-              <div className="inline-flex items-center gap-3 px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white font-black text-xl sm:text-3xl shadow-2xl shadow-orange-500/50 border-2 border-white/90 animate-pulse">
-                <Lock className="w-7 h-7 sm:w-8 sm:h-8 shrink-0" />
-                <span className="tracking-wider uppercase">Bientôt pour vous</span>
-                <span className="relative flex h-3.5 w-3.5 sm:h-4 sm:w-4">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-80"></span>
-                  <span className="relative inline-flex rounded-full h-3.5 w-3.5 sm:h-4 sm:w-4 bg-white"></span>
-                </span>
-              </div>
-              <p className="mt-4 text-xs sm:text-sm font-bold text-white bg-slate-950/85 px-5 py-2.5 rounded-full border border-white/20 shadow-xl backdrop-blur-md">
-                🔒 Module carrière en cours de préparation pour votre collectivité
-              </p>
-            </div>
-          </div>
-
-          <div className="relative z-10 pointer-events-none select-none opacity-40 filter grayscale-[20%]">
+          <div className="relative z-10">
             {/* En-tête du bloc */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-5 border-b border-orange-100/80 dark:border-slate-800">
               <div className="flex items-start sm:items-center gap-4">
-                <div className="p-3.5 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-2xl shadow-lg shadow-orange-500/25 flex items-center justify-center shrink-0">
+                <div className="p-3.5 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-2xl shadow-lg shadow-orange-500/25 flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shrink-0">
                   <Briefcase className="w-7 h-7" />
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md animate-pulse">
-                      <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                      Bientôt pour vous
-                    </span>
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
                       Espace Carrière CFDT Gennevilliers
+                    </span>
+                    <span className="bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md shadow-xs">
+                      Simulateur Interactif 2027
                     </span>
                   </div>
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
@@ -1101,13 +1084,19 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 </div>
               </div>
 
-              {/* Bouton d'accès direct désactivé */}
-              <div
-                className="cursor-not-allowed self-start lg:self-center inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-extrabold border border-slate-300 dark:border-slate-700 shadow-none shrink-0"
+              {/* Bouton d'accès direct */}
+              <button
+                type="button"
+                onClick={() => {
+                  setChatState(prev => ({ ...prev, currentView: 'simul-agent' }))
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+                }}
+                className="cursor-pointer self-start lg:self-center inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white text-xs sm:text-sm font-extrabold shadow-md shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shrink-0"
               >
-                <Lock className="w-4 h-4" />
-                <span>Bientôt pour vous</span>
-              </div>
+                <Sparkles className="w-4 h-4" />
+                <span>Lancer le simulateur</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
 
             <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base font-medium mb-6 leading-relaxed">
@@ -1275,12 +1264,28 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
               </div>
 
               <div className="flex items-center gap-3 w-full lg:w-auto">
-                <div
-                  className="cursor-not-allowed w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-sm font-extrabold border border-slate-300 dark:border-slate-700 shadow-none"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setChatState(prev => ({ ...prev, currentView: 'simul-agent' }))
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+                  }}
+                  className="cursor-pointer w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white text-sm font-extrabold shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                 >
-                  <Lock className="w-4 h-4" />
-                  <span>Bientôt pour vous</span>
-                </div>
+                  <Zap className="w-4 h-4 fill-current" />
+                  <span>Accéder au Simulateur de Carrière</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+
+                <a
+                  href={`${BASE_URL}simul-agent/index.html`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Ouvrir dans un nouvel onglet"
+                  className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-orange-500 text-slate-600 dark:text-slate-300 hover:text-orange-500 transition-colors shadow-xs shrink-0"
+                >
+                  <ExternalLinkIcon className="w-4 h-4" />
+                </a>
               </div>
             </div>
 

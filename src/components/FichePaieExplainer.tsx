@@ -1,0 +1,1039 @@
+import React, { useState, useMemo, useRef } from 'react';
+import {
+  FileText,
+  Upload,
+  Sparkles,
+  CheckCircle2,
+  AlertTriangle,
+  ExternalLink,
+  Download,
+  Copy,
+  Printer,
+  Check,
+  Info,
+  ShieldCheck,
+  ChevronDown,
+  ChevronUp,
+  FileSpreadsheet,
+  Coins,
+  Calculator,
+  ArrowLeft,
+  RefreshCw,
+  HelpCircle,
+  FileCheck,
+  Percent,
+  TrendingDown,
+  Building,
+  UserCheck,
+  Sliders,
+  Code
+} from 'lucide-react';
+import { toast } from 'sonner';
+import {
+  computeOpenFiscaPay,
+  parseUploadedPaySlip,
+  FICHE_PAIE_PRESETS,
+  OPENFISCA_REPO_URL,
+  VALEUR_POINT_INDICE_MENSUEL,
+  type CalculParams,
+  type FichePaieAnalyseResult,
+  type FichePaieLigne
+} from '../services/openfiscaPayEngine';
+import { extractTextFromFile } from '../services/statutoryAuditEngine';
+import { exportToOfficialDocx } from '../utils/docxExport';
+
+interface FichePaieExplainerProps {
+  onClose?: () => void;
+}
+
+export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps) {
+  // Preset sélectionné par défaut
+  const [selectedPresetId, setSelectedPresetId] = useState<string>("cat_c_adjoint");
+
+  // Paramètres de calcul dynamiques
+  const [params, setParams] = useState<CalculParams>(() => {
+    const defaultPreset = FICHE_PAIE_PRESETS[0];
+    return {
+      indiceMajore: defaultPreset.agent.indiceMajore,
+      indiceBrut: defaultPreset.agent.indiceBrut,
+      nbiPoints: defaultPreset.primes.nbiPoints,
+      ifse: defaultPreset.primes.ifse,
+      cia: defaultPreset.primes.cia,
+      autresPrimes: defaultPreset.primes.autresPrimes,
+      zoneResidence: defaultPreset.agent.zoneResidence,
+      nbEnfantsSft: defaultPreset.agent.nbEnfantsSft,
+      quotite: defaultPreset.agent.quotite,
+      statut: defaultPreset.agent.statut,
+      tauxPas: defaultPreset.tauxPas,
+      nomAgent: defaultPreset.agent.nom,
+      grade: defaultPreset.agent.grade,
+      echelon: defaultPreset.agent.echelon
+    };
+  });
+
+  // Fichier uploadé (le cas échéant)
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [uploadedRawText, setUploadedRawText] = useState<string | null>(null);
+  const [isParsing, setIsParsing] = useState<boolean>(false);
+  const [dragActive, setDragActive] = useState<boolean>(false);
+
+  // État des onglets et filtres
+  const [activeTab, setActiveTab] = useState<'lignes' | 'conformite' | 'openfisca' | 'raw'>('lignes');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [expandedLignes, setExpandedLignes] = useState<Record<string, boolean>>({
+    tib: true,
+    ifse: true,
+    cnracl: true
+  });
+  const [showAdvancedTuning, setShowAdvancedTuning] = useState<boolean>(false);
+  const [copiedCode, setCopiedCode] = useState<boolean>(false);
+  const [copiedAudit, setCopiedAudit] = useState<boolean>(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Exécution du moteur de paie OpenFisca
+  const result: FichePaieAnalyseResult = useMemo(() => {
+    return computeOpenFiscaPay(params);
+  }, [params]);
+
+  // Basculer un preset prérempli
+  const handleSelectPreset = (presetId: string) => {
+    const preset = FICHE_PAIE_PRESETS.find(p => p.id === presetId);
+    if (!preset) return;
+
+    setSelectedPresetId(presetId);
+    setUploadedFileName(null);
+    setUploadedRawText(preset.rawTextPreview);
+    setParams({
+      indiceMajore: preset.agent.indiceMajore,
+      indiceBrut: preset.agent.indiceBrut,
+      nbiPoints: preset.primes.nbiPoints,
+      ifse: preset.primes.ifse,
+      cia: preset.primes.cia,
+      autresPrimes: preset.primes.autresPrimes,
+      zoneResidence: preset.agent.zoneResidence,
+      nbEnfantsSft: preset.agent.nbEnfantsSft,
+      quotite: preset.agent.quotite,
+      statut: preset.agent.statut,
+      tauxPas: preset.tauxPas,
+      nomAgent: preset.agent.nom,
+      grade: preset.agent.grade,
+      echelon: preset.agent.echelon
+    });
+
+    toast.info(`Profil chargé : ${preset.label}`);
+  };
+
+  // Traitement d'un fichier uploadé
+  const handleProcessFile = async (file: File) => {
+    setIsParsing(true);
+    try {
+      const text = await extractTextFromFile(file);
+      if (!text || text.trim().length === 0) {
+        toast.error("Impossible de lire le contenu textuel de ce fichier.");
+        setIsParsing(false);
+        return;
+      }
+
+      setUploadedFileName(file.name);
+      setUploadedRawText(text);
+
+      const parsedParams = parseUploadedPaySlip(text, file.name);
+      setParams(prev => ({
+        ...prev,
+        ...parsedParams
+      }));
+
+      setSelectedPresetId("custom");
+      toast.success(`Fiche de paie "${file.name}" analysée avec le moteur OpenFisca-France !`);
+    } catch (err) {
+      console.error("Erreur de parsing de fiche de paie:", err);
+      toast.error("Erreur lors de l'extraction des données de la fiche de paie.");
+    } finally {
+      setIsParsing(false);
+    }
+  };
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleProcessFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const toggleLineExpand = (lineId: string) => {
+    setExpandedLignes(prev => ({
+      ...prev,
+      [lineId]: !prev[lineId]
+    }));
+  };
+
+  // Filtrage des lignes
+  const filteredLines = useMemo(() => {
+    if (categoryFilter === 'all') return result.lignes;
+    return result.lignes.filter(l => l.openFiscaVar.categorie === categoryFilter);
+  }, [result.lignes, categoryFilter]);
+
+  // Export DOCX officiel
+  const handleExportDocx = async () => {
+    const rawReport = `VILLE DE GENNEVILLIERS - SECTION SYNDICALE CFDT
+AUDIT ET EXPLICATION DE FICHE DE PAIE • MODÈLE OPENFISCA-FRANCE
+Date d'analyse : ${result.dateAnalyse}
+Agent : ${result.agent.nom} (${result.agent.grade} - ${result.agent.echelon})
+Statut : ${result.agent.statut.toUpperCase()} • Régime Retraite : ${result.agent.caisseRetraite}
+Indice Majoré : ${result.agent.indiceMajore} • Point d'indice mensuel : ${VALEUR_POINT_INDICE_MENSUEL.toFixed(5)} €
+Quotité : ${result.agent.quotite}% • Zone de résidence : Zone 1 (3%) • Enfants SFT : ${result.agent.nbEnfantsSft}
+
+============================================================
+1. SYNTHÈSE DES TOTAUX
+============================================================
+- Traitement Indiciaire Brut (TIB) : ${result.totaux.traitementBase.toFixed(2)} €
+- Nouvelle Bonification Indiciaire : ${result.totaux.nbi.toFixed(2)} €
+- Indemnité de Résidence Zone 1 (3%) : ${result.totaux.indemniteResidence.toFixed(2)} €
+- Supplément Familial de Traitement : ${result.totaux.sft.toFixed(2)} €
+- Primes RIFSEEP (IFSE + CIA) : ${(result.totaux.primesIfse + result.totaux.primesCia).toFixed(2)} €
+- TOTAL BRUT RÉMUNÉRATION : ${result.totaux.salaireBrut.toFixed(2)} €
+- Total Retenues et Cotisations Salariales : -${result.totaux.totalCotisationsSalariales.toFixed(2)} €
+- SALAIRE NET AVANT IMPÔT : ${result.totaux.netAvantImpot.toFixed(2)} €
+- Net Fiscal / Imposable DGFiP : ${result.totaux.netFiscal.toFixed(2)} €
+- Prélèvement à la Source (${result.totaux.tauxPas}%) : -${result.totaux.montantPas.toFixed(2)} €
+- SALAIRE NET À PAYER (EN BANQUE) : ${result.totaux.netAPayer.toFixed(2)} €
+- Cotisations Patronales Ville : ${result.totaux.totalCotisationsPatronales.toFixed(2)} €
+- Coût Global Employeur : ${result.totaux.coutGlobalEmployeur.toFixed(2)} €
+
+============================================================
+2. AUDIT DE CONFORMITÉ STATUTAIRE (Score : ${result.syntheseConformite.scoreConformite}/100)
+============================================================
+Points de contrôle validés :
+${result.syntheseConformite.pointsForts.map(p => ` [OK] ${p}`).join('\n')}
+
+Recommandations syndicales CFDT :
+${result.syntheseConformite.recommandationsCFDT.map(r => ` - ${r}`).join('\n')}
+
+============================================================
+3. DÉCOMPTE LIGNE PAR LIGNE
+============================================================
+${result.lignes.map(l => `[${l.code || 'DIV'}] ${l.libelle}
+   OpenFisca Variable : ${l.openFiscaVar.id} (${l.openFiscaVar.nom})
+   Base : ${l.base !== undefined ? l.base : '-'} | Taux : ${l.taux !== undefined ? (l.taux < 1 ? (l.taux * 100).toFixed(2) + '%' : l.taux) : '-'}
+   Gain : ${l.montantGain !== undefined ? l.montantGain.toFixed(2) + ' €' : '-'} | Retenue : ${l.montantRetenue !== undefined ? '-' + l.montantRetenue.toFixed(2) + ' €' : '-'}
+   Base légale : ${l.openFiscaVar.legalReference}
+   Formule : ${l.openFiscaVar.formule}
+   Explication : ${l.explicationLigne}
+   ${l.conseilAgent ? 'Conseil CFDT : ' + l.conseilAgent : ''}
+`).join('\n------------------------------------------------------------\n')}
+`;
+
+    try {
+      await exportToOfficialDocx({
+        title: `Audit_Fiche_Paie_${result.agent.nom.replace(/\s+/g, "_")}`,
+        content: rawReport,
+        rawText: rawReport,
+        docType: 'decision'
+      });
+      toast.success("Document Word (.docx) généré et téléchargé !");
+    } catch (e) {
+      console.error(e);
+      toast.error("Erreur lors de la génération du document Word.");
+    }
+  };
+
+  const handleCopyAudit = () => {
+    const text = `AUDIT FICHE DE PAIE CFDT GENNEVILLIERS (Moteur OpenFisca-France)
+Agent : ${result.agent.nom} • Indice Majoré : ${result.agent.indiceMajore}
+Traitement Brut : ${result.totaux.salaireBrut.toFixed(2)} €
+Cotisations Salariales : -${result.totaux.totalCotisationsSalariales.toFixed(2)} €
+Net Avant Impôt : ${result.totaux.netAvantImpot.toFixed(2)} €
+Prélèvement à la Source (${result.totaux.tauxPas}%) : -${result.totaux.montantPas.toFixed(2)} €
+Net à Payer en Banque : ${result.totaux.netAPayer.toFixed(2)} €
+Score de conformité : ${result.syntheseConformite.scoreConformite}/100`;
+
+    navigator.clipboard.writeText(text);
+    setCopiedAudit(true);
+    toast.success("Synthèse copiée dans le presse-papier !");
+    setTimeout(() => setCopiedAudit(false), 2000);
+  };
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(result.openFiscaCodeSnippet);
+    setCopiedCode(true);
+    toast.success("Code Python OpenFisca copié !");
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
+  // Ratios pour la barre visuelle
+  const brut = result.totaux.salaireBrut || 1;
+  const pctNet = Math.round((result.totaux.netAPayer / brut) * 100);
+  const pctRetraite = Math.round(((result.openFiscaBenchmark.cnraclTheorique + result.openFiscaBenchmark.rafpTheorique) / brut) * 100);
+  const pctCsg = Math.round((result.openFiscaBenchmark.csgTheorique / brut) * 100);
+  const pctPas = Math.max(0, 100 - pctNet - pctRetraite - pctCsg);
+
+  return (
+    <div className="max-w-6xl mx-auto space-y-8 pb-16">
+      {/* ─────────────────────────────────────────────────────────────────────────────
+          1. HEADER HAUTE VISIBILITÉ & BOUTONS D'ACTION
+      ───────────────────────────────────────────────────────────────────────────── */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-800 dark:bg-orange-500/20 dark:text-orange-400 border border-orange-200 dark:border-orange-500/30">
+                <FileCheck className="w-3.5 h-3.5" />
+                Explicateur & Audit de Bulletin
+              </span>
+              <a
+                href={OPENFISCA_REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors"
+                title="Consulter le modèle de calcul ouvert officiel"
+              >
+                <span>Modèle OpenFisca-France</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                <Building className="w-3 h-3" />
+                Ville de Gennevilliers
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Comprenez Votre Fiche de Paie
+            </h1>
+            <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-1 max-w-3xl">
+              Uploadez votre bulletin de paie ou testez un profil type de la fonction publique territoriale.
+              Chaque ligne, retenue et prime est expliquée en clair et validée par le modèle socio-fiscal officiel OpenFisca.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              onClick={handleExportDocx}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <Download className="w-4 h-4" />
+              <span>Télécharger (.docx)</span>
+            </button>
+            <button
+              onClick={handleCopyAudit}
+              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all"
+            >
+              {copiedAudit ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+              <span>{copiedAudit ? 'Copié' : 'Copier'}</span>
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all"
+            >
+              <Printer className="w-4 h-4" />
+              <span>Imprimer</span>
+            </button>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-all"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Fermer</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────────────────────
+          2. ZONE D'UPLOAD & SÉLECTION DE PROFILS TYPES
+      ───────────────────────────────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Colonne Gauche : Upload de Fiche de Paie */}
+        <div className="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Upload className="w-4 h-4 text-orange-600" />
+                Uploader votre bulletin
+              </h2>
+              <span className="text-xs text-slate-400">PDF, Word, Scan, TXT</span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
+              Vos données restent 100% locales dans votre navigateur : aucune information nominative n'est envoyée vers un serveur externe.
+            </p>
+
+            <div
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-200 ${
+                dragActive
+                  ? "border-orange-500 bg-orange-50/50 dark:bg-orange-500/10"
+                  : "border-slate-300 dark:border-slate-700 hover:border-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              }`}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.docx,.txt,.csv"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    handleProcessFile(e.target.files[0]);
+                  }
+                }}
+                className="hidden"
+              />
+              <div className="p-3 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-full w-12 h-12 mx-auto flex items-center justify-center mb-3">
+                {isParsing ? <RefreshCw className="w-6 h-6 animate-spin" /> : <Upload className="w-6 h-6" />}
+              </div>
+              <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                {isParsing ? "Analyse en cours..." : "Glissez votre fiche de paie ici"}
+              </p>
+              <p className="text-xs text-slate-500 mt-1">ou cliquez pour parcourir vos fichiers</p>
+            </div>
+
+            {uploadedFileName && (
+              <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2 overflow-hidden">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span className="font-medium text-emerald-900 dark:text-emerald-200 truncate">{uploadedFileName}</span>
+                </div>
+                <button
+                  onClick={() => {
+                    setUploadedFileName(null);
+                    setUploadedRawText(null);
+                    handleSelectPreset("cat_c_adjoint");
+                  }}
+                  className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 ml-2 font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <button
+              onClick={() => setShowAdvancedTuning(!showAdvancedTuning)}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-600 dark:text-orange-400 hover:underline"
+            >
+              <Sliders className="w-3.5 h-3.5" />
+              <span>{showAdvancedTuning ? "Masquer les curseurs" : "Ajuster manuellement (IM, primes...)"}</span>
+            </button>
+            <span className="text-xs text-slate-400">Point d'indice : 4,92278 €</span>
+          </div>
+        </div>
+
+        {/* Colonne Droite : 4 Profils Types FPT */}
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-500" />
+                Ou choisissez un profil type prérempli
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Situations réelles modélisées selon la grille de Gennevilliers
+              </p>
+            </div>
+            {selectedPresetId !== 'custom' && (
+              <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                Profil actif : {FICHE_PAIE_PRESETS.find(p => p.id === selectedPresetId)?.label}
+              </span>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {FICHE_PAIE_PRESETS.map((preset) => {
+              const isSelected = selectedPresetId === preset.id;
+              return (
+                <button
+                  key={preset.id}
+                  onClick={() => handleSelectPreset(preset.id)}
+                  className={`text-left p-4 rounded-xl border transition-all cursor-pointer ${
+                    isSelected
+                      ? "border-orange-500 bg-orange-50/50 dark:bg-orange-500/10 shadow-sm"
+                      : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                      {preset.badge}
+                    </span>
+                    <span className="text-xs font-bold text-orange-600 dark:text-orange-400">
+                      IM {preset.agent.indiceMajore}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                    {preset.label}
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+                    {preset.description}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Panneau des curseurs manuels dépliable */}
+          {showAdvancedTuning && (
+            <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Indice Majoré (IM) : {params.indiceMajore}
+                </label>
+                <input
+                  type="range"
+                  min="366"
+                  max="830"
+                  value={params.indiceMajore}
+                  onChange={(e) => setParams(prev => ({ ...prev, indiceMajore: parseInt(e.target.value, 10) }))}
+                  className="w-full accent-orange-600"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  IFSE Mensuelle : {params.ifse || 0} €
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="1800"
+                  step="25"
+                  value={params.ifse || 0}
+                  onChange={(e) => setParams(prev => ({ ...prev, ifse: parseFloat(e.target.value) }))}
+                  className="w-full accent-orange-600"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Enfants à charge (SFT) : {params.nbEnfantsSft || 0}
+                </label>
+                <select
+                  value={params.nbEnfantsSft || 0}
+                  onChange={(e) => setParams(prev => ({ ...prev, nbEnfantsSft: parseInt(e.target.value, 10) }))}
+                  className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+                >
+                  <option value={0}>0 enfant (0 €)</option>
+                  <option value={1}>1 enfant (2,29 € fixe)</option>
+                  <option value={2}>2 enfants (fixe + 3% TIB)</option>
+                  <option value={3}>3 enfants (fixe + 8% TIB)</option>
+                  <option value={4}>4 enfants (+ 6% par enf. suppl.)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Statut statutaire
+                </label>
+                <select
+                  value={params.statut || "titulaire"}
+                  onChange={(e) => setParams(prev => ({ ...prev, statut: e.target.value as any }))}
+                  className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+                >
+                  <option value="titulaire">Fonctionnaire Titulaire (CNRACL + RAFP)</option>
+                  <option value="stagiaire">Fonctionnaire Stagiaire (CNRACL + RAFP)</option>
+                  <option value="contractuel">Agent Contractuel (Régime Général + IRCANTEC)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Taux PAS (Prélèvement Source) : {params.tauxPas || 0}%
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="25"
+                  step="0.5"
+                  value={params.tauxPas || 0}
+                  onChange={(e) => setParams(prev => ({ ...prev, tauxPas: parseFloat(e.target.value) }))}
+                  className="w-full accent-orange-600"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Quotité de travail : {params.quotite || 100}%
+                </label>
+                <select
+                  value={params.quotite || 100}
+                  onChange={(e) => setParams(prev => ({ ...prev, quotite: parseInt(e.target.value, 10) }))}
+                  className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+                >
+                  <option value={100}>Temps plein (100%)</option>
+                  <option value={90}>Temps partiel 90%</option>
+                  <option value={80}>Temps partiel 80% (payé 85,7%)</option>
+                  <option value={50}>Mi-temps (50%)</option>
+                </select>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────────────────────
+          3. 5 KPI SYNTHÈSE & BARRE VISUELLE "OÙ VA VOTRE SALAIRE ?"
+      ───────────────────────────────────────────────────────────────────────────── */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-slate-100 dark:border-slate-800 gap-4">
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Synthèse Mensuelle Estimée</span>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-0.5">
+              Décomposition Globale de la Rémunération
+            </h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Score de conformité : {result.syntheseConformite.scoreConformite}/100
+            </span>
+          </div>
+        </div>
+
+        {/* 5 Cartes Chiffrées */}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mt-6">
+          {/* Brut Total */}
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">
+              Traitement Brut
+            </span>
+            <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+              {result.totaux.salaireBrut.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+            </div>
+            <span className="text-[11px] text-slate-400 block mt-1">
+              TIB + Primes + SFT + Résidence
+            </span>
+          </div>
+
+          {/* Cotisations */}
+          <div className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40">
+            <span className="text-xs font-semibold text-rose-700 dark:text-rose-400 block mb-1">
+              Cotisations Salariales
+            </span>
+            <div className="text-xl sm:text-2xl font-black text-rose-700 dark:text-rose-400">
+              -{result.totaux.totalCotisationsSalariales.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+            </div>
+            <span className="text-[11px] text-rose-600/80 dark:text-rose-400/80 block mt-1">
+              CNRACL + RAFP + CSG/CRDS
+            </span>
+          </div>
+
+          {/* Net avant impôt */}
+          <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/40">
+            <span className="text-xs font-semibold text-blue-700 dark:text-blue-400 block mb-1">
+              Net Avant Impôt
+            </span>
+            <div className="text-xl sm:text-2xl font-black text-blue-800 dark:text-blue-300">
+              {result.totaux.netAvantImpot.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+            </div>
+            <span className="text-[11px] text-blue-600/80 dark:text-blue-400/80 block mt-1">
+              Brut déduit des cotisations
+            </span>
+          </div>
+
+          {/* PAS */}
+          <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40">
+            <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 block mb-1">
+              Prélèvement Source ({result.totaux.tauxPas}%)
+            </span>
+            <div className="text-xl sm:text-2xl font-black text-amber-800 dark:text-amber-300">
+              -{result.totaux.montantPas.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+            </div>
+            <span className="text-[11px] text-amber-600/80 dark:text-amber-400/80 block mt-1">
+              Sur base imposable : {result.totaux.netFiscal.toFixed(2)} €
+            </span>
+          </div>
+
+          {/* Net à Payer */}
+          <div className="col-span-2 lg:col-span-1 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-700/60 shadow-sm">
+            <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300 block mb-1">
+              Net à Payer (En Banque)
+            </span>
+            <div className="text-2xl font-black text-emerald-700 dark:text-emerald-300">
+              {result.totaux.netAPayer.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+            </div>
+            <span className="text-[11px] text-emerald-700 dark:text-emerald-400 block mt-1 font-semibold">
+              Virement effectif en fin de mois
+            </span>
+          </div>
+        </div>
+
+        {/* Barre de répartition proportionnelle */}
+        <div className="mt-8">
+          <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
+            <span className="font-semibold text-slate-700 dark:text-slate-300">Où va votre salaire brut ({result.totaux.salaireBrut.toFixed(2)} €) ?</span>
+            <span>{pctNet}% viré sur votre compte</span>
+          </div>
+          <div className="h-4 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex shadow-inner">
+            <div
+              style={{ width: `${pctNet}%` }}
+              className="bg-emerald-500 h-full transition-all"
+              title={`Net à payer : ${pctNet}%`}
+            />
+            <div
+              style={{ width: `${pctRetraite}%` }}
+              className="bg-rose-500 h-full transition-all"
+              title={`Retraite CNRACL/RAFP : ${pctRetraite}%`}
+            />
+            <div
+              style={{ width: `${pctCsg}%` }}
+              className="bg-amber-500 h-full transition-all"
+              title={`CSG & CRDS : ${pctCsg}%`}
+            />
+            <div
+              style={{ width: `${pctPas}%` }}
+              className="bg-blue-500 h-full transition-all"
+              title={`Impôt sur le revenu (PAS) : ${pctPas}%`}
+            />
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-4 mt-3 text-xs text-slate-500">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
+              <span>Net en poche ({pctNet}%)</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
+              <span>Retraite CNRACL & RAFP ({pctRetraite}%)</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
+              <span>Solidarité & Santé CSG/CRDS ({pctCsg}%)</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" />
+              <span>Prélèvement à la source ({pctPas}%)</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Mention Patronale */}
+        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-slate-500 gap-2">
+          <span>
+            <strong>Coût global employeur (Ville de Gennevilliers) :</strong>{" "}
+            {result.totaux.coutGlobalEmployeur.toFixed(2)} € (dont{" "}
+            {result.totaux.totalCotisationsPatronales.toFixed(2)} € de cotisations patronales CNRACL 31,65%, RAFP 5%, etc.)
+          </span>
+          <span className="text-slate-400">Réf. CGFP Art. L. 712-1</span>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────────────────────
+          4. NAVIGATION DES ONGLETS D'EXPLORATION
+      ───────────────────────────────────────────────────────────────────────────── */}
+      <div className="flex border-b border-slate-200 dark:border-slate-800 space-x-4">
+        <button
+          onClick={() => setActiveTab('lignes')}
+          className={`pb-3 text-sm font-bold border-b-2 flex items-center gap-2 cursor-pointer transition-colors ${
+            activeTab === 'lignes'
+              ? 'border-orange-600 text-orange-600 dark:border-orange-500 dark:text-orange-400'
+              : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+          }`}
+        >
+          <FileSpreadsheet className="w-4 h-4" />
+          <span>Explication Ligne par Ligne ({result.lignes.length})</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('conformite')}
+          className={`pb-3 text-sm font-bold border-b-2 flex items-center gap-2 cursor-pointer transition-colors ${
+            activeTab === 'conformite'
+              ? 'border-orange-600 text-orange-600 dark:border-orange-500 dark:text-orange-400'
+              : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4" />
+          <span>Audit Statutaire & Droits CFDT</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('openfisca')}
+          className={`pb-3 text-sm font-bold border-b-2 flex items-center gap-2 cursor-pointer transition-colors ${
+            activeTab === 'openfisca'
+              ? 'border-orange-600 text-orange-600 dark:border-orange-500 dark:text-orange-400'
+              : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+          }`}
+        >
+          <Code className="w-4 h-4" />
+          <span>Modèle OpenFisca-France (Python)</span>
+        </button>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────────────────────
+          ONGLET 1 : DÉTAIL LIGNE PAR LIGNE AVEC NOMENCLATURE OPENFISCA
+      ───────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === 'lignes' && (
+        <div className="space-y-4">
+          {/* Filtres de catégorie */}
+          <div className="flex flex-wrap items-center gap-2 pb-2">
+            {[
+              { id: 'all', label: 'Toutes les lignes' },
+              { id: 'traitement', label: 'Traitement & NBI' },
+              { id: 'primes', label: 'Primes & RIFSEEP' },
+              { id: 'cotisation_retraite', label: 'Retraite (CNRACL / IRCANTEC)' },
+              { id: 'csg_crds', label: 'CSG & CRDS' },
+              { id: 'fiscalite', label: 'Impôt & Net' }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setCategoryFilter(tab.id)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+                  categoryFilter === tab.id
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
+                    : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Liste des cartes / lignes interactives */}
+          <div className="space-y-3">
+            {filteredLines.map((ligne: FichePaieLigne) => {
+              const isExpanded = !!expandedLignes[ligne.id];
+              const isGain = ligne.montantGain !== undefined;
+              const isRetenue = ligne.montantRetenue !== undefined;
+
+              return (
+                <div
+                  key={ligne.id}
+                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm transition-all"
+                >
+                  {/* En-tête de la ligne */}
+                  <div
+                    onClick={() => toggleLineExpand(ligne.id)}
+                    className="p-4 sm:p-5 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 select-none"
+                  >
+                    <div className="flex items-center gap-3 overflow-hidden">
+                      <span className="w-10 text-center font-mono text-xs font-bold text-slate-400 py-1 bg-slate-100 dark:bg-slate-800 rounded">
+                        {ligne.code || '•'}
+                      </span>
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
+                            {ligne.libelle}
+                          </h3>
+                          <a
+                            href={ligne.openFiscaVar.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-200 dark:border-blue-900 hover:underline"
+                            title="Voir la définition dans le repo OpenFisca-France"
+                          >
+                            <span>openfisca: {ligne.openFiscaVar.id}</span>
+                            <ExternalLink className="w-2.5 h-2.5" />
+                          </a>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          {ligne.openFiscaVar.nom} • {ligne.openFiscaVar.legalReference}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4 shrink-0">
+                      <div className="text-right">
+                        {isGain && (
+                          <div className="font-black text-emerald-600 dark:text-emerald-400 text-base sm:text-lg">
+                            +{ligne.montantGain?.toFixed(2)} €
+                          </div>
+                        )}
+                        {isRetenue && (
+                          <div className="font-black text-rose-600 dark:text-rose-400 text-base sm:text-lg">
+                            -{ligne.montantRetenue?.toFixed(2)} €
+                          </div>
+                        )}
+                        {ligne.base !== undefined && (
+                          <div className="text-[11px] text-slate-400">
+                            Base: {ligne.base.toFixed(2)} {ligne.taux !== undefined ? `| Taux: ${(ligne.taux < 1 ? (ligne.taux * 100).toFixed(2) + '%' : ligne.taux)}` : ''}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-slate-400">
+                        {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Corps dépliable d'explication pédagogique */}
+                  {isExpanded && (
+                    <div className="p-5 bg-slate-50/70 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 space-y-4 text-xs sm:text-sm">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Qu'est-ce que c'est ? */}
+                        <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+                          <h4 className="font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2 text-xs uppercase tracking-wider">
+                            <Info className="w-4 h-4 text-blue-500" />
+                            Qu'est-ce que c'est ?
+                          </h4>
+                          <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                            {ligne.explicationLigne}
+                          </p>
+                        </div>
+
+                        {/* Comment c'est calculé ? */}
+                        <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+                          <h4 className="font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2 text-xs uppercase tracking-wider">
+                            <Calculator className="w-4 h-4 text-amber-500" />
+                            Formule & Référence Légale
+                          </h4>
+                          <div className="font-mono text-xs bg-slate-100 dark:bg-slate-800 p-2.5 rounded-lg text-slate-800 dark:text-slate-200 mb-2 overflow-x-auto">
+                            {ligne.openFiscaVar.formule}
+                          </div>
+                          <p className="text-xs text-slate-500">
+                            <strong>Base légale :</strong> {ligne.openFiscaVar.legalReference}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Conseil de l'agent & Impact Retraite */}
+                      {ligne.conseilAgent && (
+                        <div className="p-3.5 bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800/50 rounded-xl flex items-start gap-3">
+                          <Sparkles className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
+                          <div className="text-xs text-orange-900 dark:text-orange-200 leading-relaxed">
+                            <strong>Conseil Syndical CFDT :</strong> {ligne.conseilAgent}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────────────────────
+          ONGLET 2 : AUDIT STATUTAIRE & CONFORMITÉ LÉGALE
+      ───────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === 'conformite' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Points de contrôle validés */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                Points de Contrôle Validés ({result.syntheseConformite.pointsForts.length})
+              </h3>
+              <div className="space-y-3">
+                {result.syntheseConformite.pointsForts.map((pt, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl border border-emerald-100 dark:border-emerald-900/30 text-xs sm:text-sm text-emerald-900 dark:text-emerald-200">
+                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>{pt}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recommandations et Vigilance CFDT */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+                <ShieldCheck className="w-5 h-5 text-orange-500" />
+                Vigilances & Recommandations CFDT
+              </h3>
+              <div className="space-y-3">
+                {result.syntheseConformite.recommandationsCFDT.map((rec, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 bg-orange-50/50 dark:bg-orange-950/20 rounded-xl border border-orange-100 dark:border-orange-900/30 text-xs sm:text-sm text-orange-900 dark:text-orange-200">
+                    <Sparkles className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
+                    <span>{rec}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Benchmark théorique OpenFisca vs Réel */}
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
+              <Calculator className="w-5 h-5 text-blue-500" />
+              Benchmark Microsimulation OpenFisca-France
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+              Comparaison entre les retenues appliquées et les montants théoriques calculés selon le modèle open-source national.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+                <span className="text-slate-400 block mb-1">Brut Théorique</span>
+                <span className="font-bold text-slate-800 dark:text-white text-base">
+                  {result.openFiscaBenchmark.brutTheorique.toFixed(2)} €
+                </span>
+              </div>
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+                <span className="text-slate-400 block mb-1">CNRACL Retraite</span>
+                <span className="font-bold text-slate-800 dark:text-white text-base">
+                  {result.openFiscaBenchmark.cnraclTheorique.toFixed(2)} €
+                </span>
+              </div>
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+                <span className="text-slate-400 block mb-1">RAFP (Plafond 20%)</span>
+                <span className="font-bold text-slate-800 dark:text-white text-base">
+                  {result.openFiscaBenchmark.rafpTheorique.toFixed(2)} €
+                </span>
+              </div>
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+                <span className="text-slate-400 block mb-1">CSG / CRDS</span>
+                <span className="font-bold text-slate-800 dark:text-white text-base">
+                  {result.openFiscaBenchmark.csgTheorique.toFixed(2)} €
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────────────────────
+          ONGLET 3 : CODE PYTHON REPRODUCTIBLE OPENFISCA
+      ───────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === 'openfisca' && (
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Code className="w-5 h-5 text-emerald-500" />
+                Script Python Reproductible OpenFisca-France
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Ce code peut être exécuté directement dans un environnement Python avec <code className="text-orange-600">pip install OpenFisca-France</code>.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleCopyCode}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-semibold text-xs cursor-pointer"
+              >
+                {copiedCode ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedCode ? 'Copié !' : 'Copier le script'}</span>
+              </button>
+              <a
+                href={OPENFISCA_REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-medium"
+              >
+                <span>GitHub</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+
+          <pre className="p-4 bg-slate-950 text-slate-200 rounded-xl text-xs font-mono overflow-x-auto leading-relaxed border border-slate-800">
+            <code>{result.openFiscaCodeSnippet}</code>
+          </pre>
+        </div>
+      )}
+    </div>
+  );
+}

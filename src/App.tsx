@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from "react"
 import { ArrowLeft, Rss, Calculator, DollarSign, TrendingUp,
   Users, Eye, Laptop, Phone, Mail, MapPin,
-  Clock, Map as MapIcon, Briefcase, Calendar, Activity, Receipt, LayoutGrid } from "lucide-react"
+  Clock, Map as MapIcon, Briefcase, Calendar, Activity, Receipt, LayoutGrid, FileSpreadsheet } from "lucide-react"
 
 // --- IMPORTATIONS DES DONNÉES ---
 import { searchFAQ } from "./data/FAQdata.ts"
@@ -17,6 +17,7 @@ const CalculateurPrimesV2 = lazy(() => import("./components/CalculateurPrimesV2.
 const Calculateur13emeV2 = lazy(() => import("./components/Calculateur13emeV2.tsx"))
 const CalculateurSFTV2 = lazy(() => import("./components/CalculateurSFTV2.tsx"))
 const CourriersAgentModule = lazy(() => import("./components/CourriersAgentModule.tsx"))
+const FichePaieExplainer = lazy(() => import("./components/FichePaieExplainer.tsx"))
 const Metiers = lazy(() => import("./components/Metiers.tsx"))
 const FAQ = lazy(() => import("./components/FAQ.tsx"))
 const EspaceJeux = lazy(() => import("./components/EspaceJeux.tsx"))
@@ -283,7 +284,7 @@ function App() {
   // --- FLUX D'ACTUALITÉS (Hook optimisé) ---
   const { rssItems, rssLoading, intercoNews, intercoLoading, fpNews, fpLoading } = useNewsFeeds()
 
-  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | null>(null)
+  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | null>(null)
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [logoLoadError, setLogoLoadError] = useState(false)
@@ -330,7 +331,7 @@ function App() {
     setChatState({ ...chatState, currentView: 'metiers' })
   }
 
-  const openCalculator = (calculator: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers') => {
+  const openCalculator = (calculator: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie') => {
     if (calculator === 'primes' || calculator === 'cia' || calculator === '13eme') {
       const keyByCalculator = {
         primes: 'calculator_primes',
@@ -1563,6 +1564,36 @@ ${indicesFactuels}
                 <p className="text-slate-500 dark:text-slate-400 font-medium dark:font-normal">Cliquez sur une icône pour y accéder</p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {/* Carte Fiche de Paie (OpenFisca) - NOUVEAUTÉ */}
+                <button
+                  onClick={() => openCalculator('fiche-paie')}
+                  className="group relative bg-white dark:bg-slate-800/80 border-2 border-emerald-500/40 dark:border-emerald-500/50 rounded-2xl p-8 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl dark:hover:shadow-emerald-500/20 hover:border-emerald-500 dark:hover:border-emerald-400 sm:col-span-2 lg:col-span-2 bg-gradient-to-br from-emerald-50/40 via-white to-teal-50/30 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-teal-950/20 text-left"
+                >
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-600 text-white shadow-sm">
+                      ✨ Nouveau • OpenFisca
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                    <div className="p-6 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg text-white shrink-0">
+                      <FileSpreadsheet className="w-16 h-16" />
+                    </div>
+                    <div>
+                      <div className="inline-block text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-1">
+                        Audit & Décryptage de bulletin FPT
+                      </div>
+                      <h4 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white">Fiche de Paie</h4>
+                      <p className="text-slate-600 dark:text-slate-300 font-medium text-sm mt-2 leading-relaxed max-w-xl">
+                        Uploadez votre bulletin de paie (PDF, Scan, Word) ou testez nos profils types.
+                        Explication ligne par ligne de vos primes, retenues CNRACL/RAFP et cotisations avec le modèle officiel <strong>OpenFisca-France</strong>.
+                      </p>
+                      <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm mt-4 group-hover:translate-x-1 transition-transform">
+                        <span>Auditer et expliquer ma fiche de paie →</span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+
                 {/* Carte CIA */}
                 <button
                   onClick={() => openCalculator('cia')}
@@ -1872,6 +1903,20 @@ ${indicesFactuels}
             <Suspense fallback={<ViewLoader />}>
               <div className="calc-tool-enter py-6 px-4">
                 <CourriersAgentModule
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
+            </Suspense>
+          )}
+          {activeCalculator === 'fiche-paie' && (
+            <Suspense fallback={<ViewLoader />}>
+              <div className="calc-tool-enter py-6 px-4">
+                <FichePaieExplainer
                   onClose={() => {
                     setActiveCalculator(null)
                     if (calculatorsSectionRef.current) {

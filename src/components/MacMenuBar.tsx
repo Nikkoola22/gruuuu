@@ -13,7 +13,7 @@ interface Props {
   toggleTheme: () => void;
   currentView?: string;
   setView: (view: "menu" | "chat" | "calculators" | "metiers" | "faq" | "jeux" | "actualites" | "veille" | "veille-cdg" | "podcasts" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "simul-agent") => void;
-  openCalculator: (calc: 'primes' | 'cia' | '13eme') => void;
+  openCalculator: (calc: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie') => void;
   onClose?: () => void;
 }
 
@@ -93,7 +93,7 @@ export default function MacMenuBar({
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
-  const selectCalculator = (calc: 'primes' | 'cia' | '13eme') => {
+  const selectCalculator = (calc: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie') => {
     openCalculator(calc);
     setActiveDropdown(null);
   };
@@ -207,8 +207,13 @@ export default function MacMenuBar({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 5 }}
                   transition={{ duration: 0.1 }}
-                  className="absolute left-0 mt-1 w-56 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800/80 rounded-lg shadow-2xl p-1 z-[110]"
+                  className="absolute left-0 mt-1 w-64 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800/80 rounded-lg shadow-2xl p-1 z-[110]"
                 >
+                  <button onClick={() => selectCalculator('fiche-paie')} className="w-full text-left px-3 py-1.5 hover:bg-emerald-600 hover:text-white rounded-md flex justify-between items-center text-emerald-600 dark:text-emerald-400 font-bold">
+                    <span>Fiche de Paie (OpenFisca) 📑</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">NOUVEAU</span>
+                  </button>
+                  <div className="h-px bg-slate-200 dark:bg-slate-800 my-1" />
                   <button onClick={() => selectCalculator('primes')} className="w-full text-left px-3 py-1.5 hover:bg-blue-600 hover:text-white rounded-md flex justify-between items-center">
                     <span>Calculateur RIFSEEP (Primes)</span>
                     <span className="text-[10px] opacity-40">⌘P</span>
@@ -220,6 +225,12 @@ export default function MacMenuBar({
                   <button onClick={() => selectCalculator('13eme')} className="w-full text-left px-3 py-1.5 hover:bg-blue-600 hover:text-white rounded-md flex justify-between items-center">
                     <span>Calculateur 13ème Mois</span>
                     <span className="text-[10px] opacity-40">⌘D</span>
+                  </button>
+                  <button onClick={() => selectCalculator('sft')} className="w-full text-left px-3 py-1.5 hover:bg-blue-600 hover:text-white rounded-md flex justify-between items-center">
+                    <span>Calculateur SFT</span>
+                  </button>
+                  <button onClick={() => selectCalculator('courriers')} className="w-full text-left px-3 py-1.5 hover:bg-blue-600 hover:text-white rounded-md flex justify-between items-center">
+                    <span>Courriers de l'Agent</span>
                   </button>
                 </motion.div>
               )}

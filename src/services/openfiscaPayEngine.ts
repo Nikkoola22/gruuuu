@@ -1705,6 +1705,8 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "10": { cat: "gain", expl: "sft", libelle: "Supplément Familial de Traitement" },
   "11": { cat: "gain", expl: "sft", libelle: "Supplément Familial de Traitement" },
   "12": { cat: "gain", expl: "residence" },
+  "193": { cat: "gain", expl: "traitement_detache", libelle: "Traitement de base détaché" },
+  "1033": { cat: "retenue", expl: "cnracl_detache", libelle: "CNRACL Détaché dans Collect." },
   "13": { cat: "retenue", expl: "maladie", libelle: "Urssaf Maladie (Régime Général)" },
   "17": { cat: "retenue", expl: "vieillesse_plaf", libelle: "Urssaf Vieillesse (Régime Général)" },
   "18": { cat: "retenue", expl: "vieillesse_deplaf", libelle: "Urssaf Vieillesse Déplafonnée (Régime Général)" },
@@ -2470,9 +2472,11 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
 
   for (const line of lines) {
     const lPlain = deaccent(line.toLowerCase());
-    const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
-      .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
-      .filter(a => a > 0);
+    // Tous les montants de la ligne, y compris les zéros (un « PAS 0.00 » est une information)
+    const allNums = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+      .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")));
+    const amounts = allNums.filter(a => a > 0);
+    const lastNum = allNums.length > 0 ? allNums[allNums.length - 1] : undefined;
 
     if (amounts.length > 0) {
       const lastAmount = amounts[amounts.length - 1];
@@ -2518,9 +2522,10 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
         detectedItems.push(`Total versé par l'employeur réel : ${coutEmployeurReel.toFixed(2)} €`);
       }
 
-      // Prélèvement à la Source en euros
-      if ((lPlain.includes("source") || lPlain.includes("pas") || lPlain.includes("impot")) && (lPlain.includes("montant") || lPlain.includes("retenue") || lPlain.includes("prelev")) && lastAmount >= 5 && lastAmount <= 3000) {
-        pasReel = lastAmount;
+      // Prélèvement à la Source en euros : le DERNIER nombre brut est pris, y compris 0.00
+      // (PAS nul) — le filtre des zéros retournerait la base du PAS à la place du montant
+      if ((lPlain.includes("source") || lPlain.includes("pas") || lPlain.includes("impot")) && (lPlain.includes("montant") || lPlain.includes("retenue") || lPlain.includes("prelev")) && lastNum !== undefined && lastNum >= 0 && lastNum <= 3000) {
+        pasReel = lastNum;
       }
 
       // Net à Payer de secours si non trouvé par regex directe

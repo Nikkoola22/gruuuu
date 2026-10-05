@@ -230,10 +230,10 @@ const CODES_EXPLIQUES: Record<string, {
     reference: "Salaire minimum — Art. L. 2410-1 et suivants du Code du travail"
   },
   nbi_detache: {
-    titre: "La NBI détachée (promotion en stage)",
-    simple: "Versée lorsque l'agent a obtenu une promotion et est en stage sur sa nouvelle catégorie : il continue de percevoir la NBI attachée à son ancien grade pendant toute la durée du stage.",
-    pourquoi: "La NBI est attachée à des fonctions. Lors d'une promotion, l'agent en stage conserve le bénéfice de la NBI acquise dans son ancien cadre d'emplois : on dit qu'elle est « détachée » sur le nouveau grade.",
-    verifier: "À la fin du stage et après titularisation dans le nouveau grade, la NBI détachée doit prendre fin (ou être reprise dans les fonctions) : vérifiez qu'elle ne reste pas indûment.",
+    titre: "La NBI détachée (promotion en stage ou détachement)",
+    simple: "Versée lorsque l'agent a obtenu une promotion et est en stage sur sa nouvelle catégorie, ou lorsqu'il est détaché : il continue de percevoir la NBI attachée à son ancien grade pendant toute la durée du stage ou du détachement.",
+    pourquoi: "La NBI est attachée à des fonctions. Lors d'une promotion ou d'un détachement, l'agent conserve le bénéfice de la NBI acquise dans son ancien cadre d'emplois : on dit qu'elle est « détachée » sur le nouveau grade.",
+    verifier: "À la fin du stage ou du détachement, la NBI détachée doit prendre fin (ou être reprise dans les nouvelles fonctions) : vérifiez qu'elle ne reste pas indûment.",
     attention: "Cette ligne cotise pour la retraite comme la NBI classique : elle doit figurer dans la base CNRACL.",
     reference: "Loi n° 91-73 du 18 janvier 1991 (dispositions relatives à la NBI)"
   },
@@ -243,6 +243,21 @@ const CODES_EXPLIQUES: Record<string, {
     pourquoi: "Les vacations sont plafonnées et encadrées par décret : elles ne s'imputent pas sur vos congés mais elles sont soumises à cotisations.",
     verifier: "Comparez le nombre de vacations payées avec vos relevés d'activité : les erreurs de décompte sont courantes.",
     reference: "Décret n° 91-829 du 2 septembre 1991"
+  },
+  traitement_detache: {
+    titre: "Le traitement de base détaché",
+    simple: "Vous êtes fonctionnaire détaché : votre traitement suit la grille de votre grade d'origine (celui où vous avez été recruté), versé par la collectivité qui vous accueille.",
+    pourquoi: "En détachement, l'agent reste rattaché à son corps d'origine : il continue d'y progresser (échelon, ancienneté) et son traitement est calculé sur cette grille, pas sur celle de son poste d'accueil.",
+    verifier: "Après chaque avancement d'échelon dans votre grade d'origine, le montant doit être réajusté — vérifiez-le à la rentrée suivante.",
+    attention: "Le traitement détaché est calculé au prorata de votre quotité de travail : un écart peut signaler une quotité mal appliquée.",
+    reference: "Art. L. 521-1 et suivants du Code général de la fonction publique (détachement)"
+  },
+  cnracl_detache: {
+    titre: "Votre retraite CNRACL en détachement",
+    simple: "Cotisation CNRACL prélevée par la collectivité d'accueil pour un fonctionnaire détaché : 11,10 % de votre traitement détaché, auxquels s'ajoute la part employeur (37,65 %).",
+    pourquoi: "En détachement, vous continuez à cotiser à votre caisse d'origine (CNRACL) comme si vous étiez resté dans votre collectivité : vos droits à pension avancent normalement.",
+    verifier: "Vérifiez que ces trimestres apparaissent bien sur votre relevé de carrière CNRACL (info-retraite.fr) : en détachement, les régularisations sont plus lentes.",
+    reference: "Décret n° 2003-1306 du 26 décembre 2003 & Art. L. 521-1 CGFP"
   }
 };
 
@@ -524,7 +539,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                     <td className="px-1.5 py-1 font-mono text-slate-500">995</td>
                     <td className="px-1 py-1 text-right font-mono">{fCiril(totaux.netFiscal)}</td>
                     <td className="px-1 py-1 text-right font-mono">{totaux.tauxPas.toFixed(2)}</td>
-                    <td className="px-1.5 py-1 text-right font-mono">-{fCiril(totaux.montantPas)}</td>
+                    <td className="px-1.5 py-1 text-right font-mono">{totaux.montantPas > 0 ? '-' + fCiril(totaux.montantPas) : '0.00'}</td>
                   </tr>
                 </tbody>
               </table>

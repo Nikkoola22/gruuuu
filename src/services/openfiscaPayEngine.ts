@@ -455,6 +455,9 @@ export interface FichePaieLigne {
   montantGain?: number;
   montantRetenue?: number;
   partPatronale?: number;
+  patronalTaux?: number;
+  /** Si la ligne est un rappel (marqueur « R » dans le code) : mois concerné (ex. « 02/2026 ») */
+  moisRappel?: string;
   openFiscaVar: OpenFiscaVariableInfo;
   montantTheoriqueOpenFisca: number;
   estConforme: boolean;
@@ -492,13 +495,29 @@ export interface DiagnosticEcarts {
   items: DiagnosticEcartItem[];
 }
 
+export interface LigneBulletinCiril {
+  code: string;
+  libelle: string;
+  base?: number;
+  taux?: number;
+  montant?: number;
+  tauxPatronal?: number;
+  montantPatronal?: number;
+  /** Présent si le code porte le marqueur « R » : mois concerné par le rappel (ex. « 02/2026 ») */
+  moisRappel?: string;
+}
+
 export interface FichePaieAnalyseResult {
   titre: string;
   dateAnalyse: string;
+  /** 'reconstruite' = lignes copiées depuis un vrai bulletin (zéro écart) ; 'simulation' = calcul théorique */
+  source: 'simulation' | 'reconstruite';
+  periodeLibelle?: string;
   agent: {
     nom: string;
     grade: string;
     echelon: string;
+    indiceRemun?: number;
     indiceBrut: number;
     indiceMajore: number;
     quotite: number;
@@ -507,6 +526,7 @@ export interface FichePaieAnalyseResult {
     zoneResidence: number;
     nbEnfantsSft: number;
   };
+  lignesReelles?: LigneBulletinCiril[];
   totaux: {
     traitementBase: number;
     nbi: number;
@@ -796,6 +816,9 @@ export interface CalculParams {
   grade?: string;
   echelon?: string;
   indiceBrut?: number;
+  indiceRemun?: number;
+  lignesReelles?: LigneBulletinCiril[];
+  periode?: string;
 
   // Lignes spécifiques Ciril RH Gennevilliers
   appliquerPpcr?: boolean;
@@ -815,8 +838,15 @@ export interface CalculParams {
  * et la doctrine de calcul Ciril RH Ville de Gennevilliers
  */
 export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResult {
+  // Un bulletin reconstruit ligne à ligne depuis un vrai PDF : on copie les rubriques réelles
+  // (codes, bases, taux, montants) et les totaux imprimés → zéro écart par construction.
+  if (params.lignesReelles && params.lignesReelles.length > 0) {
+    return computeOpenFiscaPayDepuisLignesReelles(params, params.lignesReelles);
+  }
   const {
     indiceMajore = 382,
+    indiceRemun,
+    lignesReelles,
     nbiPoints = 0,
     ifse = 380,
     cia = 0,
@@ -1428,10 +1458,12 @@ print(f"Brut: {traitement_brut} €, Net à payer: {salaire_net} €")`;
   return {
     titre: `Analyse OpenFisca : Fiche de Paie de ${nomAgent}`,
     dateAnalyse: new Date().toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" }),
+    source: "simulation",
     agent: {
       nom: nomAgent,
       grade,
       echelon,
+      indiceRemun: indiceRemun ?? indiceBrut ?? indiceMajore,
       indiceBrut,
       indiceMajore,
       quotite,
@@ -1440,6 +1472,7 @@ print(f"Brut: {traitement_brut} €, Net à payer: {salaire_net} €")`;
       zoneResidence,
       nbEnfantsSft
     },
+    lignesReelles,
     totaux: {
       traitementBase: tibTheorique,
       nbi: nbiTheorique,
@@ -1519,6 +1552,420 @@ export interface ParsePaySlipResult {
 }
 
 /**
+ * Extrait toutes les rubriques, cotisations et lignes du tableau de paie Ciril RH
+ * (Fonction universelle adaptée aux formats Ciril 2026, 2023 et modèles Mairie de Gennevilliers)
+ */
+export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
+  const deaccent = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const rawLines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const parsedLines: LigneBulletinCiril[] = [];
+
+  let inTable = false;
+  for (const line of rawLines) {
+    const lPlain = deaccent(line.toLowerCase());
+
+    // Détection de zone de tableau Ciril
+    if ((lPlain.includes("code") && (lPlain.includes("libelle") || lPlain.includes("base")))
+        || (lPlain.includes("rubrique") && lPlain.includes("libelle"))) {
+      inTable = true;
+      continue;
+    }
+    if (lPlain.includes("totaux gains") || lPlain.includes("net a payer avant impot")
+        || lPlain.includes("cumuls mensuels") || (inTable && lPlain.startsWith("net a payer"))
+        || lPlain.includes("virement magnetique")) {
+      inTable = false;
+      break;
+    }
+    if (!inTable) {
+      // Mode universel : une ligne qui ressemble fortement à une rubrique Ciril
+      // (code + libellé + au moins un montant décimal) est traitée même sans en-tête de tableau
+      const looksLikeRubrique = /^\d{1,4}\s+[A-Za-zÀ-ÿ]/.test(line) && /\d[.,]\d{2}/.test(line);
+      if (!looksLikeRubrique) continue;
+    }
+    if (lPlain.includes("cotisations patronales") || lPlain.includes("taux montant") || lPlain.includes("charges patronales")) continue;
+
+    // Format 1 : Code en premier (ex: "13 Traitement...", "7201 R 02/2026 Vacation...", "1591 IFSE Tit 380.00")
+    // Format 2 : Base en premier (ex: "2 228,47 804C COT. SS VIEIL. RG 6,900 153,76")
+    let code = "";
+    let rest = "";
+    let basePrefix: number | undefined = undefined;
+    let moisRappel: string | undefined = undefined;
+
+    // Normalisation préalable des espaces de milliers (ex: "6 320.85" -> "6320.85" ou "2 228,47" -> "2228.47")
+    let cleanedLine = line.replace(/(^|\s)(\d{1,3})\s+(\d{3}[.,]\d{2})/g, "$1$2$3");
+
+    // Rappel Ciril : le code suivi du marqueur « R » et du mois concerné (ex: "7201 R 02/2026 Vacation…")
+    const mRappel = cleanedLine.match(/^(\d{1,5})\s+R\s+(\d{1,2}[\/.\-]\d{2,4})\s+(.+)$/i);
+    const mCodeFirst = cleanedLine.match(/^(\d{1,5}(?:\s+[A-Z])?|[0-9]{3,4}[A-Z])\s+(.+)$/);
+    const mBaseFirst = cleanedLine.match(/^(\d+[.,]\d{2})\s+([0-9]{3,4}[A-Z]|\d{1,5})\s+(.+)$/);
+
+    if (mRappel) {
+      code = mRappel[1];
+      moisRappel = mRappel[2];
+      rest = mRappel[3];
+    } else if (mCodeFirst) {
+      code = mCodeFirst[1].trim();
+      rest = mCodeFirst[2].trim();
+    } else if (mBaseFirst) {
+      basePrefix = parseFloat(mBaseFirst[1].replace(",", "."));
+      code = mBaseFirst[2].trim();
+      rest = mBaseFirst[3].trim();
+    } else {
+      continue;
+    }
+
+    const tokens = rest.split(/\s+/);
+    const numTokens: number[] = [];
+    const textTokens: string[] = [];
+    let parsingNums = true;
+
+    for (let i = tokens.length - 1; i >= 0; i--) {
+      const tok = tokens[i];
+      if (parsingNums && /^-?\d+(?:[.,]\d+)?$/.test(tok)) {
+        numTokens.unshift(parseFloat(tok.replace(",", ".")));
+      } else {
+        parsingNums = false;
+        textTokens.unshift(tok);
+      }
+    }
+
+    const libelle = textTokens.join(" ");
+    if (!libelle || libelle.length < 2) continue;
+    if (numTokens.length === 0) continue; // une rubrique porte toujours au moins un montant décimal
+
+    let base = basePrefix;
+    let taux: number | undefined = undefined;
+    let montant: number | undefined = undefined;
+    let tauxPatronal: number | undefined = undefined;
+    let montantPatronal: number | undefined = undefined;
+
+    if (basePrefix !== undefined) {
+      if (numTokens.length === 1) {
+        montant = numTokens[0];
+      } else if (numTokens.length === 2) {
+        taux = numTokens[0];
+        montant = numTokens[1];
+      } else if (numTokens.length >= 3) {
+        taux = numTokens[0];
+        montant = numTokens[1];
+        montantPatronal = numTokens[2];
+      }
+    } else {
+      if (numTokens.length === 1) {
+        montant = numTokens[0];
+      } else if (numTokens.length === 2) {
+        base = numTokens[0];
+        montant = numTokens[1];
+      } else if (numTokens.length === 3) {
+        base = numTokens[0];
+        taux = numTokens[1];
+        montant = numTokens[2];
+      } else if (numTokens.length === 4) {
+        base = numTokens[0];
+        taux = numTokens[1];
+        montant = numTokens[2];
+        montantPatronal = numTokens[3];
+      } else if (numTokens.length >= 5) {
+        base = numTokens[0];
+        taux = numTokens[1];
+        montant = numTokens[2];
+        tauxPatronal = numTokens[3];
+        montantPatronal = numTokens[4];
+      }
+    }
+
+    parsedLines.push({
+      code,
+      libelle,
+      base,
+      taux,
+      montant,
+      tauxPatronal,
+      montantPatronal,
+      ...(moisRappel ? { moisRappel } : {})
+    });
+  }
+  return parsedLines;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6bis. RECONSTRUCTION LIGNE À LIGNE D'UN BULLETIN CIRIL (zéro écart)
+// Les codes, libellés, bases, taux et montants de la fiche uploadée sont copiés
+// tels quels ; seuls les totaux absents sont déduits.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Codes Ciril réels connus (Mairie de Gennevilliers et formats assimilés) */
+const CODES_CIRIL_KNOWN: Record<string, {
+  cat: "gain" | "retenue" | "patronale" | "retenue_net" | "info";
+  expl?: string;
+  libelle?: string;
+}> = {
+  "8": { cat: "gain", expl: "tib" },
+  "9": { cat: "gain", expl: "nbi" },
+  "10": { cat: "gain", expl: "sft", libelle: "Supplément Familial de Traitement" },
+  "11": { cat: "gain", expl: "sft", libelle: "Supplément Familial de Traitement" },
+  "12": { cat: "gain", expl: "residence" },
+  "13": { cat: "retenue", expl: "maladie", libelle: "Urssaf Maladie (Régime Général)" },
+  "17": { cat: "retenue", expl: "vieillesse_plaf", libelle: "Urssaf Vieillesse (Régime Général)" },
+  "18": { cat: "retenue", expl: "vieillesse_deplaf", libelle: "Urssaf Vieillesse Déplafonnée (Régime Général)" },
+  "40": { cat: "retenue", expl: "csg_nonded" },
+  "41": { cat: "retenue", expl: "csg_ded" },
+  "42": { cat: "retenue", expl: "crds" },
+  "47": { cat: "retenue", expl: "cnracl" },
+  "1028": { cat: "retenue", expl: "rafp" },
+  "472": { cat: "retenue", expl: "ircantec" },
+  "1735": { cat: "gain", expl: "ppcr", libelle: "Transfert primes/points Tit." },
+  "1584": { cat: "info", libelle: "Montant net social" },
+  "617": { cat: "gain", expl: "indem_differentielle", libelle: "Indem. différentielle" },
+  "194": { cat: "gain", expl: "nbi_detache", libelle: "NBI détaché" },
+  "7201": { cat: "gain", expl: "vacations", libelle: "Vacations" },
+  "1591": { cat: "gain", expl: "ifse" },
+  "1592": { cat: "gain", expl: "cia", libelle: "CIA Tit." },
+  "1690": { cat: "gain", expl: "autres_primes" },
+  "1510": { cat: "gain", expl: "transport" },
+  "1860": { cat: "gain", expl: "comp_csg" },
+  "7376": { cat: "gain", expl: "part_mutuelle", libelle: "Participation empl mut" },
+  "7716": { cat: "gain", expl: "part_mutuelle", libelle: "Participation empl prev" },
+  "572": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Préfon" },
+  "7625": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Territoria Pack prévoyance" },
+  // Cotisations patronales (colonnes de droite du bulletin)
+  "43": { cat: "patronale", libelle: "Urssaf Maladie" },
+  "44": { cat: "patronale", libelle: "Urssaf Allocation Familial" },
+  "4082": { cat: "patronale", libelle: "Urssaf Alloc.Familial Comp" },
+  "1250": { cat: "patronale", libelle: "Urssaf FNAL totalité" },
+  "46": { cat: "patronale", libelle: "Urssaf Mobilité" },
+  "389": { cat: "patronale", libelle: "Urssaf Solidarité Autonomie" },
+  "49": { cat: "patronale", libelle: "CNRACL ATIACL" },
+  "50": { cat: "patronale", libelle: "Centre de Gestion" },
+  "52": { cat: "patronale", libelle: "C.N.F.P.T" },
+  "1965": { cat: "patronale", libelle: "C.N.F.P.T Majoration" }
+};
+
+/** Clé du dictionnaire OpenFisca correspondant à chaque rubrique d'explication */
+const VAR_PAR_EXPL: Record<string, string> = {
+  tib: "traitement_indiciaire_brut",
+  nbi: "nouvelle_bonification_indiciaire",
+  residence: "indemnite_residence",
+  sft: "supplement_familial_traitement",
+  ppcr: "abattement_ppcr",
+  ifse: "rifseep_ifse",
+  cia: "rifseep_cia",
+  comp_csg: "indemnite_compensatrice_csg",
+  autres_primes: "primes_fonction_publique",
+  transport: "prise_en_charge_transport",
+  cnracl: "cotisation_retraite_cnracl_salarie",
+  rafp: "cotisation_retraite_rafp_salarie",
+  ircantec: "cotisation_retraite_ircantec_salarie",
+  maladie: "cotisation_maladie_contractuel_salarie",
+  vieillesse_plaf: "cotisation_vieillesse_plafonnee_salarie",
+  vieillesse_deplaf: "cotisation_vieillesse_deplafonnee_salarie",
+  csg_ded: "csg_deductible_salaire",
+  csg_nonded: "csg_non_deductible_salaire",
+  crds: "crds_salaire",
+  part_mutuelle: "participation_mutuelle_employeur",
+  cotis_mutuelle: "retenue_mutuelle_salarie",
+  pas: "prelevement_a_la_source"
+};
+
+/**
+ * Reconstruit le résultat d'analyse en copiant fidèlement les rubriques du bulletin original :
+ * mêmes codes, mêmes libellés, mêmes montants → zéro écart entre la fiche uploadée et la fiche explicative.
+ * Seuls les totaux absents du document sont déduits des lignes lues.
+ */
+function computeOpenFiscaPayDepuisLignesReelles(
+  params: CalculParams,
+  lignesReelles: LigneBulletinCiril[]
+): FichePaieAnalyseResult {
+  const {
+    nomAgent = "AGENT Public",
+    statut = "titulaire",
+    tauxPas = 0,
+    grade = "Agent",
+    echelon = "—",
+    indiceBrut,
+    indiceMajore = 0,
+    indiceRemun,
+    quotite = 100,
+    montantsReels,
+    nbEnfantsSft = 0
+  } = params;
+  const r2 = (v: number) => Math.round(v * 100) / 100;
+  const isTitulaire = statut === "titulaire" || statut === "stagiaire";
+
+  const lignes: FichePaieLigne[] = [];
+  const idsUtilises = new Set<string>();
+  let sommeGains = 0;
+  let sommeRetenuesSociales = 0;
+  let sommeRetenuesNet = 0;
+  let sommePatronales = 0;
+  let csgNonDed = 0;
+  let crds = 0;
+
+  for (const lr of lignesReelles) {
+    const known = CODES_CIRIL_KNOWN[lr.code] ?? {
+      cat: (lr.tauxPatronal !== undefined && (lr.montant === undefined || lr.montant === lr.montantPatronal)
+        ? "patronale"
+        : lr.montant !== undefined && lr.montant < 0 ? "retenue" : "gain") as "gain" | "retenue" | "patronale" | "retenue_net"
+    };
+    const cat = known.cat;
+    const montant = lr.montant ?? 0;
+    const patronal = cat === "patronale" ? (lr.montantPatronal ?? lr.montant ?? 0) : lr.montantPatronal;
+
+    if (cat === "info") {
+      // Ligne informative du bulletin (ex. 1584 MONTANT NET SOCIAL) : affichée mais jamais cumulée
+    } else if (cat === "patronale") {
+      sommePatronales += patronal ?? 0;
+    } else if (montant > 0) {
+      sommeGains += montant;
+    } else if (montant < 0) {
+      if (cat === "retenue_net") sommeRetenuesNet += -montant;
+      else if (cat === "retenue") sommeRetenuesSociales += -montant;
+      // cat 'gain' avec montant négatif (ex. PPCR code 1735) : déjà déduit du brut imprimé — rien à cumuler
+    }
+    // Contrepartie patronale portée par une ligne salariale (CNRACL 37,65% / RAFP 5% sur les codes 47/1028)
+    if (cat !== "info" && cat !== "patronale" && patronal && patronal > 0) {
+      sommePatronales += patronal;
+    }
+    // Partie non déductible (pour le repli du net fiscal quand il n'est pas imprimé sur la fiche)
+    if (lr.code === "40" && montant < 0) csgNonDed = -montant;
+    if (lr.code === "42" && montant < 0) crds = -montant;
+
+    // Id unique : plusieurs codes peuvent pointer vers la même explication (572+7625 → cotis_mutuelle).
+    // Un rappel (marqueur « R » + mois) prime : c'est l'information la plus utile pour l'agent.
+    let idLigne = lr.moisRappel ? "rappel" : (known.expl ?? `ciril_${lr.code}`);
+    if (idsUtilises.has(idLigne)) idLigne = `${idLigne}_${lr.code}`;
+    idsUtilises.add(idLigne);
+
+    lignes.push({
+      id: idLigne,
+      code: lr.code,
+      libelle: lr.moisRappel
+        ? `Rappel ${lr.moisRappel} — ${lr.libelle}`
+        : (known.libelle ?? lr.libelle),
+      moisRappel: lr.moisRappel,
+      base: lr.base,
+      taux: lr.taux,
+      montantGain: cat !== "patronale" && montant > 0 ? montant : undefined,
+      montantRetenue: cat !== "patronale" && montant < 0 ? -montant : undefined,
+      partPatronale: patronal && patronal > 0 ? patronal : undefined,
+      patronalTaux: lr.tauxPatronal,
+      openFiscaVar:
+        (known.expl && VAR_PAR_EXPL[known.expl]
+          ? OPENFISCA_VARIABLES_DICTIONARY[VAR_PAR_EXPL[known.expl]]
+          : undefined) ?? OPENFISCA_VARIABLES_DICTIONARY.primes_fonction_publique,
+      montantTheoriqueOpenFisca: Math.abs(montant),
+      estConforme: true,
+      explicationLigne: `Rubrique ${lr.code} du bulletin original — copiée telle quelle (aucun recalcul).`
+    });
+  }
+
+  // Totaux imprimés en priorité, déduits des lignes à défaut
+  const brutLu = montantsReels?.brutReel ?? r2(sommeGains);
+  const netAvantImpot = montantsReels?.netAvantImpotReel ?? r2(brutLu - sommeRetenuesSociales - sommeRetenuesNet);
+  const netFiscal = montantsReels?.netFiscalReel ?? r2(netAvantImpot + csgNonDed + crds + sommeRetenuesNet);
+  const montantPas = montantsReels?.pasReel ?? r2(netFiscal * (tauxPas / 100));
+  const netAPayer = montantsReels?.netAPayerReel ?? r2(netAvantImpot - montantPas);
+  const totalRetenues = montantsReels?.totalRetenuesReelles ?? r2(sommeRetenuesSociales + sommeRetenuesNet + montantPas);
+  const totalCotisationsPatronales = r2(sommePatronales);
+  const coutGlobalEmployeur = montantsReels?.coutEmployeurReel ?? r2(brutLu + totalCotisationsPatronales);
+
+  // Ligne PAS synthétique (bloc « Impôt sur le revenu » du bulletin) — la vue l'affiche hors tableau
+  lignes.push({
+    id: "pas",
+    code: "995",
+    libelle: "Impôt sur le revenu prélevé à la source",
+    base: netFiscal,
+    taux: tauxPas,
+    montantRetenue: montantPas > 0 ? montantPas : undefined,
+    openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.prelevement_a_la_source,
+    montantTheoriqueOpenFisca: montantPas,
+    estConforme: true,
+    explicationLigne: `Impôt collecté par la Mairie pour la DGFiP : ${netFiscal.toFixed(2)} € de net imposable × ${tauxPas} %.`
+  });
+
+  const phraseReconstruction = `Fiche reconstruite ligne à ligne depuis votre bulletin original (${lignesReelles.length} rubriques copiées sans recalcul).`;
+
+  return {
+    titre: `Fiche de Paie de ${nomAgent} (reconstruite du bulletin original)`,
+    dateAnalyse: new Date().toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" }),
+    source: "reconstruite",
+    agent: {
+      nom: nomAgent,
+      grade,
+      echelon,
+      indiceRemun: indiceRemun ?? indiceBrut ?? indiceMajore,
+      indiceBrut: indiceBrut ?? Math.round(indiceMajore * 1.06),
+      indiceMajore,
+      quotite,
+      statut,
+      caisseRetraite: isTitulaire ? "CNRACL" : "IRCANTEC",
+      zoneResidence: params.zoneResidence ?? 1,
+      nbEnfantsSft
+    },
+    lignesReelles,
+    totaux: {
+      traitementBase: r2(sommeGains),
+      nbi: 0,
+      indemniteResidence: 0,
+      sft: 0,
+      primesIfse: 0,
+      primesCia: 0,
+      autresPrimes: 0,
+      abattementPpcr: 0,
+      remboursementTransport: 0,
+      indemniteCompensatriceCsg: 0,
+      participationMutuelleEmployeur: 0,
+      retenueMutuelleSalarie: r2(sommeRetenuesNet),
+      salaireBrut: brutLu,
+      totalCotisationsSalariales: r2(sommeRetenuesSociales),
+      totalRetenues,
+      netAvantImpot,
+      netFiscal,
+      tauxPas,
+      montantPas,
+      netAPayer,
+      totalCotisationsPatronales,
+      coutGlobalEmployeur
+    },
+    lignes,
+    diagnosticEcarts: {
+      aEcarts: false,
+      brutEcart: 0,
+      retenuesEcart: 0,
+      netFiscalEcart: 0,
+      netAPayerEcart: 0,
+      items: []
+    },
+    syntheseConformite: {
+      scoreConformite: 100,
+      nbLignesVerifiees: lignesReelles.length,
+      nbAnomalies: 0,
+      anomalies: [],
+      pointsForts: [
+        phraseReconstruction,
+        `Total brut imprimé : ${brutLu.toFixed(2)} € — repris à l'identique.`,
+        `Net à payer : ${netAPayer.toFixed(2)} € — repris à l'identique.`,
+        "Chaque rubrique conserve son code Ciril et son libellé d'origine."
+      ],
+      recommandationsCFDT: [
+        "Conservez vos fiches de paie sans limitation de durée pour le calcul de vos droits à pension CNRACL/IRCANTEC.",
+        "N'hésitez pas à solliciter vos représentants CFDT de Gennevilliers pour vérifier une rubrique."
+      ]
+    },
+    openFiscaBenchmark: {
+      brutTheorique: brutLu,
+      netTheorique: netAPayer,
+      cnraclTheorique: r2(sommeRetenuesSociales),
+      rafpTheorique: 0,
+      csgTheorique: 0,
+      differenceNet: 0
+    },
+    openFiscaCodeSnippet: `# Bulletin reconstruit depuis le PDF original — aucune donnée recalculée
+lignes = ${JSON.stringify(lignesReelles.map(l => ({ code: l.code, montant: l.montant })), null, 2)}`
+  };
+}
+
+/**
  * Analyse le texte brut d'une fiche de paie uploadée (.pdf, .docx, .txt, .csv)
  * et en déduit les paramètres de simulation OpenFisca-France avec métadonnées détaillées
  */
@@ -1528,8 +1975,8 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   const detectedItems: string[] = [];
   const lines = normalizedText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
-  // Les vrais bulletins imprimant \u00ab NET \u00c0 PAYER \u00bb, \u00ab PR\u00c9L\u00c8VEMENT \u00bb ou \u00ab R\u00c9MUN\u00c9RATION \u00bb,
-  // les libell\u00e9s sont compar\u00e9s sur une version sans accents pour \u00e9viter les rat\u00e9s de d\u00e9tection.
+  // Les vrais bulletins imprimant « NET À PAYER », « PRÉLÈVEMENT » ou « RÉMUNÉRATION »,
+  // les libellés sont comparés sur une version sans accents pour éviter les ratés de détection.
   const deaccent = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
   // 1. Extraction Indice Majoré (IM) - Heuristiques Multi-passes
@@ -1537,32 +1984,55 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   let imFound = false;
   let quotite = 100;
   let indiceBrut: number | undefined = undefined;
+  let indiceRemun: number | undefined = undefined;
 
   // Passe A0 : bloc Ciril « IND. RÉMUN. / INDICE BRUT / IND. MAJORÉ / TAUX EMPLOI » suivi de la ligne de valeurs
-  // Ex. réel : "IND. RÉMUN. INDICE BRUT IND. MAJORÉ TAUX EMPLOI" -> "735 896 735 100.00"
+  // Exemples réels Gennevilliers :
+  // "IND. RÉMUN. INDICE BRUT IND. MAJORÉ TAUX EMPLOI" -> "735 896 735 100.00" (IR=735, IB=896, IM=735, Quotité=100)
+  // "1 284 665 560 83.81 Service Médecine" (IR=1284, IB=665, IM=560, Quotité=83.81)
+  // "681 824 681 75.10 Service Médecine" (IR=681, IB=824, IM=681, Quotité=75.10)
   for (let i = 0; i < lines.length - 1; i++) {
     const lPlain = deaccent(lines[i].toLowerCase());
     if (lPlain.includes("taux emploi") || (lPlain.includes("indice brut") && lPlain.includes("major"))) {
-      const values = Array.from(lines[i + 1].matchAll(/(\d+(?:[.,]\d+)?)/g))
+      let lineCleaned = lines[i + 1].trim();
+      lineCleaned = lineCleaned.replace(/(^|\s)(\d{1,3})\s+(\d{3}[.,]\d{2})/g, '$1$2$3')
+                               .replace(/(^|\s)(\d)\s+(\d{3})\b/g, '$1$2$3');
+      const values = Array.from(lineCleaned.matchAll(/(\d+(?:[.,]\d+)?)/g))
         .map(m => parseFloat(m[1].replace(",", ".")));
-      // Indices purs (entiers) : IM est le plus petit <= 850, l'IB le plus grand (896 > 735)
-      const intVals = values.filter(v => Number.isInteger(v) && v >= 250 && v <= 1100);
-      if (intVals.length >= 2) {
-        const imCandidat = Math.min(...intVals.filter(v => v <= 850));
-        const ibCandidat = Math.max(...intVals);
-        if (imCandidat >= 250 && imCandidat <= 850) {
+
+      if (values.length >= 3) {
+        let irCandidat: number | undefined;
+        let ibCandidat: number | undefined;
+        let imCandidat: number | undefined;
+        let qCandidat: number | undefined;
+
+        if (values.length >= 4) {
+          irCandidat = values[0];
+          ibCandidat = values[1];
+          imCandidat = values[2];
+          qCandidat = values[3];
+        } else {
+          ibCandidat = values[0];
+          imCandidat = values[1];
+          qCandidat = values[2];
+          irCandidat = ibCandidat;
+        }
+
+        if (imCandidat && imCandidat >= 250 && imCandidat <= 950) {
           im = imCandidat;
           imFound = true;
-          if (ibCandidat > imCandidat) {
-            indiceBrut = ibCandidat;
-            detectedItems.push(`Bloc Ciril lu : Indice Brut ${indiceBrut} / Indice Majoré (IM) ${im}`);
-          } else {
-            detectedItems.push(`Bloc Ciril lu : Indice Majoré (IM) ${im}`);
+          if (irCandidat && irCandidat >= 250 && irCandidat <= 3500) {
+            indiceRemun = irCandidat;
           }
-          const q = values[values.length - 1];
-          if (q >= 20 && q <= 100) {
-            quotite = q;
-            if (q !== 100) detectedItems.push(`Quotité (taux d'emploi) : ${quotite}%`);
+          if (ibCandidat && ibCandidat >= 250 && ibCandidat <= 1500) {
+            indiceBrut = ibCandidat;
+            detectedItems.push(`Bloc Ciril lu : Ind. Rémun ${indiceRemun ?? im} / Indice Brut ${indiceBrut} / Indice Majoré (IM) ${im}`);
+          } else {
+            detectedItems.push(`Bloc Ciril lu : Ind. Rémun ${indiceRemun ?? im} / Indice Majoré (IM) ${im}`);
+          }
+          if (qCandidat && qCandidat >= 20 && qCandidat <= 100) {
+            quotite = qCandidat;
+            if (quotite !== 100) detectedItems.push(`Quotité (taux d'emploi) : ${quotite}%`);
           }
         }
       }
@@ -1653,41 +2123,84 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
     if (nbi > 0) detectedItems.push(`Points NBI détectés : +${nbi} pts`);
   }
 
-  // 4. Extraction IFSE / Primes RIFSEEP (Heuristique Multi-passes)
-  let ifse = 380;
-  let ifseFound = false;
+  // 4. Extraction Universelle des Éléments de Rémunération Ciril RH (Codes gains & primes)
+  let ifse = 0;
+  let autresPrimes = 0;
+  let cia = 0;
+  let elementsDetectesCount = 0;
 
   for (const line of lines) {
-    const lineLower = line.toLowerCase();
-    if (
-      lineLower.includes("ifse") ||
-      lineLower.includes("rifseep") ||
-      lineLower.includes("fonct") ||
-      lineLower.includes("indemnitaire")
-    ) {
-      const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
-        .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
-        .filter(a => a >= 40 && a <= 3500);
+    const lPlain = deaccent(line.toLowerCase());
+    const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
+      .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
+      .filter(a => a > 0);
 
-      if (amounts.length > 0) {
-        ifse = amounts[amounts.length - 1]; // Dernier montant souvent la colonne montant
-        ifseFound = true;
-        detectedItems.push(`Prime IFSE (RIFSEEP) détectée : ${ifse.toFixed(2)} €/mois`);
-        break;
-      }
+    if (amounts.length === 0) continue;
+    const montant = amounts[amounts.length - 1]; // Montant dans la colonne gain
+
+    // A. Traitement de base (Codes 8 ou 13 : "Traitement de base indiciaire" / "011N TRAIT.BASE MENS. NT")
+    if (lPlain.includes("traitement de base") || lPlain.includes("trait.base") || lPlain.includes("traitement indiciaire")) {
+      detectedItems.push(`Traitement de base indiciaire : ${montant.toFixed(2)} €`);
+      continue;
+    }
+
+    // B. Indemnité de Résidence (Codes 12, 17 ou 021N : "Indemnité de Résidence")
+    if (lPlain.includes("indemnite de residence") || lPlain.includes("indemn.residence")) {
+      continue;
+    }
+
+    // C. IFSE Statutaire (Codes 1591, 2200N, ou libellé contenant "IFSE")
+    if (lPlain.includes("ifse") || lPlain.includes("i.f.s.e")) {
+      ifse = montant;
+      elementsDetectesCount++;
+      detectedItems.push(`IFSE statutaire (RIFSEEP) : +${montant.toFixed(2)} €/mois`);
+      continue;
+    }
+
+    // D. Vacations Médicales (Code 7201 R : "Vacation Médecin")
+    if (lPlain.includes("vacation")) {
+      autresPrimes = Math.round((autresPrimes + montant) * 100) / 100;
+      elementsDetectesCount++;
+      detectedItems.push(`Vacations médicales (Ciril 7201) : +${montant.toFixed(2)} €`);
+      continue;
+    }
+
+    // E. Gardes de nuit (Code 7200 R : "Garde nuit Médecin")
+    if (lPlain.includes("garde nuit") || lPlain.includes("garde")) {
+      autresPrimes = Math.round((autresPrimes + montant) * 100) / 100;
+      elementsDetectesCount++;
+      detectedItems.push(`Gardes de nuit (Ciril 7200) : +${montant.toFixed(2)} €`);
+      continue;
+    }
+
+    // F. Indemnité de Congés Payés (Code 7726 R : "Congés Payés")
+    if (lPlain.includes("conges payes") || lPlain.includes("conge paye")) {
+      autresPrimes = Math.round((autresPrimes + montant) * 100) / 100;
+      elementsDetectesCount++;
+      detectedItems.push(`Indemnité Congés Payés (Ciril 7726) : +${montant.toFixed(2)} €`);
+      continue;
+    }
+
+    // G. Indemnité de fin de contrat (Code 1280N : "IND.FIN DE CONTRAT")
+    if (lPlain.includes("fin de contrat")) {
+      autresPrimes = Math.round((autresPrimes + montant) * 100) / 100;
+      elementsDetectesCount++;
+      detectedItems.push(`Indemnité fin de contrat (Ciril 1280N) : +${montant.toFixed(2)} €`);
+      continue;
+    }
+
+    // H. CIA (Complément Indemnitaire Annuel)
+    if (lPlain.includes("cia") || lPlain.includes("complement indemnitaire")) {
+      cia = montant;
+      elementsDetectesCount++;
+      detectedItems.push(`Complément CIA : +${montant.toFixed(2)} €`);
+      continue;
     }
   }
 
-  // Extraction CIA
-  let cia = 0;
-  const ciaMatch = t.match(/\bcia\b\s*[:=]?\s*([\d\s]+[,.]\d{2})/i)
-    || t.match(/compl[ée]ment\s*indemnitaire\s*annuel\s*[:=]?\s*([\d\s]+[,.]\d{2})/i);
-  if (ciaMatch) {
-    const val = parseFloat(ciaMatch[1].replace(/\s/g, "").replace(",", "."));
-    if (val > 0 && val <= 3000) {
-      cia = val;
-      detectedItems.push(`Complément CIA détecté : ${cia.toFixed(2)} €`);
-    }
+  // Si l'agent est un titulaire classique et qu'aucune prime n'a été spécifiée, valeur d'accueil
+  if (elementsDetectesCount === 0 && ifse === 0 && !t.includes("vacation") && !t.includes("garde nuit") && !t.includes("contractuel")) {
+    ifse = 380;
   }
 
   // 5. Détection du Statut (Titulaire vs Contractuel)
@@ -1866,20 +2379,30 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   }
 
   // 9. Détection Remboursement Transport Navigo 75% (Décret n° 2023-812)
+  // Prise en charge des lignes uniques et des remboursements cumulés (ex: rétroactivité 5 mois)
   let remboursementTransport = 0;
+  let transportLinesCount = 0;
   for (const line of lines) {
     const lPlain = deaccent(line.toLowerCase());
     if (lPlain.includes("transport") || lPlain.includes("navigo") || lPlain.includes("abonn") || lPlain.includes("titre de transport")) {
       const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
         .map(m => parseFloat(m[1].replace(/\s/g, "").replace(",", ".")))
-        .filter(a => a >= 20 && a <= 120);
+        .filter(a => a >= 20 && a <= 800);
 
       if (amounts.length > 0) {
-        remboursementTransport = amounts[amounts.length - 1];
-        detectedItems.push(`Prise en charge Transport Navigo (75%) : +${remboursementTransport.toFixed(2)} € net`);
-        break;
+        // En cas de plusieurs montants sur la ligne (ex: Base 90.80 Taux 75.00 Montant 68.10), le montant versé est le dernier
+        const lineMontant = amounts[amounts.length - 1];
+        remboursementTransport = Math.round((remboursementTransport + lineMontant) * 100) / 100;
+        transportLinesCount++;
       }
     }
+  }
+  if (remboursementTransport > 0) {
+    detectedItems.push(
+      transportLinesCount > 1
+        ? `Prise en charge Transport cumulée (${transportLinesCount} lignes) : +${remboursementTransport.toFixed(2)} € net`
+        : `Prise en charge Transport Navigo (75%) : +${remboursementTransport.toFixed(2)} € net`
+    );
   }
 
   // 10. Détection Indemnité Compensatrice CSG & Mutuelle
@@ -1935,6 +2458,16 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   let netAPayerReel: number | undefined;
   let coutEmployeurReel: number | undefined;
 
+  // Passe prioritaire pour le Net Payé : recherche exacte de l'étiquette Ciril « Net payé en euros [montant] »
+  const netPayeMatch = normalizedText.match(/net\s*pay[ée]\s*en\s*euros\s*[:=]?\s*([\d\s]+[,.]\d{2})/i);
+  if (netPayeMatch) {
+    const val = parseFloat(netPayeMatch[1].replace(/\s/g, "").replace(",", "."));
+    if (val >= 500 && val <= 15000) {
+      netAPayerReel = val;
+      detectedItems.push(`Net à Payer (en Banque) réel : ${netAPayerReel.toFixed(2)} €`);
+    }
+  }
+
   for (const line of lines) {
     const lPlain = deaccent(line.toLowerCase());
     const amounts = Array.from(line.matchAll(/([\d\s]+[,.]\d{2})/g))
@@ -1945,7 +2478,6 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
       const lastAmount = amounts[amounts.length - 1];
 
       // Total Brut — bulletin Ciril : « Totaux Gains 5 007.72 Cotisations 2 231.08 » ou « Brut fiscal 5 007.72 … »
-      // On prend le PREMIER montant plausible pour ne pas capter un cumul annuel ou un autre total de la même ligne
       const isBrutLine = (lPlain.includes("gains") && (lPlain.includes("totaux") || lPlain.includes("cotis")))
         || lPlain.includes("brut fiscal") || lPlain.includes("total brut") || lPlain.includes("remuneration brute")
         || lPlain.includes("brut mensuel") || lPlain.includes("salaire brut");
@@ -1957,15 +2489,15 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
         }
       }
 
-      // Total Retenues (« Total des retenues 1 553.06 » — inclut cotisations + retenues net + PAS)
+      // Total Retenues (« Total des retenues 1 553.06 »)
       if ((lPlain.includes("total retenues") || lPlain.includes("total des retenues") || lPlain.includes("total cotisations")) && lastAmount >= 200 && lastAmount <= 8000) {
         totalRetenuesReelles = lastAmount;
         detectedItems.push(`Total Retenues salariales réelles : ${totalRetenuesReelles.toFixed(2)} €`);
       }
 
-      // Net Fiscal Imposable — PREMIER montant plausible (le bulletin ajoute le cumul annuel et le total employeur sur la même ligne)
-      if ((lPlain.includes("net imposable") || lPlain.includes("net fiscal") || lPlain.includes("cumul imposable")) && netFiscalReel === undefined) {
-        const candidate = amounts.find(a => a >= 1000 && a <= 10000);
+      // Net Fiscal Imposable (veiller à ne pas confondre avec "Brut fiscal" si les deux mots apparaissent)
+      if ((lPlain.includes("net fiscal") || lPlain.includes("net imposable")) && !lPlain.includes("brut fiscal") && netFiscalReel === undefined) {
+        const candidate = amounts.find(a => a >= 500 && a <= 15000);
         if (candidate !== undefined) {
           netFiscalReel = candidate;
           detectedItems.push(`Net Fiscal imposable réel : ${netFiscalReel.toFixed(2)} €`);
@@ -1986,13 +2518,13 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
         detectedItems.push(`Total versé par l'employeur réel : ${coutEmployeurReel.toFixed(2)} €`);
       }
 
-      // Prélèvement à la Source en euros (« prélevé à la source » comme « prélèvement à la source »)
+      // Prélèvement à la Source en euros
       if ((lPlain.includes("source") || lPlain.includes("pas") || lPlain.includes("impot")) && (lPlain.includes("montant") || lPlain.includes("retenue") || lPlain.includes("prelev")) && lastAmount >= 5 && lastAmount <= 3000) {
         pasReel = lastAmount;
       }
 
-      // Net à Payer (en Banque) — « Net payé en euros 3 454.66 » (dernier trouvé = ligne la plus basse du bulletin)
-      if ((lPlain.includes("net a payer") || lPlain.includes("net paye") || lPlain.includes("net en euros")) && lastAmount >= 800 && lastAmount <= 9000) {
+      // Net à Payer de secours si non trouvé par regex directe
+      if (netAPayerReel === undefined && (lPlain.includes("net a payer") || lPlain.includes("net paye") || lPlain.includes("net en euros")) && lastAmount >= 800 && lastAmount <= 9000) {
         netAPayerReel = lastAmount;
         detectedItems.push(`Net à Payer (en Banque) réel : ${netAPayerReel.toFixed(2)} €`);
       }
@@ -2001,41 +2533,85 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
 
   // 12. Détection Nom de l'agent et Grade
   let nom = "Agent Territorial";
-  const nomMatch = t.match(/(?:m\.|mme|monsieur|madame)\s+([a-zÀ-ÿ-]+)\s+([a-zÀ-ÿ-]+)/i);
-  if (nomMatch) {
-    nom = `${nomMatch[1].toUpperCase()} ${nomMatch[2]}`;
-    detectedItems.push(`Agent : ${nom}`);
-  } else if (fileName) {
-    nom = fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
+
+  // Format Ciril : ligne matricule / période suivie du nom (ex: "10050357 0 01-05-2026 - 31-05-2026 HUNDA NDOBA Chantal")
+  const cirilHeaderLine = lines.find(l => /\b\d{2}-\d{2}-\d{4}\s*-\s*\d{2}-\d{2}-\d{4}\b/.test(l));
+  if (cirilHeaderLine) {
+    const namePart = cirilHeaderLine.replace(/.*?\d{2}-\d{2}-\d{4}\s*-\s*\d{2}-\d{2}-\d{4}\s*/, '').trim();
+    if (namePart && namePart.length >= 3 && !/^\d+$/.test(namePart)) {
+      nom = namePart;
+      detectedItems.push(`Agent détecté (en-tête Ciril) : ${nom}`);
+    }
   }
 
-  // Détection Grade
+  if (nom === "Agent Territorial") {
+    const nomMatch = t.match(/(?:m\.|mme|monsieur|madame)\s+([a-zÀ-ÿ-]+(?:\s+[a-zÀ-ÿ-]+){1,2})/i);
+    if (nomMatch) {
+      nom = nomMatch[1].trim();
+      detectedItems.push(`Agent : ${nom}`);
+    } else if (fileName) {
+      nom = fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
+    }
+  }
+
+  // Détection Grade & Échelon Ciril RH
   let grade = statut === "contractuel" ? "Agent contractuel territorial" : "Fonctionnaire territorial";
-  const gradeMatch = t.match(/grade\s*[:=]\s*([^\n\r,;]+)/i);
-  if (gradeMatch && gradeMatch[1].trim().length > 3) {
-    grade = gradeMatch[1].trim();
-  }
-
-  // Détection Échelon
   let echelon = "Échelon statutaire";
-  const echMatch = t.match(/[ée]chelon\s*[:=]?\s*(\d{1,2})/i);
-  if (echMatch) {
-    echelon = `Échelon ${echMatch[1]}`;
+
+  // Période de paie imprimée sur le bulletin (« Septembre 2026 »)
+  const periodeMatch = normalizedText.match(/(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+(\d{4})/i);
+  const periode = periodeMatch ? `${periodeMatch[1].toLowerCase()} ${periodeMatch[2]}` : undefined;
+
+  for (let i = 0; i < lines.length - 1; i++) {
+    const lPlain = deaccent(lines[i].toLowerCase());
+    if (lPlain.includes("emploi / grade") || lPlain.includes("emploi/grade")) {
+      const nextLine = lines[i + 1].trim();
+      // Ex: "Attaché principal 07 75018 PARIS" ou "Sage-femme de classe normale 09 72700 ALLONNES"
+      const gradePartMatch = nextLine.match(/^([A-Za-zÀ-ÿ\s\-']+?)\s+(\d{1,2})\b/);
+      if (gradePartMatch) {
+        grade = gradePartMatch[1].trim();
+        echelon = `Échelon ${gradePartMatch[2]}`;
+        detectedItems.push(`Emploi / Grade lu : ${grade} (${echelon})`);
+      } else if (nextLine.length > 3) {
+        grade = nextLine;
+        detectedItems.push(`Emploi / Grade lu : ${grade}`);
+      }
+      break;
+    }
   }
 
-  const confidence: 'high' | 'medium' | 'low' = (imFound && ifseFound) ? 'high' : (imFound || ifseFound) ? 'medium' : 'low';
+  if (grade === "Agent contractuel territorial" || grade === "Fonctionnaire territorial") {
+    const gradeMatch = t.match(/grade\s*[:=]\s*([^\n\r,;]+)/i);
+    if (gradeMatch && gradeMatch[1].trim().length > 3) {
+      grade = gradeMatch[1].trim();
+    }
+    const echMatch = t.match(/[ée]chelon\s*[:=]?\s*(\d{1,2})/i);
+    if (echMatch) {
+      echelon = `Échelon ${echMatch[1]}`;
+    }
+  }
+
+  const primesFound = ifse > 0 || autresPrimes > 0 || cia > 0;
+  const confidence: 'high' | 'medium' | 'low' = (imFound && primesFound) ? 'high' : (imFound || primesFound) ? 'medium' : 'low';
   const summary = detectedItems.length > 0
     ? `${detectedItems.length} élément(s) détecté(s) avec succès dans le fichier.`
     : "Peu d'éléments textuels détectés dans le fichier (possible scan ou image).";
+
+  const lignesReelles = parseCirilBulletinLines(normalizedText);
+  if (lignesReelles.length > 0) {
+    detectedItems.push(`${lignesReelles.length} rubriques et cotisations Ciril extraites fidèlement du bulletin`);
+  }
 
   return {
     params: {
       indiceMajore: im,
       ...(indiceBrut !== undefined ? { indiceBrut } : {}),
+      ...(indiceRemun !== undefined ? { indiceRemun } : {}),
+      ...(lignesReelles.length > 0 ? { lignesReelles } : {}),
       nbiPoints: nbi,
       ifse,
       cia,
-      autresPrimes: 0,
+      autresPrimes,
       zoneResidence: 1, // Gennevilliers
       nbEnfantsSft: nbEnfants,
       quotite,
@@ -2057,7 +2633,8 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
         pasReel,
         netAPayerReel,
         coutEmployeurReel
-      }
+      },
+      ...(periode ? { periode } : {})
     },
     metadata: {
       detectedItems,

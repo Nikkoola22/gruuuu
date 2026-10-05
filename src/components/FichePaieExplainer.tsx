@@ -130,13 +130,15 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   // Traitement d'un fichier uploadé (PDF, Word, TXT, CSV)
   const handleProcessFile = async (file: File) => {
     setIsParsing(true);
-    setParsingStatus(`Extraction du texte depuis ${file.name}...`);
+    setParsingStatus(`Lecture du fichier ${file.name}...`);
     try {
-      const text = await extractTextFromFile(file);
+      const text = await extractTextFromFile(file, (status) => {
+        setParsingStatus(status);
+      });
 
       if (!text || text.trim().length === 0) {
         toast.warning(
-          "Aucun texte numérique extrait (il peut s'agir d'un scan ou d'une photo). Vous pouvez ajuster vos données via les curseurs ci-dessous ou coller le texte."
+          "Aucun texte extrait du fichier. Vous pouvez ajuster vos données via les curseurs ou coller le texte."
         );
         setUploadedFileName(file.name);
         setUploadedRawText("(Fichier image / scan sans texte sélectionnable)");
@@ -576,6 +578,54 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                   <option value={50}>Mi-temps (50%)</option>
                 </select>
               </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Abattement PPCR : <span className="text-orange-600 font-bold">{params.abattementPpcr ? `-${params.abattementPpcr} €` : '0 €'}</span>
+                </label>
+                <select
+                  value={params.abattementPpcr || 0}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value) || 0;
+                    setParams(prev => ({ ...prev, abattementPpcr: val, appliquerPpcr: val > 0 }));
+                  }}
+                  className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+                >
+                  <option value={0}>Aucun (Contractuels ou non-bénéficiaire)</option>
+                  <option value={32.42}>32,42 € (Catégorie C & B)</option>
+                  <option value={42.17}>42,17 € (Catégorie A)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Navigo 75% : <span className="text-emerald-600 font-bold">{params.remboursementTransport ? `+${params.remboursementTransport} €` : '0 €'}</span>
+                </label>
+                <select
+                  value={params.remboursementTransport || 0}
+                  onChange={(e) => setParams(prev => ({ ...prev, remboursementTransport: parseFloat(e.target.value) || 0 }))}
+                  className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+                >
+                  <option value={0}>Non (0 €)</option>
+                  <option value={64.80}>Oui (64,80 € - 75% mensuel 2024)</option>
+                  <option value={66.60}>Oui (66,60 € - 75% mensuel 2025)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Indemnité Compensatrice CSG : <span className="text-purple-600 font-bold">{params.indemniteCompensatriceCsg || 0} €</span>
+                </label>
+                <input
+                  type="number"
+                  step="0.5"
+                  min="0"
+                  max="100"
+                  value={params.indemniteCompensatriceCsg || 0}
+                  onChange={(e) => setParams(prev => ({ ...prev, indemniteCompensatriceCsg: parseFloat(e.target.value) || 0 }))}
+                  className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-mono"
+                />
+              </div>
             </div>
           )}
         </div>
@@ -631,6 +681,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
               params={params}
               result={result}
               onUpdateParam={(key, val) => setParams(prev => ({ ...prev, [key]: val }))}
+              onApplyMultiParams={(multi) => setParams(prev => ({ ...prev, ...multi }))}
             />
 
             {/* Bannière d'accès direct vers l'explication complexe */}

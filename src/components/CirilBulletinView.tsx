@@ -212,6 +212,37 @@ const CODES_EXPLIQUES: Record<string, {
     verifier: "Comparez le taux du bulletin avec votre avis d'imposition. Après un changement de situation, vous pouvez le modifier en temps réel sur impots.gouv.fr.",
     attention: "Le taux s'applique sur le net imposable (pas sur le brut) : si le montant prélevé semble décalé, vérifiez d'abord la base.",
     reference: "Art. 204 A et suivants du Code général des impôts"
+  },
+  rappel: {
+    titre: "Un rappel de salaire",
+    simple: "Ce montant rattrape une somme qui aurait dû être versée (ou retenue) sur un mois précédent. Dans le code, le marqueur « R » signale un rappel, et le libellé indique le mois concerné.",
+    pourquoi: "Les rappels suivent un avancement d'échelon, un changement de grade, une prime recalculée ou une régularisation d'absence : la mairie reconstitue ce que vous auriez dû percevoir.",
+    verifier: "Repérez le mois écrit dans le libellé, puis vérifiez que le calcul de ce mois-là était bien erroné : un rappel doit pouvoir être justifié rubrique par rubrique.",
+    attention: "Un rappel augmente votre net imposable du mois et donc l'impôt à la source prélevé : c'est normal, la régularisation se fait naturellement à la déclaration.",
+    reference: "Art. L. 3242-1 du Code du travail (mentions obligatoires du bulletin de paie)"
+  },
+  indem_differentielle: {
+    titre: "L'indemnité différentielle (complément SMIC)",
+    simple: "Versée lorsque la grille indiciaire (traitement de base + primes statutaires) est en dessous du SMIC : la Ville complète la différence pour garantir une rémunération au moins égale au SMIC.",
+    pourquoi: "La loi interdit de payer un agent en dessous du SMIC. Quand un bas d'échelon, un temps partiel ou un jeune fonctionnaire tombe sous ce plancher, cette indemnité comble l'écart.",
+    verifier: "Si votre rémunération passe au-dessus du SMIC (avancement, revalorisation du point d'indice), cette indemnité doit disparaître : vérifiez qu'elle n'est pas restée indûment.",
+    attention: "Cette indemnité suit l'évolution du SMIC : si le point d'indice augmente moins vite que le SMIC, elle peut perdurer sur les bas d'échelons.",
+    reference: "Salaire minimum — Art. L. 2410-1 et suivants du Code du travail"
+  },
+  nbi_detache: {
+    titre: "La NBI détachée (promotion en stage)",
+    simple: "Versée lorsque l'agent a obtenu une promotion et est en stage sur sa nouvelle catégorie : il continue de percevoir la NBI attachée à son ancien grade pendant toute la durée du stage.",
+    pourquoi: "La NBI est attachée à des fonctions. Lors d'une promotion, l'agent en stage conserve le bénéfice de la NBI acquise dans son ancien cadre d'emplois : on dit qu'elle est « détachée » sur le nouveau grade.",
+    verifier: "À la fin du stage et après titularisation dans le nouveau grade, la NBI détachée doit prendre fin (ou être reprise dans les fonctions) : vérifiez qu'elle ne reste pas indûment.",
+    attention: "Cette ligne cotise pour la retraite comme la NBI classique : elle doit figurer dans la base CNRACL.",
+    reference: "Loi n° 91-73 du 18 janvier 1991 (dispositions relatives à la NBI)"
+  },
+  vacations: {
+    titre: "Les vacations",
+    simple: "Rémunération d'activités ponctuelles exercées en plus du service normal (enseignements, jurys, expertises, formations), payées « à la vacation ».",
+    pourquoi: "Les vacations sont plafonnées et encadrées par décret : elles ne s'imputent pas sur vos congés mais elles sont soumises à cotisations.",
+    verifier: "Comparez le nombre de vacations payées avec vos relevés d'activité : les erreurs de décompte sont courantes.",
+    reference: "Décret n° 91-829 du 2 septembre 1991"
   }
 };
 
@@ -241,6 +272,8 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
   };
 
   const isTitulaire = agent.statut !== 'contractuel';
+  // Bulletin reconstruit depuis le PDF original : codes/libellés/montants copiés tels quels (zéro écart)
+  const sourceReconstruite = result.source === 'reconstruite';
   const pensionBase = r2((totaux.traitementBase || 0) + (totaux.nbi || 0));
 
   // Période de paie du mois courant
@@ -271,15 +304,16 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
   ] : [];
 
   // Construit la liste d'affichage du tableau : lignes du moteur + patronales intercalées
+  // (les patronales locales ne s'ajoutent que sur une simulation — une fiche reconstruite les contient déjà)
   type Aff = { ligne?: (typeof lignes)[number]; patronale?: Patronale };
   const affichage: Aff[] = [];
   for (const l of lignes || []) {
     if (l.id === 'pas') continue; // bloc impôt séparé, comme sur le document papier
-    if (isTitulaire && l.id === 'cnracl') {
+    if (!sourceReconstruite && isTitulaire && l.id === 'cnracl') {
       for (const p of patronalesAvantCnracl) affichage.push({ patronale: p });
     }
     affichage.push({ ligne: l });
-    if (isTitulaire && l.id === 'rafp') {
+    if (!sourceReconstruite && isTitulaire && l.id === 'rafp') {
       for (const p of patronalesApresRafp) affichage.push({ patronale: p });
     }
   }
@@ -298,14 +332,17 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
       baseAff = fCiril(ligne.montantGain);
       tauxAff = '100.0000';
     }
+    // Bulletin reconstruit : code et libellé réels du PDF ; simulation : libellés de la doctrine Ciril
+    const codeAff = sourceReconstruite ? (ligne.code ?? rub?.code ?? '') : (rub?.code ?? '');
+    const libelleAff = sourceReconstruite ? ligne.libelle : (rub?.libelle ?? ligne.libelle);
     return (
       <tr
         key={ligne.id}
         onClick={() => setSelectedLigneId(prev => (prev === ligne.id ? null : ligne.id))}
         className={`cursor-pointer transition-colors ${selected ? 'bg-slate-200/70' : 'hover:bg-slate-100'}`}
       >
-        <td className="px-1.5 py-[3px] font-mono text-slate-500">{rub?.code ?? ''}</td>
-        <td className="px-1.5 py-[3px]">{rub?.libelle ?? ligne.libelle}</td>
+        <td className="px-1.5 py-[3px] font-mono text-slate-500">{codeAff}</td>
+        <td className="px-1.5 py-[3px]">{libelleAff}</td>
         <td className="px-1 py-[3px] text-right font-mono">{baseAff}</td>
         <td className="px-1 py-[3px] text-right font-mono">{tauxAff}</td>
         <td className="px-1.5 py-[3px] text-right font-mono">
@@ -314,7 +351,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
         {ligne.partPatronale !== undefined && ligne.partPatronale > 0 ? (
           <>
             <td className="px-1 py-[3px] text-right font-mono text-slate-500">
-              {ligne.id === 'cnracl' ? '37.6500' : '5.0000'}
+              {ligne.patronalTaux !== undefined ? ligne.patronalTaux.toFixed(4) : (ligne.id === 'cnracl' ? '37.6500' : '5.0000')}
             </td>
             <td className="px-1.5 py-[3px] text-right font-mono text-slate-500">{fCiril(ligne.partPatronale)}</td>
           </>
@@ -363,7 +400,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
               </div>
             </div>
             <div className="px-4 pb-2 text-[10px] text-slate-500 capitalize">
-              {moisNom}
+              {params.periode ?? moisNom}
             </div>
 
             {/* Cartouche d'identification (encadrés, comme l'original) */}
@@ -379,7 +416,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                 </div>
                 <div className="px-2 py-1">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">Période de paie</span>
-                  <span className="font-bold">{periode}</span>
+                  <span className="font-bold capitalize">{params.periode ?? periode}</span>
                 </div>
               </div>
               <div className="grid grid-cols-3 border-b border-slate-400">
@@ -585,7 +622,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                   </div>
                 );
               }
-              const expl = CODES_EXPLIQUES[selectedLigne.id];
+              const expl = CODES_EXPLIQUES[selectedLigne.id] ?? CODES_EXPLIQUES[selectedLigne.id.split('_')[0]];
               const isRetenue = selectedLigne.montantRetenue !== undefined || (selectedLigne.montantGain !== undefined && selectedLigne.montantGain < 0);
               const montantAbsolu = isRetenue
                 ? (selectedLigne.montantGain !== undefined && selectedLigne.montantGain < 0 ? -selectedLigne.montantGain : selectedLigne.montantRetenue)
@@ -631,6 +668,11 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                       </h5>
                     </div>
                     <div className="p-4 space-y-3">
+                      {selectedLigne.moisRappel && (
+                        <div className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900 text-[12px] leading-relaxed text-indigo-900 dark:text-indigo-200">
+                          📌 <b>Rappel sur le mois {selectedLigne.moisRappel}</b> — ce montant régularise la paie du mois cité (marqueur « R » dans le code).
+                        </div>
+                      )}
                       <p className="text-[13px] leading-relaxed text-slate-700 dark:text-slate-300">
                         {expl?.simple || selectedLigne.explicationLigne}
                       </p>

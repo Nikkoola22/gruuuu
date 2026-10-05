@@ -39,13 +39,16 @@ import { extractTextFromPdf } from '../utils/pdfExtractor';
 /**
  * Extrait le texte brut depuis un fichier uploadé (.pdf, .docx, .txt, .md, .csv, .json, etc.)
  */
-export async function extractTextFromFile(file: File): Promise<string> {
+export async function extractTextFromFile(
+  file: File,
+  onProgress?: (status: string) => void
+): Promise<string> {
   const fileName = file.name.toLowerCase();
 
   // 1. Fichiers PDF (.pdf)
   if (fileName.endsWith('.pdf') || file.type === 'application/pdf') {
     try {
-      const pdfText = await extractTextFromPdf(file);
+      const pdfText = await extractTextFromPdf(file, onProgress);
       if (pdfText && pdfText.trim().length > 10) {
         return pdfText;
       }

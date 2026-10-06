@@ -244,6 +244,68 @@ const CODES_EXPLIQUES: Record<string, {
     verifier: "Comparez le nombre de vacations payées avec vos relevés d'activité : les erreurs de décompte sont courantes.",
     reference: "Décret n° 91-829 du 2 septembre 1991"
   },
+  p_maladie: {
+    titre: "Cotisation Ville : la maladie",
+    simple: "La Ville verse à l'URSSAF 9,88 % de votre traitement. C'est du salaire différé : cet argent ne part pas « en charges », il finance vos remboursements de santé, vos arrêts maladie et vos congés maternité — des droits qui vous reviennent quand vous en avez besoin.",
+    pourquoi: "Chaque bulletin enrichit la protection santé de tous les agents : c'est la mutualisation — on cotise quand on va bien, on bénéficie quand on va mal.",
+    verifier: "L'assiette est votre traitement soumis à pension (TIB + NBI). Elle ne porte pas sur les primes.",
+    reference: "Décret n° 2017-1904 du 30 décembre 2017 (taux de la branche maladie FPT)"
+  },
+  p_alloc_fam: {
+    titre: "Cotisation Ville : les allocations familiales",
+    simple: "La Ville verse 3,45 % de votre traitement à la branche famille. C'est du salaire différé : cet argent finance les prestations liées aux enfants (allocations, compléments du SFT) pour tous les agents et leurs familles.",
+    pourquoi: "En fonction publique, cette cotisation est répartie en deux lignes : la part principale (3,45 %, code 44) et une part complémentaire (1,80 %, code 4082) pour atteindre le taux global de 5,25 %.",
+    verifier: "Les deux lignes (44 et 4082) doivent totaliser 5,25 % de votre traitement : additionnez-les pour vérifier.",
+    reference: "Branche famille — taux FPT fixé par décret"
+  },
+  p_alloc_fam_comp: {
+    titre: "Cotisation Ville : les allocations familiales (part complémentaire)",
+    simple: "Part complémentaire de 1,80 % qui, ajoutée à la part principale de 3,45 % (code 44), porte la contribution famille de la Ville à 5,25 % de votre traitement. Du salaire différé qui finance les droits famille de tous.",
+    pourquoi: "Cette répartition en deux codes est une convention de paramétrage : les deux lignes financent la même branche famille.",
+    verifier: "Additionnez les codes 44 et 4082 : le total doit représenter 5,25 % de l'assiette.",
+    reference: "Branche famille — taux FPT fixé par décret"
+  },
+  p_fnal: {
+    titre: "Cotisation Ville : l'aide au logement (FNAL)",
+    simple: "La Ville verse 0,50 % de votre traitement au Fonds National d'Aide au Logement. C'est du salaire différé : cet argent finance les aides au logement (APL) — un droit auquel vous pouvez prétendre comme tous les salariés.",
+    pourquoi: "Le FNAL est une cotisation employeur : elle ne se prélève jamais sur votre salaire. « Totalité » signifie qu'elle porte sur l'ensemble de la rémunération.",
+    verifier: "Le taux dépend de la taille de l'employeur (0,10 % ou 0,50 %) : 0,50 % est le taux des employeurs de plus de 50 agents.",
+    reference: "Art. L. 313-1 et suivants du Code de la construction et de l'habitation"
+  },
+  p_mobilite: {
+    titre: "Cotisation Ville : la mobilité (transports)",
+    simple: "La Ville verse 3,20 % de votre traitement au financement des transports publics d'Île-de-France. C'est du salaire différé : cette contribution finance les réseaux que vous utilisez… et le remboursement à 75 % de votre pass Navigo.",
+    pourquoi: "Tous les employeurs d'Île-de-France y contribuent : cette somme ne part pas en « charges », elle revient concrètement sur votre trajet domicile-travail.",
+    verifier: "Ce montant ne doit jamais apparaître en retenue : il est entièrement à la charge de la Ville.",
+    reference: "Art. L. 2333-87 du Code général des collectivités territoriales (versement mobilité)"
+  },
+  p_autonomie: {
+    titre: "Cotisation Ville : la solidarité autonomie",
+    simple: "La Ville verse 0,30 % de votre traitement à la CNSA. C'est du salaire différé : cet argent finance l'autonomie des personnes âgées et en situation de handicap (EHPAD, aide à domicile, APA) — la solidarité dont vous bénéficierez peut-être un jour.",
+    pourquoi: "La CSA (Contribution Solidarité Autonomie) est une cotisation employeur uniquement : elle n'apparaît jamais sur votre net.",
+    reference: "Art. L. 14-10-4 du Code de la sécurité sociale (CNSA)"
+  },
+  p_atiacl: {
+    titre: "Cotisation Ville : l'allocation temporaire d'invalidité (ATIACL)",
+    simple: "La Ville verse 0,40 % de votre traitement indiciaire au régime qui finance l'Allocation Temporaire d'Invalidité. C'est du salaire différé : si un accident de service vous invalide, cette allocation s'ajoute à vos droits — la protection que ces cotisations construisent.",
+    pourquoi: "L'ATI complète le traitement de l'agent invalide du fait du service (50 % ou 100 % du traitement selon le taux d'invalidité reconnu par la commission de réforme).",
+    verifier: "L'assiette est le seul traitement indiciaire brut (TIB, hors NBI) : 0,40 % du TIB. Cette cotisation est entièrement patronale.",
+    reference: "CNRACL / Caisse des Dépôts — régime de l'allocation temporaire d'invalidité"
+  },
+  p_centre_gestion: {
+    titre: "Cotisation Ville : le Centre de Gestion",
+    simple: "La Ville verse 0,50 % de votre traitement au Centre de Gestion de la Fonction Publique Territoriale des Hauts-de-Seine. C'est du salaire différé : cet argent finance des services mutualisés pour les agents — bourses de l'emploi, concours, formation, conseils.",
+    pourquoi: "Les centres de gestion accompagnent les collectivités pour la gestion des agents non titulaires, les concours, la prévention et la formation.",
+    verifier: "Cette contribution est entièrement patronale et assise sur le traitement soumis à pension.",
+    reference: "Art. L. 722-1 et suivants du Code général de la fonction publique"
+  },
+  p_cnfpt: {
+    titre: "Cotisation Ville : la formation (CNFPT)",
+    simple: "La Ville verse 1 % de votre traitement au Centre National de la Fonction Publique Territoriale. C'est du salaire différé : cet argent finance votre formation professionnelle tout au long de la carrière — les stages, concours et préparations dont vous bénéficiez.",
+    pourquoi: "C'est la contribution « formation » : elle finance les plans de formation, les concours et la préparation aux concours dont vous bénéficiez.",
+    verifier: "Les deux lignes (52 et 1965) totalisent 1,00 % du traitement soumis à pension. Vous avez droit à des jours de formation chaque année : demandez votre plan de formation.",
+    reference: "Art. L. 724-1 du Code général de la fonction publique"
+  },
   traitement_detache: {
     titre: "Le traitement de base détaché",
     simple: "Vous êtes fonctionnaire détaché : votre traitement suit la grille de votre grade d'origine (celui où vous avez été recruté), versé par la collectivité qui vous accueille.",
@@ -265,9 +327,7 @@ const CODES_EXPLIQUES: Record<string, {
 // Lignes de cotisations patronales affichées à droite du tableau (titulaires),
 // avec les taux observés sur les bulletins Ciril de la Ville (2026)
 // ─────────────────────────────────────────────────────────────────────────────
-type Patronale = { code: string; libelle: string; base: number; taux: number; montant: number };
 
-const r2 = (v: number) => Math.round(v * 100) / 100;
 
 export default function CirilBulletinView({ params, result }: CirilBulletinViewProps) {
   // Rubrique sélectionnée : son explication « en clair » s'affiche dans le panneau de droite
@@ -289,7 +349,6 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
   const isTitulaire = agent.statut !== 'contractuel';
   // Bulletin reconstruit depuis le PDF original : codes/libellés/montants copiés tels quels (zéro écart)
   const sourceReconstruite = result.source === 'reconstruite';
-  const pensionBase = r2((totaux.traitementBase || 0) + (totaux.nbi || 0));
 
   // Période de paie du mois courant
   const now = new Date();
@@ -302,36 +361,9 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
 
   const selectedLigne = selectedLigneId ? (lignes || []).find(l => l.id === selectedLigneId) : null;
 
-  // Lignes patronales du bulletin (titulaires uniquement), dans l'ordre du document papier
-  const patronalesAvantCnracl: Patronale[] = isTitulaire ? [
-    { code: '43', libelle: 'Urssaf Maladie Titulaire', base: pensionBase, taux: 9.88, montant: r2(pensionBase * 0.0988) },
-    { code: '44', libelle: 'Urssaf Allocation Familial Tit', base: pensionBase, taux: 3.45, montant: r2(pensionBase * 0.0345) },
-    { code: '4082', libelle: 'Urssaf Alloc.Familial Comp Tit', base: pensionBase, taux: 1.8, montant: r2(pensionBase * 0.018) },
-    { code: '1250', libelle: 'Urssaf FNALtotalité Titulaire', base: pensionBase, taux: 0.5, montant: r2(pensionBase * 0.005) },
-    { code: '46', libelle: 'Urssaf Mobilité Titulaire', base: pensionBase, taux: 3.2, montant: r2(pensionBase * 0.032) },
-    { code: '389', libelle: 'Urssaf solid.autonomiePP Tit.', base: pensionBase, taux: 0.3, montant: r2(pensionBase * 0.003) }
-  ] : [];
-  const patronalesApresRafp: Patronale[] = isTitulaire ? [
-    { code: '49', libelle: 'CNRACL ATIACL', base: totaux.traitementBase || 0, taux: 0.4, montant: r2((totaux.traitementBase || 0) * 0.004) },
-    { code: '50', libelle: 'Centre de gestion Titulaire', base: pensionBase, taux: 0.5, montant: r2(pensionBase * 0.005) },
-    { code: '52', libelle: 'C.N.F.P.T Titulaire', base: pensionBase, taux: 0.9, montant: r2(pensionBase * 0.009) },
-    { code: '1965', libelle: 'C.N.F.P.T Majoration Titulaire', base: pensionBase, taux: 0.1, montant: r2(pensionBase * 0.001) }
-  ] : [];
-
-  // Construit la liste d'affichage du tableau : lignes du moteur + patronales intercalées
-  // (les patronales locales ne s'ajoutent que sur une simulation — une fiche reconstruite les contient déjà)
-  type Aff = { ligne?: (typeof lignes)[number]; patronale?: Patronale };
-  const affichage: Aff[] = [];
-  for (const l of lignes || []) {
-    if (l.id === 'pas') continue; // bloc impôt séparé, comme sur le document papier
-    if (!sourceReconstruite && isTitulaire && l.id === 'cnracl') {
-      for (const p of patronalesAvantCnracl) affichage.push({ patronale: p });
-    }
-    affichage.push({ ligne: l });
-    if (!sourceReconstruite && isTitulaire && l.id === 'rafp') {
-      for (const p of patronalesApresRafp) affichage.push({ patronale: p });
-    }
-  }
+  // Liste d'affichage du tableau : toutes les lignes du moteur (simulation ET reconstruction),
+  // les patronales étant fournies par le moteur avec leurs explications, dans l'ordre du bulletin
+  const affichage = (lignes || []).filter(l => l.id !== 'pas');
 
   // Rendu d'une ligne de rubrique (cliquable → panneau explicatif)
   const renderLigne = (ligne: (typeof lignes)[number]) => {
@@ -348,7 +380,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
       tauxAff = '100.0000';
     }
     // Bulletin reconstruit : code et libellé réels du PDF ; simulation : libellés de la doctrine Ciril
-    const codeAff = sourceReconstruite ? (ligne.code ?? rub?.code ?? '') : (rub?.code ?? '');
+    const codeAff = sourceReconstruite ? (ligne.code ?? rub?.code ?? '') : (rub?.code ?? ligne.code ?? '');
     const libelleAff = sourceReconstruite ? ligne.libelle : (rub?.libelle ?? ligne.libelle);
     return (
       <tr
@@ -379,19 +411,6 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
       </tr>
     );
   };
-
-  // Rendu d'une ligne patronale (information, non cliquable)
-  const renderPatronale = (p: Patronale) => (
-    <tr key={`pat-${p.code}`} className="text-slate-400">
-      <td className="px-1.5 py-[3px] font-mono">{p.code}</td>
-      <td className="px-1.5 py-[3px]">{p.libelle}</td>
-      <td className="px-1 py-[3px] text-right font-mono">{fCiril(p.base)}</td>
-      <td className="px-1 py-[3px] text-right font-mono">{p.taux.toFixed(4)}</td>
-      <td className="px-1.5 py-[3px] text-right font-mono">{fCiril(p.montant)}</td>
-      <td className="px-1 py-[3px]" />
-      <td className="px-1.5 py-[3px]" />
-    </tr>
-  );
 
   return (
     <div className="space-y-6">
@@ -499,9 +518,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                   </tr>
                 </thead>
                 <tbody>
-                  {affichage.map(({ ligne, patronale }) =>
-                    ligne ? renderLigne(ligne) : renderPatronale(patronale as Patronale)
-                  )}
+                  {affichage.map(ligne => renderLigne(ligne))}
                 </tbody>
                 <tfoot>
                   <tr className="border-t border-slate-500 font-bold bg-slate-50">
@@ -639,9 +656,13 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
               }
               const expl = CODES_EXPLIQUES[selectedLigne.id] ?? CODES_EXPLIQUES[selectedLigne.id.split('_')[0]];
               const isRetenue = selectedLigne.montantRetenue !== undefined || (selectedLigne.montantGain !== undefined && selectedLigne.montantGain < 0);
-              const montantAbsolu = isRetenue
-                ? (selectedLigne.montantGain !== undefined && selectedLigne.montantGain < 0 ? -selectedLigne.montantGain : selectedLigne.montantRetenue)
-                : selectedLigne.montantGain;
+              // Charge employeur pure : une part patronale sans gain ni retenue salariale (codes 43, 44, 1250…)
+              const estPatronale = selectedLigne.partPatronale !== undefined && selectedLigne.montantGain === undefined && selectedLigne.montantRetenue === undefined;
+              const montantAbsolu = estPatronale
+                ? selectedLigne.partPatronale
+                : isRetenue
+                  ? (selectedLigne.montantGain !== undefined && selectedLigne.montantGain < 0 ? -selectedLigne.montantGain : selectedLigne.montantRetenue)
+                  : selectedLigne.montantGain;
               const list = lignes || [];
               const idx = list.findIndex(l => l.id === selectedLigne.id);
               const goto = (delta: number) => {
@@ -649,7 +670,12 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                 const next = list[(idx + delta + list.length) % list.length];
                 setSelectedLigneId(next.id);
               };
-              const sensMontant = isRetenue ? '− ' : '+ ';
+              const sensMontant = estPatronale ? '' : (isRetenue ? '− ' : '+ ');
+              const couleurCarte = estPatronale
+                ? { bord: 'border-sky-200 dark:border-sky-900', fond: 'bg-sky-50 dark:bg-sky-950/30', texte: 'text-sky-600 dark:text-sky-400', titre: 'text-sky-900 dark:text-sky-200' }
+                : isRetenue
+                  ? { bord: 'border-rose-200 dark:border-rose-900', fond: 'bg-rose-50 dark:bg-rose-950/30', texte: 'text-rose-600 dark:text-rose-400', titre: 'text-rose-900 dark:text-rose-200' }
+                  : { bord: 'border-emerald-200 dark:border-emerald-900', fond: 'bg-emerald-50 dark:bg-emerald-950/30', texte: 'text-emerald-600 dark:text-emerald-400', titre: 'text-emerald-900 dark:text-emerald-200' };
               return (
                 <>
                   <div className="mt-4 flex items-center justify-between text-[11px] font-bold text-slate-400">
@@ -668,17 +694,17 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                     </button>
                   </div>
 
-                  <div className={`mt-3 rounded-2xl border-2 overflow-hidden ${isRetenue ? 'border-rose-200 dark:border-rose-900' : 'border-emerald-200 dark:border-emerald-900'}`}>
-                    <div className={`px-4 py-3.5 ${isRetenue ? 'bg-rose-50 dark:bg-rose-950/30' : 'bg-emerald-50 dark:bg-emerald-950/30'}`}>
+                  <div className={`mt-3 rounded-2xl border-2 overflow-hidden ${couleurCarte.bord}`}>
+                    <div className={`px-4 py-3.5 ${couleurCarte.fond}`}>
                       <div className="flex items-center justify-between gap-2">
                         <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
                           Rubrique {RUBRIQUES_CIRIL[selectedLigne.id]?.code ?? selectedLigne.code ?? '—'}
                         </span>
-                        <span className={`font-mono font-black text-lg ${isRetenue ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
-                          {sensMontant}{formatCur(montantAbsolu)} €
+                        <span className={`font-mono font-black text-lg ${couleurCarte.texte}`}>
+                          {estPatronale ? '' : sensMontant}{formatCur(montantAbsolu)} €{estPatronale ? ' (cotisation Ville)' : ''}
                         </span>
                       </div>
-                      <h5 className={`font-extrabold text-base mt-1.5 ${isRetenue ? 'text-rose-900 dark:text-rose-200' : 'text-emerald-900 dark:text-emerald-200'}`}>
+                      <h5 className={`font-extrabold text-base mt-1.5 ${couleurCarte.titre}`}>
                         {expl?.titre || selectedLigne.libelle}
                       </h5>
                     </div>
@@ -719,7 +745,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                         </div>
                       )}
 
-                      {selectedLigne.partPatronale !== undefined && selectedLigne.partPatronale > 0 && (
+                      {!estPatronale && selectedLigne.partPatronale !== undefined && selectedLigne.partPatronale > 0 && (
                         <p className="text-[11px] text-slate-500 dark:text-slate-400">
                           En plus, la Ville verse <b className="text-slate-700 dark:text-slate-300">{formatCur(selectedLigne.partPatronale)} €</b> de sa part (cotisation employeur).
                         </p>

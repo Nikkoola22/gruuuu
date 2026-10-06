@@ -1166,7 +1166,75 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
     });
   }
 
-  // Lignes de retenues
+  // Lignes de retenues — ordre du bulletin Ciril original :
+  // CSG/CRDS, cotisations patronales Urssaf, retraite, cotisations patronales retraite-formation
+  lignes.push({
+    id: "csg_ded",
+    code: "0600",
+    libelle: "CSG Déductible (6,80%)",
+    base: assietteCsgCrds,
+    taux: 6.80,
+    montantRetenue: csgDeductible,
+    openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.csg_deductible_salaire,
+    montantTheoriqueOpenFisca: csgDeductible,
+    estConforme: true,
+    explicationLigne: `Prélevée sur 98,25% du salaire brut total. Cette part est déduite de votre revenu imposable DGFiP.`
+  });
+
+  lignes.push({
+    id: "csg_nonded",
+    code: "0610",
+    libelle: "CSG Non Déductible (2,40%)",
+    base: assietteCsgCrds,
+    taux: 2.40,
+    montantRetenue: csgNonDeductible,
+    openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.csg_non_deductible_salaire,
+    montantTheoriqueOpenFisca: csgNonDeductible,
+    estConforme: true,
+    explicationLigne: `Partie non déductible fiscalement : retenue sur le salaire net et réintégrée dans votre assiette fiscale.`
+  });
+
+  lignes.push({
+    id: "crds",
+    code: "0620",
+    libelle: "CRDS Dette Sociale (0,50%)",
+    base: assietteCsgCrds,
+    taux: 0.50,
+    montantRetenue: crds,
+    openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.crds_salaire,
+    montantTheoriqueOpenFisca: crds,
+    estConforme: true,
+    explicationLigne: `Contribution finançant le remboursement de la dette sociale (0,50% sur la même assiette abattue).`
+  });
+
+  // Cotisations patronales Urssaf (salaires différés : santé, famille, logement, transports, autonomie)
+  const baseUrssaf = isTitulaire ? traitementPension : salaireBrut;
+  const patronalLigne = (id: string, code: string, libelle: string, base: number, taux: number, explication: string): FichePaieLigne => ({
+    id,
+    code,
+    libelle,
+    base: Math.round(base * 100) / 100,
+    taux,
+    partPatronale: Math.round(base * taux / 100 * 100) / 100,
+    openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.cotisations_employeur,
+    montantTheoriqueOpenFisca: Math.round(base * taux / 100 * 100) / 100,
+    estConforme: true,
+    explicationLigne: explication
+  });
+
+  lignes.push(patronalLigne("p_maladie", "43", "Urssaf Maladie Titulaire", baseUrssaf, 9.88,
+    "Cotisation patronale versée à l'URSSAF : elle finance les remboursements de santé, arrêts maladie et congés maternité des agents. Salaire différé : aucun prélèvement sur votre net."));
+  lignes.push(patronalLigne("p_alloc_fam", "44", "Urssaf Allocation Familial Tit", baseUrssaf, 3.45,
+    "Part principale de la contribution famille (3,45%). Avec le code 4082 (1,80%), elle porte la contribution famille à 5,25% du traitement."));
+  lignes.push(patronalLigne("p_alloc_fam_comp", "4082", "Urssaf Alloc.Familial Comp Tit", baseUrssaf, 1.8,
+    "Part complémentaire de la contribution famille (1,80%). Avec le code 44 (3,45%), elle porte la contribution famille à 5,25% du traitement."));
+  lignes.push(patronalLigne("p_fnal", "1250", "Urssaf FNALtotalité Titulaire", baseUrssaf, 0.5,
+    "Contribution au Fonds National d'Aide au Logement : elle finance les aides au logement (APL). Entièrement patronale, « totalité » = assise sur toute la rémunération."));
+  lignes.push(patronalLigne("p_mobilite", "46", "Urssaf Mobilité Titulaire", baseUrssaf, 3.2,
+    "Versement mobilité : il finance les transports publics d'Île-de-France, dont le remboursement à 75% de votre pass Navigo. Entièrement patronal."));
+  lignes.push(patronalLigne("p_autonomie", "389", "Urssaf solid.autonomiePP Tit.", baseUrssaf, 0.3,
+    "Contribution Solidarité Autonomie (CNSA) : elle finance l'autonomie des personnes âgées et en situation de handicap (EHPAD, APA). Entièrement patronale."));
+
   if (isTitulaire) {
     lignes.push({
       id: "cnracl",
@@ -1195,6 +1263,15 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
       estConforme: true,
       explicationLigne: `Cotisation de 5% assise sur vos primes nettes dans la limite légale de 20% du traitement brut. L'employeur verse une part patronale identique de 5%.`
     });
+
+    lignes.push(patronalLigne("p_atiacl", "49", "CNRACL ATIACL", tibTheorique, 0.4,
+      "Contribution patronale au régime de l'Allocation Temporaire d'Invalidité : versée aux fonctionnaires invalidés par un accident de service ou une maladie professionnelle. Assiette : le seul traitement indiciaire brut."));
+    lignes.push(patronalLigne("p_centre_gestion", "50", "Centre de gestion Titulaire", traitementPension, 0.5,
+      "Contribution au Centre de Gestion de la Fonction Publique Territoriale : services RH mutualisés (concours, bourses de l'emploi, formation, conseils)."));
+    lignes.push(patronalLigne("p_cnfpt", "52", "C.N.F.P.T Titulaire", traitementPension, 0.9,
+      "Contribution formation au CNFPT (part principale) : elle finance votre formation professionnelle tout au long de la carrière."));
+    lignes.push(patronalLigne("p_cnfpt_majoration", "1965", "C.N.F.P.T Majoration Titulaire", traitementPension, 0.1,
+      "Majoration de la contribution CNFPT : avec le code 52, elle totalise 1,00% du traitement soumis à pension."));
   } else {
     lignes.push({
       id: "maladie",
@@ -1249,45 +1326,6 @@ export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResul
       explicationLigne: `Cotisation de retraite complémentaire obligatoire des contractuels territoriaux (2,80% sous le plafond PMSS).`
     });
   }
-
-  lignes.push({
-    id: "csg_ded",
-    code: "0600",
-    libelle: "CSG Déductible (6,80%)",
-    base: assietteCsgCrds,
-    taux: 6.80,
-    montantRetenue: csgDeductible,
-    openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.csg_deductible_salaire,
-    montantTheoriqueOpenFisca: csgDeductible,
-    estConforme: true,
-    explicationLigne: `Prélevée sur 98,25% du salaire brut total. Cette part est déduite de votre revenu imposable DGFiP.`
-  });
-
-  lignes.push({
-    id: "csg_nonded",
-    code: "0610",
-    libelle: "CSG Non Déductible (2,40%)",
-    base: assietteCsgCrds,
-    taux: 2.40,
-    montantRetenue: csgNonDeductible,
-    openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.csg_non_deductible_salaire,
-    montantTheoriqueOpenFisca: csgNonDeductible,
-    estConforme: true,
-    explicationLigne: `Partie non déductible fiscalement : retenue sur le salaire net et réintégrée dans votre assiette fiscale.`
-  });
-
-  lignes.push({
-    id: "crds",
-    code: "0620",
-    libelle: "CRDS Dette Sociale (0,50%)",
-    base: assietteCsgCrds,
-    taux: 0.50,
-    montantRetenue: crds,
-    openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.crds_salaire,
-    montantTheoriqueOpenFisca: crds,
-    estConforme: true,
-    explicationLigne: `Contribution finançant le remboursement de la dette sociale (0,50% sur la même assiette abattue).`
-  });
 
   if (participationMutuelleEmployeur > 0) {
     lignes.push({
@@ -1731,16 +1769,16 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "572": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Préfon" },
   "7625": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Territoria Pack prévoyance" },
   // Cotisations patronales (colonnes de droite du bulletin)
-  "43": { cat: "patronale", libelle: "Urssaf Maladie" },
-  "44": { cat: "patronale", libelle: "Urssaf Allocation Familial" },
-  "4082": { cat: "patronale", libelle: "Urssaf Alloc.Familial Comp" },
-  "1250": { cat: "patronale", libelle: "Urssaf FNAL totalité" },
-  "46": { cat: "patronale", libelle: "Urssaf Mobilité" },
-  "389": { cat: "patronale", libelle: "Urssaf Solidarité Autonomie" },
-  "49": { cat: "patronale", libelle: "CNRACL ATIACL" },
-  "50": { cat: "patronale", libelle: "Centre de Gestion" },
-  "52": { cat: "patronale", libelle: "C.N.F.P.T" },
-  "1965": { cat: "patronale", libelle: "C.N.F.P.T Majoration" }
+  "43": { cat: "patronale", expl: "p_maladie", libelle: "Urssaf Maladie" },
+  "44": { cat: "patronale", expl: "p_alloc_fam", libelle: "Urssaf Allocation Familial" },
+  "4082": { cat: "patronale", expl: "p_alloc_fam_comp", libelle: "Urssaf Alloc.Familial Comp" },
+  "1250": { cat: "patronale", expl: "p_fnal", libelle: "Urssaf FNAL totalité" },
+  "46": { cat: "patronale", expl: "p_mobilite", libelle: "Urssaf Mobilité" },
+  "389": { cat: "patronale", expl: "p_autonomie", libelle: "Urssaf Solidarité Autonomie" },
+  "49": { cat: "patronale", expl: "p_atiacl", libelle: "CNRACL ATIACL" },
+  "50": { cat: "patronale", expl: "p_centre_gestion", libelle: "Centre de Gestion" },
+  "52": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T" },
+  "1965": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T Majoration" }
 };
 
 /** Clé du dictionnaire OpenFisca correspondant à chaque rubrique d'explication */

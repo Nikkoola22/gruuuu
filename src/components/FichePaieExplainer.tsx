@@ -72,7 +72,6 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   const [dragActive, setDragActive] = useState<boolean>(false);
 
   // Mode collage direct de texte
-  const [inputMode, setInputMode] = useState<'upload' | 'paste'>('upload');
   const [pastedText, setPastedText] = useState<string>('');
   const [showRawTextModal, setShowRawTextModal] = useState<boolean>(false);
 
@@ -293,95 +292,64 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
           2. ZONE D'UPLOAD / COLLER & SÉLECTION DE PROFILS TYPES
       ───────────────────────────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Colonne Gauche : Upload ou Collage direct */}
+        {/* Colonne Gauche : Upload et Collage direct */}
         <div className="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-1 p-0.5 bg-slate-100 dark:bg-slate-800 rounded-lg">
-                <button
-                  onClick={() => setInputMode('upload')}
-                  className={`px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer transition-colors ${
-                    inputMode === 'upload'
-                      ? 'bg-white dark:bg-slate-900 text-orange-600 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400'
-                  }`}
-                >
-                  Uploader un fichier
-                </button>
-                <button
-                  onClick={() => setInputMode('paste')}
-                  className={`px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer transition-colors ${
-                    inputMode === 'paste'
-                      ? 'bg-white dark:bg-slate-900 text-orange-600 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400'
-                  }`}
-                >
-                  Coller le texte
-                </button>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+              Glissez votre bulletin PDF, Word ou Scan. Le texte est analysé en mémoire sans quitter votre poste.
+            </p>
+
+            <div
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-200 ${
+                dragActive
+                  ? "border-orange-500 bg-orange-50/50 dark:bg-orange-500/10"
+                  : "border-slate-300 dark:border-slate-700 hover:border-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              }`}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.docx,.txt,.csv,application/pdf"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    handleProcessFile(e.target.files[0]);
+                  }
+                }}
+                className="hidden"
+              />
+              <div className="p-3 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-full w-12 h-12 mx-auto flex items-center justify-center mb-2">
+                {isParsing ? <RefreshCw className="w-6 h-6 animate-spin" /> : <Upload className="w-6 h-6" />}
               </div>
-              <span className="text-[11px] text-slate-400 font-mono">100% Local</span>
+              <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                {isParsing ? (parsingStatus || "Analyse en cours...") : "Glissez votre fiche de paie ici"}
+              </p>
+              <p className="text-xs text-slate-500 mt-1">Formats acceptés : PDF, Word (.docx), Scan, TXT</p>
             </div>
 
-            {inputMode === 'upload' ? (
-              <>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
-                  Glissez votre bulletin PDF, Word ou Scan. Le texte est analysé en mémoire sans quitter votre poste.
-                </p>
-
-                <div
-                  onDragEnter={handleDrag}
-                  onDragLeave={handleDrag}
-                  onDragOver={handleDrag}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-200 ${
-                    dragActive
-                      ? "border-orange-500 bg-orange-50/50 dark:bg-orange-500/10"
-                      : "border-slate-300 dark:border-slate-700 hover:border-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
-                  }`}
-                >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".pdf,.docx,.txt,.csv,application/pdf"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files[0]) {
-                        handleProcessFile(e.target.files[0]);
-                      }
-                    }}
-                    className="hidden"
-                  />
-                  <div className="p-3 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-full w-12 h-12 mx-auto flex items-center justify-center mb-2">
-                    {isParsing ? <RefreshCw className="w-6 h-6 animate-spin" /> : <Upload className="w-6 h-6" />}
-                  </div>
-                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                    {isParsing ? (parsingStatus || "Analyse en cours...") : "Glissez votre fiche de paie ici"}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">Formats acceptés : PDF, Word (.docx), Scan, TXT</p>
-                </div>
-              </>
-            ) : (
-              <div className="space-y-3">
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Copiez le texte depuis votre espace RH (Digiposte, ENSAP, etc.) et collez-le ici :
-                </p>
-                <textarea
-                  rows={5}
-                  value={pastedText}
-                  onChange={(e) => setPastedText(e.target.value)}
-                  placeholder="Collez ici les lignes de votre bulletin (ex: 101 Traitement de base 382...)"
-                  className="w-full text-xs font-mono p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-orange-500 text-slate-800 dark:text-slate-200"
-                />
-                <button
-                  onClick={handleProcessPastedText}
-                  disabled={isParsing || !pastedText.trim()}
-                  className="w-full py-2 px-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
-                >
-                  <ClipboardPaste className="w-3.5 h-3.5" />
-                  <span>Analyser ce texte</span>
-                </button>
-              </div>
-            )}
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-4 mb-2 leading-relaxed">
+              Ou copiez le texte depuis votre espace RH (Digiposte, ENSAP, etc.) :
+            </p>
+            <textarea
+              rows={4}
+              value={pastedText}
+              onChange={(e) => setPastedText(e.target.value)}
+              placeholder="Collez ici les lignes de votre bulletin (ex: 101 Traitement de base 382...)"
+              className="w-full text-xs font-mono p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-orange-500 text-slate-800 dark:text-slate-200"
+            />
+            <button
+              onClick={handleProcessPastedText}
+              disabled={isParsing || !pastedText.trim()}
+              className="mt-2 w-full py-2 px-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+            >
+              <ClipboardPaste className="w-3.5 h-3.5" />
+              <span>Analyser ce texte</span>
+            </button>
+          </div>
 
             {uploadedFileName && (
               <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl flex items-center justify-between text-xs">
@@ -420,18 +388,6 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
               </pre>
             )}
           </div>
-
-          <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-            <button
-              onClick={() => setShowAdvancedTuning(!showAdvancedTuning)}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-600 dark:text-orange-400 hover:underline cursor-pointer"
-            >
-              <Sliders className="w-3.5 h-3.5" />
-              <span>{showAdvancedTuning ? "Masquer les curseurs" : "Ajuster manuellement les valeurs"}</span>
-            </button>
-            <span className="text-xs text-slate-400">1 pt = 4,92278 €</span>
-          </div>
-        </div>
 
         {/* Colonne Droite : 4 Profils Types FPT */}
         <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
@@ -482,6 +438,18 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                 </button>
               );
             })}
+          </div>
+
+          {/* Ligne de contrôle : curseurs manuels + rappel de la valeur du point */}
+          <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <button
+              onClick={() => setShowAdvancedTuning(!showAdvancedTuning)}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-600 dark:text-orange-400 hover:underline cursor-pointer"
+            >
+              <Sliders className="w-3.5 h-3.5" />
+              <span>{showAdvancedTuning ? "Masquer les curseurs" : "Ajuster manuellement les valeurs"}</span>
+            </button>
+            <span className="text-xs text-slate-400">1 pt = 4,92278 €</span>
           </div>
 
           {/* Panneau des curseurs manuels dépliable */}

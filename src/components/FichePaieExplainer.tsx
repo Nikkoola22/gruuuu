@@ -122,6 +122,11 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
       statut: preset.agent.statut,
       tauxPas: preset.tauxPas,
       nomAgent: preset.agent.nom,
+      matricule: undefined,
+      numeroSecu: undefined,
+      positionAdmin: undefined,
+      service: undefined,
+      poste: undefined,
       grade: preset.agent.grade,
       echelon: preset.agent.echelon,
       appliquerPpcr: false,
@@ -674,7 +679,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
             <div className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                 <Sparkles className="w-4 h-4 text-orange-500 shrink-0" />
-                <span>Vous souhaitez analyser les 11 rubriques ligne par ligne, le score de conformité et le code Python ?</span>
+                <span>Vous souhaitez analyser les {result.lignes.length} rubriques ligne par ligne, le score de conformité et le code Python ?</span>
               </div>
               <button
                 onClick={() => {

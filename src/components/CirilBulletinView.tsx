@@ -377,16 +377,18 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
   const renderLigne = (ligne: (typeof lignes)[number]) => {
     const rub = RUBRIQUES_CIRIL[ligne.id];
     const isRetenue = ligne.montantRetenue !== undefined || (ligne.montantGain !== undefined && ligne.montantGain < 0);
+    const hasMontantSalarial = ligne.montantRetenue !== undefined || ligne.montantGain !== undefined;
     const montantAbsolu = isRetenue
       ? (ligne.montantGain !== undefined && ligne.montantGain < 0 ? -ligne.montantGain : ligne.montantRetenue)
       : ligne.montantGain;
     const selected = selectedLigneId === ligne.id;
-    let baseAff = ligne.base !== undefined ? fCiril(ligne.base) : '';
-    let tauxAff = ligne.taux !== undefined ? ligne.taux.toFixed(4) : '';
-    if ((ligne.id === 'ifse' || ligne.id === 'cia' || ligne.id === 'comp_csg') && ligne.base === undefined) {
+    let baseAff = ligne.base !== undefined ? `${ligne.base < 0 ? '-' : ''}${fCiril(ligne.base)}` : '';
+    let tauxAff = ligne.taux !== undefined ? `${ligne.taux < 0 ? '-' : ''}${Math.abs(ligne.taux).toFixed(4)}` : '';
+    if ((ligne.id === 'ifse' || ligne.id === 'cia' || ligne.id === 'comp_csg') && ligne.base === undefined && !sourceReconstruite) {
       baseAff = fCiril(ligne.montantGain);
       tauxAff = '100.0000';
     }
+    const montantSalarialAff = hasMontantSalarial ? `${isRetenue ? '-' : ''}${fCiril(montantAbsolu)}` : '';
     // Bulletin reconstruit : code et libellé réels du PDF ; simulation : libellés de la doctrine Ciril
     const codeAff = sourceReconstruite ? (ligne.code ?? rub?.code ?? '') : (rub?.code ?? ligne.code ?? '');
     const libelleAff = sourceReconstruite ? ligne.libelle : (rub?.libelle ?? ligne.libelle);
@@ -401,7 +403,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
         <td className="px-1 py-[3px] text-right font-mono">{baseAff}</td>
         <td className="px-1 py-[3px] text-right font-mono">{tauxAff}</td>
         <td className="px-1.5 py-[3px] text-right font-mono">
-          {isRetenue ? '-' : ''}{fCiril(montantAbsolu)}
+          {montantSalarialAff}
         </td>
         {ligne.partPatronale !== undefined && ligne.partPatronale > 0 ? (
           <>
@@ -450,11 +452,11 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
               <div className="grid grid-cols-3 border-b border-slate-400">
                 <div className="px-2 py-1 border-r border-slate-400">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">Matricule</span>
-                  <span className="font-bold">—</span>
+                  <span className="font-bold">{agent.matricule || params.matricule || '—'}</span>
                 </div>
                 <div className="px-2 py-1 border-r border-slate-400">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">SFT</span>
-                  <span className="font-bold">{params.nbEnfantsSft || 0}</span>
+                  <span className="font-bold">{params.nbEnfantsSft ?? agent.nbEnfantsSft ?? 0}</span>
                 </div>
                 <div className="px-2 py-1">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">Période de paie</span>
@@ -464,29 +466,29 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
               <div className="grid grid-cols-3 border-b border-slate-400">
                 <div className="px-2 py-1 border-r border-slate-400">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">N° Sécurite Sociale</span>
-                  <span className="font-bold">—</span>
+                  <span className="font-bold font-mono">{agent.numeroSecu || params.numeroSecu || '—'}</span>
                 </div>
                 <div className="px-2 py-1 border-r border-slate-400">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">Position Administrative</span>
-                  <span className="font-bold">{isTitulaire ? 'Titulaire CNRACL' : 'Contractuel IRCANTEC'}</span>
+                  <span className="font-bold">{agent.positionAdmin || params.positionAdmin || (isTitulaire ? 'Titulaire CNRACL' : 'Contractuel IRCANTEC')}</span>
                 </div>
                 <div className="px-2 py-1">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">Emploi / Grade</span>
-                  <span className="font-bold">{agent.grade || '—'}</span>
+                  <span className="font-bold">{agent.grade || params.grade || '—'}</span>
                 </div>
               </div>
               <div className="grid grid-cols-3">
                 <div className="px-2 py-1 border-r border-slate-400">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">Echelon</span>
-                  <span className="font-bold">{agent.echelon || '—'}</span>
+                  <span className="font-bold">{agent.echelon || params.echelon || '—'}</span>
                 </div>
                 <div className="px-2 py-1 border-r border-slate-400">
-                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Service</span>
-                  <span className="font-bold">—</span>
+                  <span className="block text-[8px] uppercase tracking-wide text-slate-500">Service / Poste</span>
+                  <span className="font-bold">{agent.service || params.service || agent.poste || params.poste || '—'}</span>
                 </div>
                 <div className="px-2 py-1">
                   <span className="block text-[8px] uppercase tracking-wide text-slate-500">Agent</span>
-                  <span className="font-bold uppercase">{agent.nom}</span>
+                  <span className="font-bold uppercase">{agent.nom || params.nomAgent || '—'}</span>
                 </div>
               </div>
             </div>
@@ -495,19 +497,19 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
             <div className="mx-4 mb-2 grid grid-cols-4 border border-slate-500 text-center">
               <div className="px-1 py-1 border-r border-slate-400">
                 <span className="block text-[8px] uppercase tracking-wide text-slate-500">Ind. Rémun.</span>
-                <span className="font-black text-[13px]">{agent.indiceMajore}</span>
+                <span className="font-black text-[13px]">{agent.indiceRemun ?? params.indiceRemun ?? agent.indiceMajore}</span>
               </div>
               <div className="px-1 py-1 border-r border-slate-400">
                 <span className="block text-[8px] uppercase tracking-wide text-slate-500">Indice Brut</span>
-                <span className="font-black text-[13px]">{agent.indiceBrut ?? '—'}</span>
+                <span className="font-black text-[13px]">{agent.indiceBrut ?? params.indiceBrut ?? '—'}</span>
               </div>
               <div className="px-1 py-1 border-r border-slate-400">
                 <span className="block text-[8px] uppercase tracking-wide text-slate-500">Ind. Majoré</span>
-                <span className="font-black text-[13px]">{agent.indiceMajore}</span>
+                <span className="font-black text-[13px]">{agent.indiceMajore ?? params.indiceMajore}</span>
               </div>
               <div className="px-1 py-1">
                 <span className="block text-[8px] uppercase tracking-wide text-slate-500">Taux Emploi</span>
-                <span className="font-black text-[13px]">{agent.quotite ?? 100}</span>
+                <span className="font-black text-[13px]">{agent.quotite ?? params.quotite ?? 100}</span>
               </div>
             </div>
 

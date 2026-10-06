@@ -150,11 +150,11 @@ export async function extractTextFromPdf(
   }
 
   // 3. Méthode OCR Universelle (Windows, Mac, Linux) pour les PDF scannés / images
-  // Si le PDF ne contient pas de texte numérique sélectionnable, on rend la première page sur Canvas
-  // et on applique l'OCR Tesseract avec gestion de la rotation (portrait ou paysage)
+  // Si le PDF ne contient pas de texte numérique sélectionnable, on rend toutes les pages sur Canvas
+  // et on applique l'OCR Tesseract avec gestion de la rotation et mutualisation du worker
   if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     try {
-      if (onProgress) onProgress("PDF scanné détecté : lancement de l'OCR automatique...");
+      if (onProgress) onProgress("PDF scanné détecté : lancement de l'OCR multi-pages...");
 
       if (!pdfDocument) {
         const loadingTask = pdfjsLib.getDocument({
@@ -167,67 +167,167 @@ export async function extractTextFromPdf(
       }
 
       if (pdfDocument && pdfDocument.numPages >= 1) {
-        const page = await pdfDocument.getPage(1);
-        const viewport = page.getViewport({ scale: 2.0 }); // 2x pour une netteté OCR optimale
+        // Fonction de rendu à résolution optimale (~200 DPI, scale 2.0-2.4) avec fond blanc opaque obligatoire pour Tesseract
+        const renderPageToCanvas = async (page: any): Promise<HTMLCanvasElement | null> => {
+          const baseVp = page.getViewport({ scale: 1.0 });
+          // Scale optimal 2.0 à 2.5 (~1654 px de large, 200 DPI) : taille idéale pour LSTM Tesseract sans saturer la RAM Wasm
+          const optimalScale = Math.min(2.5, Math.max(1.8, 1654 / (baseVp.width || 595)));
+          const viewport = page.getViewport({ scale: optimalScale });
 
-        const canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        const ctx = canvas.getContext('2d');
+          const canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          const ctx = canvas.getContext('2d', { willReadFrequently: true });
+          if (!ctx) return null;
 
-        if (ctx) {
-          await page.render({ canvasContext: ctx, viewport }).promise;
+          // Remplir impérativement en blanc opaque (un canvas vierge transparent crée des artefacts noirs dans Leptonica/Tesseract)
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          // Importer dynamiquement Tesseract.js pour ne pas alourdir le bundle initial
-          const { createWorker } = await import('tesseract.js');
-          const worker = await createWorker('fra');
+          await page.render({
+            canvasContext: ctx,
+            viewport
+          }).promise;
+          return canvas;
+        };
 
-          const anglesToTry = [0, 90, 270, 180];
-          let bestText = '';
-          let maxBulletinsKeywords = -1;
+        const rotateCanvas = (source: HTMLCanvasElement, angle: number): HTMLCanvasElement => {
+          if (angle === 0) return source;
+          const rotCanvas = document.createElement('canvas');
+          if (angle === 90 || angle === 270) {
+            rotCanvas.width = source.height;
+            rotCanvas.height = source.width;
+          } else {
+            rotCanvas.width = source.width;
+            rotCanvas.height = source.height;
+          }
+          const rotCtx = rotCanvas.getContext('2d', { willReadFrequently: true });
+          if (rotCtx) {
+            rotCtx.fillStyle = '#FFFFFF';
+            rotCtx.fillRect(0, 0, rotCanvas.width, rotCanvas.height);
+            rotCtx.translate(rotCanvas.width / 2, rotCanvas.height / 2);
+            rotCtx.rotate((angle * Math.PI) / 180);
+            rotCtx.drawImage(source, -source.width / 2, -source.height / 2);
+          }
+          return rotCanvas;
+        };
 
-          for (const angle of anglesToTry) {
-            let imageSource: HTMLCanvasElement = canvas;
-            if (angle !== 0) {
-              const rotCanvas = document.createElement('canvas');
-              if (angle === 90 || angle === 270) {
-                rotCanvas.width = canvas.height;
-                rotCanvas.height = canvas.width;
-              } else {
-                rotCanvas.width = canvas.width;
-                rotCanvas.height = canvas.height;
+        // Importer dynamiquement Tesseract.js pour ne pas alourdir le bundle initial
+        const { createWorker } = await import('tesseract.js');
+        // Utiliser le fichier de langue local servi par Vite (zéro dépendance CDN externe)
+        const origin = typeof window !== 'undefined' ? window.location.origin : '';
+        const worker = await createWorker('fra', 1, {
+          langPath: origin ? `${origin}/tessdata` : undefined,
+          gzip: false
+        });
+        // PSM 3 : Segmentation automatique pleine page, préservant la structure globale
+        try {
+          await worker.setParameters({
+            tessedit_pageseg_mode: '3' as any
+          });
+        } catch (paramErr) {
+          console.warn("Configuration PSM Tesseract:", paramErr);
+        }
+
+        const totalPages = Math.min(pdfDocument.numPages, 6);
+        const pageTexts: string[] = [];
+        let detectedBestAngle = 0;
+        let lastCanvas: HTMLCanvasElement | null = null;
+
+        for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+          if (onProgress) onProgress(`Rendu haute résolution page ${pageNum}/${totalPages}...`);
+          const page = await pdfDocument.getPage(pageNum);
+          const canvas = await renderPageToCanvas(page);
+          if (!canvas) continue;
+          lastCanvas = canvas;
+
+          if (pageNum === 1) {
+            // Sur la première page : tester 0° en premier avec image JPEG légère
+            if (onProgress) onProgress(`OCR page 1 (orientation initiale)...`);
+            const image0 = canvas.toDataURL('image/jpeg', 0.92);
+            const ret0 = await worker.recognize(image0);
+            const text0 = ret0.data.text || '';
+            const kw0 = (text0.match(/bulletin|paie|traitement|indice|brut|net|cotisation|gennevilliers|urssaf|sft|matricule/gi) || []).length;
+
+            if (kw0 >= 4) {
+              // Orientation standard déjà droite : inutile de tester 90°, 270°, 180°
+              detectedBestAngle = 0;
+              pageTexts.push(text0.trim());
+            } else {
+              // Si 0° n'a pas suffi, tester les autres angles pour détecter une orientation paysage ou inversée
+              const anglesToTry = [90, 270, 180];
+              let bestText = text0;
+              let maxBulletinsKeywords = kw0;
+
+              for (const angle of anglesToTry) {
+                const rotCanvas = rotateCanvas(canvas, angle);
+                const imageSource = rotCanvas.toDataURL('image/jpeg', 0.92);
+                if (onProgress) onProgress(`OCR page 1 (orientation ${angle}°)...`);
+                const ret = await worker.recognize(imageSource);
+                const text = ret.data.text || '';
+
+                const keywords = (text.match(/bulletin|paie|traitement|indice|brut|net|cotisation|gennevilliers|urssaf|sft|matricule/gi) || []).length;
+                if (keywords > maxBulletinsKeywords) {
+                  maxBulletinsKeywords = keywords;
+                  bestText = text;
+                  detectedBestAngle = angle;
+                }
+
+                if (keywords >= 5) {
+                  detectedBestAngle = angle;
+                  break;
+                }
               }
-              const rotCtx = rotCanvas.getContext('2d');
-              if (rotCtx) {
-                rotCtx.translate(rotCanvas.width / 2, rotCanvas.height / 2);
-                rotCtx.rotate((angle * Math.PI) / 180);
-                rotCtx.drawImage(canvas, -canvas.width / 2, -canvas.height / 2);
-                imageSource = rotCanvas;
+
+              if (bestText.trim()) {
+                pageTexts.push(bestText.trim());
               }
             }
-
-            if (onProgress) onProgress(`Reconnaissance optique (OCR angle ${angle}°)...`);
+          } else {
+            // Pages 2 et suivantes : réutiliser directement l'angle détecté sur la page 1 (gain de vitesse 4x)
+            if (onProgress) onProgress(`OCR page ${pageNum}/${totalPages}...`);
+            const rotCanvas = rotateCanvas(canvas, detectedBestAngle);
+            const imageSource = rotCanvas.toDataURL('image/jpeg', 0.92);
             const ret = await worker.recognize(imageSource);
             const text = ret.data.text || '';
-
-            // Compter les mots-clés typiques d'un bulletin de paie français / Ciril
-            const keywords = (text.match(/bulletin|paie|traitement|indice|brut|net|cotisation|gennevilliers|urssaf|sft|matricule/gi) || []).length;
-            if (keywords > maxBulletinsKeywords) {
-              maxBulletinsKeywords = keywords;
-              bestText = text;
-            }
-
-            // Si on a déjà trouvé de nombreux mots-clés clés, l'orientation est certaine
-            if (keywords >= 5) {
-              break;
+            if (text.trim()) {
+              pageTexts.push(text.trim());
             }
           }
+        }
 
-          await worker.terminate();
-
-          if (bestText && bestText.trim().length > 30) {
-            return bestText;
+        // Zone Totaux récapitulatifs (bas de la dernière page) : OCR ciblé avec PSM 6 pour une précision absolue des chiffres
+        if (lastCanvas) {
+          try {
+            if (onProgress) onProgress("Lecture haute précision des totaux récapitulatifs...");
+            const orientedLastCanvas = rotateCanvas(lastCanvas, detectedBestAngle);
+            const bottomCanvas = document.createElement('canvas');
+            const cropY = Math.floor(orientedLastCanvas.height * 0.65);
+            const cropH = orientedLastCanvas.height - cropY;
+            bottomCanvas.width = orientedLastCanvas.width;
+            bottomCanvas.height = cropH;
+            const bCtx = bottomCanvas.getContext('2d', { willReadFrequently: true });
+            if (bCtx) {
+              bCtx.fillStyle = '#FFFFFF';
+              bCtx.fillRect(0, 0, bottomCanvas.width, cropH);
+              bCtx.drawImage(orientedLastCanvas, 0, cropY, orientedLastCanvas.width, cropH, 0, 0, orientedLastCanvas.width, cropH);
+              await worker.setParameters({ tessedit_pageseg_mode: '6' as any });
+              const bottomImage = bottomCanvas.toDataURL('image/jpeg', 0.92);
+              const retBottom = await worker.recognize(bottomImage);
+              if (retBottom.data.text && retBottom.data.text.trim().length > 20) {
+                pageTexts.push(`--- RECAP TOTALS ---\n` + retBottom.data.text.trim());
+              }
+            }
+          } catch (cropErr) {
+            console.warn("OCR zone totaux non bloquant:", cropErr);
           }
+        }
+
+        await worker.terminate();
+
+        const combinedText = pageTexts.join('\n\n--- PAGE SUIVANTE ---\n\n').trim();
+        if (combinedText.length > 30) {
+          return combinedText;
         }
       }
     } catch (ocrErr) {

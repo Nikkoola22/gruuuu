@@ -1629,8 +1629,11 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     let basePrefix: number | undefined = undefined;
     let moisRappel: string | undefined = undefined;
 
-    // Normalisation préalable des espaces de milliers (ex: "6 320.85" -> "6320.85" ou "2 228,47" -> "2228.47")
-    let cleanedLine = line.replace(/(^|\s)(\d{1,3})\s+(\d{3}[.,]\d{2})/g, "$1$2$3");
+    // Normalisation préalable des espaces de milliers (ex: "3 618.24" -> "3618.24", "-1 408.60" -> "-1408.60")
+    // Sans fusionner deux montants distincts (ex: "100.00 100.0000" ne doit JAMAIS être touché)
+    let cleanedLine = line.replace(/(^|\s)(-\s*)?(\d{1,3})\s+(\d{3}[.,]\d{2,4})\b/g, (match, prefix, minus, d1, d2) => {
+      return (prefix || '') + (minus ? '-' : '') + d1 + d2;
+    });
 
     // Rappel Ciril : le code suivi du marqueur « R » et du mois concerné (ex: "7201 R 02/2026 Vacation…")
     const mRappel = cleanedLine.match(/^(\d{1,5})\s+R\s+(\d{1,2}[\/.\-]\d{2,4})\s+(.+)$/i);
@@ -1677,6 +1680,11 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     let tauxPatronal: number | undefined = undefined;
     let montantPatronal: number | undefined = undefined;
 
+    // Détection si la rubrique est purement patronale selon les codes ou libellés URSSAF PP / patronales
+    const isKnownPatronaleOnly = (CODES_CIRIL_KNOWN[code]?.cat === "patronale")
+      || /PP\b|patronal/i.test(libelle)
+      || /Centre de Gestion|C\.N\.F\.P\.T|Urssaf AT|Urssaf Alloc|Urssaf FNAL/i.test(libelle);
+
     if (basePrefix !== undefined) {
       if (numTokens.length === 1) {
         montant = numTokens[0];
@@ -1695,9 +1703,15 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
         base = numTokens[0];
         montant = numTokens[1];
       } else if (numTokens.length === 3) {
-        base = numTokens[0];
-        taux = numTokens[1];
-        montant = numTokens[2];
+        if (isKnownPatronaleOnly) {
+          base = numTokens[0];
+          tauxPatronal = numTokens[1];
+          montantPatronal = numTokens[2];
+        } else {
+          base = numTokens[0];
+          taux = numTokens[1];
+          montant = numTokens[2];
+        }
       } else if (numTokens.length === 4) {
         base = numTokens[0];
         taux = numTokens[1];
@@ -1764,21 +1778,44 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "1690": { cat: "gain", expl: "autres_primes" },
   "1510": { cat: "gain", expl: "transport" },
   "1860": { cat: "gain", expl: "comp_csg" },
+  "7443": { cat: "gain", expl: "prime_13eme", libelle: "Compl rémunération Juin Tit (13e mois)" },
+  "8443": { cat: "gain", expl: "prime_13eme", libelle: "Prime semestrielle Juin Tit (13e mois)" },
+  "7610": { cat: "gain", expl: "cia", libelle: "Compl. Indemnitaire Annuel Tit (CIA / 13e mois)" },
   "7376": { cat: "gain", expl: "part_mutuelle", libelle: "Participation empl mut" },
   "7716": { cat: "gain", expl: "part_mutuelle", libelle: "Participation empl prev" },
   "572": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Préfon" },
   "7625": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Territoria Pack prévoyance" },
+  "213": { cat: "gain", expl: "residence", libelle: "Indemnité résidence RG" },
+  "7726": { cat: "gain", expl: "autres_primes", libelle: "Congés Payés" },
+  "55": { cat: "retenue", expl: "csg_ded", libelle: "CSG Déductible RG" },
+  "56": { cat: "retenue", expl: "csg_nonded", libelle: "CSG non déductible RG" },
+  "57": { cat: "retenue", expl: "crds", libelle: "CRDS RG" },
+  "61": { cat: "retenue", expl: "vieillesse_plaf", libelle: "Urssaf Vieillesse Plafond RG" },
+  "299": { cat: "retenue", expl: "vieillesse_deplaf", libelle: "Urssaf Vieillesse Tot RG" },
+  "67": { cat: "retenue", expl: "ircantec", libelle: "Retraite Ircantec TrA RG" },
+  "69": { cat: "retenue", expl: "ircantec", libelle: "Retraite Ircantec TrB RG" },
   // Cotisations patronales (colonnes de droite du bulletin)
   "43": { cat: "patronale", expl: "p_maladie", libelle: "Urssaf Maladie" },
+  "59": { cat: "patronale", expl: "p_maladie", libelle: "Urssaf MaladiePP RG" },
+  "4050": { cat: "patronale", expl: "p_maladie", libelle: "Urssaf Maladie compl PP RG" },
+  "332": { cat: "patronale", expl: "p_autonomie", libelle: "Urssaf solid.autonomiePP RG" },
   "44": { cat: "patronale", expl: "p_alloc_fam", libelle: "Urssaf Allocation Familial" },
+  "64": { cat: "patronale", expl: "p_alloc_fam", libelle: "Urssaf Allocations Familial RG" },
   "4082": { cat: "patronale", expl: "p_alloc_fam_comp", libelle: "Urssaf Alloc.Familial Comp" },
+  "1525": { cat: "patronale", expl: "p_alloc_fam_comp", libelle: "Urssaf Alloc.Familial Compl RG" },
   "1250": { cat: "patronale", expl: "p_fnal", libelle: "Urssaf FNAL totalité" },
+  "1251": { cat: "patronale", expl: "p_fnal", libelle: "Urssaf FNAL totalité RG" },
   "46": { cat: "patronale", expl: "p_mobilite", libelle: "Urssaf Mobilité" },
+  "75": { cat: "patronale", expl: "p_mobilite", libelle: "Urssaf MobilitéPP RG" },
+  "66": { cat: "patronale", expl: "p_maladie", libelle: "Urssaf AT RG" },
   "389": { cat: "patronale", expl: "p_autonomie", libelle: "Urssaf Solidarité Autonomie" },
   "49": { cat: "patronale", expl: "p_atiacl", libelle: "CNRACL ATIACL" },
   "50": { cat: "patronale", expl: "p_centre_gestion", libelle: "Centre de Gestion" },
+  "73": { cat: "patronale", expl: "p_centre_gestion", libelle: "Centre de Gestion RG" },
   "52": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T" },
-  "1965": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T Majoration" }
+  "74": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T RG" },
+  "1965": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T Majoration" },
+  "1966": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T Majoration RG" }
 };
 
 /** Clé du dictionnaire OpenFisca correspondant à chaque rubrique d'explication */
@@ -1792,6 +1829,7 @@ const VAR_PAR_EXPL: Record<string, string> = {
   cia: "rifseep_cia",
   comp_csg: "indemnite_compensatrice_csg",
   autres_primes: "primes_fonction_publique",
+  prime_13eme: "primes_fonction_publique",
   transport: "prise_en_charge_transport",
   cnracl: "cotisation_retraite_cnracl_salarie",
   rafp: "cotisation_retraite_rafp_salarie",
@@ -2502,9 +2540,19 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   const netPayeMatch = normalizedText.match(/net\s*pay[ée]\s*en\s*euros\s*[:=]?\s*([\d\s]+[,.]\d{2})/i);
   if (netPayeMatch) {
     const val = parseFloat(netPayeMatch[1].replace(/\s/g, "").replace(",", "."));
-    if (val >= 500 && val <= 15000) {
+    if (val >= 100 && val <= 100000) {
       netAPayerReel = val;
       detectedItems.push(`Net à Payer (en Banque) réel : ${netAPayerReel.toFixed(2)} €`);
+    }
+  }
+
+  // Passe prioritaire pour Net à payer avant impôt sur le revenu
+  const netAvantImpotMatch = normalizedText.match(/net\s*a\s*payer\s*avant\s*imp[oô]t\s*sur\s*le\s*revenu\s*[:=]?\s*([\d\s]+[,.]\d{2})/i);
+  if (netAvantImpotMatch) {
+    const val = parseFloat(netAvantImpotMatch[1].replace(/\s/g, "").replace(",", "."));
+    if (val >= 100 && val <= 100000) {
+      netAvantImpotReel = val;
+      detectedItems.push(`Net à Payer Avant Impôt réel : ${netAvantImpotReel.toFixed(2)} €`);
     }
   }
 
@@ -2524,7 +2572,7 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
         || lPlain.includes("brut fiscal") || lPlain.includes("total brut") || lPlain.includes("remuneration brute")
         || lPlain.includes("brut mensuel") || lPlain.includes("salaire brut");
       if (isBrutLine && brutReel === undefined) {
-        const candidate = amounts.find(a => a >= 1200 && a <= 12000);
+        const candidate = amounts.find(a => a >= 500 && a <= 150000);
         if (candidate !== undefined) {
           brutReel = candidate;
           detectedItems.push(`Total Brut réel imprimé : ${brutReel.toFixed(2)} €`);
@@ -2532,14 +2580,14 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
       }
 
       // Total Retenues (« Total des retenues 1 553.06 »)
-      if ((lPlain.includes("total retenues") || lPlain.includes("total des retenues") || lPlain.includes("total cotisations")) && lastAmount >= 200 && lastAmount <= 8000) {
+      if ((lPlain.includes("total retenues") || lPlain.includes("total des retenues") || lPlain.includes("total cotisations")) && lastAmount >= 50 && lastAmount <= 80000) {
         totalRetenuesReelles = lastAmount;
         detectedItems.push(`Total Retenues salariales réelles : ${totalRetenuesReelles.toFixed(2)} €`);
       }
 
       // Net Fiscal Imposable (veiller à ne pas confondre avec "Brut fiscal" si les deux mots apparaissent)
       if ((lPlain.includes("net fiscal") || lPlain.includes("net imposable")) && !lPlain.includes("brut fiscal") && netFiscalReel === undefined) {
-        const candidate = amounts.find(a => a >= 500 && a <= 15000);
+        const candidate = amounts.find(a => a >= 200 && a <= 150000);
         if (candidate !== undefined) {
           netFiscalReel = candidate;
           detectedItems.push(`Net Fiscal imposable réel : ${netFiscalReel.toFixed(2)} €`);
@@ -2548,26 +2596,26 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
 
       // Net Avant Impôt (« NET A PAYER AVANT IMPOT SUR LE REVENU 3 809.28 »)
       if (lPlain.includes("avant impot") && netAvantImpotReel === undefined) {
-        const candidate = amounts.find(a => a >= 500 && a <= 10000);
+        const candidate = amounts.find(a => a >= 200 && a <= 150000);
         if (candidate !== undefined) {
           netAvantImpotReel = candidate;
         }
       }
 
       // Total versé par l'employeur (« Total versé par l'employeur 7 238.80 »)
-      if (lPlain.includes("vers") && lPlain.includes("employeur") && lastAmount >= 1500 && lastAmount <= 40000) {
+      if (lPlain.includes("vers") && lPlain.includes("employeur") && lastAmount >= 500 && lastAmount <= 200000) {
         coutEmployeurReel = lastAmount;
         detectedItems.push(`Total versé par l'employeur réel : ${coutEmployeurReel.toFixed(2)} €`);
       }
 
       // Prélèvement à la Source en euros : le DERNIER nombre brut est pris, y compris 0.00
       // (PAS nul) — le filtre des zéros retournerait la base du PAS à la place du montant
-      if ((lPlain.includes("source") || lPlain.includes("pas") || lPlain.includes("impot")) && (lPlain.includes("montant") || lPlain.includes("retenue") || lPlain.includes("prelev")) && lastNum !== undefined && lastNum >= 0 && lastNum <= 3000) {
+      if ((lPlain.includes("source") || lPlain.includes("pas") || lPlain.includes("impot")) && (lPlain.includes("montant") || lPlain.includes("retenue") || lPlain.includes("prelev")) && lastNum !== undefined && lastNum >= 0 && lastNum <= 30000) {
         pasReel = lastNum;
       }
 
       // Net à Payer de secours si non trouvé par regex directe
-      if (netAPayerReel === undefined && (lPlain.includes("net a payer") || lPlain.includes("net paye") || lPlain.includes("net en euros")) && lastAmount >= 800 && lastAmount <= 9000) {
+      if (netAPayerReel === undefined && (lPlain.includes("net a payer") || lPlain.includes("net paye") || lPlain.includes("net en euros")) && lastAmount >= 200 && lastAmount <= 150000) {
         netAPayerReel = lastAmount;
         detectedItems.push(`Net à Payer (en Banque) réel : ${netAPayerReel.toFixed(2)} €`);
       }
@@ -2648,9 +2696,9 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
   return {
     params: {
       indiceMajore: im,
-      ...(indiceBrut !== undefined ? { indiceBrut } : {}),
-      ...(indiceRemun !== undefined ? { indiceRemun } : {}),
-      ...(lignesReelles.length > 0 ? { lignesReelles } : {}),
+      indiceBrut,
+      indiceRemun,
+      lignesReelles: lignesReelles.length > 0 ? lignesReelles : undefined,
       nbiPoints: nbi,
       ifse,
       cia,
@@ -2673,11 +2721,12 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
         brutReel,
         totalRetenuesReelles,
         netFiscalReel,
+        netAvantImpotReel,
         pasReel,
         netAPayerReel,
         coutEmployeurReel
       },
-      ...(periode ? { periode } : {})
+      periode
     },
     metadata: {
       detectedItems,

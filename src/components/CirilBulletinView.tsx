@@ -25,6 +25,7 @@ const RUBRIQUES_CIRIL: Record<string, { code: string; libelle: string }> = {
   ifse: { code: '1591', libelle: 'IFSE Tit.' },
   cia: { code: '1592', libelle: 'CIA Tit.' },
   comp_csg: { code: '1860', libelle: 'Indemnité Compens. CSG Tit' },
+  prime_13eme: { code: '7443', libelle: 'Primes du 13ème mois' },
   autres_primes: { code: '1690', libelle: 'Primes diverses Tit.' },
   transport: { code: '1510', libelle: 'Prise en charge transport' },
   cnracl: { code: '47', libelle: 'Retraite CNRACL Titulaire' },
@@ -116,6 +117,13 @@ const CODES_EXPLIQUES: Record<string, {
     pourquoi: "Quand la CSG est passée de 7,5 % à 9,2 % en 2018, cette indemnité a été créée pour limiter la perte de revenu des agents.",
     verifier: "Elle est fixe et mensuelle pour les agents éligibles : si elle disparaît sans explication, signalez-le.",
     reference: "Décret n° 2017-1889 du 30 décembre 2017"
+  },
+  prime_13eme: {
+    titre: "Primes du 13ème mois (Juin / Novembre)",
+    simple: "Composante du 13ème mois communal (Complément de rémunération, prime semestrielle ou CIA semestrialisé). Versé généralement en juin et novembre par la Ville.",
+    pourquoi: "À Gennevilliers, le 13ème mois est composé de versements semestriels statutaires (code 7443 complément de rémunération, code 8443 prime semestrielle, et code 7610 complément indemnitaire annuel CIA).",
+    verifier: "Vérifiez que le versement correspond bien à vos droits au prorata de votre temps de présence sur le semestre.",
+    reference: "Délibérations du Conseil Municipal de Gennevilliers relatives au régime indemnitaire et au 13ème mois"
   },
   autres_primes: {
     titre: "Les autres primes",

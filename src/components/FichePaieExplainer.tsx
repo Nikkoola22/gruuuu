@@ -109,6 +109,9 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
     setParams({
       indiceMajore: preset.agent.indiceMajore,
       indiceBrut: preset.agent.indiceBrut,
+      indiceRemun: undefined,
+      lignesReelles: undefined,
+      periode: undefined,
       nbiPoints: preset.primes.nbiPoints,
       ifse: preset.primes.ifse,
       cia: preset.primes.cia,
@@ -120,7 +123,14 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
       tauxPas: preset.tauxPas,
       nomAgent: preset.agent.nom,
       grade: preset.agent.grade,
-      echelon: preset.agent.echelon
+      echelon: preset.agent.echelon,
+      appliquerPpcr: false,
+      abattementPpcr: undefined,
+      remboursementTransport: undefined,
+      indemniteCompensatriceCsg: undefined,
+      participationMutuelleEmployeur: undefined,
+      retenueMutuelleSalarie: undefined,
+      montantsReels: undefined
     });
 
     toast.info(`Profil chargé : ${preset.label}`);
@@ -152,10 +162,14 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
 
       const parseResult = parseUploadedPaySlipWithMeta(text, file.name);
       setUploadMetadata(parseResult.metadata);
-      setParams(prev => ({
-        ...prev,
+      setParams({
+        zoneResidence: 1,
+        nbEnfantsSft: 0,
+        quotite: 100,
+        statut: "titulaire",
+        tauxPas: 0,
         ...parseResult.params
-      }));
+      });
 
       setSelectedPresetId("custom");
       setShowAdvancedTuning(true);
@@ -195,10 +209,14 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
       setUploadedFileName("Texte collé manuellement");
       setUploadedRawText(pastedText);
       setUploadMetadata(parseResult.metadata);
-      setParams(prev => ({
-        ...prev,
+      setParams({
+        zoneResidence: 1,
+        nbEnfantsSft: 0,
+        quotite: 100,
+        statut: "titulaire",
+        tauxPas: 0,
         ...parseResult.params
-      }));
+      });
 
       setSelectedPresetId("custom");
       setShowAdvancedTuning(true);

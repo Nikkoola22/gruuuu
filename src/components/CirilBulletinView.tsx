@@ -202,16 +202,29 @@ const CODES_EXPLIQUES: Record<string, {
   },
   part_mutuelle: {
     titre: "La participation employeur (santé)",
-    simple: "La part que la Ville paie à votre place pour votre mutuelle et votre prévoyance. Elle apparaît comme un gain : c'est de l'argent dédié à votre protection sociale.",
+    simple: "La part que la Ville paie à votre place pour votre mutuelle santé. Elle apparaît comme un gain : c'est de l'argent dédié à votre protection sociale.",
     pourquoi: "Dans le cadre du PSC (Protection Sociale Complémentaire), l'employeur finance une part de votre complémentaire santé labellisée.",
     verifier: "Cette part est soumise à CSG/CRDS : c'est normal de la voir dans le brut, avant les retenues.",
     reference: "Art. L. 827-1 du Code général de la fonction publique"
   },
+  part_prevoyance: {
+    titre: "La participation employeur (prévoyance)",
+    simple: "C'est l'argent que vous donne la mairie pour vous aider à payer votre contrat de prévoyance (maintien de salaire en cas de longue maladie).",
+    pourquoi: "Dans le cadre de la protection sociale complémentaire (PSC), l'employeur participe financièrement pour encourager les agents à se couvrir.",
+    verifier: "Ce versement apparaît dans vos gains (soumis à CSG/CRDS) et vient alléger le coût de la retenue pour votre prévoyance figurant plus bas.",
+    reference: "Art. L. 827-1 du Code général de la fonction publique"
+  },
   cotis_mutuelle: {
     titre: "Votre part mutuelle / prévoyance",
-    simple: "La part de votre mutuelle, de votre prévoyance (Territoria) ou de votre épargne retraite (Préfon) qui reste à votre charge. Elle est prélevée directement sur votre net.",
-    pourquoi: "Territoria couvre la prévoyance (arrêts, invalidité) ; la Préfon est une épargne retraite volontaire à effet de levier fiscal.",
-    verifier: "Ces retenues sont facultatives ou liées à votre affiliation : en cas de double retenue (ancienne et nouvelle mutuelle), réagissez vite."
+    simple: "La part de votre mutuelle ou de votre épargne retraite (Préfon) qui reste à votre charge. Elle est prélevée directement sur votre net.",
+    pourquoi: "Ces retenues sont facultatives ou liées à votre affiliation.",
+    verifier: "En cas de double retenue (ancienne et nouvelle mutuelle), réagissez vite."
+  },
+  prevoyance_territoria: {
+    titre: "Votre prévoyance (Territoria)",
+    simple: "Il s'agit du coût de votre contrat de prévoyance Territoria. Cette couverture vous protège en cas de coup dur (maintien de salaire en cas de longue maladie, invalidité).",
+    pourquoi: "C'est une adhésion facultative mais fortement recommandée : après 3 mois d'arrêt maladie, vous passez à demi-traitement. La prévoyance vient compenser cette perte de salaire.",
+    verifier: "Le montant est déduit de votre net à payer. Vérifiez que la Ville participe bien au financement de cette prévoyance via le code de participation employeur."
   },
   pas: {
     titre: "L'impôt à la source (PAS)",
@@ -311,8 +324,15 @@ const CODES_EXPLIQUES: Record<string, {
     titre: "Cotisation Ville : la formation (CNFPT)",
     simple: "La Ville verse 1 % de votre traitement au Centre National de la Fonction Publique Territoriale. C'est du salaire différé : cet argent finance votre formation professionnelle tout au long de la carrière — les stages, concours et préparations dont vous bénéficiez.",
     pourquoi: "C'est la contribution « formation » : elle finance les plans de formation, les concours et la préparation aux concours dont vous bénéficiez.",
-    verifier: "Les deux lignes (52 et 1965) totalisent 1,00 % du traitement soumis à pension. Vous avez droit à des jours de formation chaque année : demandez votre plan de formation.",
+    verifier: "La ligne 52 finance la formation classique (0,90 %).",
     reference: "Art. L. 724-1 du Code général de la fonction publique"
+  },
+  p_cnfpt_maj: {
+    titre: "Cotisation Ville : l'alternance (CNFPT Majoration)",
+    simple: "La Ville verse 0,10 % de votre traitement en plus au CNFPT pour financer spécifiquement la formation des apprentis (alternants) dans la fonction publique territoriale.",
+    pourquoi: "Depuis 2022, cette cotisation additionnelle payée par l'employeur garantit que les collectivités ont les moyens de former les apprentis qu'elles accueillent.",
+    verifier: "Elle s'ajoute à la cotisation CNFPT classique (ligne 52) pour former un total de 1 % versé par l'employeur.",
+    reference: "Loi de finances pour 2022 (article 122)"
   },
   traitement_detache: {
     titre: "Le traitement de base détaché",
@@ -434,12 +454,9 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
             {/* En-tête : BULLETIN DE PAIE + employeur */}
             <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 pt-3 pb-2">
               <div>
-                <h1 className="text-xl font-bold tracking-tight text-slate-900">BULLETIN DE PAIE</h1>
-                {/* Bulle informative très visible avec effet visuel pulsant */}
-                <div className="mt-1.5 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-300 text-slate-950 rounded-full text-[11px] font-black shadow-md shadow-orange-500/25 animate-pulse border border-orange-500">
-                  <MousePointerClick className="w-3.5 h-3.5 shrink-0 animate-bounce text-slate-950" />
-                  <span className="text-slate-950">💡 Cliquer sur une ligne pour l'explication</span>
-                  <Sparkles className="w-3.5 h-3.5 text-orange-950 shrink-0" />
+                <h1 className="text-xl font-bold tracking-tight text-slate-900 mb-1">BULLETIN DE PAIE</h1>
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-[12px] uppercase tracking-widest font-black rounded-full shadow-[0_0_15px_rgba(168,85,247,0.5)] border border-white/20 cursor-default mt-1.5 animate-pulse">
+                  👆 Cliquez sur une ligne pour afficher son explication
                 </div>
               </div>
               <div className="text-right text-[10px] leading-snug text-slate-700">
@@ -642,6 +659,16 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                 Dans votre intérêt et pour vous aider à faire valoir vos droits, conservez ce bulletin de paie sans limitation de durée.
               </p>
             </div>
+
+            {/* DEBUG : Texte brut extrait du PDF */}
+            <div className="mx-4 mb-4 mt-8 pt-4 border-t border-slate-200">
+              <details className="text-[10px] text-slate-500">
+                <summary className="cursor-pointer hover:text-slate-700 font-bold">🔍 Mode Débogage : Voir le texte brut lu par l'ordinateur</summary>
+                <div className="mt-2 p-2 bg-slate-50 rounded border border-slate-200 whitespace-pre-wrap font-mono text-[9px] max-h-96 overflow-y-auto">
+                  {result.metadata?.rawText || "Aucun texte brut disponible."}
+                </div>
+              </details>
+            </div>
           </div>
         </div>
 
@@ -727,6 +754,11 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                       </h5>
                     </div>
                     <div className="p-4 space-y-3">
+                      {selectedLigne.code && ["2008", "2009", "2012", "2591", "2860"].includes(selectedLigne.code.toString()) && (
+                        <div className="p-2.5 rounded-xl bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900 text-[12px] leading-relaxed text-orange-900 dark:text-orange-200">
+                          📌 <b>Ligne P2 (Prorata d'avancement)</b> — Cette ligne apparaît car elle correspond au prorata des jours du mois suite à un avancement d'échelon intervenu en cours de mois.
+                        </div>
+                      )}
                       {selectedLigne.moisRappel && (
                         <div className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900 text-[12px] leading-relaxed text-indigo-900 dark:text-indigo-200">
                           📌 <b>Rappel sur le mois {selectedLigne.moisRappel}</b> — ce montant régularise la paie du mois cité (marqueur « R » dans le code).

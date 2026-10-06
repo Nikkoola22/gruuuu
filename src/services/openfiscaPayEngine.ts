@@ -576,6 +576,10 @@ export interface FichePaieAnalyseResult {
     differenceNet: number;
   };
   openFiscaCodeSnippet: string;
+  metadata?: {
+    rawText?: string;
+    detectedItems?: string[];
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -848,11 +852,11 @@ export interface CalculParams {
  * Exécute la simulation complète de la fiche de paie selon les formules OpenFisca-France
  * et la doctrine de calcul Ciril RH Ville de Gennevilliers
  */
-export function computeOpenFiscaPay(params: CalculParams): FichePaieAnalyseResult {
+export function computeOpenFiscaPay(params: CalculParams, metadata?: any): FichePaieAnalyseResult {
   // Un bulletin reconstruit ligne à ligne depuis un vrai PDF : on copie les rubriques réelles
   // (codes, bases, taux, montants) et les totaux imprimés → zéro écart par construction.
   if (params.lignesReelles && params.lignesReelles.length > 0) {
-    return computeOpenFiscaPayDepuisLignesReelles(params, params.lignesReelles);
+    return computeOpenFiscaPayDepuisLignesReelles(params, params.lignesReelles, metadata);
   }
   const {
     indiceMajore = 382,
@@ -1670,51 +1674,95 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
         || (lPlain.includes("rubrique") && lPlain.includes("libelle"))) {
       continue;
     }
-    if (lPlain.includes("cotisations patronales") || lPlain.includes("charges patronales")) {
-      continue;
+
+    // Nettoyage agressif des artefacts OCR (Tesseract) pour les PDF scannés / photos
+    let lClean = line.replace(/[|\][}{_?]/g, ' ') // Retire les barres et caractères parasites
+                     .replace(/—/g, '-') // Remplacer les tirets longs
+                     .replace(/--+/g, '-') // Éviter les doubles tirets --4435
+                     .replace(/[,.]\s*$/, '') // Retire une virgule ou point final qui casse le dernier nombre
+                     .replace(/(-\d+)-(\d{2})\b/g, '$1.$2') // Corrige les erreurs OCR type "-18-13" -> "-18.13"
+                     .replace(/(\d{1,3})\s+(\d{3})\s+(\d{2})\b/g, '$1$2.$3') // Corrige "1 204 44" -> "1204.44"
+                     .replace(/\s+/g, ' ')
+                     .trim();
+
+    if (lPlain.includes("totaux gains") || lPlain.includes("net a payer avant impot")
+        || lPlain.includes("cumuls mensuels") || (inTable && lPlain.startsWith("net a payer"))
+        || lPlain.includes("virement magnetique")) {
+      inTable = false;
+      break;
     }
-    if (lPlain.includes("bulletin de paie") || lPlain.includes("periode de paie")
-        || lPlain.includes("securite sociale") || lPlain.includes("position administrative")
-        || lPlain.includes("emploi / grade") || lPlain.includes("taux emploi")
-        || lPlain.includes("totaux gains") || lPlain.includes("cumuls mensuels")
-        || lPlain.includes("virement magnetique") || lPlain.includes(".../...")
-        || lPlain.includes("observations") || lPlain.includes("dans votre interet")
-        || lPlain.startsWith("net a payer") || lPlain.startsWith("net fiscal")
-        || lPlain.startsWith("brut fiscal") || lPlain.includes("nombre d'heures")
-        || lPlain.includes("impot sur le revenu")) {
-      continue;
+    if (!inTable) {
+      // Mode universel : une ligne qui ressemble fortement à une rubrique Ciril
+      // (code + libellé + au moins un montant décimal) est traitée même sans en-tête de tableau
+      const looksLikeRubrique = /^\d{1,5}\s+[A-Za-zÀ-ÿ]/.test(lClean) && /\d[.,]\d{2}/.test(lClean);
+      if (!looksLikeRubrique) continue;
     }
-    // Ignorer les adresses et lignes de coordonnées
-    if (lPlain.includes("avenue gabriel") || lPlain.includes("avenue chausson") || lPlain.includes("remplacant")) {
-      continue;
-    }
-    if (lPlain.includes("artistes") || /0\/1\s+ee/i.test(lPlain)) {
-      continue;
-    }
-    if (lPlain.includes("gennevilliers") && !lPlain.includes("centre de gestion")) {
-      continue;
-    }
-    if (lPlain.includes("n° urssaf") || lPlain.includes("n° siret") || lPlain.includes("setouane")) {
+    if (lPlain.includes("cotisations patronales") || lPlain.includes("taux montant") || lPlain.includes("charges patronales")) continue;
+
+    // Format 1 : Code en premier (ex: "13 Traitement...", "7201 R 02/2026 Vacation...", "1591 IFSE Tit 380.00")
+    // Format 2 : Base en premier (ex: "2 228,47 804C COT. SS VIEIL. RG 6,900 153,76")
+    let code = "";
+    let rest = "";
+    let basePrefix: number | undefined = undefined;
+    let moisRappel: string | undefined = undefined;
+
+    // Normalisation préalable des espaces de milliers (ex: "3 618.24" -> "3618.24", "-1 408.60" -> "-1408.60")
+    // Sans fusionner deux montants distincts (ex: "100.00 100.0000" ne doit JAMAIS être touché)
+    let cleanedLine = lClean.replace(/(^|\s)(-\s*)?(\d{1,3})\s+(\d{3}[.,]\d{2,4})\b/g, (match, prefix, minus, d1, d2) => {
+      return (prefix || '') + (minus ? '-' : '') + d1 + d2;
+    });
+
+    // Rappel Ciril : le code suivi du marqueur « R » et du mois concerné (ex: "7201 R 02/2026 Vacation…")
+    const mRappel = cleanedLine.match(/^(\d{1,5})\s+R\s+(\d{1,2}[\/.\-]\d{2,4})\s+(.+)$/i);
+    const mCodeFirst = cleanedLine.match(/^(\d{1,5}(?:\s+[A-Z])?|[0-9]{3,4}[A-Z])\s+(.+)$/);
+    const mBaseFirst = cleanedLine.match(/^(\d+[.,]\d{2})\s+([0-9]{3,4}[A-Z]|\d{1,5})\s+(.+)$/);
+
+    if (mRappel) {
+      code = mRappel[1];
+      moisRappel = mRappel[2];
+      rest = mRappel[3];
+    } else if (mCodeFirst) {
+      code = mCodeFirst[1].trim();
+      rest = mCodeFirst[2].trim();
+    } else if (mBaseFirst) {
+      basePrefix = parseFloat(mBaseFirst[1].replace(",", "."));
+      code = mBaseFirst[2].trim();
+      rest = mBaseFirst[3].trim();
+    } else {
       continue;
     }
 
-    // Doit commencer par un code numérique de 1 à 5 chiffres (ex: 13, 21, 618, 1251, 1592, 1737...)
-    if (!/^\d{1,5}\b/.test(procLine)) continue;
+    const tokens = rest.trim().split(/\s+/);
+    const numTokens: number[] = [];
+    const textTokens: string[] = [];
+    let foundNumber = false;
+    let parsingNums = true;
 
-    // Reconnaître le code et l'éventuel rappel (ex: '21 R 05/2026', '13', '1251')
-    const mLine = procLine.match(/^(\d{1,5})\s*(?:R\s*[\/|.{([\]\-]?\s*(\d{1,2}[\/.\-]\d{2,4}))?\s*(.*)$/i);
-    if (!mLine) continue;
+    for (let i = tokens.length - 1; i >= 0; i--) {
+      // Pour le libellé, on garde le token d'origine. Pour l'analyse numérique, on le nettoie.
+      let numTok = tokens[i].replace(/,/g, '.');
+      // Tente d'extraire un nombre pur même s'il est collé à un caractère (ex: "13151a" -> "13151")
+      numTok = numTok.replace(/^[^\d-]*(-?\d+(?:\.\d+)?)[^\d]*$/, '$1');
 
-    let code = mLine[1];
-    let moisRappel = mLine[2] ? mLine[2].replace(/[|.]/g, '/') : undefined;
-    let rest = mLine[3].trim();
+      if (parsingNums && /^-?\d+(?:\.\d+)?$/.test(numTok)) {
+        numTokens.unshift(parseFloat(numTok));
+        foundNumber = true;
+      } else {
+        if (foundNumber) {
+          // On a déjà lu des nombres à la fin, donc ce texte appartient au libellé
+          parsingNums = false;
+          textTokens.unshift(tokens[i]);
+        } else {
+          // Déchet OCR tout à la fin de la ligne (ex: "a", ";", "?"), on l'ignore silencieusement
+        }
+      }
+    }
 
-    // Récupérer un rappel dans rest si le séparateur était non standard (ex: 'R {05/2026')
-    if (!moisRappel && /R\s*[\/|.{([\]\-]?\s*(\d{1,2}[\/.\-]\d{2,4})/i.test(rest)) {
-      const mR = rest.match(/R\s*[\/|.{([\]\-]?\s*(\d{1,2}[\/.\-]\d{2,4})/i);
-      if (mR) {
-        moisRappel = mR[1].replace(/[|.]/g, '/');
-        rest = rest.replace(/R\s*[\/|.{([\]\-]?\s*\d{1,2}[\/.\-]\d{2,4}/i, '').trim();
+    // Correction heuristique des nombres aberrants (Tesseract oublie souvent le point décimal)
+    // Un nombre entier > 1000 dans une paie (ex: 13151) est presque toujours une erreur pour 131.51
+    for (let j = 0; j < numTokens.length; j++) {
+      if (Math.abs(numTokens[j]) >= 1000 && Math.floor(numTokens[j]) === numTokens[j]) {
+        numTokens[j] = parseFloat((numTokens[j] / 100).toFixed(2));
       }
     }
 
@@ -2006,6 +2054,11 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "21": { cat: "gain", expl: "demi_traitement", libelle: "Demi Traitement RG" },
   "28": { cat: "gain", expl: "sans_traitement", libelle: "Sans traitement" },
   "193": { cat: "gain", expl: "traitement_detache", libelle: "Traitement de base détaché" },
+  "2008": { cat: "gain", expl: "tib", libelle: "Trt indiciaire CNR P2" },
+  "2009": { cat: "gain", expl: "nbi", libelle: "NBI Titulaire P2" },
+  "2012": { cat: "gain", expl: "residence", libelle: "Indem. de Résidence Tit P2" },
+  "2591": { cat: "gain", expl: "ifse", libelle: "IFSE Tit. P2" },
+  "2860": { cat: "gain", expl: "comp_csg", libelle: "Indemnité Compens. CSG TitP2" },
   "1033": { cat: "retenue", expl: "cnracl_detache", libelle: "CNRACL Détaché dans Collect." },
   "18": { cat: "retenue", expl: "vieillesse_deplaf", libelle: "Urssaf Vieillesse Déplafonnée (Régime Général)" },
   "40": { cat: "retenue", expl: "csg_nonded" },
@@ -2033,10 +2086,11 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "8443": { cat: "gain", expl: "prime_13eme", libelle: "Prime semestrielle Juin Tit (13e mois)" },
   "8444": { cat: "gain", expl: "prime_13eme", libelle: "Prime semestrielle Juin RG" },
   "7610": { cat: "gain", expl: "cia", libelle: "Compl. Indemnitaire Annuel Tit (CIA / 13e mois)" },
-  "7376": { cat: "gain", expl: "part_mutuelle", libelle: "Participation empl mut" },
-  "7716": { cat: "gain", expl: "part_mutuelle", libelle: "Participation empl prev" },
+  "7376": { cat: "gain", expl: "part_mutuelle", libelle: "Participation empl mut Tit" },
+  "7716": { cat: "gain", expl: "part_prevoyance", libelle: "Participation empl prev Tit" },
   "572": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Préfon" },
-  "7625": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Territoria Pack prévoyance" },
+  "7625": { cat: "retenue_net", expl: "prevoyance_territoria", libelle: "Territoria Pack prévoyance" },
+  "7628": { cat: "retenue_net", expl: "cotis_mutuelle", libelle: "Garantie obsèques" },
   "213": { cat: "gain", expl: "residence", libelle: "Indemnité résidence RG" },
   "7726": { cat: "gain", expl: "autres_primes", libelle: "Congés Payés" },
   "55": { cat: "retenue", expl: "csg_ded", libelle: "CSG Déductible RG" },
@@ -2066,7 +2120,7 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "73": { cat: "patronale", expl: "p_centre_gestion", libelle: "Centre de Gestion RG" },
   "52": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T" },
   "74": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T RG" },
-  "1965": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T Majoration" },
+  "1965": { cat: "patronale", expl: "p_cnfpt_maj", libelle: "C.N.F.P.T Majoration (Financement alternants)" },
   "1966": { cat: "patronale", expl: "p_cnfpt", libelle: "C.N.F.P.T Majoration RG" }
 };
 
@@ -2107,7 +2161,8 @@ const VAR_PAR_EXPL: Record<string, string> = {
  */
 function computeOpenFiscaPayDepuisLignesReelles(
   params: CalculParams,
-  lignesReelles: LigneBulletinCiril[]
+  lignesReelles: LigneBulletinCiril[],
+  metadata?: any
 ): FichePaieAnalyseResult {
   const {
     nomAgent = "AGENT Public",
@@ -2308,7 +2363,8 @@ function computeOpenFiscaPayDepuisLignesReelles(
       differenceNet: 0
     },
     openFiscaCodeSnippet: `# Bulletin reconstruit depuis le PDF original — aucune donnée recalculée
-lignes = ${JSON.stringify(lignesReelles.map(l => ({ code: l.code, montant: l.montant })), null, 2)}`
+lignes = ${JSON.stringify(lignesReelles.map(l => ({ code: l.code, montant: l.montant })), null, 2)}`,
+    metadata
   };
 }
 
@@ -2357,11 +2413,17 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
         const values = Array.from(lineCleaned.matchAll(/(\d+(?:[.,]\d+)?)/g))
           .map(m => parseFloat(m[1].replace(",", ".")));
 
-        if (values.length >= 3) {
-          let irCandidat: number | undefined;
-          let ibCandidat: number | undefined;
-          let imCandidat: number | undefined;
-          let qCandidat: number | undefined;
+        if (values.length >= 4) {
+          irCandidat = values[0];
+          imCandidat = values[1];
+          ibCandidat = values[2];
+          qCandidat = values[3];
+        } else {
+          imCandidat = values[0];
+          ibCandidat = values[1];
+          qCandidat = values[2];
+          irCandidat = imCandidat;
+        }
 
           if (values.length >= 4) {
             irCandidat = values[0];
@@ -3047,37 +3109,37 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
     const lPlain = deaccent(lines[i].toLowerCase());
     if (lPlain.includes("emploi / grade") || lPlain.includes("emploi/grade")) {
       const nextLine = lines[i + 1].trim();
-      // Ex Ciril : "Agent spéc pal écoles mat 2 cl 01 92230 GENNEVILLIERS" -> Grade: "Agent spéc pal écoles mat 2 cl", Échelon: "01"
-      const mCirilGradeEch = nextLine.match(/^(.+?)\s+(\d{1,2})\s+(?:\d{5}\b|[A-Z]{3,}|$)/);
-      if (mCirilGradeEch) {
-        grade = mCirilGradeEch[1].replace(/[|[\]{}]/g, '').trim();
-        echelon = `Échelon ${mCirilGradeEch[2]}`;
-        detectedItems.push(`Emploi / Grade lu : ${grade} (${echelon})`);
-      } else {
-        const gradePartMatch = nextLine.match(/^([A-Za-zÀ-ÿ0-9\s\-'.]+?)\s+(\d{1,2})\b/);
-        if (gradePartMatch) {
-          grade = gradePartMatch[1].replace(/[|[\]{}]/g, '').trim();
-          echelon = `Échelon ${gradePartMatch[2]}`;
+      // Ex: "Attaché principal 04 75018 PARIS" ou "Adjoint d'animation pal 1 cl 05 92230 GENNEVILLIERS"
+      const gradePartMatch = nextLine.match(/^(.*?)\s+(\d{1,2})(?:\s+\d{5}\b|\s*$)/);
+      if (gradePartMatch) {
+        const potentialEchelon = parseInt(gradePartMatch[2], 10);
+        if (potentialEchelon > 0 && potentialEchelon <= 20) {
+          grade = gradePartMatch[1].trim();
+          echelon = `Échelon ${potentialEchelon}`;
           detectedItems.push(`Emploi / Grade lu : ${grade} (${echelon})`);
-        } else if (nextLine.length > 3) {
-          grade = nextLine.replace(/[|[\]{}]/g, '').trim();
+        } else {
+          grade = nextLine;
           detectedItems.push(`Emploi / Grade lu : ${grade}`);
         }
+      } else if (nextLine.length > 3) {
+        grade = nextLine;
+        detectedItems.push(`Emploi / Grade lu : ${grade}`);
       }
       break;
     }
   }
 
   if (grade === "Agent contractuel territorial" || grade === "Fonctionnaire territorial") {
-    for (const line of lines) {
-      const cleanL = line.replace(/[|[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
-      const mGradeEch = cleanL.match(/^([A-Za-zÀ-ÿ0-9\s\-'.]+?(?:pal|cl|classe|princ|technique|adm|agent|adjoint|redacteur|attache|ingenieur|technicien)[A-Za-zÀ-ÿ0-9\s\-'.]*?)\s+(\d{2})\b/i);
-      if (mGradeEch) {
-        grade = mGradeEch[1].trim();
-        echelon = `Échelon ${mGradeEch[2]}`;
-        detectedItems.push(`Emploi / Grade lu (motif statutaire) : ${grade} (${echelon})`);
-        break;
-      }
+    const gradeMatch = t.match(/grade\s*[:=]\s*([^\n\r,;]+)/i);
+    if (gradeMatch && gradeMatch[1].trim().length > 3) {
+      grade = gradeMatch[1].trim();
+    }
+  }
+  
+  if (echelon === "Échelon statutaire") {
+    const echMatch = t.match(/[ée]chelon\s*[:=]?\s*(\d{1,2})/i);
+    if (echMatch) {
+      echelon = `Échelon ${parseInt(echMatch[1], 10)}`;
     }
   }
 
@@ -3138,7 +3200,8 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
       rawTextLength: rawText.length,
       extractedLinesCount: lines.length,
       confidence,
-      summary
+      summary,
+      rawText
     }
   };
 }

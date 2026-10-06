@@ -66,7 +66,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   // Fichier uploadé (le cas échéant)
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [uploadedRawText, setUploadedRawText] = useState<string | null>(null);
-  const [, setUploadMetadata] = useState<ParseMetadata | null>(null);
+  const [uploadMetadata, setUploadMetadata] = useState<ParseMetadata | null>(null);
   const [isParsing, setIsParsing] = useState<boolean>(false);
   const [parsingStatus, setParsingStatus] = useState<string>("");
   const [dragActive, setDragActive] = useState<boolean>(false);
@@ -94,8 +94,8 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
 
   // Exécution du moteur de paie OpenFisca
   const result: FichePaieAnalyseResult = useMemo(() => {
-    return computeOpenFiscaPay(params);
-  }, [params]);
+    return computeOpenFiscaPay(params, uploadMetadata);
+  }, [params, uploadMetadata]);
 
   // Basculer un preset prérempli
   const handleSelectPreset = (presetId: string) => {

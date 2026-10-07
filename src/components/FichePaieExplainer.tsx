@@ -91,6 +91,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const synthesisSectionRef = useRef<HTMLDivElement>(null);
+  const lecteurRef = useRef<HTMLDivElement>(null);
 
   // Exécution du moteur de paie OpenFisca
   const result: FichePaieAnalyseResult = useMemo(() => {
@@ -139,6 +140,15 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
     });
 
     toast.info(`Profil chargé : ${preset.label}`);
+
+    // Scroll vers le lecteur de fiche (ou la synthèse si le mode complexe est actif)
+    setTimeout(() => {
+      if (explanationMode === "simple") {
+        lecteurRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        synthesisSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 80);
   };
 
   // Traitement d'un fichier uploadé (PDF, Word, TXT, CSV)
@@ -667,7 +677,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
         </div>
 
         {explanationMode === 'simple' ? (
-          <div className="space-y-6">
+          <div className="space-y-6" ref={lecteurRef}>
             <CirilBulletinView
               params={params}
               result={result}

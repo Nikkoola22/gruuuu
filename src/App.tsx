@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from "react"
 import { ArrowLeft, Rss, Calculator, DollarSign, TrendingUp,
-  Users, Eye, Laptop, Phone, Mail, MapPin,
+  Users, Eye, Laptop, Phone, Mail, MapPin, TrainFront,
   Clock, Map as MapIcon, Briefcase, Calendar, Activity, Receipt, LayoutGrid, FileSpreadsheet } from "lucide-react"
 
 // --- IMPORTATIONS DES DONNÉES ---
@@ -16,6 +16,7 @@ const CalculateurCIAV2 = lazy(() => import("./components/CalculateurCIAV2.tsx"))
 const CalculateurPrimesV2 = lazy(() => import("./components/CalculateurPrimesV2.tsx"))
 const Calculateur13emeV2 = lazy(() => import("./components/Calculateur13emeV2.tsx"))
 const CalculateurSFTV2 = lazy(() => import("./components/CalculateurSFTV2.tsx"))
+const CalculateurNavigo = lazy(() => import("./components/CalculateurNavigo.tsx"))
 const CourriersAgentModule = lazy(() => import("./components/CourriersAgentModule.tsx"))
 const FichePaieExplainer = lazy(() => import("./components/FichePaieExplainer.tsx"))
 const Metiers = lazy(() => import("./components/Metiers.tsx"))
@@ -284,7 +285,7 @@ function App() {
   // --- FLUX D'ACTUALITÉS (Hook optimisé) ---
   const { rssItems, rssLoading, intercoNews, intercoLoading, fpNews, fpLoading } = useNewsFeeds()
 
-  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | null>(null)
+  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | 'navigo' | null>(null)
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [logoLoadError, setLogoLoadError] = useState(false)
@@ -331,7 +332,7 @@ function App() {
     setChatState({ ...chatState, currentView: 'metiers' })
   }
 
-  const openCalculator = (calculator: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie') => {
+  const openCalculator = (calculator: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | 'navigo') => {
     if (calculator === 'primes' || calculator === 'cia' || calculator === '13eme') {
       const keyByCalculator = {
         primes: 'calculator_primes',
@@ -1594,19 +1595,19 @@ ${indicesFactuels}
                   </div>
                 </button>
 
-                {/* Carte CIA */}
+                {/* Carte Remboursement Carte Navigo */}
                 <button
-                  onClick={() => openCalculator('cia')}
-                  className="group relative bg-white dark:bg-slate-800/80 border border-orange-200 dark:border-orange-500/20 rounded-2xl p-8 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg dark:hover:shadow-orange-500/10 hover:border-orange-300 dark:hover:border-orange-500/40"
+                  onClick={() => openCalculator('navigo')}
+                  className="group relative bg-white dark:bg-slate-800/80 border border-teal-200 dark:border-teal-500/20 rounded-2xl p-8 shadow-sm hover:shadow-lg dark:hover:shadow-teal-500/10 hover:border-teal-300 dark:hover:border-teal-500/40 hover:scale-105 hover:-translate-y-2 transition-transform duration-150"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 dark:from-orange-500/5 via-transparent to-amber-50/50 dark:to-amber-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-teal-50/50 dark:from-teal-500/5 via-transparent to-emerald-50/50 dark:to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
                   <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-orange-100 dark:from-slate-900/80 to-amber-100 dark:to-slate-800/80 rounded-2xl shadow-sm border border-orange-200 dark:border-orange-500/30">
-                      <Calculator className="w-16 h-16 text-orange-600 dark:text-orange-400" />
+                    <div className="p-6 bg-gradient-to-br from-teal-100 dark:from-slate-900/80 to-emerald-100 dark:to-emerald-800/80 rounded-2xl shadow-sm border border-teal-200 dark:border-teal-500/30">
+                      <TrainFront className="w-16 h-16 text-teal-600 dark:text-teal-400" />
                     </div>
-                    <h4 className="text-2xl font-bold text-slate-800 dark:text-white">CIA</h4>
-                    <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
-                    <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold dark:font-semibold">
+                    <h4 className="text-2xl font-bold text-slate-800 dark:text-white">Carte Navigo</h4>
+                    <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">Calculez votre remboursement de transport à 75 %</p>
+                    <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold dark:font-semibold">
                       <span className="text-sm">Ouvrir le calculateur</span>
                     </div>
                   </div>
@@ -1838,6 +1839,26 @@ ${indicesFactuels}
                   </div>
                 </button>
 
+                {/* Carte CIA */}
+                <button
+                  onClick={() => openCalculator('cia')}
+                  className="group relative bg-white dark:bg-slate-800/80 border border-orange-200 dark:border-orange-500/20 rounded-2xl p-8 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg dark:hover:shadow-orange-500/10 hover:border-orange-300 dark:hover:border-orange-500/40"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 dark:from-orange-500/5 via-transparent to-amber-50/50 dark:to-amber-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="relative z-10 flex flex-col items-center gap-6">
+                    <div className="p-6 bg-gradient-to-br from-orange-100 dark:from-slate-900/80 to-amber-100 dark:to-slate-800/80 rounded-2xl shadow-sm border border-orange-200 dark:border-orange-500/30">
+                      <Calculator className="w-16 h-16 text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <h4 className="text-2xl font-bold text-slate-800 dark:text-white">CIA</h4>
+                    <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
+                    <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold dark:font-semibold">
+                      <span className="text-sm">Ouvrir le calculateur</span>
+                    </div>
+                  </div>
+                </button>
+
+
+
               </div>
             </div>
           )}
@@ -1875,6 +1896,20 @@ ${indicesFactuels}
             <Suspense fallback={<ViewLoader />}>
               <div className="calc-tool-enter py-6 px-4">
                 <CalculateurSFTV2
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
+            </Suspense>
+          )}
+          {activeCalculator === 'navigo' && (
+            <Suspense fallback={<ViewLoader />}>
+              <div className="calc-tool-enter py-6 px-4">
+                <CalculateurNavigo
                   onClose={() => {
                     setActiveCalculator(null)
                     if (calculatorsSectionRef.current) {

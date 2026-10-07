@@ -484,7 +484,7 @@ export interface DiagnosticEcartItem {
   explication: string;
   solution: string;
   paramAffecte: keyof CalculParams;
-  valeurSuggeree: any;
+  valeurSuggeree: unknown;
 }
 
 export interface DiagnosticEcarts {
@@ -852,7 +852,7 @@ export interface CalculParams {
  * Exécute la simulation complète de la fiche de paie selon les formules OpenFisca-France
  * et la doctrine de calcul Ciril RH Ville de Gennevilliers
  */
-export function computeOpenFiscaPay(params: CalculParams, metadata?: any): FichePaieAnalyseResult {
+export function computeOpenFiscaPay(params: CalculParams, metadata?: ParseMetadata): FichePaieAnalyseResult {
   // Un bulletin reconstruit ligne à ligne depuis un vrai PDF : on copie les rubriques réelles
   // (codes, bases, taux, montants) et les totaux imprimés → zéro écart par construction.
   if (params.lignesReelles && params.lignesReelles.length > 0) {
@@ -1017,8 +1017,9 @@ export function computeOpenFiscaPay(params: CalculParams, metadata?: any): Fiche
   const netAPayer = Math.round((netAvantImpot - montantPas + remboursementTransport) * 100) / 100;
 
   // « Total des retenues » du bulletin Ciril = cotisations sociales + retenues sur le net + PAS
-  // Ex. vérifié : 928.79 + 269.65 + 354.62 = 1 553.06
-  const totalRetenues = Math.round((totalCotisationsSalariales + retenueMutuelleSalarie + montantPas) * 100) / 100;
+  // En reconstruction : le total imprimé sur la fiche fait foi (les lignes non reconnues manqueraient)
+  const totalRetenues = montantsReels?.totalRetenuesReelles
+    ?? Math.round((totalCotisationsSalariales + retenueMutuelleSalarie + montantPas) * 100) / 100;
 
   // Cotisations Patronales et Coût Global
   // Bulletin Ciril réel (titulaire) : CNRACL 37,65% + RAFP 5% + Urssaf 19,13% + CNG 0,50% + CNFPT 1,00%
@@ -1651,7 +1652,7 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
   for (const line of preprocessedLines) {
     let procLine = line.trim();
     // Nettoyer les artefacts de bordure ou ponctuation OCR en début de ligne
-    procLine = procLine.replace(/^[|!?;:.,~°_»«'"`\-\[\](){}\s]+/, '');
+    procLine = procLine.replace(/^[-|!?;:.,~°_»«'"`()[]{}\s]+/, '');
     // Nettoyer les lettres isolées parasites en marge devant un code numérique (ex: 'j 7444', 'E 59', 'i 618')
     procLine = procLine.replace(/^[a-zA-Z]\s+(?=\d{1,5}\b)/, '');
 
@@ -1677,7 +1678,7 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     }
 
     // Nettoyage agressif des artefacts OCR (Tesseract) pour les PDF scannés / photos
-    let lClean = line.replace(/[|\][}{_?]/g, ' ') // Retire les barres et caractères parasites
+    const lClean = line.replace(/[|\][}{_?]/g, ' ') // Retire les barres et caractères parasites
                      .replace(/—/g, '-') // Remplacer les tirets longs
                      .replace(/--+/g, '-') // Éviter les doubles tirets --4435
                      .replace(/[,.]\s*$/, '') // Retire une virgule ou point final qui casse le dernier nombre
@@ -1704,17 +1705,16 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     // Format 2 : Base en premier (ex: "2 228,47 804C COT. SS VIEIL. RG 6,900 153,76")
     let code = "";
     let rest = "";
-    let basePrefix: number | undefined = undefined;
     let moisRappel: string | undefined = undefined;
 
     // Normalisation préalable des espaces de milliers (ex: "3 618.24" -> "3618.24", "-1 408.60" -> "-1408.60")
     // Sans fusionner deux montants distincts (ex: "100.00 100.0000" ne doit JAMAIS être touché)
-    let cleanedLine = lClean.replace(/(^|\s)(-\s*)?(\d{1,3})\s+(\d{3}[.,]\d{2,4})\b/g, (match, prefix, minus, d1, d2) => {
+    const cleanedLine = lClean.replace(/(^|\s)(?<![-\d.])(-\s*)?(\d{1,3})(?![.,]\d)\s+(\d{3}[.,]\d{2,4})\b/g, (match, prefix, minus, d1, d2) => {
       return (prefix || '') + (minus ? '-' : '') + d1 + d2;
     });
 
     // Rappel Ciril : le code suivi du marqueur « R » et du mois concerné (ex: "7201 R 02/2026 Vacation…")
-    const mRappel = cleanedLine.match(/^(\d{1,5})\s+R\s+(\d{1,2}[\/.\-]\d{2,4})\s+(.+)$/i);
+    const mRappel = cleanedLine.match(/^(\d{1,5})\s+R\s+(\d{1,2}[/.-]\d{2,4})\s+(.+)$/i);
     const mCodeFirst = cleanedLine.match(/^(\d{1,5}(?:\s+[A-Z])?|[0-9]{3,4}[A-Z])\s+(.+)$/);
     const mBaseFirst = cleanedLine.match(/^(\d+[.,]\d{2})\s+([0-9]{3,4}[A-Z]|\d{1,5})\s+(.+)$/);
 
@@ -1726,7 +1726,6 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
       code = mCodeFirst[1].trim();
       rest = mCodeFirst[2].trim();
     } else if (mBaseFirst) {
-      basePrefix = parseFloat(mBaseFirst[1].replace(",", "."));
       code = mBaseFirst[2].trim();
       rest = mBaseFirst[3].trim();
     } else {
@@ -1757,7 +1756,7 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     }
 
     // Normalisation préalable des espaces de milliers (ex: "1 806.66" -> "1806.66", "-1 204.44" -> "-1204.44")
-    rest = rest.replace(/(^|\s)(-\s*)?(\d{1,3})\s+(\d{3}[.,]\d{2,4})\b/g, (match, prefix, minus, d1, d2) => {
+    rest = rest.replace(/(^|\s)(?<![-\d.])(-\s*)?(\d{1,3})(?![.,]\d)\s+(\d{3}[.,]\d{2,4})\b/g, (match, prefix, minus, d1, d2) => {
       return (prefix || '') + (minus ? '-' : '') + d1 + d2;
     });
 
@@ -1771,7 +1770,7 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     // Détecter l'indice du premier token numérique marquant la fin du libellé
     let foundFirstNumber = false;
     for (let i = 0; i < allTokens.length; i++) {
-      const tokClean = allTokens[i].replace(/[|\[\]{}«»~_“”'"`]/g, '');
+      const tokClean = allTokens[i].replace(/[|[]{}«»~_“”'"`]/g, '');
       if (/^[+-]?\d+(?:[.,]\d+)?$/.test(tokClean)) {
         foundFirstNumber = true;
         numTokens.push(parseFloat(tokClean.replace(',', '.')));
@@ -1800,9 +1799,10 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     }
 
     // Correction heuristique des nombres aberrants (Tesseract oublie souvent le point décimal)
-    // Un nombre entier > 1000 dans une paie (ex: 13151) est presque toujours une erreur pour 131.51
+    // Un nombre ENTIER PUR > 1000 (ex: 13151, sans décimales dans le token brut) est presque
+    // toujours une erreur pour 131.51. Les valeurs avec décimales (ex: 2400.00) sont correctes.
     for (let j = 0; j < numTokens.length; j++) {
-      if (Math.abs(numTokens[j]) >= 1000 && Math.floor(numTokens[j]) === numTokens[j]) {
+      if (Math.abs(numTokens[j]) >= 1000 && Math.floor(numTokens[j]) === numTokens[j] && !/[.,]/.test(rawNumTokens[j] ?? '')) {
         numTokens[j] = parseFloat((numTokens[j] / 100).toFixed(2));
       }
     }
@@ -2139,7 +2139,7 @@ const VAR_PAR_EXPL: Record<string, string> = {
 function computeOpenFiscaPayDepuisLignesReelles(
   params: CalculParams,
   lignesReelles: LigneBulletinCiril[],
-  metadata?: any
+  metadata?: ParseMetadata
 ): FichePaieAnalyseResult {
   const {
     nomAgent = "AGENT Public",
@@ -2349,7 +2349,7 @@ lignes = ${JSON.stringify(lignesReelles.map(l => ({ code: l.code, montant: l.mon
  * Analyse le texte brut d'une fiche de paie uploadée (.pdf, .docx, .txt, .csv)
  * et en déduit les paramètres de simulation OpenFisca-France avec métadonnées détaillées
  */
-export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string): ParsePaySlipResult {
+export function parseUploadedPaySlipWithMeta(rawText: string): ParsePaySlipResult {
   const normalizedText = rawText.replace(/[\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]/g, ' ');
   const t = normalizedText.toLowerCase();
   const detectedItems: string[] = [];
@@ -2386,7 +2386,7 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
     for (let i = 0; i < lines.length - 1; i++) {
       const lPlain = deaccent(lines[i].toLowerCase());
       if (lPlain.includes("taux emploi") || (lPlain.includes("indice brut") && lPlain.includes("major"))) {
-        let lineCleaned = lines[i + 1].trim();
+        const lineCleaned = lines[i + 1].trim();
         const values = Array.from(lineCleaned.matchAll(/(\d+(?:[.,]\d+)?)/g))
           .map(m => parseFloat(m[1].replace(",", ".")));
 
@@ -3175,7 +3175,7 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
 /**
  * Wrapper de compatibilité pour conserver la signature originale
  */
-export function parseUploadedPaySlip(rawText: string, fileName?: string): CalculParams {
-  return parseUploadedPaySlipWithMeta(rawText, fileName).params;
+export function parseUploadedPaySlip(rawText: string): CalculParams {
+  return parseUploadedPaySlipWithMeta(rawText).params;
 }
 

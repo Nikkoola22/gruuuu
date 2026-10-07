@@ -242,6 +242,22 @@ const CODES_EXPLIQUES: Record<string, {
     attention: "Un rappel augmente votre net imposable du mois et donc l'impôt à la source prélevé : c'est normal, la régularisation se fait naturellement à la déclaration.",
     reference: "Art. L. 3242-1 du Code du travail (mentions obligatoires du bulletin de paie)"
   },
+  fraction_t: {
+    titre: "Une fraction du traitement (maladie)",
+    simple: "Ce pourcentage n'est pas une somme : c'est la fraction du traitement de base versée pendant votre maladie (ex. 90 % du traitement). L'agent malade perçoit une fraction de son traitement, pas le montant intégral.",
+    pourquoi: "En maladie ordinaire, le traitement est versé en fraction décroissante : plein traitement puis demi-traitement selon la durée de l'arrêt. Le libellé indique la fraction appliquée sur cette période.",
+    verifier: "Vérifiez que la fraction correspond bien à votre situation (durée de l'arrêt, accident du travail = 100 %) et que la base de calcul est le traitement indiciaire brut.",
+    attention: "La fraction s'applique au traitement de base : les primes et indemnités ne suivent pas automatiquement cette réduction — vérifiez leur maintien.",
+    reference: "Art. L. 742-1 et suivants du Code général de la fonction publique (maladie ordinaire)"
+  },
+  treizieme_mois: {
+    titre: "Le 13e mois (versé en deux lignes)",
+    simple: "Le 13e mois apparaît sur le bulletin en deux lignes : « Complément de rémunération » et « Prime semestrielle ». Les deux montants s'additionnent pour former votre 13e mois.",
+    pourquoi: "Le versement en deux lignes est une convention de paramétrage du logiciel de paie : chaque ligne est un versement du même avantage, souvent lié aux semestres travaillés.",
+    verifier: "Additionnez les deux lignes : le total doit correspondre au 13e mois attendu selon votre temps de présence et votre quotité dans l'année.",
+    attention: "Le 13e mois est proratisé selon la présence : une entrée ou sortie en cours d'année réduit le montant. Vérifiez le calcul si votre situation a changé.",
+    reference: "Agents non titulaires — décret n° 88-145 du 11 janvier 1988 et délibération de la Ville"
+  },
   indem_differentielle: {
     titre: "L'indemnité différentielle (complément SMIC)",
     simple: "Versée lorsque la grille indiciaire (traitement de base + primes statutaires) est en dessous du SMIC : la Ville complète la différence pour garantir une rémunération au moins égale au SMIC.",

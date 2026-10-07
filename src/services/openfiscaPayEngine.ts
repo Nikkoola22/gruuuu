@@ -506,6 +506,8 @@ export interface LigneBulletinCiril {
   montantPatronal?: number;
   /** Présent si le code porte le marqueur « R » : mois concerné par le rappel (ex. « 02/2026 ») */
   moisRappel?: string;
+  /** True si le libellé porte le marqueur « fraction T » : la valeur est un POURCENTAGE du traitement versé en maladie (ex. 90), pas une somme */
+  fractionT?: boolean;
 }
 
 export interface FichePaieAnalyseResult {
@@ -1603,6 +1605,7 @@ export interface ParseMetadata {
   extractedLinesCount: number;
   confidence: 'high' | 'medium' | 'low';
   summary: string;
+  rawText?: string;
 }
 
 export interface ParsePaySlipResult {
@@ -1709,7 +1712,7 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
 
     // Normalisation préalable des espaces de milliers (ex: "3 618.24" -> "3618.24", "-1 408.60" -> "-1408.60")
     // Sans fusionner deux montants distincts (ex: "100.00 100.0000" ne doit JAMAIS être touché)
-    const cleanedLine = lClean.replace(/(^|\s)(?<![-\d.])(-\s*)?(\d{1,3})(?![.,]\d)\s+(\d{3}[.,]\d{2,4})\b/g, (match, prefix, minus, d1, d2) => {
+    const cleanedLine = lClean.replace(/(^|\s)(?<![-\d.])(-\s*)?(\d{1,3})(?![.,]\d)\s+(\d{3}[.,]\d{2,4})\b/g, (_match, prefix, minus, d1, d2) => {
       return (prefix || '') + (minus ? '-' : '') + d1 + d2;
     });
 
@@ -1756,7 +1759,7 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     }
 
     // Normalisation préalable des espaces de milliers (ex: "1 806.66" -> "1806.66", "-1 204.44" -> "-1204.44")
-    rest = rest.replace(/(^|\s)(?<![-\d.])(-\s*)?(\d{1,3})(?![.,]\d)\s+(\d{3}[.,]\d{2,4})\b/g, (match, prefix, minus, d1, d2) => {
+    rest = rest.replace(/(^|\s)(?<![-\d.])(-\s*)?(\d{1,3})(?![.,]\d)\s+(\d{3}[.,]\d{2,4})\b/g, (_match, prefix, minus, d1, d2) => {
       return (prefix || '') + (minus ? '-' : '') + d1 + d2;
     });
 
@@ -1926,6 +1929,13 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
       montant = -montant;
     }
 
+    // Marqueur « fraction T » : la valeur est un POURCENTAGE du traitement de base versé en maladie
+    // (ex. 90 = 90 % du traitement) — ce n'est pas une somme, elle n'est donc jamais comptée
+    const fractionT = /\bfraction\s*T\b/i.test(rest || libelle);
+    if (fractionT) {
+      parsedLines.push({ code, libelle, taux: montant ?? taux ?? numTokens[numTokens.length - 1], fractionT: true });
+      continue;
+    }
     parsedLines.push({
       code,
       libelle,
@@ -2136,6 +2146,10 @@ const VAR_PAR_EXPL: Record<string, string> = {
  * mêmes codes, mêmes libellés, mêmes montants → zéro écart entre la fiche uploadée et la fiche explicative.
  * Seuls les totaux absents du document sont déduits des lignes lues.
  */
+/** Normalisation : minuscules sans accents (pour les comparaisons de libellés) */
+const normaliser = (s: string) =>
+  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim().replace(/\s+/g, " ");
+
 function computeOpenFiscaPayDepuisLignesReelles(
   params: CalculParams,
   lignesReelles: LigneBulletinCiril[],
@@ -2172,7 +2186,10 @@ function computeOpenFiscaPayDepuisLignesReelles(
     const known = CODES_CIRIL_KNOWN[lr.code];
     let cat: "gain" | "retenue" | "patronale" | "retenue_net" | "info";
 
-    if (known) {
+    if (lr.fractionT) {
+      // Marqueur « fraction T » : pourcentage du traitement versé en maladie — informative
+      cat = "info";
+    } else if (known) {
       cat = (isGainByLibelle && known.cat === "retenue") ? "gain" : known.cat;
     } else {
       cat = (lr.tauxPatronal !== undefined && (lr.montant === undefined || lr.montant === lr.montantPatronal)
@@ -2204,9 +2221,16 @@ function computeOpenFiscaPayDepuisLignesReelles(
 
     // Id unique : plusieurs codes peuvent pointer vers la même explication (572+7625 → cotis_mutuelle).
     // Un rappel (marqueur « R » + mois) prime : c'est l'information la plus utile pour l'agent.
-    let idLigne = lr.moisRappel 
-      ? `rappel_${lr.code}_${(lr.moisRappel || '').replace(/[^a-zA-Z0-9]/g, '_')}` 
-      : (known?.expl ?? `ciril_${lr.code}`);
+    const libNorm = normaliser(lr.libelle);
+    // Les libellés « Compl rémunération » et « prime semestrielle » = les deux lignes du 13e mois
+    const estTreizieme = /compl.*remuneration/.test(libNorm) || /prime\s*semestrielle/.test(libNorm);
+    let idLigne = lr.fractionT 
+      ? `fraction_t` 
+      : (estTreizieme 
+        ? `treizieme_mois` 
+        : (lr.moisRappel 
+          ? `rappel_${lr.code}_${(lr.moisRappel || '').replace(/[^a-zA-Z0-9]/g, '_')}` 
+          : (known?.expl ?? `ciril_${lr.code}`)));
     if (idsUtilises.has(idLigne)) idLigne = `${idLigne}_${idx}`;
     idsUtilises.add(idLigne);
 

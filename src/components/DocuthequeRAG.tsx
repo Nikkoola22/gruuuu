@@ -391,6 +391,13 @@ export const DocuthequeRAG: React.FC<DocuthequeRAGProps> = ({
   const handleQuerySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSearch(query);
+    // Scroll vers les résultats après le lancement de la recherche
+    setTimeout(() => {
+      const ragEl = document.getElementById('rag-results-section');
+      if (ragEl) {
+        ragEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
   };
 
   const handleSelectSuggestion = (suggestedQuery: string) => {

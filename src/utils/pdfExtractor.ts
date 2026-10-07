@@ -232,7 +232,8 @@ export async function extractTextFromPdf(
         const origin = typeof window !== 'undefined' ? window.location.origin : '';
         const worker = await createWorker('fra', 1, {
           langPath: origin ? `${origin}/tessdata` : undefined,
-          gzip: true
+          gzip: true,
+          cacheMethod: 'none'
         });
         // PSM 3 : Segmentation automatique pleine page préservant toutes les lignes de texte et de tableau
         try {

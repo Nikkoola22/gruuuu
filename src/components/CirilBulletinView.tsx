@@ -769,9 +769,9 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                       </h5>
                     </div>
                     <div className="p-4 space-y-3">
-                      {selectedLigne.code && ["2008", "2009", "2012", "2591", "2860"].includes(selectedLigne.code.toString()) && (
+                      {(selectedLigne.libelle?.trim().toUpperCase().endsWith('P2') || (selectedLigne.code && ["2008", "2009", "2012", "2591", "2860"].includes(selectedLigne.code.toString()))) && (
                         <div className="p-2.5 rounded-xl bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900 text-[12px] leading-relaxed text-orange-900 dark:text-orange-200">
-                          📌 <b>Ligne P2 (Prorata d'avancement)</b> — Cette ligne apparaît car elle correspond au prorata des jours du mois suite à un avancement d'échelon intervenu en cours de mois.
+                          📌 <b>Ligne P2 (Prorata de situation)</b> — Cette ligne se termine par P2 car elle indique un prorata de jours suite à un changement de situation administrative intervenu en cours de mois (exemple : avancement d'échelon, changement de temps de travail...).
                         </div>
                       )}
                       {selectedLigne.moisRappel && (

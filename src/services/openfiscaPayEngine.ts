@@ -1647,7 +1647,8 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     preprocessedLines.push(curr);
   }
 
-        for (const line of preprocessedLines) {
+  let inTable = false;
+  for (const line of preprocessedLines) {
     let procLine = line.trim();
     // Nettoyer les artefacts de bordure ou ponctuation OCR en début de ligne
     procLine = procLine.replace(/^[|!?;:.,~°_»«'"`\-\[\](){}\s]+/, '');
@@ -1732,39 +1733,7 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
       continue;
     }
 
-    const tokens = rest.trim().split(/\s+/);
-    const numTokens: number[] = [];
-    const textTokens: string[] = [];
-    let foundNumber = false;
-    let parsingNums = true;
 
-    for (let i = tokens.length - 1; i >= 0; i--) {
-      // Pour le libellé, on garde le token d'origine. Pour l'analyse numérique, on le nettoie.
-      let numTok = tokens[i].replace(/,/g, '.');
-      // Tente d'extraire un nombre pur même s'il est collé à un caractère (ex: "13151a" -> "13151")
-      numTok = numTok.replace(/^[^\d-]*(-?\d+(?:\.\d+)?)[^\d]*$/, '$1');
-
-      if (parsingNums && /^-?\d+(?:\.\d+)?$/.test(numTok)) {
-        numTokens.unshift(parseFloat(numTok));
-        foundNumber = true;
-      } else {
-        if (foundNumber) {
-          // On a déjà lu des nombres à la fin, donc ce texte appartient au libellé
-          parsingNums = false;
-          textTokens.unshift(tokens[i]);
-        } else {
-          // Déchet OCR tout à la fin de la ligne (ex: "a", ";", "?"), on l'ignore silencieusement
-        }
-      }
-    }
-
-    // Correction heuristique des nombres aberrants (Tesseract oublie souvent le point décimal)
-    // Un nombre entier > 1000 dans une paie (ex: 13151) est presque toujours une erreur pour 131.51
-    for (let j = 0; j < numTokens.length; j++) {
-      if (Math.abs(numTokens[j]) >= 1000 && Math.floor(numTokens[j]) === numTokens[j]) {
-        numTokens[j] = parseFloat((numTokens[j] / 100).toFixed(2));
-      }
-    }
 
     // Rejeter les codes parasites d'en-tête (NIR, adresses, matricules, indices)
     if (code === '0' || code === '1' || code === '4' || code === '7' || code === '177' || code === '2800' || code === '28002' || code === '367' || code === '368' || code === '10027') {
@@ -1828,6 +1797,14 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
 
     if (numTokens.length === 0) {
       continue;
+    }
+
+    // Correction heuristique des nombres aberrants (Tesseract oublie souvent le point décimal)
+    // Un nombre entier > 1000 dans une paie (ex: 13151) est presque toujours une erreur pour 131.51
+    for (let j = 0; j < numTokens.length; j++) {
+      if (Math.abs(numTokens[j]) >= 1000 && Math.floor(numTokens[j]) === numTokens[j]) {
+        numTokens[j] = parseFloat((numTokens[j] / 100).toFixed(2));
+      }
     }
 
     let base: number | undefined = undefined;
@@ -2413,48 +2390,37 @@ export function parseUploadedPaySlipWithMeta(rawText: string, fileName?: string)
         const values = Array.from(lineCleaned.matchAll(/(\d+(?:[.,]\d+)?)/g))
           .map(m => parseFloat(m[1].replace(",", ".")));
 
+        let irCandidat, imCandidat, ibCandidat, qCandidat;
+
         if (values.length >= 4) {
           irCandidat = values[0];
-          imCandidat = values[1];
-          ibCandidat = values[2];
+          ibCandidat = values[1];
+          imCandidat = values[2];
           qCandidat = values[3];
         } else {
-          imCandidat = values[0];
-          ibCandidat = values[1];
+          ibCandidat = values[0];
+          imCandidat = values[1];
           qCandidat = values[2];
-          irCandidat = imCandidat;
+          irCandidat = ibCandidat;
         }
 
-          if (values.length >= 4) {
-            irCandidat = values[0];
-            ibCandidat = values[1];
-            imCandidat = values[2];
-            qCandidat = values[3];
+        if (imCandidat && imCandidat >= 250 && imCandidat <= 950) {
+          im = imCandidat;
+          imFound = true;
+          if (irCandidat && irCandidat >= 250 && irCandidat <= 3500) {
+            indiceRemun = irCandidat;
+          }
+          if (ibCandidat && ibCandidat >= 250 && ibCandidat <= 1500) {
+            indiceBrut = ibCandidat;
+            detectedItems.push(`Bloc Ciril lu : Ind. Rémun ${indiceRemun ?? im} / Indice Brut ${indiceBrut} / Indice Majoré (IM) ${im}`);
           } else {
-            ibCandidat = values[0];
-            imCandidat = values[1];
-            qCandidat = values[2];
-            irCandidat = ibCandidat;
+            detectedItems.push(`Bloc Ciril lu : Ind. Rémun ${indiceRemun ?? im} / Indice Majoré (IM) ${im}`);
           }
-
-          if (imCandidat && imCandidat >= 250 && imCandidat <= 950) {
-            im = imCandidat;
-            imFound = true;
-            if (irCandidat && irCandidat >= 250 && irCandidat <= 3500) {
-              indiceRemun = irCandidat;
-            }
-            if (ibCandidat && ibCandidat >= 250 && ibCandidat <= 1500) {
-              indiceBrut = ibCandidat;
-              detectedItems.push(`Bloc Ciril lu : Ind. Rémun ${indiceRemun ?? im} / Indice Brut ${indiceBrut} / Indice Majoré (IM) ${im}`);
-            } else {
-              detectedItems.push(`Bloc Ciril lu : Ind. Rémun ${indiceRemun ?? im} / Indice Majoré (IM) ${im}`);
-            }
-            if (qCandidat && qCandidat >= 20 && qCandidat <= 100) {
-              quotite = qCandidat;
-              if (quotite !== 100) detectedItems.push(`Quotité (taux d'emploi) : ${quotite}%`);
-            }
-            break;
+          if (qCandidat && qCandidat >= 20 && qCandidat <= 100) {
+            quotite = qCandidat;
+            if (quotite !== 100) detectedItems.push(`Quotité (taux d'emploi) : ${quotite}%`);
           }
+          break;
         }
       }
     }

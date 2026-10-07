@@ -229,8 +229,11 @@ export async function extractTextFromPdf(
 
         // Importer dynamiquement Tesseract.js pour ne pas alourdir le bundle initial
         const { createWorker } = await import('tesseract.js');
-        // Initialisation standard de Tesseract (gère automatiquement le bon format gzippé)
-        const worker = await createWorker('fra');
+        const origin = typeof window !== 'undefined' ? window.location.origin : '';
+        const worker = await createWorker('fra', 1, {
+          langPath: origin ? `${origin}/tessdata` : undefined,
+          gzip: true
+        });
         // PSM 3 : Segmentation automatique pleine page préservant toutes les lignes de texte et de tableau
         try {
           await worker.setParameters({

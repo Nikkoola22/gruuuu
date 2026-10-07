@@ -553,7 +553,14 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                   </tr>
                 </thead>
                 <tbody>
-                  {affichage.map(ligne => renderLigne(ligne))}
+                  {[...affichage]
+                    .sort((a, b) => {
+                      // Forcer le Montant Net Social (1584) à s'afficher tout en bas du bulletin avant les totaux
+                      if (a.code === '1584' && b.code !== '1584') return 1;
+                      if (b.code === '1584' && a.code !== '1584') return -1;
+                      return 0;
+                    })
+                    .map(ligne => renderLigne(ligne))}
                 </tbody>
                 <tfoot>
                   <tr className="border-t border-slate-500 font-bold bg-slate-50">

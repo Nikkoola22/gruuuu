@@ -19,9 +19,6 @@ export interface IntercoNewsItem {
 const BASE_URL = import.meta.env.BASE_URL;
 
 const getApiEndpoint = (endpoint: string) => {
-  if (import.meta.env.DEV) {
-    return `http://localhost:3001/api/${endpoint}`;
-  }
   return `/api/${endpoint}`;
 };
 

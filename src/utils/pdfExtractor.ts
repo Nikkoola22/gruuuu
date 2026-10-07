@@ -96,13 +96,13 @@ export async function extractTextFromPdf(
   fileOrBuffer: File | ArrayBuffer,
   onProgress?: (status: string) => void
 ): Promise<string> {
-  const arrayBuffer = fileOrBuffer instanceof File ? await fileOrBuffer.arrayBuffer() : fileOrBuffer;
+  const originalBuffer = fileOrBuffer instanceof File ? await fileOrBuffer.arrayBuffer() : fileOrBuffer;
 
   // 1. Méthode Principale : PDF.js avec worker local bundlé par Vite
   let pdfDocument: any = null;
   try {
     const loadingTask = pdfjsLib.getDocument({
-      data: new Uint8Array(arrayBuffer),
+      data: new Uint8Array(originalBuffer.slice(0)),
       useWorkerFetch: true,
       isEvalSupported: false,
       useSystemFonts: true
@@ -112,26 +112,37 @@ export async function extractTextFromPdf(
     const pageTexts: string[] = [];
 
     for (let pageNum = 1; pageNum <= pdfDocument.numPages; pageNum++) {
-      const page = await pdfDocument.getPage(pageNum);
-      const textContent = await page.getTextContent();
+      try {
+        const page = await pdfDocument.getPage(pageNum);
+        const textContent = await page.getTextContent({
+          disableFontFace: true
+        }).catch((err: any) => {
+          console.warn(`[PDF.js] Échec flux de contenu page ${pageNum}:`, err?.message || err);
+          return null;
+        });
 
-      let lastY: number | null = null;
-      let pageStr = '';
+        if (!textContent || !textContent.items) continue;
 
-      for (const item of textContent.items as Array<{ str?: string; transform?: number[] }>) {
-        if (!item || typeof item.str !== 'string') continue;
-        const currentY = item.transform ? item.transform[5] : null;
+        let lastY: number | null = null;
+        let pageStr = '';
 
-        if (lastY !== null && currentY !== null && Math.abs(currentY - lastY) > 4) {
-          pageStr += '\n' + item.str;
-        } else {
-          pageStr += (pageStr.endsWith(' ') || item.str.startsWith(' ') ? '' : ' ') + item.str;
+        for (const item of textContent.items as Array<{ str?: string; transform?: number[] }>) {
+          if (!item || typeof item.str !== 'string') continue;
+          const currentY = item.transform ? item.transform[5] : null;
+
+          if (lastY !== null && currentY !== null && Math.abs(currentY - lastY) > 4) {
+            pageStr += '\n' + item.str;
+          } else {
+            pageStr += (pageStr.endsWith(' ') || item.str.startsWith(' ') ? '' : ' ') + item.str;
+          }
+          lastY = currentY;
         }
-        lastY = currentY;
-      }
 
-      if (pageStr.trim()) {
-        pageTexts.push(pageStr.trim());
+        if (pageStr.trim()) {
+          pageTexts.push(pageStr.trim());
+        }
+      } catch (pageErr) {
+        console.warn(`Erreur lecture texte direct page ${pageNum}:`, pageErr);
       }
     }
 
@@ -144,9 +155,13 @@ export async function extractTextFromPdf(
   }
 
   // 2. Méthode de Secours : Décompression native des flux FlateDecode du PDF
-  const streamText = await extractFromFlateStreams(arrayBuffer);
-  if (streamText && streamText.length > 50) {
-    return streamText;
+  try {
+    const streamText = await extractFromFlateStreams(originalBuffer.slice(0));
+    if (streamText && streamText.length > 50) {
+      return streamText;
+    }
+  } catch (flateErr) {
+    console.warn("Échec décompression Flate:", flateErr);
   }
 
   // 3. Méthode OCR Universelle (Windows, Mac, Linux) pour les PDF scannés / images
@@ -158,7 +173,7 @@ export async function extractTextFromPdf(
 
       if (!pdfDocument) {
         const loadingTask = pdfjsLib.getDocument({
-          data: new Uint8Array(arrayBuffer),
+          data: new Uint8Array(originalBuffer.slice(0)),
           useWorkerFetch: true,
           isEvalSupported: false,
           useSystemFonts: true
@@ -214,16 +229,16 @@ export async function extractTextFromPdf(
 
         // Importer dynamiquement Tesseract.js pour ne pas alourdir le bundle initial
         const { createWorker } = await import('tesseract.js');
-        // Utiliser le fichier de langue local servi par Vite (zéro dépendance CDN externe)
-        const origin = typeof window !== 'undefined' ? window.location.origin : '';
+        // Utiliser le CDN standard pour les données entraînées (fra.traineddata.gz)
         const worker = await createWorker('fra', 1, {
-          langPath: origin ? `${origin}/tessdata` : undefined,
-          gzip: false
+          langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+          gzip: true
         });
-        // PSM 3 : Segmentation automatique pleine page, préservant la structure globale
+        // PSM 3 : Segmentation automatique pleine page préservant toutes les lignes de texte et de tableau
         try {
           await worker.setParameters({
-            tessedit_pageseg_mode: '3' as any
+            tessedit_pageseg_mode: '3' as any,
+            preserve_interword_spaces: '1'
           });
         } catch (paramErr) {
           console.warn("Configuration PSM Tesseract:", paramErr);
@@ -242,9 +257,9 @@ export async function extractTextFromPdf(
           lastCanvas = canvas;
 
           if (pageNum === 1) {
-            // Sur la première page : tester 0° en premier avec image JPEG légère
+            // Sur la première page : tester 0° en premier
             if (onProgress) onProgress(`OCR page 1 (orientation initiale)...`);
-            const image0 = canvas.toDataURL('image/jpeg', 0.92);
+            const image0 = canvas.toDataURL('image/jpeg', 0.95);
             const ret0 = await worker.recognize(image0);
             const text0 = ret0.data.text || '';
             const kw0 = (text0.match(/bulletin|paie|traitement|indice|brut|net|cotisation|gennevilliers|urssaf|sft|matricule/gi) || []).length;
@@ -261,7 +276,7 @@ export async function extractTextFromPdf(
 
               for (const angle of anglesToTry) {
                 const rotCanvas = rotateCanvas(canvas, angle);
-                const imageSource = rotCanvas.toDataURL('image/jpeg', 0.92);
+                const imageSource = rotCanvas.toDataURL('image/jpeg', 0.95);
                 if (onProgress) onProgress(`OCR page 1 (orientation ${angle}°)...`);
                 const ret = await worker.recognize(imageSource);
                 const text = ret.data.text || '';
@@ -287,7 +302,7 @@ export async function extractTextFromPdf(
             // Pages 2 et suivantes : réutiliser directement l'angle détecté sur la page 1 (gain de vitesse 4x)
             if (onProgress) onProgress(`OCR page ${pageNum}/${totalPages}...`);
             const rotCanvas = rotateCanvas(canvas, detectedBestAngle);
-            const imageSource = rotCanvas.toDataURL('image/jpeg', 0.92);
+            const imageSource = rotCanvas.toDataURL('image/jpeg', 0.95);
             const ret = await worker.recognize(imageSource);
             const text = ret.data.text || '';
             if (text.trim()) {
@@ -337,7 +352,7 @@ export async function extractTextFromPdf(
 
   // 4. Dernier recours : chaînes brutes ASCII / Latin1
   try {
-    const bytes = new Uint8Array(arrayBuffer);
+    const bytes = new Uint8Array(originalBuffer.slice(0));
     const raw = new TextDecoder('latin1').decode(bytes);
     const matches: string[] = [];
     const regex = /\(([^()]{2,100})\)\s*(?:Tj|'|")/g;

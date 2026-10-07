@@ -1744,19 +1744,33 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
       return (prefix || '') + (minus ? '-' : '') + d1 + d2;
     });
 
-    const tokens = rest.split(/\s+/);
+    // Séparer les mots de texte au début des valeurs numériques à la fin
+    // Les colonnes Ciril sont structurées : [LIBELLE] puis [BASE] [TAUX] [MONTANT_SALARIAL] [TAUX_PAT] [MONTANT_PAT]
+    const allTokens = rest.split(/\s+/);
     const libelleWords: string[] = [];
     const numTokens: number[] = [];
     const rawNumTokens: string[] = [];
 
-    for (let i = 0; i < tokens.length; i++) {
-      const tokClean = tokens[i].replace(/[|\[\]{}«»~_“”'"`]/g, '');
+    // Détecter l'indice du premier token numérique marquant la fin du libellé
+    let foundFirstNumber = false;
+    for (let i = 0; i < allTokens.length; i++) {
+      const tokClean = allTokens[i].replace(/[|\[\]{}«»~_“”'"`]/g, '');
       if (/^[+-]?\d+(?:[.,]\d+)?$/.test(tokClean)) {
+        foundFirstNumber = true;
         numTokens.push(parseFloat(tokClean.replace(',', '.')));
         rawNumTokens.push(tokClean.replace(',', '.'));
-      } else if (numTokens.length === 0) {
-        if (tokClean.length > 0 && !/^[|:]$/.test(tokClean)) {
-          libelleWords.push(tokClean);
+      } else {
+        if (!foundFirstNumber) {
+          if (tokClean.length > 0 && !/^[|:]$/.test(tokClean)) {
+            libelleWords.push(tokClean);
+          }
+        } else {
+          // Si du texte apparaît après un nombre, nettoyer les unités éventuelles ("EUR", "€", "%")
+          if (/^(?:€|EUR|pts?|h)$/i.test(tokClean)) {
+            // Unité ignorée
+          } else {
+            // Nombre collé au libellé ou bruit OCR
+          }
         }
       }
     }
@@ -1765,37 +1779,7 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
     if (!libelle || libelle.length < 2) continue;
 
     if (numTokens.length === 0) {
-      if (code === "8444") {
-        numTokens.push(-131.51);
-        rawNumTokens.push("-131.51");
-      } else if (code === "7444") {
-        numTokens.push(933.53);
-        rawNumTokens.push("933.53");
-      } else if (code === "1737") {
-        if (!moisRappel) {
-          numTokens.push(-13.92);
-          rawNumTokens.push("-13.92");
-        } else if (moisRappel.includes("04")) {
-          numTokens.push(1.86);
-          rawNumTokens.push("1.86");
-        } else if (moisRappel.includes("05")) {
-          numTokens.push(8.59);
-          rawNumTokens.push("8.59");
-        }
-      } else if (code === "618") {
-        if (!moisRappel) {
-          numTokens.push(60.36);
-          rawNumTokens.push("60.36");
-        } else if (moisRappel.includes("04")) {
-          numTokens.push(-1.75);
-          rawNumTokens.push("-1.75");
-        } else if (moisRappel.includes("05")) {
-          numTokens.push(-9.55);
-          rawNumTokens.push("-9.55");
-        }
-      } else {
-        continue;
-      }
+      continue;
     }
 
     let base: number | undefined = undefined;
@@ -1846,167 +1830,57 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
         tauxPatronal = STATUTORY_RATES[code].patronal;
       }
     } else {
-      const classifiedTokens = numTokens.map((val, idx) => {
-        const raw = rawNumTokens[idx];
-        const hasDecimals = raw.includes('.');
-        const decCount = hasDecimals ? raw.split('.')[1].length : 0;
-        const isRateOrCount = (decCount >= 4) || (val >= 0.1 && val <= 100 && (decCount >= 1 || val === 30 || val === 100));
-        return { val, raw, isRateOrCount };
-      });
-
-      if (code === "61") {
-        base = numTokens[0] > 100 ? numTokens[0] : 1621.04;
-        taux = 6.9;
-        montant = -111.85;
-        tauxPatronal = 8.55;
-        montantPatronal = 138.60;
-      } else if (code === "67") {
-        base = 1561.46;
-        taux = 2.84;
-        montant = -44.35;
-        tauxPatronal = 4.27;
-        montantPatronal = 66.67;
-      } else if (code === "299") {
-        base = numTokens[0] > 100 ? numTokens[0] : 1621.04;
-        taux = 0.4;
-        montant = -6.48;
-        tauxPatronal = 2.11;
-        montantPatronal = 34.20;
-      } else if (code === "1620" || libelle.toLowerCase().includes("pourcentage fraction")) {
-        // Code 1620 R 05/2026 : Pourcentage fraction T -> -90.00 est dans la colonne Base ou Nombre
-        base = -90.00;
-        taux = undefined;
-        montant = undefined;
-      } else if (code === "28" || libelle.toLowerCase().includes("sans traitement")) {
-        // Code 28 R 05/2026 : Sans traitement -> 7.00 jours en Base ou Nombre
-        base = 7.00;
-        taux = undefined;
-        montant = undefined;
-      } else if (code === "618") {
-        // Code 618 : Indemnité différentielle RG
-        if (moisRappel?.includes("04")) {
-          montant = -1.75;
-        } else if (moisRappel?.includes("05")) {
-          montant = -9.55;
-        } else {
-          montant = 60.36;
-        }
-      } else if (code === "1679") {
-        if (moisRappel?.includes("04")) {
-          taux = 22.0;
-          montant = -433.59;
-        } else if (moisRappel?.includes("05")) {
-          base = -1806.66;
-          montant = -542.00;
-        }
-      } else if (code === "21") {
-        base = 1806.66;
-        if (moisRappel?.includes("04")) {
-          taux = 8.0;
-          montant = 240.89;
-        } else if (moisRappel?.includes("05")) {
-          taux = 23.0;
-          montant = 692.55;
-        }
-      } else if (code === "8444") {
-        // Prime semestrielle Juin RG (Retenue / ajustement négatif sur le brut)
-        base = undefined;
-        taux = undefined;
-        montant = -131.51;
-      } else if (code === "7444") {
-        // Compl rémunération Juin RG
-        base = 933.53;
-        taux = 85.8317;
-        montant = 933.53;
-      } else if (code === "1737") {
-        if (!moisRappel) {
-          montant = -13.92;
-        } else if (moisRappel?.includes("04")) {
-          montant = 1.86;
-        } else if (moisRappel?.includes("05")) {
-          montant = 8.59; // Rappel en gain positif sur le bulletin
-        }
-      } else if (code === "1592") {
-        if (!moisRappel) {
-          base = 362.00;
-          taux = 100.0;
-          montant = 362.00;
-        } else if (moisRappel?.includes("04")) {
-          taux = 79.3333; // 79.3333 % sur le bulletin original
-          montant = -38.61;
-        } else if (moisRappel?.includes("05")) {
-          taux = 38.3333;
-          montant = -211.16;
-        }
-      } else if (code === "17" && !moisRappel) {
-        base = 1806.66;
-        taux = 3.0;
-        montant = 54.19;
-      } else if (code === "17" && moisRappel?.includes("05")) {
-        base = -421.55;
-        taux = 3.0;
-        montant = -12.64;
-      } else if (code === "16" && (!moisRappel || !moisRappel.includes("05"))) {
-        base = 77.71;
-        taux = 100.0;
-        montant = 77.71;
-      } else if (code === "16" && moisRappel?.includes("05")) {
-        base = -18.13;
-        taux = 100.0;
-        montant = -18.13;
-      } else if (code === "56") {
-        base = 1592.67;
-        taux = 2.4;
-        montant = -38.22;
-      } else if (code === "57") {
-        base = 1592.67;
-        taux = 0.5;
-        montant = -7.96;
-      } else if (code === "55") {
-        base = 1592.67;
-        taux = 6.8;
-        montant = -108.30;
-      } else if (numTokens.length === 1) {
+      // Analyse sémantique des colonnes :
+      // Sur les bulletins Ciril FPT :
+      // - 1 chiffre : montant direct (ex: prime fixe, vacation, ou rappel sans base)
+      // - 2 chiffres :
+      //    * si [grand, petit <= 100] -> base + taux (le montant est le produit)
+      //    * si [petit <= 100, montant] -> taux + montant
+      //    * si [val1, val2] et val1 === val2 -> base + montant (taux 100% omis)
+      //    * sinon -> base + montant
+      // - 3 chiffres : base + taux + montant salarial (ordre standard Ciril : Base, Taux, Montant)
+      // - 4 chiffres : base + taux + montant salarial + montant patronal (ou taux patronal)
+      // - 5 chiffres : base + taux + montant salarial + taux patronal + montant patronal
+      if (numTokens.length === 1) {
         montant = numTokens[0];
       } else if (numTokens.length === 2) {
-        if (classifiedTokens[0].isRateOrCount && !classifiedTokens[1].isRateOrCount) {
-          taux = numTokens[0];
-          montant = numTokens[1];
-        } else if (!classifiedTokens[0].isRateOrCount && classifiedTokens[1].isRateOrCount) {
-          base = numTokens[0];
-          taux = numTokens[1];
-          montant = -Math.round(base * taux / 100 * 100) / 100;
+        const val0 = numTokens[0];
+        const val1 = numTokens[1];
+        if (Math.abs(val0 - val1) < 0.01) {
+          // Ex: "1 100.00 1 100.00" (Base = 1100, Montant = 1100, Taux 100% implicite)
+          base = val0;
+          taux = 100;
+          montant = val1;
+        } else if (val0 > 100 && val1 <= 100 && (rawNumTokens[1].includes('.') || val1 === 30 || val1 === 100)) {
+          // Base puis Taux
+          base = val0;
+          taux = val1;
+          montant = Math.round(base * (taux / 100) * 100) / 100;
+        } else if (val0 <= 100 && val1 > 100) {
+          // Taux puis Montant
+          taux = val0;
+          montant = val1;
         } else {
-          base = numTokens[0];
-          montant = numTokens[1];
+          // Cas par défaut à 2 nombres : Base puis Montant (ex: TIB ou indemnité sans colonne taux explicite)
+          base = val0;
+          montant = val1;
         }
-      } else if (numTokens.length >= 3) {
+      } else if (numTokens.length === 3) {
         base = numTokens[0];
         taux = numTokens[1];
         montant = numTokens[2];
-        if (numTokens.length >= 4) tauxPatronal = numTokens[3];
-        if (numTokens.length >= 5) montantPatronal = numTokens[4];
+      } else if (numTokens.length === 4) {
+        base = numTokens[0];
+        taux = numTokens[1];
+        montant = numTokens[2];
+        montantPatronal = numTokens[3];
+      } else if (numTokens.length >= 5) {
+        base = numTokens[0];
+        taux = numTokens[1];
+        montant = numTokens[2];
+        tauxPatronal = numTokens[3];
+        montantPatronal = numTokens[4];
       }
-    }
-
-    // Calibrage fin des cotisations patronales selon les montants officiels Mairie de Gennevilliers
-    if (code === "59") montantPatronal = 113.46;
-    if (code === "4050") montantPatronal = 97.26;
-    if (code === "332") montantPatronal = 4.87;
-    if (code === "64") montantPatronal = 55.92;
-    if (code === "1525") montantPatronal = 29.18;
-    if (code === "1251") montantPatronal = 8.12;
-    if (code === "66") montantPatronal = 32.10;
-    if (code === "75") montantPatronal = 51.89;
-    if (code === "67") montantPatronal = 66.67;
-    if (code === "73") montantPatronal = 8.12;
-    if (code === "74") montantPatronal = 14.59;
-    if (code === "1966") montantPatronal = 1.62;
-
-    if (code === "1584") {
-      base = 1303.88;
-      taux = undefined;
-      montant = undefined;
     }
 
     // Correction de virgule manquante sur OCR (ex: -4435 -> -44.35 €)
@@ -2036,72 +1910,6 @@ export function parseCirilBulletinLines(text: string): LigneBulletinCiril[] {
       tauxPatronal,
       montantPatronal,
       ...(moisRappel ? { moisRappel } : {})
-    });
-  }
-
-  // Récupération des primes spécifiques de Juin si omises par un scan partiel
-  if (!parsedLines.some(l => l.code === "7444") && /7444|compl(?:[ée]|e)?\s*r[ée]mun[ée]ration/i.test(text)) {
-    parsedLines.push({
-      code: "7444",
-      libelle: "Compl rémunération Juin RG",
-      base: 933.53,
-      taux: 85.8317,
-      montant: 933.53
-    });
-  }
-  if (!parsedLines.some(l => l.code === "8444") && /8444|prime\s*semestrielle/i.test(text)) {
-    parsedLines.push({
-      code: "8444",
-      libelle: "Prime semestrielle Juin RG",
-      montant: -131.51
-    });
-  }
-  // Garantir impérativement les 3 lignes du code 618 (Indemnité différentielle)
-  if (!parsedLines.some(l => l.code === "618" && !l.moisRappel)) {
-    parsedLines.push({
-      code: "618",
-      libelle: "Indem. différentielle RG P1",
-      montant: 60.36
-    });
-  }
-  if (!parsedLines.some(l => l.code === "618" && l.moisRappel?.includes("04"))) {
-    parsedLines.push({
-      code: "618",
-      moisRappel: "04/2026",
-      libelle: "Indem. différentielle",
-      montant: -1.75
-    });
-  }
-  if (!parsedLines.some(l => l.code === "618" && l.moisRappel?.includes("05"))) {
-    parsedLines.push({
-      code: "618",
-      moisRappel: "05/2026",
-      libelle: "Indem. différentielle",
-      montant: -9.55
-    });
-  }
-  // Garantir impérativement les 3 lignes du code 1737 (Transfert primes/points PPCR)
-  if (!parsedLines.some(l => l.code === "1737" && !l.moisRappel)) {
-    parsedLines.push({
-      code: "1737",
-      libelle: "Transfert primes/points RG",
-      montant: -13.92
-    });
-  }
-  if (!parsedLines.some(l => l.code === "1737" && l.moisRappel?.includes("04"))) {
-    parsedLines.push({
-      code: "1737",
-      moisRappel: "04/2026",
-      libelle: "Transfert primes/point",
-      montant: 1.86
-    });
-  }
-  if (!parsedLines.some(l => l.code === "1737" && l.moisRappel?.includes("05"))) {
-    parsedLines.push({
-      code: "1737",
-      moisRappel: "05/2026",
-      libelle: "Transfert primes/point",
-      montant: 8.59
     });
   }
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Sparkles, MousePointerClick } from 'lucide-react';
 import {
   CalculParams,
   FichePaieAnalyseResult
@@ -433,7 +433,15 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
 
             {/* En-tête : BULLETIN DE PAIE + employeur */}
             <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 pt-3 pb-2">
-              <h1 className="text-xl font-bold tracking-tight text-slate-900">BULLETIN DE PAIE</h1>
+              <div>
+                <h1 className="text-xl font-bold tracking-tight text-slate-900">BULLETIN DE PAIE</h1>
+                {/* Bulle informative très visible avec effet visuel pulsant */}
+                <div className="mt-1.5 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-300 text-slate-950 rounded-full text-[11px] font-black shadow-md shadow-orange-500/25 animate-pulse border border-orange-500">
+                  <MousePointerClick className="w-3.5 h-3.5 shrink-0 animate-bounce text-slate-950" />
+                  <span className="text-slate-950">💡 Cliquer sur une ligne pour l'explication</span>
+                  <Sparkles className="w-3.5 h-3.5 text-orange-950 shrink-0" />
+                </div>
+              </div>
               <div className="text-right text-[10px] leading-snug text-slate-700">
                 <p className="font-bold text-[12px]">1 Mairie de Gennevilliers</p>
                 <p>177 Avenue Gabriel Péri</p>

@@ -250,6 +250,14 @@ const CODES_EXPLIQUES: Record<string, {
     attention: "Cette indemnité suit l'évolution du SMIC : si le point d'indice augmente moins vite que le SMIC, elle peut perdurer sur les bas d'échelons.",
     reference: "Salaire minimum — Art. L. 2410-1 et suivants du Code du travail"
   },
+  montant_net_social: {
+    titre: "Le Montant Net Social",
+    simple: "C'est le revenu net de référence utilisé pour le calcul de certaines aides de la CAF (Prime d'activité, RSA). Il est obligatoire depuis juillet 2023.",
+    pourquoi: "L'État a standardisé ce calcul pour simplifier les démarches des allocataires. Ce montant est directement transmis par l'employeur à la CAF (via la DSN).",
+    verifier: "Vous n'avez aucun calcul à faire. Si vous demandez la Prime d'activité ou le RSA, c'est exactement ce montant (souvent pré-rempli) qu'il faut déclarer.",
+    attention: "Le Montant Net Social est souvent supérieur au « net à payer » : il inclut par exemple la part mutuelle payée par l'employeur et ne déduit pas l'impôt à la source.",
+    reference: "Arrêté du 31 janvier 2023 fixant le modèle de bulletin de paie"
+  },
   nbi_detache: {
     titre: "La NBI détachée (promotion en stage ou détachement)",
     simple: "Versée lorsque l'agent a obtenu une promotion et est en stage sur sa nouvelle catégorie, ou lorsqu'il est détaché : il continue de percevoir la NBI attachée à son ancien grade pendant toute la durée du stage ou du détachement.",

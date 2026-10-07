@@ -2046,7 +2046,7 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "472": { cat: "retenue", expl: "ircantec" },
   "1735": { cat: "gain", expl: "ppcr", libelle: "Transfert primes/points Tit." },
   "1737": { cat: "gain", expl: "ppcr", libelle: "Transfert primes/points RG" },
-  "1584": { cat: "info", libelle: "Montant net social" },
+  "1584": { cat: "info", expl: "montant_net_social", libelle: "Montant net social" },
   "617": { cat: "gain", expl: "indem_differentielle", libelle: "Indem. différentielle" },
   "618": { cat: "gain", expl: "indem_differentielle", libelle: "Indem. différentielle RG P1" },
   "1620": { cat: "gain", expl: "tib", libelle: "Pourcentage fraction T" },

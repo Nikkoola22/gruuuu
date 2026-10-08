@@ -548,7 +548,7 @@ export const CongesMaladie: React.FC = () => {
                     key={t.id}
                     type="button"
                     onClick={() => {
-                      setTrancheAnciennete(t.id as any);
+                      setTrancheAnciennete(t.id as "moins_4m" | "4m_2a" | "2a_3a" | "plus_3a");
                       setDateFonction("");
                       setShowResult(false);
                     }}

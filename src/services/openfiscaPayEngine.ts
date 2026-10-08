@@ -578,10 +578,7 @@ export interface FichePaieAnalyseResult {
     differenceNet: number;
   };
   openFiscaCodeSnippet: string;
-  metadata?: {
-    rawText?: string;
-    detectedItems?: string[];
-  };
+  metadata?: ParseMetadata | null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -854,7 +851,7 @@ export interface CalculParams {
  * Exécute la simulation complète de la fiche de paie selon les formules OpenFisca-France
  * et la doctrine de calcul Ciril RH Ville de Gennevilliers
  */
-export function computeOpenFiscaPay(params: CalculParams, metadata?: ParseMetadata): FichePaieAnalyseResult {
+export function computeOpenFiscaPay(params: CalculParams, metadata?: ParseMetadata | null): FichePaieAnalyseResult {
   // Un bulletin reconstruit ligne à ligne depuis un vrai PDF : on copie les rubriques réelles
   // (codes, bases, taux, montants) et les totaux imprimés → zéro écart par construction.
   if (params.lignesReelles && params.lignesReelles.length > 0) {
@@ -2153,7 +2150,7 @@ const normaliser = (s: string) =>
 function computeOpenFiscaPayDepuisLignesReelles(
   params: CalculParams,
   lignesReelles: LigneBulletinCiril[],
-  metadata?: ParseMetadata
+  metadata?: ParseMetadata | null
 ): FichePaieAnalyseResult {
   const {
     nomAgent = "AGENT Public",
@@ -2178,6 +2175,11 @@ function computeOpenFiscaPayDepuisLignesReelles(
   let sommeRetenuesNet = 0;
   let sommePatronales = 0;
   let csgNonDed = 0;
+  // Agrégats par rubrique (codes Ciril réels) pour les totaux du bulletin reconstruit
+  let aggNbi = 0;
+  let aggResidence = 0;
+  let aggSft = 0;
+  let aggIfse = 0;
   let crds = 0;
 
   for (let idx = 0; idx < lignesReelles.length; idx++) {
@@ -2206,6 +2208,11 @@ function computeOpenFiscaPayDepuisLignesReelles(
       sommePatronales += patronal ?? 0;
     } else if (montant > 0) {
       sommeGains += montant;
+      // Détail par rubrique : codes 9 (NBI), 12 (résidence), 10/11 (SFT), 1591 (IFSE)
+      if (lr.code === "9") aggNbi += montant;
+      else if (lr.code === "12") aggResidence += montant;
+      else if (lr.code === "10" || lr.code === "11") aggSft += montant;
+      else if (lr.code === "1591") aggIfse += montant;
     } else if (montant < 0) {
       if (cat === "retenue_net") sommeRetenuesNet += -montant;
       else if (cat === "retenue") sommeRetenuesSociales += -montant;
@@ -2308,10 +2315,10 @@ function computeOpenFiscaPayDepuisLignesReelles(
     lignesReelles,
     totaux: {
       traitementBase: r2(sommeGains),
-      nbi: 0,
-      indemniteResidence: 0,
-      sft: 0,
-      primesIfse: 0,
+      nbi: r2(aggNbi),
+      indemniteResidence: r2(aggResidence),
+      sft: r2(aggSft),
+      primesIfse: r2(aggIfse),
       primesCia: 0,
       autresPrimes: 0,
       abattementPpcr: 0,

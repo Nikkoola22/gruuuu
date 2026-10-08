@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen, Sparkles, MousePointerClick } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import {
   CalculParams,
   FichePaieAnalyseResult

@@ -194,41 +194,11 @@ export default function CoinRH({ onClose, theme = "dark" }: CoinRHProps) {
               <span className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-emerald-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
                 Coin du Défenseur • Actes & Légalité
               </span>
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/40">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Ville de Gennevilliers
-              </span>
             </div>
             <p className={`text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`}>
               Contrôle de conformité statutaire et rédaction automatisée d'actes officiels CGFP & CGCT
             </p>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => {
-              setAutoDefenseInitialTab("instances");
-              setIsAutoDefenseOpen(true);
-            }}
-            className="hidden sm:inline-flex px-3.5 py-1.5 rounded-xl bg-rose-600/90 hover:bg-rose-600 text-white font-bold text-xs border border-rose-500/40 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer hover:scale-105 active:scale-95 shrink-0"
-            title="Saisine CAP, CCP, F3SCT / CST"
-          >
-            <Users className="w-3.5 h-3.5" />
-            <span>Saisine Instances CGFP</span>
-          </button>
-          <button
-            onClick={() => {
-              setAutoDefenseInitialTab("recours");
-              setIsAutoDefenseOpen(true);
-            }}
-            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs shadow-md shadow-orange-500/20 flex items-center gap-1.5 transition-all cursor-pointer hover:scale-105 active:scale-95 shrink-0"
-          >
-            <Gavel className="w-3.5 h-3.5" />
-            <span>Guichet d'Auto-Défense</span>
-          </button>
-          <span className="hidden md:inline-flex text-xs px-3 py-1.5 rounded-xl bg-[#131C33] text-indigo-300 border border-indigo-500/30 font-bold items-center gap-1.5">
-            <Scale className="w-3.5 h-3.5" /> 38 Modèles Certifiés
-          </span>
         </div>
       </div>
 

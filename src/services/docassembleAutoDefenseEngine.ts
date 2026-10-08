@@ -1280,7 +1280,6 @@ ${piecesJointes.map((p, i) => `${i + 1}. ${p}`).join("\n") || "- Contrat de trav
   // 3. F3SCT / CST : FORMATION SPÉCIALISÉE EN SANTÉ, SÉCURITÉ ET CONDITIONS DE TRAVAIL
   // ==========================================
   else {
-    const autoriteCible = destinataireInstance || `Monsieur le Président de la F3SCT / CST et aux Représentants du Personnel (${collectivite})`;
 
     let libelleF3sct = "";
     if (motifF3sct === "danger_grave_imminent") libelleF3sct = "Signalement de Danger Grave et Imminent (DGI) - Inscription au Registre Spécial";

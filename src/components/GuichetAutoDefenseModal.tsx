@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Scale,
@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   AlertTriangle,
   Clock,
-  Calendar,
   Download,
   Copy,
   Printer,
@@ -19,14 +18,10 @@ import {
   Trash2,
   ExternalLink,
   Code2,
-  ChevronRight,
   Info,
-  Check,
   AlertOctagon,
-  HelpCircle,
   FileCode,
-  Users,
-  Landmark
+  Users
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { toast } from "sonner";
@@ -93,7 +88,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
     piecesJointes: ["Fiche de poste", "Planning d'activité", "Échanges de courriels avec le chef de service"]
   });
 
-  const [dateRecoursGracieuxInterruption, setDateRecoursGracieuxInterruption] = useState<string>("");
+  const [dateRecoursGracieuxInterruption] = useState<string>("");
 
   // Calcul dynamique de recevabilité en temps réel
   const recevabiliteInfo = calculateRecevabiliteCja(
@@ -430,6 +425,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
   const handleExportDocx = (title: string, rawText: string) => {
     exportToOfficialDocx({
       title,
+      content: rawText,
       rawText,
       docType: "arrete"
     });
@@ -545,7 +541,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 key={tab.id}
                 type="button"
                 onClick={() => {
-                  setActiveTab(tab.id as any);
+                  setActiveTab(tab.id as "recours" | "protection" | "instances" | "requete" | "bordereau" | "docassemble");
                   if (tab.id === "recours" && !generatedRecours) handleGenerateRecours();
                   if (tab.id === "protection" && !generatedProtection) handleGenerateProtection();
                   if (tab.id === "instances" && !generatedSaisine) handleGenerateSaisine();
@@ -1051,7 +1047,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <label key={item.key} className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
                       <input
                         type="checkbox"
-                        checked={(protectionData.mesuresUrgenceDemandeess as any)[item.key]}
+                        checked={(protectionData.mesuresUrgenceDemandeess as Record<string, boolean>)[item.key]}
                         onChange={(e) => setProtectionData({
                           ...protectionData,
                           mesuresUrgenceDemandeess: {
@@ -1189,7 +1185,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                               : inst.id === "ccp"
                                 ? saisineData.motifCcp || "licenciement_contractuel_insuffisance"
                                 : saisineData.motifF3sct || "danger_grave_imminent";
-                            applyMotifDefaults(inst.id as TypeInstanceParitaire, targetMotif as any);
+                            applyMotifDefaults(inst.id as TypeInstanceParitaire, targetMotif);
                           }}
                           className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-1.5 ${
                             isChosen
@@ -1687,7 +1683,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   </label>
                   <select
                     value={requeteData.typeRequete}
-                    onChange={(e) => setRequeteData({ ...requeteData, typeRequete: e.target.value as any })}
+                    onChange={(e) => setRequeteData({ ...requeteData, typeRequete: e.target.value as "rep_seul" | "rep_et_refere" })}
                     className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-indigo-500"
                   >
                     <option value="rep_et_refere">Requête au Fond (REP) + Référé-Suspension (L. 521-1 CJA)</option>
@@ -1977,7 +1973,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   <div className="flex items-center justify-between gap-2 pt-1">
                     <select
                       value={nouvellePiece.categorie}
-                      onChange={(e) => setNouvellePiece({ ...nouvellePiece, categorie: e.target.value as any })}
+                      onChange={(e) => setNouvellePiece({ ...nouvellePiece, categorie: e.target.value as "decision" | "recours" | "echange" | "medical" | "temoignage" | "autre" })}
                       className="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white"
                     >
                       <option value="decision">Décision administrative</option>
@@ -2116,7 +2112,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 <span className="text-xs font-bold text-slate-300">Scénario de l'interview :</span>
                 <select
                   value={docassembleScenario}
-                  onChange={(e) => setDocassembleScenario(e.target.value as any)}
+                  onChange={(e) => setDocassembleScenario(e.target.value as "recours_gracieux" | "requete_ta" | "protection_fonctionnelle" | "saisine_instances")}
                   className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-purple-500"
                 >
                   <option value="recours_gracieux">Interview 1 : Recours Gracieux & Calcul R. 421-5 CJA</option>

@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Mail,
-  FileText,
   Download,
   Printer,
   Copy,
@@ -12,13 +11,7 @@ import {
   RotateCcw,
   Search,
   ArrowLeft,
-  Calendar,
-  Paperclip,
-  Sparkles,
   Clock,
-  Send,
-  Eye,
-  Settings,
   ChevronRight,
   ShieldCheck,
   UserCheck
@@ -156,7 +149,7 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
     return generateFullCourrierText(
       {
         ...currentTemplate,
-        modeEnvoiDefaut: (modeEnvoi || currentTemplate.modeEnvoiDefaut) as any,
+        modeEnvoiDefaut: (modeEnvoi || currentTemplate.modeEnvoiDefaut) as CourrierTemplate['modeEnvoiDefaut'],
         piecesJointesDefaut: customPj,
         generateBody: () => dynamicBodyText
       },
@@ -891,7 +884,7 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
                 <select
                   value={tempProfile.civilite}
                   onChange={(e) =>
-                    setTempProfile({ ...tempProfile, civilite: e.target.value as any })
+                    setTempProfile({ ...tempProfile, civilite: e.target.value as AgentProfile['civilite'] })
                   }
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white"
                 >

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FileSignature, Copy, CheckCircle2, User, Building, Calendar, Info, RefreshCw, CheckCircle } from "lucide-react";
+import { FileSignature, Copy, CheckCircle2, User, Building, Calendar, Info, RefreshCw } from "lucide-react";
 import { fptCadres, echelonsList, getIndicesForGradeAndEchelon } from "../../utils/fptData";
 
 export const ArrReintegration: React.FC = () => {
   // 1. AUTORITÉ TERRITORIALE & SIGNATURE
   const [numeroArrete, setNumeroArrete] = useState("");
-  const [titreAutorite, setTitreAutorite] = useState("Le Maire");
+  const [titreAutorite] = useState("Le Maire");
   const [collectivite, setCollectivite] = useState("Commune de Gennevilliers");
   const [departement, setDepartement] = useState("Hauts-de-Seine");
   const [villeSignature, setVilleSignature] = useState("Gennevilliers");
@@ -217,7 +217,7 @@ export const ArrReintegration: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Position antérieure</label>
-                <select value={motifPrecedent} onChange={(e) => setMotifPrecedent(e.target.value as any)} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white">
+                <select value={motifPrecedent} onChange={(e) => setMotifPrecedent(e.target.value as "disponibilite" | "conge_parental" | "detachement")} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white">
                   <option value="disponibilite">Après disponibilité</option>
                   <option value="conge_parental">Après congé parental</option>
                   <option value="detachement">Après détachement</option>

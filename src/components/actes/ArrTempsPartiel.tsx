@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FileSignature, Copy, CheckCircle2, User, Building, Calendar, Info, Clock, Check } from "lucide-react";
+import { FileSignature, Copy, CheckCircle2, User, Building, Calendar, Info, Clock } from "lucide-react";
 import { fptCadres, echelonsList, getIndicesForGradeAndEchelon } from "../../utils/fptData";
 
 export const ArrTempsPartiel: React.FC = () => {
   // 1. AUTORITÉ TERRITORIALE & SIGNATURE
   const [numeroArrete, setNumeroArrete] = useState("");
-  const [titreAutorite, setTitreAutorite] = useState("Le Maire");
+  const [titreAutorite] = useState("Le Maire");
   const [collectivite, setCollectivite] = useState("Commune de Gennevilliers");
   const [departement, setDepartement] = useState("Hauts-de-Seine");
   const [villeSignature, setVilleSignature] = useState("Gennevilliers");
@@ -29,7 +29,6 @@ export const ArrTempsPartiel: React.FC = () => {
   const [dateDemande, setDateDemande] = useState("");
   const [dateDebut, setDateDebut] = useState("");
   const [dateFin, setDateFin] = useState("");
-  const [dureeMois, setDureeMois] = useState("1 an");
   const [organisationService, setOrganisationService] = useState("Service non travaillé le mercredi (soit 28h hebdomadaires réparties sur 4 jours)");
   const [surcotisation, setSurcotisation] = useState(false);
 
@@ -247,7 +246,7 @@ export const ArrTempsPartiel: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Quotité de temps de travail</label>
-                <select value={quotite} onChange={(e) => setQuotite(e.target.value as any)} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white font-bold">
+                <select value={quotite} onChange={(e) => setQuotite(e.target.value as "50" | "60" | "70" | "80" | "90")} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white font-bold">
                   <option value="50">50 % (payé 50 %)</option>
                   <option value="60">60 % (payé 60 %)</option>
                   <option value="70">70 % (payé 70 %)</option>

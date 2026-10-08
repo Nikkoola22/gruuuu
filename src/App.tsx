@@ -198,7 +198,7 @@ interface InfoItem {
   content: string
 }
 export interface ChatbotState {
-  currentView: "menu" | "chat" | "metiers" | "calculators" | "veille" | "simul-agent" | "native-calculator"
+  currentView: "menu" | "chat" | "metiers" | "calculators" | "veille" | "simul-agent" | "native-calculator" | "faq" | "jeux" | "actualites" | "veille-cdg" | "memoire-juridique" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "podcasts"
   selectedDomain: number | null
   messages: ChatMessage[]
   isProcessing: boolean

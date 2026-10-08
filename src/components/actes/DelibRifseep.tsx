@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { FileText, Copy, CheckCircle2, Building2, User, Users, Calendar, Gavel, Scale, Info, Layers, DollarSign } from "lucide-react";
+import { FileText, Copy, CheckCircle2, Layers, DollarSign } from "lucide-react";
 
 export const DelibRifseep: React.FC = () => {
   // 1. COLLECTIVITÉ & SÉANCE
   const [collectivite, setCollectivite] = useState("Commune de Gennevilliers");
-  const [departement, setDepartement] = useState("Hauts-de-Seine");
-  const [organe, setOrgane] = useState("Le Conseil Municipal");
+  const [departement] = useState("Hauts-de-Seine");
+  const [organe] = useState("Le Conseil Municipal");
   const [numeroDelib, setNumeroDelib] = useState("");
   const [dateSeance, setDateSeance] = useState("");
   const [president, setPresident] = useState("Monsieur Patrice LECLERC, Maire");
-  const [secretaire, setSecretaire] = useState("");
+  const [secretaire] = useState("");
   const [dateCST, setDateCST] = useState("");
   const [dateEffet, setDateEffet] = useState("");
 

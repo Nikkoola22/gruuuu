@@ -175,7 +175,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
       setUploadedFileName(file.name);
       setUploadedRawText(text);
 
-      const parseResult = parseUploadedPaySlipWithMeta(text, file.name);
+      const parseResult = parseUploadedPaySlipWithMeta(text);
       setUploadMetadata(parseResult.metadata);
       setParams({
         zoneResidence: 1,
@@ -220,7 +220,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
 
     setIsParsing(true);
     try {
-      const parseResult = parseUploadedPaySlipWithMeta(pastedText, "Texte collé");
+      const parseResult = parseUploadedPaySlipWithMeta(pastedText);
       setUploadedFileName("Texte collé manuellement");
       setUploadedRawText(pastedText);
       setUploadMetadata(parseResult.metadata);
@@ -329,7 +329,18 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
         <div className="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
           <div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
-              Glissez votre bulletin PDF, Word ou Scan. Le texte est analysé en mémoire sans quitter votre poste.
+              Récupérez votre fiche de paie depuis le{' '}
+              <a
+                href="https://gennevilliers-sirh-portail.ciril.net/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 font-bold text-teal-600 dark:text-teal-400 hover:underline cursor-pointer"
+              >
+                portail agent
+                <ExternalLink className="w-3 h-3" />
+              </a>{' '}
+              (SIRH Ville de Gennevilliers), puis glissez le PDF téléchargé ici — le texte est
+              analysé en mémoire sans quitter votre poste.
             </p>
 
             <div
@@ -540,7 +551,7 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                 </label>
                 <select
                   value={params.statut || "titulaire"}
-                  onChange={(e) => setParams(prev => ({ ...prev, statut: e.target.value as any }))}
+                  onChange={(e) => setParams(prev => ({ ...prev, statut: e.target.value as "titulaire" | "contractuel" | "stagiaire" }))}
                   className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
                 >
                   <option value="titulaire">Fonctionnaire Titulaire (CNRACL + RAFP)</option>

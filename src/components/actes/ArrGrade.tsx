@@ -5,12 +5,11 @@ import { fptCadres, echelonsList, getIndicesForGradeAndEchelon } from "../../uti
 export const ArrGrade: React.FC = () => {
   // 1. AUTORITÉ TERRITORIALE & SIGNATURE
   const [numeroArrete, setNumeroArrete] = useState("");
-  const [titreAutorite, setTitreAutorite] = useState("Le Maire");
+  const [titreAutorite] = useState("Le Maire");
   const [collectivite, setCollectivite] = useState("Commune de Gennevilliers");
   const [departement, setDepartement] = useState("Hauts-de-Seine");
   const [villeSignature, setVilleSignature] = useState("Gennevilliers");
   const [dateArrete, setDateArrete] = useState("");
-  const [chargeExecution, setChargeExecution] = useState("La directrice générale des services");
 
   // 2. AGENT
   const [civilite, setCivilite] = useState("Monsieur");

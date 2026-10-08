@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FileSignature, Copy, CheckCircle2, User, Building, Calendar, Info, Clock, AlertTriangle } from "lucide-react";
+import { FileSignature, Copy, CheckCircle2, User, Building, Calendar, Info, Clock } from "lucide-react";
 import { fptCadres, echelonsList, getIndicesForGradeAndEchelon } from "../../utils/fptData";
 
 export const ArrDisponibilite: React.FC = () => {
   // 1. AUTORITÉ TERRITORIALE & SIGNATURE
   const [numeroArrete, setNumeroArrete] = useState("");
-  const [titreAutorite, setTitreAutorite] = useState("Le Maire");
+  const [titreAutorite] = useState("Le Maire");
   const [collectivite, setCollectivite] = useState("Commune de Gennevilliers");
   const [departement, setDepartement] = useState("Hauts-de-Seine");
   const [villeSignature, setVilleSignature] = useState("Gennevilliers");

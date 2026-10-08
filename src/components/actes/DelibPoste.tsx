@@ -12,8 +12,8 @@ export const DelibPoste: React.FC = () => {
   const [heureSeance, setHeureSeance] = useState("19:00");
   const [president, setPresident] = useState("Monsieur Patrice LECLERC, Maire");
   const [secretaire, setSecretaire] = useState("");
-  const [dateAffichage, setDateAffichage] = useState("");
-  const [dateTransmPrefecture, setDateTransmPrefecture] = useState("");
+  const [dateAffichage] = useState("");
+  const [dateTransmPrefecture] = useState("");
 
   // Structures hiérarchiques
   const [structures, setStructures] = useState<string[]>([

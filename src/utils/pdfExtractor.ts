@@ -5,6 +5,7 @@
 
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.js?url';
+import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 
 // Initialisation immédiate du worker
 if (typeof window !== 'undefined') {
@@ -99,7 +100,7 @@ export async function extractTextFromPdf(
   const originalBuffer = fileOrBuffer instanceof File ? await fileOrBuffer.arrayBuffer() : fileOrBuffer;
 
   // 1. Méthode Principale : PDF.js avec worker local bundlé par Vite
-  let pdfDocument: any = null;
+  let pdfDocument: PDFDocumentProxy | null = null;
   try {
     const loadingTask = pdfjsLib.getDocument({
       data: new Uint8Array(originalBuffer.slice(0)),
@@ -114,10 +115,8 @@ export async function extractTextFromPdf(
     for (let pageNum = 1; pageNum <= pdfDocument.numPages; pageNum++) {
       try {
         const page = await pdfDocument.getPage(pageNum);
-        const textContent = await page.getTextContent({
-          disableFontFace: true
-        }).catch((err: any) => {
-          console.warn(`[PDF.js] Échec flux de contenu page ${pageNum}:`, err?.message || err);
+        const textContent = await page.getTextContent().catch((err: unknown) => {
+          console.warn(`[PDF.js] Échec flux de contenu page ${pageNum}:`, err instanceof Error ? err.message : err);
           return null;
         });
 
@@ -183,7 +182,7 @@ export async function extractTextFromPdf(
 
       if (pdfDocument && pdfDocument.numPages >= 1) {
         // Fonction de rendu à résolution optimale (~200 DPI, scale 2.0-2.4) avec fond blanc opaque obligatoire pour Tesseract
-        const renderPageToCanvas = async (page: any): Promise<HTMLCanvasElement | null> => {
+        const renderPageToCanvas = async (page: PDFPageProxy): Promise<HTMLCanvasElement | null> => {
           const baseVp = page.getViewport({ scale: 1.0 });
           // Scale optimal 2.0 à 2.5 (~1654 px de large, 200 DPI) : taille idéale pour LSTM Tesseract sans saturer la RAM Wasm
           const optimalScale = Math.min(2.5, Math.max(1.8, 1654 / (baseVp.width || 595)));
@@ -228,7 +227,7 @@ export async function extractTextFromPdf(
         };
 
         // Importer dynamiquement Tesseract.js pour ne pas alourdir le bundle initial
-        const { createWorker } = await import('tesseract.js');
+        const { createWorker, PSM } = await import('tesseract.js');
         const origin = typeof window !== 'undefined' ? window.location.origin : '';
         const worker = await createWorker('fra', 1, {
           langPath: origin ? `${origin}/tessdata` : undefined,
@@ -238,7 +237,7 @@ export async function extractTextFromPdf(
         // PSM 3 : Segmentation automatique pleine page préservant toutes les lignes de texte et de tableau
         try {
           await worker.setParameters({
-            tessedit_pageseg_mode: '3' as any,
+            tessedit_pageseg_mode: PSM.AUTO,
             preserve_interword_spaces: '1'
           });
         } catch (paramErr) {
@@ -327,7 +326,7 @@ export async function extractTextFromPdf(
               bCtx.fillStyle = '#FFFFFF';
               bCtx.fillRect(0, 0, bottomCanvas.width, cropH);
               bCtx.drawImage(orientedLastCanvas, 0, cropY, orientedLastCanvas.width, cropH, 0, 0, orientedLastCanvas.width, cropH);
-              await worker.setParameters({ tessedit_pageseg_mode: '6' as any });
+              await worker.setParameters({ tessedit_pageseg_mode: PSM.SINGLE_BLOCK });
               const bottomImage = bottomCanvas.toDataURL('image/jpeg', 0.92);
               const retBottom = await worker.recognize(bottomImage);
               if (retBottom.data.text && retBottom.data.text.trim().length > 20) {
@@ -364,7 +363,7 @@ export async function extractTextFromPdf(
     if (matches.length > 5) {
       return matches.join(' ');
     }
-  } catch (e) {
+  } catch {
     // ignore
   }
 

@@ -30,6 +30,7 @@ import {
   generateRecoursGracieux,
   getDefaultRecoursContent,
   generateDemandeProtectionFonctionnelle,
+  getDefaultProtectionContent,
   generateSaisineInstanceParitaire,
   getDefaultSaisineContent,
   generateRequeteTa,
@@ -108,7 +109,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
   // ─────────────────────────────────────────────────────────────
   // ÉTAT DU VOLET 2 : PROTECTION FONCTIONNELLE
   // ─────────────────────────────────────────────────────────────
-  const [protectionData, setProtectionData] = useState<ProtectionFonctionnelleFormData>({
+  const initialProtectionDefaults = getDefaultProtectionContent("agression_physique");
+  const initialProtectionState: ProtectionFonctionnelleFormData = {
     nomAgent: "DUPONT",
     prenomAgent: "Alexandre",
     grade: "Adjoint technique principal de 2ème classe",
@@ -117,27 +119,23 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
     autoriteDestinataire: "Monsieur le Maire de Gennevilliers",
     dateDemande: new Date().toISOString().split("T")[0],
     typeAtteinte: "agression_physique",
-    chronologieFaits: "Le lundi 28 septembre 2026 vers 10h15, lors d'une intervention sur la voie publique rue Louis-Calmel, un individu s'est approché de l'équipe et a proféré des menaces de mort réitérées à mon encontre avant de me porter un coup de poing au visage.",
-    temoinsIdentifies: "Collègue M. Jean D. (Agent technique) et Mme Sarah K. (Adjointe technique), présents lors de l'agression.",
-    depotPlainteOuMainCourante: true,
-    referencePlainte: "Plainte pénale n° 2026/04812 déposée au Commissariat de Police de Gennevilliers le 28/09/2026",
-    arretTravailOuItt: true,
-    dureeItt: "6 jours d'ITT délivrés par le médecin des Urgences Médico-Judiciaires de Nanterre",
-    mesuresUrgenceDemandeess: {
-      priseEnChargeFraisAvocat: true,
-      changementAffectationConservatoire: false,
-      signalementArt40Cpp: true,
-      soutienPsychologique: true
-    },
-    detailsPrejudice: "Traumatisme crânien sans perte de connaissance, contusion faciale sévère, stress post-traumatique aigu entraînant insomnies et anxiété réactionnelle."
-  });
-
+    chronologieFaits: initialProtectionDefaults.chronologieFaits,
+    temoinsIdentifies: initialProtectionDefaults.temoinsIdentifies,
+    depotPlainteOuMainCourante: initialProtectionDefaults.depotPlainteOuMainCourante,
+    referencePlainte: initialProtectionDefaults.referencePlainte,
+    arretTravailOuItt: initialProtectionDefaults.arretTravailOuItt,
+    dureeItt: initialProtectionDefaults.dureeItt,
+    mesuresUrgenceDemandeess: initialProtectionDefaults.mesuresUrgenceDemandeess,
+    detailsPrejudice: initialProtectionDefaults.detailsPrejudice,
+    piecesJointes: initialProtectionDefaults.piecesJointes
+  };
+  const [protectionData, setProtectionData] = useState<ProtectionFonctionnelleFormData>(initialProtectionState);
   const [generatedProtection, setGeneratedProtection] = useState<{
     titre: string;
     texteOfficiel: string;
     miseEnDemeureDate: string;
     fondementsJuridiques: string[];
-  } | null>(null);
+  } | null>(() => generateDemandeProtectionFonctionnelle(initialProtectionState));
 
   // ─────────────────────────────────────────────────────────────
   // ÉTAT DU VOLET 3 : SAISINE DES INSTANCES PARITAIRES (CAP, CCP, F3SCT)
@@ -327,6 +325,12 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
     setGeneratedRecours(res);
   }, [recoursData]);
 
+  // Synchronisation continue de la demande de protection fonctionnelle officielle dès toute modification
+  useEffect(() => {
+    const res = generateDemandeProtectionFonctionnelle(protectionData);
+    setGeneratedProtection(res);
+  }, [protectionData]);
+
   const handleMotifRefusChange = (newMotif: MotifRefus) => {
     const defaults = getDefaultRecoursContent(newMotif);
     const updated: RecoursGracieuxFormData = {
@@ -341,6 +345,27 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
     const res = generateRecoursGracieux(updated);
     setGeneratedRecours(res);
     toast.success(`Modèle adapté au motif : ${res.titre}`);
+  };
+
+  const handleTypeAtteinteChange = (newType: TypeAtteinteProtection) => {
+    const defaults = getDefaultProtectionContent(newType);
+    const updated: ProtectionFonctionnelleFormData = {
+      ...protectionData,
+      typeAtteinte: newType,
+      chronologieFaits: defaults.chronologieFaits,
+      temoinsIdentifies: defaults.temoinsIdentifies,
+      depotPlainteOuMainCourante: defaults.depotPlainteOuMainCourante,
+      referencePlainte: defaults.referencePlainte,
+      arretTravailOuItt: defaults.arretTravailOuItt,
+      dureeItt: defaults.dureeItt,
+      detailsPrejudice: defaults.detailsPrejudice,
+      mesuresUrgenceDemandeess: defaults.mesuresUrgenceDemandeess,
+      piecesJointes: defaults.piecesJointes
+    };
+    setProtectionData(updated);
+    const res = generateDemandeProtectionFonctionnelle(updated);
+    setGeneratedProtection(res);
+    toast.success(`Modèle adapté : ${res.titre}`);
   };
 
   const handleGenerateRecours = () => {
@@ -946,7 +971,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   <div className="relative">
                     <select
                       value={protectionData.typeAtteinte}
-                      onChange={(e) => setProtectionData({ ...protectionData, typeAtteinte: e.target.value as TypeAtteinteProtection })}
+                      onChange={(e) => handleTypeAtteinteChange(e.target.value as TypeAtteinteProtection)}
                       className="w-full bg-white border-2 border-emerald-400 hover:border-emerald-500 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-extrabold text-slate-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-300 cursor-pointer"
                     >
                       <option value="agression_physique">🚨 Violences physiques volontaires au travail</option>
@@ -954,6 +979,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                       <option value="diffamation_injures">📢 Diffamation, outrages, propos injurieux publics</option>
                       <option value="harcelement_moral">🛑 Harcèlement moral répété (Art. L. 133-2 CGFP)</option>
                       <option value="harcelement_sexuel">⛔ Harcèlement sexuel ou sexiste (Art. L. 133-1 CGFP)</option>
+                      <option value="outrage">⚖️ Outrages, invectives et atteintes à l'autorité publique</option>
                     </select>
                   </div>
 
@@ -1015,6 +1041,19 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     rows={3}
                     value={protectionData.chronologieFaits}
                     onChange={(e) => setProtectionData({ ...protectionData, chronologieFaits: e.target.value })}
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400"
+                  />
+                </div>
+
+                {/* Préjudices subis */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Nature des préjudices physiques, psychologiques et moraux :
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={protectionData.detailsPrejudice}
+                    onChange={(e) => setProtectionData({ ...protectionData, detailsPrejudice: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400"
                   />
                 </div>
@@ -1082,15 +1121,17 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     Mesures de protection obligatoires sollicitées :
                   </span>
                   {[
-                    { key: "priseEnChargeFraisAvocat", label: "Prise en charge intégrale des frais d'avocat" },
-                    { key: "signalementArt40Cpp", label: "Signalement Procureur Art. 40 CPP par la Mairie" },
+                    { key: "priseEnChargeFraisAvocat", label: "Prise en charge intégrale des frais d'avocat (Art. L. 134-6 CGFP)" },
+                    { key: "enqueteAdministrativeInterne", label: "Diligentation d'une enquête administrative interne impartiale (CE 2022)" },
                     { key: "changementAffectationConservatoire", label: "Mesure d'éloignement / changement de poste conservatoire" },
+                    { key: "retraitProposOuDroitDeReponse", label: "Droit de réponse public et mise en demeure de retrait des propos" },
+                    { key: "signalementArt40Cpp", label: "Signalement Parquet Art. 40 CPP par la Mairie" },
                     { key: "soutienPsychologique", label: "Accompagnement psychologique d'urgence" }
                   ].map((item) => (
                     <label key={item.key} className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                       <input
                         type="checkbox"
-                        checked={(protectionData.mesuresUrgenceDemandeess as Record<string, boolean>)[item.key]}
+                        checked={Boolean((protectionData.mesuresUrgenceDemandeess as Record<string, boolean | undefined>)[item.key])}
                         onChange={(e) => setProtectionData({
                           ...protectionData,
                           mesuresUrgenceDemandeess: {
@@ -1103,6 +1144,24 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                       <span>{item.label}</span>
                     </label>
                   ))}
+                </div>
+
+                {/* Pièces justificatives recommandées */}
+                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
+                  <span className="text-[11px] font-bold text-slate-800 flex items-center justify-between">
+                    <span>Pièces probantes annexées à la demande :</span>
+                    <span className="text-[10px] text-emerald-700 font-mono font-bold">
+                      {(protectionData.piecesJointes || []).length} pièces
+                    </span>
+                  </span>
+                  <ul className="space-y-1.5">
+                    {(protectionData.piecesJointes || []).map((pj, idx) => (
+                      <li key={idx} className="flex items-start gap-1.5 text-[11px] text-slate-700">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{pj}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <button

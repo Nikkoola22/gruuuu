@@ -217,8 +217,188 @@ export interface RecoursGracieuxFormData {
   referenceArrete: string;
   motifsInvoquesParAdministration: string;
   argumentsAgent: string;
-  demandeEntretien: boolean;
+export interface DefaultProtectionContent {
+  qualificationAtteinte: string;
+  chronologieFaits: string;
+  temoinsIdentifies: string;
+  depotPlainteOuMainCourante: boolean;
+  referencePlainte: string;
+  arretTravailOuItt: boolean;
+  dureeItt: string;
+  detailsPrejudice: string;
+  mesuresUrgenceDemandeess: {
+    priseEnChargeFraisAvocat: boolean;
+    changementAffectationConservatoire: boolean;
+    signalementArt40Cpp: boolean;
+    soutienPsychologique: boolean;
+    enqueteAdministrativeInterne?: boolean;
+    retraitProposOuDroitDeReponse?: boolean;
+  };
   piecesJointes: string[];
+}
+
+export function getDefaultProtectionContent(typeAtteinte: TypeAtteinteProtection): DefaultProtectionContent {
+  switch (typeAtteinte) {
+    case "agression_physique":
+      return {
+        qualificationAtteinte: "Violences physiques volontaires subies à l'occasion de l'exercice des fonctions (Art. L. 134-5 CGFP & Art. 222-11 C. pénal)",
+        chronologieFaits: "Le lundi 28 septembre 2026 vers 10h15, lors d'une intervention sur la voie publique rue Louis-Calmel, un individu s'est approché de l'équipe et a proféré des menaces réitérées avant de me porter violemment un coup de poing au visage et plusieurs coups au torse, me projetant au sol, avant d'être maîtrisé par l'intervention des collègues et de la police municipale.",
+        temoinsIdentifies: "Collègue M. Jean D. (Agent technique), Mme Sarah K. (Adjointe technique) et plusieurs usagers présents sur la voie publique.",
+        depotPlainteOuMainCourante: true,
+        referencePlainte: "Plainte pénale n° 2026/04812 pour violences volontaires sur personne chargée d'une mission de service public déposée le 28/09/2026 au Commissariat de Police de Gennevilliers",
+        arretTravailOuItt: true,
+        dureeItt: "6 jours d'ITT constatés par certificat médical initial des Urgences Médico-Judiciaires (UMJ) de Nanterre",
+        detailsPrejudice: "Traumatisme crânien sans perte de connaissance, contusion faciale sévère, hématome périorbitaire, céphalées aiguës et stress post-traumatique aigu entraînant insomnies réactionnelles et prise en charge en accident de service (CITIS).",
+        mesuresUrgenceDemandeess: {
+          priseEnChargeFraisAvocat: true,
+          changementAffectationConservatoire: false,
+          signalementArt40Cpp: true,
+          soutienPsychologique: true,
+          enqueteAdministrativeInterne: false,
+          retraitProposOuDroitDeReponse: false
+        },
+        piecesJointes: [
+          "Copie du procès-verbal de dépôt de plainte pénale au Commissariat",
+          "Certificat médical descriptif initial de l'UMJ fixant l'ITT",
+          "Déclaration d'accident de service / CITIS (Art. L. 822-18 CGFP)",
+          "Attestations de témoignage des collègues sur formulaire officiel CERFA n° 11527",
+          "Rapport d'incident circonstancié établi par le responsable d'équipe"
+        ]
+      };
+
+    case "menaces_intimidations":
+      return {
+        qualificationAtteinte: "Menaces de mort réitérées, intimidations verbales graves et pressions exercées contre un agent public (Art. L. 134-5 CGFP & Art. 222-17, 433-3 C. pénal)",
+        chronologieFaits: "Le 15 septembre 2026 à 14h45, à la suite du refus motivé d'une demande d'un usager non conforme au règlement territorial, ce dernier s'est emporté violemment à mon guichet, a frappé sur la vitre et a proféré des menaces de mort directes et réitérées : « Je connais ta voiture, je sais où tu habites, je vais t'attendre ce soir à la débauche pour te régler ton compte ». L'intéressé a ensuite rôdé autour du parking du personnel à la fin du service.",
+        temoinsIdentifies: "Mme Claire M. (Agent d'accueil), M. Thomas L. (Agent de sécurité) et enregistrements de vidéoprotection de l'accès public.",
+        depotPlainteOuMainCourante: true,
+        referencePlainte: "Plainte pénale pour menaces de mort et intimidations sur personne chargée d'une mission de service public (Art. 433-3 et 222-17 C. pénal) déposée le 16/09/2026",
+        arretTravailOuItt: false,
+        dureeItt: "Certificat médical attestant d'un choc émotionnel et d'un état d'anxiété aiguë nécessitant 3 jours de repos",
+        detailsPrejudice: "Sentiment constant de danger et d'insécurité physique sur le trajet domicile-travail et sur le poste, anxiété réactionnelle majeure, perturbations du sommeil et altération grave de la sérénité indispensable à l'exercice du service public.",
+        mesuresUrgenceDemandeess: {
+          priseEnChargeFraisAvocat: true,
+          changementAffectationConservatoire: true,
+          signalementArt40Cpp: true,
+          soutienPsychologique: true,
+          enqueteAdministrativeInterne: false,
+          retraitProposOuDroitDeReponse: false
+        },
+        piecesJointes: [
+          "Récépissé de dépôt de plainte pénale pour menaces de mort réitérées",
+          "Rapport d'incident circonstancié rédigé immédiatement après les faits",
+          "Attestations CERFA de l'agent de sécurité et des collègues témoins",
+          "Fiche de signalement transmise au Conseiller de Prévention et à la DRH",
+          "Demande de mesures conservatoires de sécurisation physique du poste"
+        ]
+      };
+
+    case "diffamation_injures":
+      return {
+        qualificationAtteinte: "Diffamation publique, outrages et imputations calomnieuses envers un agent territorial sur les réseaux sociaux (Art. L. 134-5 CGFP, Loi du 29 juillet 1881 & Art. 433-5 C. pénal)",
+        chronologieFaits: "Depuis le 10 septembre 2026, un administré / groupe d'usagers a publié sur un groupe public Facebook comptant plus de 15 000 membres ainsi que sur un blog local plusieurs messages nominatifs diffamatoires m'accusant faussement de « corruption », de « détournement de fonds » et de « partialité malveillante » dans le traitement des dossiers de mon service, associant ma photographie professionnelle à des qualificatifs ouvertement injurieux et méprisants.",
+        temoinsIdentifies: "Nombreux collègues de la collectivité, élus municipaux et membres du public ayant signalé la publication en ligne.",
+        depotPlainteOuMainCourante: true,
+        referencePlainte: "Plainte pénale avec constitution de partie civile pour diffamation publique envers un dépositaire de l'autorité publique (Art. 29 et 31 Loi du 29/07/1881) et injures publiques",
+        arretTravailOuItt: false,
+        dureeItt: "Sans objet (atteinte d'une gravité exceptionnelle à l'honneur et à la réputation)",
+        detailsPrejudice: "Atteinte disproportionnée et durable à la réputation, à l'honneur et à la probité personnelle et professionnelle, discrédit jeté publiquement sur la probité du service public, souffrance morale intense, humiliation et sentiment d'impuissance face au lynchage numérique.",
+        mesuresUrgenceDemandeess: {
+          priseEnChargeFraisAvocat: true,
+          changementAffectationConservatoire: false,
+          signalementArt40Cpp: true,
+          soutienPsychologique: true,
+          enqueteAdministrativeInterne: false,
+          retraitProposOuDroitDeReponse: true
+        },
+        piecesJointes: [
+          "Procès-verbal de constat d'huissier de justice (commissaire de justice) attestant des publications et commentaires en ligne",
+          "Captures d'écran intégrales et horodatées des propos diffamatoires et URL sources",
+          "Copie du dépôt de plainte pénale transmise au Procureur de la République",
+          "Notification formelle de signalement de contenu illicite adressée à la plateforme numérique"
+        ]
+      };
+
+    case "harcelement_moral":
+      return {
+        qualificationAtteinte: "Agissements répétés constitutifs de harcèlement moral au travail et dégradation délibérée des conditions de travail (Art. L. 133-2 et L. 134-5 CGFP, Art. 222-33-2 C. pénal)",
+        chronologieFaits: "Depuis plusieurs mois (période de janvier 2026 à ce jour), je subis de manière continue et répétée de la part de mon supérieur hiérarchique direct des agissements hostiles délibérés excédant l'exercice normal du pouvoir hiérarchique : retrait brutal et injustifié de l'intégralité de mes responsabilités et dossiers opérationnels (mise au placard), refus systématique de m'adresser la parole, dénigrement public systématique en réunion de service devant mes collègues, consignes contradictoires orales suivies de reproches écrits injustifiés, et isolement professionnel complet.",
+        temoinsIdentifies: "Agents du service, anciens membres de l'équipe ayant quitté le service pour les mêmes motifs, et représentants du personnel F3SCT / CST.",
+        depotPlainteOuMainCourante: true,
+        referencePlainte: "Signalement officiel au Registre de Santé et de Sécurité au Travail (RSST) et plainte pour harcèlement moral au travail (Art. L. 133-2 CGFP & 222-33-2 C. pénal)",
+        arretTravailOuItt: true,
+        dureeItt: "Arrêt de travail prolongé pour syndrome d'épuisement professionnel aigu (burn-out) et état dépressif réactionnel avec suivi médical spécialisé",
+        detailsPrejudice: "Effondrement psychique et physique complet, anxiété réactionnelle généralisée, troubles sévères du sommeil, perte d'estime de soi, arrêt maladie de longue durée, mise en péril de la carrière et privation d'accès aux primes au mérite (CIA).",
+        mesuresUrgenceDemandeess: {
+          priseEnChargeFraisAvocat: true,
+          changementAffectationConservatoire: true,
+          signalementArt40Cpp: false,
+          soutienPsychologique: true,
+          enqueteAdministrativeInterne: true,
+          retraitProposOuDroitDeReponse: false
+        },
+        piecesJointes: [
+          "Journal de bord chronologique et factuel consignant avec précision dates, faits et courriels litigieux",
+          "Copies de courriels d'injonctions contradictoires et de reproches infondés",
+          "Fiche de poste officielle de l'agent attestant de la privation illégitime de missions",
+          "Fiches de signalement consignées sur le Registre de Santé et Sécurité au Travail (RSST)",
+          "Avis médicaux et préconisations formelles du Médecin du Travail / Médecin de Prévention",
+          "Attestations de témoignages de collègues et membres du CST"
+        ]
+      };
+
+    case "harcelement_sexuel":
+      return {
+        qualificationAtteinte: "Agissements répétés de harcèlement sexuel ou comportements sexistes au travail avec abus d'autorité (Art. L. 133-1 et L. 134-5 CGFP, Art. 222-33 C. pénal)",
+        chronologieFaits: "Depuis le début de l'année 2026, je subis de manière répétée de la part de ma hiérarchie / d'un collègue des comportements et propos à connotation sexuelle ou sexiste non consentis : réflexions quotidiennes et déplacées sur mon physique et ma tenue vestimentaire, sollicitations insistantes pour des rendez-vous privés hors cadre professionnel, messages textuels et SMS ambigus envoyés tard le soir sur ma ligne personnelle, gestes de proximité physique non consentis, assortis de menaces voilées sur l'issue de mon évaluation professionnelle / renouvellement de contrat si je refusais ses avances.",
+        temoinsIdentifies: "Collègues de bureau confidentes immédiates, représentante syndicale et référente égalité / violences sexistes de la collectivité.",
+        depotPlainteOuMainCourante: true,
+        referencePlainte: "Plainte pénale pour harcèlement sexuel aggravé par abus d'autorité (Art. 222-33 du Code pénal) et saisine du dispositif d'écoute territorial (Décret n° 2020-256)",
+        arretTravailOuItt: true,
+        dureeItt: "Arrêt de travail médical pour choc traumatique, crise d'angoisse aiguë et état de stress post-traumatique sévère",
+        detailsPrejudice: "Atteinte d'une gravité intolérable à la dignité, à l'intégrité morale et psychologique et au libre consentement, sentiment permanent de terreur et d'oppression sur le lieu de travail, anxiété réactionnelle majeure et isolement relationnel.",
+        mesuresUrgenceDemandeess: {
+          priseEnChargeFraisAvocat: true,
+          changementAffectationConservatoire: true,
+          signalementArt40Cpp: true,
+          soutienPsychologique: true,
+          enqueteAdministrativeInterne: true,
+          retraitProposOuDroitDeReponse: false
+        },
+        piecesJointes: [
+          "Copies certifiées conformes et captures d'écran des SMS, messages instantanés et courriels équivoques",
+          "Récépissé de dépôt de plainte pénale pour harcèlement sexuel aggravé",
+          "Formulaire officiel de saisine de la cellule de signalement des violences sexistes (Décret 2020-256)",
+          "Certificats médicaux descriptifs et attestations de prise en charge psychologique spécialisée",
+          "Attestations de témoignages écrits sur l'honneur de collègues"
+        ]
+      };
+
+    case "outrage":
+      return {
+        qualificationAtteinte: "Outrage à personne dépositaire de l'autorité publique ou chargée d'une mission de service public (Art. L. 134-5 CGFP & Art. 433-5 C. pénal)",
+        chronologieFaits: "Le 22 septembre 2026 à 11h20, alors que j'assurais ma mission d'accueil et de contrôle des usagers au sein de l'hôtel de ville, un administré s'est emporté violemment à la suite d'un rappel réglementaire et a proféré publiquement et à haute voix des propos particulièrement injurieux, outranciers et dégradants à mon encontre (« Bande de bons à rien, fonctionnaires corrompus, incapables »), créant un scandale public devant l'ensemble des usagers et du personnel.",
+        temoinsIdentifies: "Agents du pôle d'accueil, agent de sécurité et usagers présents dans le hall administratif.",
+        depotPlainteOuMainCourante: true,
+        referencePlainte: "Dépôt de plainte pénale pour outrage à agent public chargé d'une mission de service public (Art. 433-5 du Code pénal) le 23/09/2026",
+        arretTravailOuItt: false,
+        dureeItt: "Sans objet.",
+        detailsPrejudice: "Humiliation publique dans l'exercice des missions, atteinte à la considération et à l'autorité morale de l'agent représentant la puissance publique territoriale, déstabilisation et démotivation professionnelle.",
+        mesuresUrgenceDemandeess: {
+          priseEnChargeFraisAvocat: true,
+          changementAffectationConservatoire: false,
+          signalementArt40Cpp: true,
+          soutienPsychologique: true,
+          enqueteAdministrativeInterne: false,
+          retraitProposOuDroitDeReponse: false
+        },
+        piecesJointes: [
+          "Récépissé de dépôt de plainte pénale pour outrage à agent public",
+          "Rapport de constat d'incident rédigé par l'agent et contresigné par la hiérarchie",
+          "Attestations écrites des collègues témoins des propos outranciers"
+        ]
+      };
+  }
 }
 
 export type TypeAtteinteProtection = 
@@ -249,8 +429,11 @@ export interface ProtectionFonctionnelleFormData {
     changementAffectationConservatoire: boolean;
     signalementArt40Cpp: boolean;
     soutienPsychologique: boolean;
+    enqueteAdministrativeInterne?: boolean;
+    retraitProposOuDroitDeReponse?: boolean;
   };
   detailsPrejudice: string;
+  piecesJointes?: string[];
 }
 
 export type TypeInstanceParitaire = "cap" | "ccp" | "f3sct_cst";
@@ -733,7 +916,8 @@ export function generateDemandeProtectionFonctionnelle(data: ProtectionFonctionn
     arretTravailOuItt,
     dureeItt,
     mesuresUrgenceDemandeess,
-    detailsPrejudice
+    detailsPrejudice,
+    piecesJointes
   } = data;
 
   const dNow = new Date();
@@ -741,25 +925,159 @@ export function generateDemandeProtectionFonctionnelle(data: ProtectionFonctionn
   dLimite2Mois.setMonth(dLimite2Mois.getMonth() + 2);
   const miseEnDemeureDate = dLimite2Mois.toLocaleDateString("fr-FR");
 
-  let qualificationAtteinte = "";
+  const defaultContent = getDefaultProtectionContent(typeAtteinte);
+  const pJointes = (piecesJointes && piecesJointes.length > 0) ? piecesJointes : defaultContent.piecesJointes;
+
+  let titre = "";
+  let qualificationAtteinte = defaultContent.qualificationAtteinte;
+  let cadreJuridiqueSpecifique = "";
+  let fondementsJuridiques: string[] = [];
+
   switch (typeAtteinte) {
     case "agression_physique":
-      qualificationAtteinte = "Violences physiques volontaires subies à l'occasion de l'exercice des fonctions (Art. L. 134-5 CGFP)";
+      titre = "Demande de Protection Fonctionnelle - Violences physiques volontaires (Art. L. 134-1 CGFP)";
+      fondementsJuridiques = [
+        "Articles L. 134-1 à L. 134-12 du Code Général de la Fonction Publique",
+        "Articles 222-11 et 222-13 du Code Pénal (Violences volontaires sur personne chargée d'une mission de service public)",
+        "Article L. 822-18 du CGFP (Régime du CITIS et accident de service)",
+        "Article 40 alinéa 2 du Code de Procédure Pénale",
+        "Article L. 231-4 du Code des relations entre le public et l'administration"
+      ];
+      cadreJuridiqueSpecifique = `1. Dispositions statutaires impératives :
+En vertu de l'article L. 134-1 du Code Général de la Fonction Publique (CGFP), « La collectivité publique est tenue de protéger le fonctionnaire ou l'ancien fonctionnaire contre les atteintes volontaires à l'intégrité de la personne, les violences [...] dont il pourrait être victime sans qu'une faute personnelle détachable de l'exercice de ses fonctions puisse lui être imputée. »
+L'article L. 134-5 du même code dispose que la collectivité territoriale est tenue d'accorder sa protection dans les conditions fixées et de réparer intégralement le préjudice corporel et moral en résultant.
+
+2. Qualification pénale aggravée :
+Les faits commis sont constitutifs de violences volontaires ayant entraîné une incapacité totale de travail (ITT) commises sur une personne chargée d'une mission de service public ou dépositaire de l'autorité publique dans l'exercice ou à l'occasion de ses fonctions, délits sévèrement réprimés par les articles 222-11 et 222-13 du Code pénal.
+
+3. Jurisprudence constante du Conseil d'État & Imputabilité au service (CITIS) :
+Le Conseil d'État rappelle de manière constante que l'obligation de protection contre les agressions physiques revêt un caractère absolu et d'ordre public dès lors que les violences ont eu lieu en service et en l'absence de faute de l'agent. Par ailleurs, ces blessures survenues sur le lieu de travail relèvent de plein droit du régime de l'Accident de Service / Congé d'Invalidité Temporaire Imputable au Service (CITIS) en vertu de l'article L. 822-18 du CGFP.`;
       break;
+
     case "menaces_intimidations":
-      qualificationAtteinte = "Menaces verbales, intimidations graves et pressions exercées contre un agent public (Art. L. 134-5 CGFP)";
+      titre = "Demande de Protection Fonctionnelle - Menaces de mort & Intimidations (Art. L. 134-1 CGFP)";
+      fondementsJuridiques = [
+        "Articles L. 134-1, L. 134-5 et L. 134-6 du Code Général de la Fonction Publique",
+        "Articles 222-17 et 433-3 du Code Pénal (Menaces de mort réitérées envers un agent public)",
+        "Article L. 4121-1 du Code du Travail & Décret n° 85-603 (Obligation générale de sécurité)",
+        "Article 40 alinéa 2 du Code de Procédure Pénale"
+      ];
+      cadreJuridiqueSpecifique = `1. Protection statutaire contre les menaces :
+L'article L. 134-1 du CGFP impose à la collectivité territoriale une obligation stricte de protection contre « les menaces [...] dont [l'agent] pourrait être victime sans qu'une faute personnelle détachable de l'exercice de ses fonctions puisse lui être imputée. »
+
+2. Répression pénale des menaces contre les dépositaires du service public :
+L'article 433-3 du Code pénal punit de peines aggravées les menaces de commettre un crime ou un délit contre les personnes dépositaires de l'autorité publique ou chargées d'une mission de service public, et l'article 222-17 du même code incrimine spécifiquement les menaces de mort réitérées.
+
+3. Obligation de sécurité de résultat et mesures préventives immédiates :
+L'employeur territorial est tenu, en application de l'article L. 4121-1 du Code du travail et du décret n° 85-603 du 10 juin 1985, d'assurer la sécurité physique et la protection de la santé mentale de ses agents. Face à des menaces de mort caractérisées, la protection fonctionnelle ne peut se limiter à une prise en charge a posteriori mais impose le déploiement immédiat de mesures matérielles conservatoires de sécurisation physique et de surveillance du poste et de ses accès.`;
       break;
+
     case "diffamation_injures":
-      qualificationAtteinte = "Diffamation, outrages et injures publiques envers un dépositaire de l'autorité publique ou agent territorial (Art. L. 134-5 CGFP)";
+      titre = "Demande de Protection Fonctionnelle - Diffamation & Atteinte publique à l'honneur (Art. L. 134-1 CGFP)";
+      fondementsJuridiques = [
+        "Articles L. 134-1, L. 134-5 et L. 134-7 du Code Général de la Fonction Publique",
+        "Articles 29, 31 et 33 de la Loi du 29 juillet 1881 sur la liberté de la presse",
+        "Article 433-5 du Code Pénal (Outrage envers une personne chargée d'une mission de service public)",
+        "Jurisprudence du Conseil d'État (CE, 12 mars 2014, n° 367256 - Rétablissement public de l'honneur de l'agent)"
+      ];
+      cadreJuridiqueSpecifique = `1. Protection contre les atteintes à la réputation et à l'honneur :
+En application de l'article L. 134-1 du CGFP, la collectivité territoriale est tenue de protéger ses agents contre « les injures, les diffamations ou les outrages » dont ils font l'objet dans ou à l'occasion de l'exercice de leurs missions.
+
+2. Fondements de la loi du 29 juillet 1881 et cyberharcèlement :
+Aux termes de l'article 29 de la Loi du 29 juillet 1881 sur la liberté de la presse, « toute allégation ou imputation d'un fait qui porte atteinte à l'honneur ou à la considération de la personne [...] est une diffamation ». L'article 31 aggrave expressément les peines lorsque la diffamation est commise envers un citoyen chargé d'un mandat public ou un fonctionnaire public en raison de ses fonctions. La diffusion publique sur des réseaux sociaux et espaces numériques constitue une circonstance aggravante de publicité au sens de l'article 23 de ladite loi.
+
+3. Obligation de rétablissement public et d'action en justice :
+Le Conseil d'État juge expressément (CE, 12 mars 2014, n° 367256) que la protection fonctionnelle en cas de diffamation ou d'injure impose à l'administration, au-delà de la prise en charge des frais de justice (avocat, huissier pour constat Internet), de mettre en œuvre toute mesure appropriée pour rétablir publiquement la réputation de l'agent lésé (droit de réponse, communiqué officiel de soutien, mise en demeure de retrait des contenus illicites).`;
       break;
+
     case "harcelement_moral":
-      qualificationAtteinte = "Agissements répétés constitutifs de harcèlement moral au travail (Articles L. 133-2 et L. 134-5 du CGFP)";
+      titre = "Demande de Protection Fonctionnelle - Harcèlement moral au travail (Art. L. 133-2 & L. 134-1 CGFP)";
+      fondementsJuridiques = [
+        "Articles L. 133-2 et L. 134-1 à L. 134-12 du Code Général de la Fonction Publique",
+        "Article 222-33-2 du Code Pénal (Délit de harcèlement moral)",
+        "Jurisprudence de principe du Conseil d'État (CE, Sect., 11 juillet 2011, Mme Montaut, n° 321225 - Aménagement de la charge de la preuve)",
+        "Jurisprudence du Conseil d'État (CE, 27 juillet 2022, n° 449236 - Obligation absolue de diligenter une enquête administrative interne sans délai)",
+        "Article L. 133-3 du CGFP (Immunité et interdiction absolue de toute mesure défavorable à l'encontre de la victime)"
+      ];
+      cadreJuridiqueSpecifique = `1. Interdiction d'ordre public du harcèlement moral :
+L'article L. 133-2 du CGFP dispose qu'« Aucun agent public ne doit subir les agissements répétés de harcèlement moral qui ont pour objet ou pour effet une dégradation des conditions de travail susceptible de porter atteinte à ses droits et à sa dignité, d'altérer sa santé physique ou mentale ou de compromettre son avenir professionnel. » L'article L. 134-1 impose d'accorder la protection fonctionnelle à tout agent victime de tels agissements.
+
+2. Aménagement légal de la charge de la preuve (CE, 11 juillet 2011, Mme Montaut) :
+Le Conseil d'État juge qu'il appartient à l'agent public qui soutient avoir été victime de harcèlement moral de soumettre des éléments de fait permettant de présumer l'existence de ces agissements. Au vu de ces éléments, il incombe à l'administration de prouver que ces décisions ou agissements sont justifiés par des considérations étrangères à tout harcèlement. L'intention de nuire n'est nullement requise pour caractériser le harcèlement moral (CE, 6 décembre 2013, n° 365155).
+
+3. Obligation impérative de diligenter une enquête administrative interne (CE, 27 juillet 2022, n° 449236) :
+Dès lors que l'autorité territoriale est saisie d'une demande de protection fonctionnelle exposant des allégations précises et concordantes de harcèlement moral, elle a l'OBLIGATION JURIDIQUE STRICTE de diligenter sans délai une enquête administrative interne impartiale et contradictoire afin de vérifier la matérialité des faits. Refuser d'ouvrir une telle enquête ou rejeter la demande sans instruction préalable entache la décision d'une illégalité manifeste engageant la responsabilité de la collectivité.
+
+4. Interdiction de toute mesure défavorable ou punitive envers la victime (Art. L. 133-3 CGFP) :
+Les mesures conservatoires éventuelles doivent impérativement viser à faire cesser l'exposition de la victime sans que celle-ci ne subisse de mutation forcée, déclassement ou perte indiciaire/indemnitaire (IFSE/CIA).`;
       break;
+
     case "harcelement_sexuel":
-      qualificationAtteinte = "Agissements constitutifs de harcèlement sexuel ou sexiste (Articles L. 133-1 et L. 134-5 du CGFP)";
+      titre = "Demande de Protection Fonctionnelle - Harcèlement sexuel ou agissements sexistes (Art. L. 133-1 & L. 134-1 CGFP)";
+      fondementsJuridiques = [
+        "Articles L. 133-1, L. 134-1 et L. 134-5 du Code Général de la Fonction Publique",
+        "Article 222-33 du Code Pénal (Délit de harcèlement sexuel aggravé par abus d'autorité)",
+        "Décret n° 2020-256 du 13 mars 2020 relatif au dispositif de signalement des actes de violence, de discrimination, de harcèlement et d'agissements sexistes dans la fonction publique",
+        "Article L. 531-1 du CGFP (Suspension conservatoire immédiate de l'auteur présumé)",
+        "Article 40 alinéa 2 du Code de Procédure Pénale"
+      ];
+      cadreJuridiqueSpecifique = `1. Répression statutaire absolue du harcèlement sexuel et sexiste :
+L'article L. 133-1 du CGFP énonce sans réserve qu'« Aucun agent public ne doit subir des faits de harcèlement sexuel, constitué par des propos ou comportements à connotation sexuelle ou sexiste répétés qui soit portent atteinte à sa dignité en raison de leur caractère dégradant ou humiliant, soit créent à son encontre une situation intimidante, hostile ou offensante. »
+Sont assimilés au harcèlement sexuel tous actes de pressions graves exercés dans le but réel ou apparent d'obtenir un acte de nature sexuelle.
+
+2. Dispositif de signalement obligatoire (Décret n° 2020-256) & Suspension conservatoire :
+En application du décret n° 2020-256 du 13 mars 2020, l'employeur territorial est tenu de mobiliser immédiatement le dispositif d'écoute, de traitement et d'orientation des signalements.
+Face à des faits de cette nature, l'autorité territoriale dispose du pouvoir et du devoir de prononcer, à titre conservatoire, la suspension de fonctions de l'auteur présumé des faits en vertu de l'article L. 531-1 du CGFP afin d'éloigner tout danger immédiat et de garantir la sérénité des investigations.
+
+3. Signalement au Parquet (Art. 40 al. 2 CPP) & Prise en charge des frais de justice :
+Les faits dénoncés étant constitutifs du délit pénal de harcèlement sexuel puni de 3 ans d'emprisonnement et 45 000 € d'amende (Art. 222-33 C. pénal), l'autorité territoriale est tenue de procéder sans délai à un signalement auprès de Monsieur le Procureur de la République et de garantir la prise en charge intégrale des honoraires d'avocat de l'agent victime (Art. L. 134-6 CGFP).`;
       break;
+
+    case "outrage":
     default:
-      qualificationAtteinte = "Outrages et attaques dirigées contre un agent public (Art. L. 134-5 CGFP)";
+      titre = "Demande de Protection Fonctionnelle - Outrage & Attaques contre un agent public (Art. L. 134-1 CGFP)";
+      fondementsJuridiques = [
+        "Articles L. 134-1 à L. 134-12 du Code Général de la Fonction Publique",
+        "Article 433-5 du Code Pénal (Outrage à personne chargée d'une mission de service public)",
+        "Article 40 alinéa 2 du Code de Procédure Pénale",
+        "Article L. 231-4 du Code des relations entre le public et l'administration"
+      ];
+      cadreJuridiqueSpecifique = `1. Obligation générale de protection de la dignité des agents publics :
+L'article L. 134-1 du CGFP impose à la collectivité territoriale de protéger l'agent contre « les injures, les outrages [...] dont il pourrait être victime sans qu'une faute personnelle détachable de l'exercice de ses fonctions puisse lui être imputée. »
+
+2. Incrimination pénale de l'outrage à agent public :
+L'article 433-5 du Code pénal qualifie d'outrage et punit de peines d'amende et d'emprisonnement les paroles, gestes ou menaces adressés à une personne chargée d'une mission de service public, dans l'exercice ou à l'occasion de l'exercice de ses fonctions, et de nature à porter atteinte à sa dignité ou au respect dû à la fonction dont elle est investie.`;
+      break;
+  }
+
+  // Mesures personnalisées selon les coches et le motif
+  const listeMesures: string[] = [];
+  let numMesure = 1;
+
+  if (mesuresUrgenceDemandeess.priseEnChargeFraisAvocat) {
+    listeMesures.push(`${numMesure++}. PRISE EN CHARGE INTÉGRALE des frais de justice, d'avocat et de commissaire de justice (convention d'honoraires directe avec le conseil librement choisi par l'agent) pour la défense de mes intérêts statutaires, civils et pénaux (Art. L. 134-6 CGFP) ;`);
+  }
+
+  if (typeAtteinte === "harcelement_moral" || typeAtteinte === "harcelement_sexuel" || mesuresUrgenceDemandeess.enqueteAdministrativeInterne) {
+    listeMesures.push(`${numMesure++}. DILIGENTATION IMMÉDIATE D'UNE ENQUÊTE ADMINISTRATIVE INTERNE impartiale, contradictoire et indépendante (jurisprudence de principe CE, 27 juillet 2022, n° 449236) afin d'établir la matérialité des faits dénoncés et de statuer sur les suites disciplinaires appropriées ;`);
+  }
+
+  if (typeAtteinte === "harcelement_sexuel") {
+    listeMesures.push(`${numMesure++}. PRONONCÉ D'UNE SUSPENSION CONSERVATOIRE ou ÉLOIGNEMENT IMMÉDIAT DE L'AUTEUR PRÉSUMÉ (Art. L. 531-1 CGFP) à titre de mesure conservatoire de protection d'urgence de la victime ;`);
+  } else if (mesuresUrgenceDemandeess.changementAffectationConservatoire) {
+    listeMesures.push(`${numMesure++}. ADOPTION DE MESURES CONSERVATOIRES DE SÉCURITÉ MATÉRIELLE et d'organisation du service (sécurisation du poste de travail, filtrage des accès, aménagement temporaire d'horaires ou de télétravail sécurisé) ;`);
+  }
+
+  if (typeAtteinte === "diffamation_injures" || mesuresUrgenceDemandeess.retraitProposOuDroitDeReponse) {
+    listeMesures.push(`${numMesure++}. MISE EN ŒUVRE D'UN DROIT DE RÉPONSE et publication d'un COMMUNIQUÉ OFFICIEL DE SOUTIEN de la collectivité pour rétablir publiquement mon honneur professionnel bafoué, assortis d'une mise en demeure adressée aux hébergeurs/auteurs aux fins de retrait immédiat des publications litigieuses sous astreinte ;`);
+  }
+
+  if (mesuresUrgenceDemandeess.signalementArt40Cpp) {
+    listeMesures.push(`${numMesure++}. SIGNALEMENT OFFICIEL PAR LA COLLECTIVITÉ auprès de Monsieur le Procureur de la République près le Tribunal Judiciaire compétent, en application de l'article 40, alinéa 2, du Code de procédure pénale, et constitution de partie civile de la collectivité aux côtés de l'agent ;`);
+  }
+
+  if (mesuresUrgenceDemandeess.soutienPsychologique) {
+    listeMesures.push(`${numMesure++}. MISE EN PLACE d'un accompagnement médical et psychologique d'urgence via la médecine de prévention / médecine du travail de la collectivité.`);
   }
 
   const texteOfficiel = `${prenomAgent} ${nomAgent}
@@ -770,77 +1088,71 @@ Collectivité : ${collectivite}
 À l'attention de :
 ${autoriteDestinataire}
 Mairie / Présidence de ${collectivite}
-Direction des Ressources Humaines & Pôle Juridique
+Direction des Ressources Humaines & Pôle Affaires Juridiques
 
 Fait à ${collectivite}, le ${dNow.toLocaleDateString("fr-FR")}
 
 LETTRE RECOMMANDÉE AVEC DEMANDE D'AVIS DE RÉCEPTION (LRAR)
-OU REMISE CONTRE DÉCHARGE RÉCÉPISSÉE
+OU REMISE EN MAIN PROPRE CONTRE DÉCHARGE RÉCÉPISSÉE
 
 OBJET : Demande formelle d'octroi de la PROTECTION FONCTIONNELLE au titre des articles L. 134-1 à L. 134-12 du Code Général de la Fonction Publique
-QUALIFICATION DES FAITS : ${qualificationAtteinte}
-DATE LIMITE DE STATUER (RÈGLE DES 2 MOIS) : ${miseEnDemeureDate}
+QUALIFICATION JURIDIQUE DES FAITS : ${qualificationAtteinte}
+DATE LIMITE LÉGALE POUR STATUER (RÈGLE DES 2 MOIS) : ${miseEnDemeureDate}
 
 ${autoriteDestinataire},
 
-J'ai l'honneur, par la présente, de solliciter formellement de votre autorité le bénéfice de la PROTECTION FONCTIONNELLE prévue par les dispositions de l'article L. 134-1 et suivants du Code Général de la Fonction Publique.
+J'ai l'honneur, par la présente, de solliciter formellement de votre autorité le bénéfice plein et entier de la PROTECTION FONCTIONNELLE prévue par les dispositions des articles L. 134-1 et suivants du Code Général de la Fonction Publique (CGFP).
 
-I. CADRE JURIDIQUE STRICT
-L'article L. 134-1 du CGFP énonce sans ambiguïté :
-« La collectivité publique est tenue de protéger le fonctionnaire ou l'ancien fonctionnaire contre les atteintes volontaires à l'intégrité de la personne, les violences, les agissements de harcèlement moral ou sexuel, les menaces, les injures, les diffamations ou les outrages dont il pourrait être victime sans qu'une faute personnelle détachable de l'exercice de ses fonctions puisse lui être imputée. »
 
-L'article L. 134-5 du même code dispose que la collectivité est tenue d'accorder sa protection dans les conditions fixées et de réparer, le cas échéant, le préjudice qui en est résulté. 
+I. CADRE JURIDIQUE ET TEXTES APPLICABLES
+${cadreJuridiqueSpecifique}
 
-La jurisprudence constante du Conseil d'État confirme que l'octroi de cette protection constitue une OBLIGATION STRICTE pour la collectivité dès lors que les attaques sont subies à l'occasion des fonctions et qu'aucune faute personnelle n'est commise par l'agent victime.
 
 II. EXPOSÉ CIRCONSTANCIÉ ET CHRONOLOGIQUE DES FAITS
-Dans le cadre de mes fonctions de ${grade} au sein de ${collectivite}, j'ai été directement victime des agissements suivants :
+Dans le cadre de l'exercice normal de mes fonctions de ${grade} au sein de ${collectivite}, j'ai été directement victime des agissements suivants :
 
-${chronologieFaits || "Préciser les dates, heures, lieux et déroulé précis des faits."}
+${chronologieFaits || defaultContent.chronologieFaits}
 
 Témoins identifiés des faits :
-${temoinsIdentifies || "Collègues de service présents sur les lieux et usagers identifiés."}
+${temoinsIdentifies || defaultContent.temoinsIdentifies}
 
-Démarches judiciaires et médicales accomplies :
-${depotPlainteOuMainCourante ? `• Dépôt officiel de plainte pénale / main courante : ${referencePlainte || "Plainte déposée auprès du Commissariat de Police / Gendarmerie"}` : "• Dépôt de plainte en cours de formalisation."}
-${arretTravailOuItt ? `• Constat médical légal / Interruption Totale de Travail (ITT) : ${dureeItt || "Certificat médical d'ITT délivré par l'unité médico-judiciaire"}` : ""}
+Démarches judiciaires et constatations médicales accomplies :
+${depotPlainteOuMainCourante ? `• Dépôt officiel de plainte pénale / saisine : ${referencePlainte || defaultContent.referencePlainte}` : "• Dépôt de plainte pénale en cours de finalisation par mon conseil."}
+${arretTravailOuItt ? `• Constat médical légal / Incapacité Totale de Travail (ITT) : ${dureeItt || defaultContent.dureeItt}` : "• Certificat médical de suivi et constatations cliniques établis."}
 
-Préjudices subis par l'agent :
-${detailsPrejudice || "Atteinte grave à la dignité, à l'intégrité physique et psychologique, anxiété réactionnelle et perturbations de l'exercice des missions."}
+Nature des préjudices physiques, psychologiques et moraux subis :
+${detailsPrejudice || defaultContent.detailsPrejudice}
+
 
 III. MESURES DE PROTECTION FORMELLEMENT SOLLICITÉES
-Au titre de l'obligation légale de protection pesant sur la collectivité, je vous demande expressément de diligenter sans délai les mesures suivantes :
+Au titre de l'obligation légale impérative de protection pesant sur la collectivité employeur, je vous demande expressément d'ordonner et de diligenter sans délai les mesures conservatoires et réparatrices suivantes :
 
-${mesuresUrgenceDemandeess.priseEnChargeFraisAvocat ? "1. PRISE EN CHARGE INTÉGRALE des frais de justice, d'avocat et d'expertise (convention d'honoraires directe avec le conseil choisi par l'agent) pour la défense de mes intérêts devant les juridictions répressives ou civiles (Art. L. 134-6 CGFP) ;" : ""}
-${mesuresUrgenceDemandeess.changementAffectationConservatoire ? "2. ADOPTION DE MESURES CONSERVATOIRES DE SÉCURITÉ immédiates visant à assurer mon intégrité physique et psychologique sur mon lieu de travail (éloignement ou sécurisation du poste) ;" : ""}
-${mesuresUrgenceDemandeess.signalementArt40Cpp ? "3. SIGNALEMENT OFFICIEL PAR LA COLLECTIVITÉ auprès de Monsieur le Procureur de la République près le Tribunal Judiciaire compétent, en application de l'article 40, alinéa 2, du Code de procédure pénale ;" : ""}
-${mesuresUrgenceDemandeess.soutienPsychologique ? "4. MISE EN PLACE d'un accompagnement médical et psychologique d'urgence via la médecine du travail et le service de prévention de la collectivité." : ""}
+${listeMesures.join("\n\n")}
 
-IV. RAPPEL DES VOIES DE RECOURS ET MISE EN DEMEURE
-Je vous saurais gré de bien vouloir accuser réception de la présente demande et de me notifier votre décision dans le délai légal de DEUX MOIS imparti par les dispositions du Code des relations entre le public et l'administration (date limite : ${miseEnDemeureDate}).
 
-À défaut de décision explicite d'accord dans ce délai de deux mois, un refus implicite naîtra du silence gardé par l'administration (Art. L. 231-4 CRPA), qui ouvrira immédiatement un délai de deux mois pour saisir le Tribunal Administratif territorialement compétent d'un Recours pour Excès de Pouvoir (REP) assorti d'un Référé-Suspension (Art. L. 521-1 CJA) ou d'un Référé-Liberté (Art. L. 521-2 CJA) aux fins d'injonction sous astreinte.
+IV. RAPPEL DES VOIES DE RECOURS ET MISE EN DEMEURE SOUS DEUX MOIS
+Je vous saurais gré de bien vouloir accuser formellement réception de la présente demande et de me notifier votre décision explicite d'octroi de la protection fonctionnelle dans le délai légal de DEUX MOIS imparti par les dispositions du Code des relations entre le public et l'administration (CRPA), soit au plus tard le ${miseEnDemeureDate}.
 
-Comptant sur votre sens des responsabilités et sur le respect des droits statutaires fondamentaux des agents publics, je vous prie de croire, ${autoriteDestinataire}, en l'assurance de mon profond dévouement au service public.
+Il est expressément rappelé qu'à défaut de décision explicite d'acceptation dans ce délai de deux mois, le silence gardé par votre autorité vaudra décision implicite de rejet (Art. L. 231-4 CRPA). 
+Un tel refus implicite ouvrira immédiatement à mon profit un délai de deux mois pour saisir le Tribunal Administratif territorialement compétent d'un Recours pour Excès de Pouvoir (REP) à fin d'annulation, assorti d'une requête en Référé-Suspension (Article L. 521-1 du Code de Justice Administrative) ou en Référé-Liberté (Article L. 521-2 du CJA) aux fins d'injonction sous astreinte journalière.
+
+Comptant sur votre sens des responsabilités, sur la loyauté due aux agents territoriaux et sur le strict respect des droits statutaires fondamentaux régissant la Fonction Publique Territoriale, je vous prie de croire, ${autoriteDestinataire}, en l'assurance de mon profond dévouement au service public.
 
 
 Signature de l'agent :
 
+
 ${prenomAgent} ${nomAgent}
-Pièces jointes justificatives annexées :
-- Copie de la plainte / récépissé de dépôt de plainte
-- Certificats médicaux / arrêts de travail
-- Attestations de témoins`;
+
+
+Bordereau des pièces justificatives annexées :
+${pJointes.map((p, idx) => `PJ n°${idx + 1} : ${p}`).join("\n")}`;
 
   return {
-    titre: "Demande de Protection Fonctionnelle (Art. L. 134-1 CGFP)",
+    titre,
     texteOfficiel,
     miseEnDemeureDate,
-    fondementsJuridiques: [
-      "Articles L. 134-1 à L. 134-12 du Code Général de la Fonction Publique",
-      "Article 40 alinéa 2 du Code de Procédure Pénale",
-      "Article L. 231-4 du Code des relations entre le public et l'administration"
-    ]
+    fondementsJuridiques
   };
 }
 

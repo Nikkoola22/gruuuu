@@ -102,6 +102,14 @@ export interface DeliberationBudgetInfo {
   depensesInvestissement: ChapitreMouvement[];
   recettesInvestissement: ChapitreMouvement[];
   pointsClesJuridiques: string[];
+  detailsVote?: {
+    quorumTexte?: string;
+    votantsTotal?: number;
+    contreNoms?: string[];
+    abstentionNoms?: string[];
+  };
+  delegationArticle2?: string;
+  delaiRecours?: string;
 }
 
 export const DELIBERATIONS_GENNEVILLIERS_2026: Record<string, DeliberationBudgetInfo> = {
@@ -120,6 +128,14 @@ export const DELIBERATIONS_GENNEVILLIERS_2026: Record<string, DeliberationBudget
     votesContre: 1,
     votesAbstention: 1,
     typeVote: 'majorite',
+    detailsVote: {
+      quorumTexte: "Quorum atteint (Art. L.2121-17 CGCT) — 29 présents, 8 représentés, 6 absents excusés",
+      votantsTotal: 37,
+      contreNoms: ["Laëtitia GHIRARDI"],
+      abstentionNoms: ["Sinan KARAKUS"]
+    },
+    delegationArticle2: "Autorise Monsieur le Maire à procéder à des mouvements de crédits de chapitre à chapitre (hors personnel et concours aux associations) dans une limite de 7,5 % des dépenses réelles de chaque section à compter du 1er janvier 2026.",
+    delaiRecours: "Recours pour excès de pouvoir (REP) devant le Tribunal administratif de Cergy-Pontoise dans un délai de 2 mois à compter de la publication.",
     montantTotalEquilibre: 250668105.30,
     sectionFonctionnementTotal: 168150735.30,
     sectionInvestissementTotal: 82517370.00,
@@ -183,6 +199,14 @@ export const DELIBERATIONS_GENNEVILLIERS_2026: Record<string, DeliberationBudget
     votesContre: 0,
     votesAbstention: 3,
     typeVote: 'unanimite',
+    detailsVote: {
+      quorumTexte: "Quorum atteint (Art. L.2121-17 CGCT) — 26 présents, 11 représentés, 5 absents excusés",
+      votantsTotal: 38,
+      contreNoms: [],
+      abstentionNoms: ["Laëtitia GHIRARDI", "Sinan KARUKUS", "Christelle NEDELEC (représentée par Sinan KARAKUS)"]
+    },
+    delegationArticle2: "Autorise Monsieur le Maire à procéder à des mouvements de crédits de chapitre à chapitre (hors personnel et concours aux associations) dans une limite de 7,5 % des dépenses réelles de chaque section à compter du 1er janvier 2025.",
+    delaiRecours: "Recours pour excès de pouvoir (REP) auprès du Tribunal administratif de Cergy-Pontoise dans un délai de 2 mois à compter de sa publication.",
     montantTotalEquilibre: 238277172.33,
     sectionFonctionnementTotal: 171297167.00,
     sectionInvestissementTotal: 66980005.33,
@@ -721,4 +745,103 @@ ${result.diagnosticGlobal.pointsVigilance.length > 0
 2. **Consolidation du CFU (Compte Financier Unique) :** Fiabiliser les rattachements de fin d’exercice et les restes à réaliser (RAR).
 3. **Dialogue de gestion RH :** Articuler les créations de postes et l'évolution du CIA avec la trajectoire d'épargne brute.
 `;
+}
+
+export interface ChapitreComparatifRow {
+  chapitre: string;
+  libelle: string;
+  section: 'fonctionnement' | 'investissement';
+  sens: 'depense' | 'recette';
+  montant2025: number;
+  montant2026: number;
+  deltaEuros: number;
+  deltaPct: number | null;
+}
+
+export function comparerBP2025et2026(): {
+  depensesFonctionnement: ChapitreComparatifRow[];
+  recettesFonctionnement: ChapitreComparatifRow[];
+  depensesInvestissement: ChapitreComparatifRow[];
+  recettesInvestissement: ChapitreComparatifRow[];
+  totaux: {
+    budgetTotal2025: number;
+    budgetTotal2026: number;
+    deltaBudgetTotal: number;
+    deltaBudgetTotalPct: number;
+    fonctTotal2025: number;
+    fonctTotal2026: number;
+    deltaFonctPct: number;
+    investTotal2025: number;
+    investTotal2026: number;
+    deltaInvestPct: number;
+    chargesPersonnel2025: number;
+    chargesPersonnel2026: number;
+    deltaPersonnelPct: number;
+  };
+} {
+  const bp25 = DELIBERATIONS_GENNEVILLIERS_2026.bp_2025;
+  const bp26 = DELIBERATIONS_GENNEVILLIERS_2026.bp_2026;
+
+  const compareList = (
+    list25: ChapitreMouvement[],
+    list26: ChapitreMouvement[],
+    section: 'fonctionnement' | 'investissement',
+    sens: 'depense' | 'recette'
+  ): ChapitreComparatifRow[] => {
+    const map25 = new Map<string, ChapitreMouvement>();
+    for (const item of list25) map25.set(item.chapitre, item);
+
+    const map26 = new Map<string, ChapitreMouvement>();
+    for (const item of list26) map26.set(item.chapitre, item);
+
+    const allKeys = Array.from(new Set([...Array.from(map25.keys()), ...Array.from(map26.keys())]));
+
+    return allKeys.map(chap => {
+      const it25 = map25.get(chap);
+      const it26 = map26.get(chap);
+      const m25 = it25 ? (it25.totalBS ?? it25.montantBS2026) : 0;
+      const m26 = it26 ? (it26.totalBS ?? it26.montantBS2026) : 0;
+      const delta = m26 - m25;
+      const pct = m25 > 0 ? (delta / m25) * 100 : null;
+      return {
+        chapitre: chap,
+        libelle: it26?.libelle || it25?.libelle || `Chapitre ${chap}`,
+        section,
+        sens,
+        montant2025: m25,
+        montant2026: m26,
+        deltaEuros: delta,
+        deltaPct: pct !== null ? Math.round(pct * 100) / 100 : null,
+      };
+    });
+  };
+
+  const bTotal25 = bp25.montantTotalEquilibre;
+  const bTotal26 = bp26.montantTotalEquilibre;
+  const dTotal = bTotal26 - bTotal25;
+
+  const p25 = bp25.depensesFonctionnement.find(c => c.chapitre === '012')?.montantBS2026 || 0;
+  const p26 = bp26.depensesFonctionnement.find(c => c.chapitre === '012')?.montantBS2026 || 0;
+
+  return {
+    depensesFonctionnement: compareList(bp25.depensesFonctionnement, bp26.depensesFonctionnement, 'fonctionnement', 'depense'),
+    recettesFonctionnement: compareList(bp25.recettesFonctionnement, bp26.recettesFonctionnement, 'fonctionnement', 'recette'),
+    depensesInvestissement: compareList(bp25.depensesInvestissement, bp26.depensesInvestissement, 'investissement', 'depense'),
+    recettesInvestissement: compareList(bp25.recettesInvestissement, bp26.recettesInvestissement, 'investissement', 'recette'),
+    totaux: {
+      budgetTotal2025: bTotal25,
+      budgetTotal2026: bTotal26,
+      deltaBudgetTotal: dTotal,
+      deltaBudgetTotalPct: Math.round(((dTotal / bTotal25) * 100) * 100) / 100,
+      fonctTotal2025: bp25.sectionFonctionnementTotal,
+      fonctTotal2026: bp26.sectionFonctionnementTotal,
+      deltaFonctPct: Math.round((((bp26.sectionFonctionnementTotal - bp25.sectionFonctionnementTotal) / bp25.sectionFonctionnementTotal) * 100) * 100) / 100,
+      investTotal2025: bp25.sectionInvestissementTotal,
+      investTotal2026: bp26.sectionInvestissementTotal,
+      deltaInvestPct: Math.round((((bp26.sectionInvestissementTotal - bp25.sectionInvestissementTotal) / bp25.sectionInvestissementTotal) * 100) * 100) / 100,
+      chargesPersonnel2025: p25,
+      chargesPersonnel2026: p26,
+      deltaPersonnelPct: Math.round((((p26 - p25) / p25) * 100) * 100) / 100,
+    }
+  };
 }

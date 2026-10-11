@@ -336,6 +336,10 @@ function App() {
   }
 
   const openCalculator = (calculator: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | 'navigo' | 'simulateur-ir' | 'budget-m57') => {
+    if (calculator === 'budget-m57') {
+      setChatState(prev => ({ ...prev, currentView: 'budget-m57' }));
+      return;
+    }
     if (calculator === 'primes' || calculator === 'cia' || calculator === '13eme') {
       const keyByCalculator = {
         primes: 'calculator_primes',

@@ -32,10 +32,12 @@ import {
   genererNoteDecision,
   PRESETS_COLLECTIVITES,
   DELIBERATIONS_GENNEVILLIERS_2026,
+  comparerBP2025et2026,
   type BudgetM57Input,
   type BudgetM57Result,
   type DeliberationBudgetInfo,
-  type ChapitreMouvement
+  type ChapitreMouvement,
+  type ChapitreComparatifRow
 } from '../services/budgetM57Engine';
 
 interface CalculateurBudgetM57Props {
@@ -77,6 +79,11 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
   // Budget de délibération sélectionné (BP 2026, BP 2025, BS 2026 Principal, Restauration, Cinéma)
   const [selectedDelibKey, setSelectedDelibKey] = useState<'bp_2026' | 'bp_2025' | 'principal' | 'restauration' | 'cinema'>('bp_2026');
   const deliberationActive: DeliberationBudgetInfo = DELIBERATIONS_GENNEVILLIERS_2026[selectedDelibKey];
+
+  // Calcul comparatif pluriannuel BP 2025 vs BP 2026
+  const comparatifBP = useMemo(() => comparerBP2025et2026(), []);
+  const [showDetailComparatif, setShowDetailComparatif] = useState<boolean>(false);
+  const [sectionComparatifFiltre, setSectionComparatifFiltre] = useState<'tous' | 'fonctionnement' | 'investissement'>('tous');
 
   // Formulaire budget M57
   const [formData, setFormData] = useState<BudgetM57Input>(PRESETS_COLLECTIVITES.gennevilliers_bp_2026);
@@ -437,33 +444,72 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
               </div>
 
               {/* Fiche d'identification juridique certifiée */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Acte & Référence</div>
-                  <div className="text-xs font-black text-slate-900 dark:text-white mt-0.5">{deliberationActive.numeroDelib}</div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">{deliberationActive.titre}</div>
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Acte & Référence</div>
+                    <div className="text-xs font-black text-slate-900 dark:text-white mt-0.5">{deliberationActive.numeroDelib}</div>
+                    <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">{deliberationActive.titre}</div>
+                  </div>
+
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Adoption & Signatures</div>
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5">
+                      Présidence : {deliberationActive.maire} (Maire)
+                      {deliberationActive.secretaireSeance ? ` • Secrétaire : ${deliberationActive.secretaireSeance}` : ''}
+                    </div>
+                    <div className="text-[11px] text-slate-600 dark:text-slate-400">
+                      Vote : {deliberationActive.typeVote === 'unanimite' ? 'Adopté à l’unanimité' : 'Adopté à la majorité'} ({deliberationActive.votesPour} pour, {deliberationActive.votesContre} contre{deliberationActive.votesAbstention ? `, ${deliberationActive.votesAbstention} abst.` : ''})
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Télétransmission Préfecture</div>
+                    <div className="text-xs font-mono text-emerald-700 dark:text-emerald-400 font-bold mt-0.5">
+                      AR : {deliberationActive.arPrefecture}
+                    </div>
+                    <div className="text-[10px] text-slate-500 font-mono truncate" title={deliberationActive.chaineIntegrite}>
+                      Empreinte : {deliberationActive.chaineIntegrite}
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Adoption & Signatures</div>
-                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5">
-                    Présidence : {deliberationActive.maire} (Maire)
-                    {deliberationActive.secretaireSeance ? ` • Secrétaire : ${deliberationActive.secretaireSeance}` : ''}
+                {/* Détails du quorum & des votes nominatifs */}
+                {deliberationActive.detailsVote && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs p-3 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/60">
+                    <div>
+                      <span className="font-bold text-indigo-900 dark:text-indigo-200">Règle de Quorum : </span>
+                      <span className="text-slate-700 dark:text-slate-300">{deliberationActive.detailsVote.quorumTexte}</span>
+                    </div>
+                    <div>
+                      <span className="font-bold text-indigo-900 dark:text-indigo-200">Positions exprimées : </span>
+                      <span className="text-slate-700 dark:text-slate-300">
+                        {deliberationActive.detailsVote.contreNoms && deliberationActive.detailsVote.contreNoms.length > 0
+                          ? `Vote contre : ${deliberationActive.detailsVote.contreNoms.join(', ')} • `
+                          : 'Aucun vote contre • '}
+                        {deliberationActive.detailsVote.abstentionNoms && deliberationActive.detailsVote.abstentionNoms.length > 0
+                          ? `Abstention(s) : ${deliberationActive.detailsVote.abstentionNoms.join(', ')}`
+                          : 'Aucune abstention'}
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-400">
-                    Vote : {deliberationActive.typeVote === 'unanimite' ? 'Adopté à l’unanimité' : 'Adopté à la majorité'} ({deliberationActive.votesPour} pour, {deliberationActive.votesContre} contre{deliberationActive.votesAbstention ? `, ${deliberationActive.votesAbstention} abst.` : ''})
-                  </div>
-                </div>
+                )}
 
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Télétransmission Préfecture</div>
-                  <div className="text-xs font-mono text-emerald-700 dark:text-emerald-400 font-bold mt-0.5">
-                    AR : {deliberationActive.arPrefecture}
+                {/* Délégation de gestion Article 2 & Voies de recours */}
+                {deliberationActive.delegationArticle2 && (
+                  <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs space-y-1">
+                    <div>
+                      <strong className="text-slate-900 dark:text-white">Article 2 (Mouvements de crédits) : </strong>
+                      <span className="text-slate-600 dark:text-slate-300">{deliberationActive.delegationArticle2}</span>
+                    </div>
+                    {deliberationActive.delaiRecours && (
+                      <div>
+                        <strong className="text-slate-900 dark:text-white">Article 4 (Voies de recours) : </strong>
+                        <span className="text-slate-500 dark:text-slate-400">{deliberationActive.delaiRecours}</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono truncate" title={deliberationActive.chaineIntegrite}>
-                    Empreinte : {deliberationActive.chaineIntegrite}
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Bouton d'action directe : injecter dans le simulateur */}
@@ -484,14 +530,27 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
             {/* DASHBOARD COMPARATIF BP 2025 vs BP 2026 (Quand on consulte les budgets primitifs) */}
             {(selectedDelibKey === 'bp_2026' || selectedDelibKey === 'bp_2025') && (
               <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-indigo-500" />
-                    Comparatif Pluriannuel Officiel : Budget Primitif 2025 ➔ Budget Primitif 2026
-                  </h3>
-                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-                    Croissance budgétaire globale : +5,20 % (+12,39 M€)
-                  </span>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-indigo-500" />
+                      Comparatif Pluriannuel Officiel : Budget Primitif 2025 ➔ Budget Primitif 2026
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      Données consolidées d'après les délibérations certifiées du 12 février 2025 et du 4 février 2026
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                      Croissance globale : +5,20 % (+12,39 M€)
+                    </span>
+                    <button
+                      onClick={() => setShowDetailComparatif(!showDetailComparatif)}
+                      className="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all cursor-pointer"
+                    >
+                      {showDetailComparatif ? 'Masquer le tableau détaillé' : 'Voir le tableau détaillé par chapitre'}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
@@ -523,8 +582,123 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                     <div className="text-[10px] text-amber-600 dark:text-amber-400 font-bold mt-0.5">+10,42 M€ (+23,98 %, chantiers publics)</div>
                   </div>
                 </div>
+
+                {/* TABLEAU DÉTAILLÉ COMPARATIF PAR CHAPITRE */}
+                {showDetailComparatif && (
+                  <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                        Évolution détaillée par chapitre M57 (2025 ➔ 2026) :
+                      </div>
+                      <div className="inline-flex rounded-lg p-0.5 bg-slate-100 dark:bg-slate-800 text-xs font-bold">
+                        <button
+                          onClick={() => setSectionComparatifFiltre('tous')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${
+                            sectionComparatifFiltre === 'tous'
+                              ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                              : 'text-slate-600 dark:text-slate-400'
+                          }`}
+                        >
+                          Tous
+                        </button>
+                        <button
+                          onClick={() => setSectionComparatifFiltre('fonctionnement')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${
+                            sectionComparatifFiltre === 'fonctionnement'
+                              ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                              : 'text-slate-600 dark:text-slate-400'
+                          }`}
+                        >
+                          Fonctionnement
+                        </button>
+                        <button
+                          onClick={() => setSectionComparatifFiltre('investissement')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${
+                            sectionComparatifFiltre === 'investissement'
+                              ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                              : 'text-slate-600 dark:text-slate-400'
+                          }`}
+                        >
+                          Investissement
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+                      <table className="w-full text-left text-xs">
+                        <thead className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[10px] font-bold">
+                          <tr>
+                            <th className="p-2.5">Section</th>
+                            <th className="p-2.5">Chapitre & Libellé</th>
+                            <th className="p-2.5 text-right">BP 2025 (€)</th>
+                            <th className="p-2.5 text-right">BP 2026 (€)</th>
+                            <th className="p-2.5 text-right">Variation (€)</th>
+                            <th className="p-2.5 text-right">Évolution (%)</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900 font-mono">
+                          {[
+                            ...(sectionComparatifFiltre !== 'investissement' ? comparatifBP.depensesFonctionnement : []),
+                            ...(sectionComparatifFiltre !== 'investissement' ? comparatifBP.recettesFonctionnement : []),
+                            ...(sectionComparatifFiltre !== 'fonctionnement' ? comparatifBP.depensesInvestissement : []),
+                            ...(sectionComparatifFiltre !== 'fonctionnement' ? comparatifBP.recettesInvestissement : []),
+                          ].map((row, idx) => {
+                            const isPositive = row.deltaEuros > 0;
+                            const isZero = row.deltaEuros === 0;
+                            return (
+                              <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                <td className="p-2.5 font-sans">
+                                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                                    row.section === 'fonctionnement'
+                                      ? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+                                      : 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300'
+                                  }`}>
+                                    {row.section === 'fonctionnement' ? 'FCT' : 'INV'} • {row.sens === 'depense' ? 'Dép.' : 'Rec.'}
+                                  </span>
+                                </td>
+                                <td className="p-2.5 font-sans">
+                                  <strong className="text-indigo-600 dark:text-indigo-400 mr-1.5">Chap. {row.chapitre}</strong>
+                                  <span className="text-slate-700 dark:text-slate-300">{row.libelle}</span>
+                                </td>
+                                <td className="p-2.5 text-right text-slate-600 dark:text-slate-400">
+                                  {row.montant2025.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                                </td>
+                                <td className="p-2.5 text-right font-bold text-slate-900 dark:text-white">
+                                  {row.montant2026.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                                </td>
+                                <td className={`p-2.5 text-right font-bold ${
+                                  isZero
+                                    ? 'text-slate-400'
+                                    : (row.sens === 'depense' ? (isPositive ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400') : (isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'))
+                                }`}>
+                                  {isPositive ? '+' : ''}{row.deltaEuros.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                                </td>
+                                <td className="p-2.5 text-right">
+                                  {row.deltaPct !== null ? (
+                                    <span className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                                      row.deltaPct > 0
+                                        ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400'
+                                        : row.deltaPct < 0
+                                          ? 'bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-400'
+                                          : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
+                                    }`}>
+                                      {row.deltaPct > 0 ? '+' : ''}{row.deltaPct.toFixed(2)} %
+                                    </span>
+                                  ) : (
+                                    <span className="text-slate-400 text-[10px]">Nouveau</span>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
+
 
             {/* Cadre Clôture CFU 2025 & Affectation (Si applicable) */}
             {deliberationActive.cfu2025 && (

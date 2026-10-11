@@ -59,18 +59,265 @@ export interface BudgetM57Result {
   };
 }
 
+export interface ChapitreMouvement {
+  nature: 'REEL' | 'ORDRE';
+  chapitre: string;
+  libelle: string;
+  montantBS2026: number;
+  reports2025?: number;
+  totalBS?: number;
+}
+
+export interface DeliberationBudgetInfo {
+  id: string;
+  numeroDelib: string;
+  titre: string;
+  budgetType: 'principal' | 'annexe_restauration' | 'annexe_cinema';
+  dateConseil: string;
+  dateTransmissionPrefecture: string;
+  chaineIntegrite: string;
+  arPrefecture: string;
+  maire: string;
+  votesPour: number;
+  votesContre: number;
+  typeVote: 'unanimite' | 'majorite';
+  cfu2025: {
+    fonctionnementResultatCumule: number;
+    investissementResultatCumule: number;
+    restesARealiserDepenses: number;
+    restesARealiserRecettes: number;
+    besoinNetFinancement: number;
+    affectationCompte1068: number;
+    affectationLigneR002: number;
+    affectationLigneD001?: number;
+    affectationLigneR001?: number;
+  };
+  bs2026: {
+    totalGeneral: number;
+    fonctionnementTotal: number;
+    investissementTotal: number;
+    depensesFonctionnement: ChapitreMouvement[];
+    recettesFonctionnement: ChapitreMouvement[];
+    depensesInvestissement: ChapitreMouvement[];
+    recettesInvestissement: ChapitreMouvement[];
+  };
+  pointsClesJuridiques: string[];
+}
+
+export const DELIBERATIONS_GENNEVILLIERS_2026: Record<string, DeliberationBudgetInfo> = {
+  principal: {
+    id: 'principal',
+    numeroDelib: 'Délibération n°2026/S6/004',
+    titre: 'Budget Supplémentaire 2026 de la Commune & Affectation du CFU 2025 (Budget Principal)',
+    budgetType: 'principal',
+    dateConseil: '23 septembre 2026',
+    dateTransmissionPrefecture: '29 septembre 2026',
+    chaineIntegrite: '43 40 2F 09 90 69 5E 5D 59 3A B7 50 3A 9A BB E5',
+    arPrefecture: '092-219200367-20260925-2236-DE',
+    maire: 'Patrice LECLERC',
+    votesPour: 40,
+    votesContre: 4,
+    typeVote: 'majorite',
+    cfu2025: {
+      fonctionnementResultatCumule: 17399407.33,
+      investissementResultatCumule: -13402616.24,
+      restesARealiserDepenses: 15075223.80,
+      restesARealiserRecettes: 12103104.02,
+      besoinNetFinancement: 16374736.02,
+      affectationCompte1068: 16399407.33,
+      affectationLigneR002: 1000000.00,
+      affectationLigneD001: 10430496.46,
+    },
+    bs2026: {
+      totalGeneral: 27289807.92,
+      fonctionnementTotal: 1790209.00,
+      investissementTotal: 25499598.92,
+      depensesFonctionnement: [
+        { nature: 'ORDRE', chapitre: '023', libelle: "Virement à la section d'investissement", montantBS2026: 283749.59, reports2025: 0, totalBS: 283749.59 },
+        { nature: 'REEL', chapitre: '011', libelle: 'Charges à caractère général', montantBS2026: 1063249.98, reports2025: 0, totalBS: 1063249.98 },
+        { nature: 'REEL', chapitre: '65', libelle: 'Autres charges de gestion courante', montantBS2026: 243209.43, reports2025: 0, totalBS: 243209.43 },
+        { nature: 'REEL', chapitre: '66', libelle: 'Charges financières (intérêts dette)', montantBS2026: 200000.00, reports2025: 0, totalBS: 200000.00 },
+      ],
+      recettesFonctionnement: [
+        { nature: 'REEL', chapitre: '002', libelle: 'Résultat de fonctionnement reporté (R002)', montantBS2026: 1000000.00, reports2025: 0, totalBS: 1000000.00 },
+        { nature: 'REEL', chapitre: '70', libelle: 'Produits des services, domaine et ventes diverses', montantBS2026: -20000.00, reports2025: 0, totalBS: -20000.00 },
+        { nature: 'REEL', chapitre: '73', libelle: 'Impôts et taxes', montantBS2026: -453396.00, reports2025: 0, totalBS: -453396.00 },
+        { nature: 'REEL', chapitre: '731', libelle: 'Fiscalité locale', montantBS2026: 108257.00, reports2025: 0, totalBS: 108257.00 },
+        { nature: 'REEL', chapitre: '74', libelle: 'Dotations et participations', montantBS2026: 885289.00, reports2025: 0, totalBS: 885289.00 },
+        { nature: 'REEL', chapitre: '75', libelle: 'Autres produits de gestion courante', montantBS2026: 270059.00, reports2025: 0, totalBS: 270059.00 },
+      ],
+      depensesInvestissement: [
+        { nature: 'REEL', chapitre: '001', libelle: "Solde d'exécution d'investissement reporté (D001)", montantBS2026: 10430496.46, reports2025: 0, totalBS: 10430496.46 },
+        { nature: 'REEL', chapitre: '16', libelle: 'Emprunts et dettes assimilées', montantBS2026: -77000.00, reports2025: 0, totalBS: -77000.00 },
+        { nature: 'REEL', chapitre: '20', libelle: 'Immobilisations incorporelles', montantBS2026: -714000.00, reports2025: 1965898.77, totalBS: 1251898.77 },
+        { nature: 'REEL', chapitre: '204', libelle: "Subventions d'équipement versées", montantBS2026: -318121.34, reports2025: 0, totalBS: -318121.34 },
+        { nature: 'REEL', chapitre: '21', libelle: 'Immobilisations corporelles (équipements)', montantBS2026: -17500.00, reports2025: 7143922.35, totalBS: 7126422.35 },
+        { nature: 'REEL', chapitre: '23', libelle: 'Immobilisations en cours (travaux pluriannuels)', montantBS2026: 0.00, reports2025: 5965402.68, totalBS: 5965402.68 },
+        { nature: 'REEL', chapitre: '27', libelle: 'Autres immobilisations financières', montantBS2026: 1120500.00, reports2025: 0, totalBS: 1120500.00 },
+      ],
+      recettesInvestissement: [
+        { nature: 'ORDRE', chapitre: '021', libelle: 'Virement de la section de fonctionnement (021)', montantBS2026: 283749.59, reports2025: 0, totalBS: 283749.59 },
+        { nature: 'REEL', chapitre: '10', libelle: 'Dotations, fonds divers et réserves (Compte 1068)', montantBS2026: 16399407.33, reports2025: 0, totalBS: 16399407.33 },
+        { nature: 'REEL', chapitre: '13', libelle: "Subventions d'investissement", montantBS2026: -1343744.00, reports2025: 4103104.02, totalBS: 2759360.02 },
+        { nature: 'REEL', chapitre: '16', libelle: 'Emprunts et dettes assimilées', montantBS2026: -3063418.02, reports2025: 8000000.00, totalBS: 4936581.98 },
+        { nature: 'REEL', chapitre: '27', libelle: 'Autres immobilisations financières', montantBS2026: 1120500.00, reports2025: 0, totalBS: 1120500.00 },
+      ],
+    },
+    pointsClesJuridiques: [
+      "Conformité CGCT L. 2121-12 et L. 1612-11 : reprise obligatoire des résultats du CFU 2025 au budget supplémentaire.",
+      "Affectation M57 du résultat : l'excédent de fonctionnement (+17,39 M€) couvre le besoin net d'investissement via le compte 1068 (16,39 M€).",
+      "Le reliquat de 1,00 M€ est inscrit en report de fonctionnement R002 comme marge de manœuvre.",
+      "La section d'investissement intègre 15,08 M€ de restes à réaliser (RAR) en dépenses (chap. 20, 21, 23) et 12,10 M€ en recettes déjà notifiées.",
+      "Séance publique du 23/09/2026, transmis en préfecture le 29/09/2026 sous le visa AR 092-219200367-20260925-2236-DE."
+    ],
+  },
+  restauration: {
+    id: 'restauration',
+    numeroDelib: 'Délibérations n°2026/S6/002 & n°2026/S6/005',
+    titre: 'Budget Annexe Restauration du Personnel — CFU 2025 & BS 2026',
+    budgetType: 'annexe_restauration',
+    dateConseil: '23 septembre 2026',
+    dateTransmissionPrefecture: '29 septembre 2026',
+    chaineIntegrite: '05 1D BC 0E F9 F8 4E DE 38 44 45 CC 6B BF 2A F5',
+    arPrefecture: '092-219200367-20260925-2441-DE',
+    maire: 'Patrice LECLERC',
+    votesPour: 44,
+    votesContre: 0,
+    typeVote: 'unanimite',
+    cfu2025: {
+      fonctionnementResultatCumule: 41526.07,
+      investissementResultatCumule: -14195.54,
+      restesARealiserDepenses: 0.00,
+      restesARealiserRecettes: 0.00,
+      besoinNetFinancement: 14195.54,
+      affectationCompte1068: 14195.54,
+      affectationLigneR002: 27330.53,
+      affectationLigneD001: 14195.54,
+    },
+    bs2026: {
+      totalGeneral: 36195.54,
+      fonctionnementTotal: 22000.00,
+      investissementTotal: 14195.54,
+      depensesFonctionnement: [
+        { nature: 'REEL', chapitre: '011', libelle: 'Charges à caractère général', montantBS2026: 22000.00, reports2025: 0, totalBS: 22000.00 },
+      ],
+      recettesFonctionnement: [
+        { nature: 'REEL', chapitre: '002', libelle: 'Résultat de fonctionnement reporté (R002)', montantBS2026: 27330.53, reports2025: 0, totalBS: 27330.53 },
+        { nature: 'REEL', chapitre: '74', libelle: 'Dotations et participations', montantBS2026: -5330.53, reports2025: 0, totalBS: -5330.53 },
+      ],
+      depensesInvestissement: [
+        { nature: 'REEL', chapitre: '001', libelle: "Solde d'exécution d'investissement reporté (D001)", montantBS2026: 14195.54, reports2025: 0, totalBS: 14195.54 },
+      ],
+      recettesInvestissement: [
+        { nature: 'REEL', chapitre: '10', libelle: 'Dotations, fonds divers et réserves (Compte 1068)', montantBS2026: 14195.54, reports2025: 0, totalBS: 14195.54 },
+      ],
+    },
+    pointsClesJuridiques: [
+      "Budget annexe M57 dédié à la restauration des agents de la collectivité.",
+      "Exécution 2025 : Recettes de 558 320,30 € contre 542 782,54 € de dépenses (excédent de gestion de +15 537,76 €).",
+      "Résultat cumulé de fonctionnement : 41 526,07 € permettant d'apurer entièrement le déficit cumulé d'investissement (-14 195,54 €) via le compte 1068.",
+      "Solde de report R002 maintenu à 27 330,53 €. Vote à l'unanimité (44 voix)."
+    ],
+  },
+  cinema: {
+    id: 'cinema',
+    numeroDelib: 'Délibérations n°2026/S6/003 & n°2026/S6/006',
+    titre: 'Budget Annexe Cinéma Jean Vigo — CFU 2025 & BS 2026',
+    budgetType: 'annexe_cinema',
+    dateConseil: '23 septembre 2026',
+    dateTransmissionPrefecture: '29 septembre 2026',
+    chaineIntegrite: '09 EE 84 72 B5 1C 66 9A B5 4A D4 D2 23 F4 0A 1B',
+    arPrefecture: '092-219200367-20260925-2440-DE',
+    maire: 'Patrice LECLERC',
+    votesPour: 44,
+    votesContre: 0,
+    typeVote: 'unanimite',
+    cfu2025: {
+      fonctionnementResultatCumule: 25987.52,
+      investissementResultatCumule: 17724.22,
+      restesARealiserDepenses: 0.00,
+      restesARealiserRecettes: 0.00,
+      besoinNetFinancement: 0.00,
+      affectationCompte1068: 0.00,
+      affectationLigneR002: 25987.52,
+      affectationLigneR001: 17724.22,
+    },
+    bs2026: {
+      totalGeneral: 24582.22,
+      fonctionnementTotal: 6858.00,
+      investissementTotal: 17724.22,
+      depensesFonctionnement: [
+        { nature: 'REEL', chapitre: '012', libelle: 'Charges de personnel et frais assimilés', montantBS2026: 6858.00, reports2025: 0, totalBS: 6858.00 },
+      ],
+      recettesFonctionnement: [
+        { nature: 'REEL', chapitre: '002', libelle: 'Résultat de fonctionnement reporté (R002)', montantBS2026: 25987.52, reports2025: 0, totalBS: 25987.52 },
+        { nature: 'REEL', chapitre: '74', libelle: 'Dotations et participations', montantBS2026: -19129.52, reports2025: 0, totalBS: -19129.52 },
+      ],
+      depensesInvestissement: [
+        { nature: 'REEL', chapitre: '21', libelle: 'Immobilisations corporelles (matériel cinéma)', montantBS2026: 17724.22, reports2025: 0, totalBS: 17724.22 },
+      ],
+      recettesInvestissement: [
+        { nature: 'REEL', chapitre: '001', libelle: "Solde d'exécution d'investissement reporté (R001 - excédent)", montantBS2026: 17724.22, reports2025: 0, totalBS: 17724.22 },
+      ],
+    },
+    pointsClesJuridiques: [
+      "Budget annexe M57 du Cinéma municipal Jean Vigo.",
+      "Situation équilibrée : 0 € de besoin net d'investissement (aucun prélèvement obligatoire au compte 1068).",
+      "L'intégralité du résultat de fonctionnement (+25 987,52 €) est conservée en report R002.",
+      "L'excédent d'investissement (+17 724,22 €) est reporté en R001 et affecté à l'achat d'immobilisations corporelles (chapitre 21).",
+      "Adopté à l'unanimité (44 voix pour, 0 contre) le 23/09/2026."
+    ],
+  },
+};
+
 export const PRESETS_COLLECTIVITES: Record<string, BudgetM57Input> = {
-  gennevilliers_2025: {
-    collectiviteNom: 'Ville de Gennevilliers (Budget Prév. 2025)',
+  gennevilliers_principal_delib_2026: {
+    collectiviteNom: 'Gennevilliers — Budget Principal (Délib. 2026/S6/004)',
+    typeCollectivite: 'commune',
+    population: 51200,
+    exercice: 2026,
+    base: 'execution',
+    recettesReellesFonctionnement: 141200000,
+    depensesReellesFonctionnement: 123800000,
+    remboursementCapitalDette: 8200000,
+    encoursDetteFinExercice: 69400000,
+    depensesPersonnel012: 68900000,
+  },
+  gennevilliers_cfu_2025: {
+    collectiviteNom: 'Gennevilliers — CFU 2025 Exécution (Délib. 2026/S6/004)',
     typeCollectivite: 'commune',
     population: 50200,
     exercice: 2025,
-    base: 'prevision',
-    recettesReellesFonctionnement: 135800000,
-    depensesReellesFonctionnement: 119500000,
-    remboursementCapitalDette: 7800000,
-    encoursDetteFinExercice: 68500000,
-    depensesPersonnel012: 67200000,
+    base: 'execution',
+    recettesReellesFonctionnement: 138650000,
+    depensesReellesFonctionnement: 121250592,
+    remboursementCapitalDette: 7900000,
+    encoursDetteFinExercice: 68100000,
+    depensesPersonnel012: 67400000,
+  },
+  gennevilliers_restauration_2026: {
+    collectiviteNom: 'Gennevilliers — Annexe Restauration (Délib. 2026/S6/005)',
+    typeCollectivite: 'commune',
+    population: 51200,
+    exercice: 2026,
+    base: 'execution',
+    recettesReellesFonctionnement: 558320,
+    depensesReellesFonctionnement: 542782,
+    remboursementCapitalDette: 0,
+    encoursDetteFinExercice: 0,
+    depensesPersonnel012: 320000,
+  },
+  gennevilliers_cinema_2026: {
+    collectiviteNom: 'Gennevilliers — Annexe Cinéma Vigo (Délib. 2026/S6/006)',
+    typeCollectivite: 'commune',
+    population: 51200,
+    exercice: 2026,
+    base: 'execution',
+    recettesReellesFonctionnement: 689051,
+    depensesReellesFonctionnement: 722135,
+    remboursementCapitalDette: 0,
+    encoursDetteFinExercice: 0,
+    depensesPersonnel012: 410000,
   },
   commune_moyenne_fpt: {
     collectiviteNom: 'Commune Moyenne FPT (25 000 hab)',

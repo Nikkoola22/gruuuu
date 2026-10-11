@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from "react"
 import { ArrowLeft, Rss, Calculator, DollarSign, TrendingUp,
   Users, Eye, Laptop, Phone, Mail, MapPin, TrainFront,
-  Clock, Map as MapIcon, Briefcase, Calendar, Activity, Receipt, LayoutGrid, FileSpreadsheet } from "lucide-react"
+  Clock, Map as MapIcon, Briefcase, Calendar, Activity, Receipt, LayoutGrid, FileSpreadsheet, Landmark } from "lucide-react"
 
 // --- IMPORTATIONS DES DONNÉES ---
 import { searchFAQ } from "./data/FAQdata.ts"

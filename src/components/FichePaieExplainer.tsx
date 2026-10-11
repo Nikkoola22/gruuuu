@@ -1097,6 +1097,50 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                         </div>
                       )}
 
+                      {/* Bloc explicatif spécifique CIA Tit. (10% IFSE x 12 mois = 50% manière de servir + 50% jours absents) */}
+                      {(ligne.id === 'cia' || ligne.code === '1592' || ligne.code === '7610' || /cia\b/i.test(ligne.libelle || '') || /compl.*indemnitaire\s*annuel/i.test(ligne.libelle || '')) && (
+                        <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-cyan-500/10 border border-indigo-500/30 dark:border-indigo-500/20 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-xs uppercase tracking-wider text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5">
+                              <ShieldCheck className="w-4 h-4 text-indigo-600" />
+                              Architecture de votre CIA Tit. — 2 volets à parité (50% / 50%)
+                            </span>
+                            <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-200 border border-indigo-300 dark:border-indigo-800">
+                              Rubrique Ciril {ligne.code || '1592'}
+                            </span>
+                          </div>
+                          <div className="p-2.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 text-xs text-indigo-900 dark:text-indigo-200">
+                            <strong>Formule de calcul statutaire :</strong> Le Complément Indemnitaire Annuel se compose de <strong>10 % de votre IFSE mensuelle × 12 mois</strong> (soit l'équivalent de 1,2 mois d'IFSE annuelle).
+                          </div>
+                          <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Cette somme est attribuée selon <strong>deux critères stricts à parité (50 % / 50 %)</strong> :
+                          </p>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                            {/* Manière de servir */}
+                            <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-blue-900 dark:text-blue-300 mb-1">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-200 font-mono font-bold">50 %</span>
+                                <span>Manière de servir</span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 leading-snug">
+                                Évaluée lors du compte-rendu d'entretien professionnel annuel (CREP) : valeur professionnelle, atteinte des objectifs individuels et collectifs, investissement et implication dans les missions.
+                              </p>
+                            </div>
+
+                            {/* Nombre de jours d'absence */}
+                            <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-900 dark:text-indigo-300 mb-1">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-200 font-mono font-bold">50 %</span>
+                                <span>Nombre de jours d'absence</span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 leading-snug">
+                                Critère d'assiduité et présence effective sur l'année de référence : abattement modulé selon le barème des jours d'absence (hors congés légaux protégés tels que maternité, paternité ou accident de service).
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Conseil de l'agent & Impact Retraite */}
                       {ligne.conseilAgent && (
                         <div className="p-3.5 bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800/50 rounded-xl flex items-start gap-3">

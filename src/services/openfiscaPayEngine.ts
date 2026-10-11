@@ -200,12 +200,12 @@ export const OPENFISCA_VARIABLES_DICTIONARY: Record<string, OpenFiscaVariableInf
   },
   rifseep_cia: {
     id: "rifseep_cia",
-    nom: "RIFSEEP - CIA (Complément Individuel Annuel)",
-    description: "Complément tenant compte de l'engagement professionnel et de la manière de servir (évaluation CREP).",
+    nom: "RIFSEEP - CIA Tit. (Complément Indemnitaire Annuel)",
+    description: "Complément Indemnitaire Annuel (CIA Tit.). Base légale : 10 % de l'IFSE mensuelle × 12 mois (soit 1,2 mois d'IFSE annuelle). Attribué pour 50 % sur la manière de servir (évaluation CREP) et pour 50 % selon le nombre de jours d'absence (assiduité).",
     openfiscaModule: "openfisca_france/model/prestations/fonctions_publiques/primes.py",
     githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/fonctions_publiques/primes.py`,
-    legalReference: "Décret n° 2014-513 & Délibération Conseil Municipal de Gennevilliers",
-    formule: "montant_cia_annuel_ou_mensualise",
+    legalReference: "Art. L. 714-4 à L. 714-13 CGFP & Décret n° 2014-513 & Délibération cadre de la collectivité",
+    formule: "CIA_Total = (IFSE_mensuelle * 10% * 12) * [50% (maniere_de_servir) + 50% (assiduite_jours_absence)]",
     categorie: "primes",
     nature: "gain"
   },
@@ -1133,13 +1133,14 @@ export function computeOpenFiscaPay(params: CalculParams, metadata?: ParseMetada
   if (cia > 0) {
     lignes.push({
       id: "cia",
-      code: "0210",
-      libelle: "RIFSEEP - CIA (Complément Individuel Annuel)",
+      code: "1592",
+      libelle: "RIFSEEP - CIA Tit. (Complément Indemnitaire Annuel)",
       montantGain: cia,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.rifseep_cia,
       montantTheoriqueOpenFisca: cia,
       estConforme: true,
-      explicationLigne: `Partie variable liée à votre entretien professionnel annuel (CREP) et à votre engagement professionnel.`
+      explicationLigne: `Complément Indemnitaire Annuel (CIA Tit., rubrique Ciril 1592 ou 7610). Se compose de 10 % de l'IFSE mensuelle × 12 mois. Cette somme est attribuée à 50 % sur la manière de servir (évaluation CREP) et à 50 % selon le nombre de jours d'absence.`,
+      conseilAgent: `Le CIA est calculé sur une base annuelle de 10 % de l'IFSE mensuelle × 12 mois. Il est modulé selon deux critères égaux : 50 % sur la manière de servir (CREP) et 50 % sur l'assiduité (jours d'absence). Vérifiez que les absences protégées (maternité, accident de service) ne sont pas décomptées.`
     });
   }
 
@@ -2062,7 +2063,7 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "194": { cat: "gain", expl: "nbi_detache", libelle: "NBI détaché" },
   "7201": { cat: "gain", expl: "vacations", libelle: "Vacations" },
   "1591": { cat: "gain", expl: "ifse", libelle: "IFSE Tit. (4 composantes)" },
-  "1592": { cat: "gain", expl: "cia", libelle: "CIA / IFSE RG" },
+  "1592": { cat: "gain", expl: "cia", libelle: "CIA Tit. (50% CREP + 50% assiduité)" },
   "1690": { cat: "gain", expl: "autres_primes" },
   "1510": { cat: "gain", expl: "transport" },
   "1860": { cat: "gain", expl: "comp_csg" },
@@ -2243,6 +2244,7 @@ function computeOpenFiscaPayDepuisLignesReelles(
     idsUtilises.add(idLigne);
 
     const estIfse = known?.expl === "ifse" || lr.code === "1591" || lr.code === "2591" || /ifse/i.test(lr.libelle);
+    const estCia = known?.expl === "cia" || lr.code === "1592" || lr.code === "7610" || /cia\b/i.test(lr.libelle) || /compl.*indemnitaire\s*annuel/i.test(lr.libelle);
 
     lignes.push({
       id: idLigne,
@@ -2265,10 +2267,14 @@ function computeOpenFiscaPayDepuisLignesReelles(
       estConforme: true,
       explicationLigne: estIfse
         ? `Indemnité de Fonctions, de Sujétions et d'Expertise (rubrique Ciril 1591/2591). Dans votre collectivité, l'IFSE Tit. est composée de 4 IFSE cumulatives : IFSE 1 (Prime de fonctions), IFSE 2 (Prime des contraintes de poste), IFSE 3 (Samedis, dimanches et astreintes) et IFSE 4 (Avantages acquis).`
-        : `Rubrique ${lr.code} du bulletin original — copiée telle quelle (aucun recalcul).`,
+        : (estCia
+          ? `Complément Indemnitaire Annuel (CIA Tit., rubrique Ciril 1592/7610). Se compose de 10 % de l'IFSE mensuelle × 12 mois (soit 1,2 mois d'IFSE annuelle). Cette somme est attribuée pour 50 % sur la manière de servir (évaluation CREP) et pour 50 % selon le nombre de jours d'absence.`
+          : `Rubrique ${lr.code} du bulletin original — copiée telle quelle (aucun recalcul).`),
       conseilAgent: estIfse
         ? `Consultez votre arrêté RIFSEEP individuel pour vérifier le montant précis alloué à chacune de vos 4 composantes IFSE (fonctions, contraintes, astreintes/week-ends, maintien des avantages acquis). En cas de mobilité ou de réorganisation, la part IFSE 4 (avantages acquis) reste garantie.`
-        : undefined
+        : (estCia
+          ? `Le montant du CIA repose sur la base de 10 % de votre IFSE mensuelle × 12 mois. Contrôlez que la part manière de servir (50 %) reflète votre CREP et que la part assiduité (50 %) ne décompte pas des absences de droit protégées (maternité, accident de service).`
+          : undefined)
     });
   }
 

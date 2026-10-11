@@ -105,11 +105,11 @@ const CODES_EXPLIQUES: Record<string, {
     reference: "Décret n° 2014-513 du 20 mai 2014, Art. L. 712-1 du CGFP et délibération relative au RIFSEEP"
   },
   cia: {
-    titre: "Le CIA : votre bonus annuel",
-    simple: "La part variable de votre prime : elle dépend de votre entretien professionnel annuel et de votre manière de servir. Elle est souvent versée étalée sur l'année.",
-    pourquoi: "Le complément individuel annuel récompense l'engagement et les résultats, à partir de votre évaluation annuelle (CREP).",
-    verifier: "Votre entretien professionnel influence directement ce montant : préparez-le et gardez une trace écrite de vos objectifs.",
-    reference: "Décret n° 2014-513 du 20 mai 2014"
+    titre: "Le CIA Tit. : Complément Indemnitaire Annuel",
+    simple: "Le Complément Indemnitaire Annuel (CIA Tit., rubrique Ciril 1592 ou 7610) se compose de 10 % de l'IFSE mensuelle × 12 mois (soit 1,2 mois d'IFSE). Cette somme est attribuée à 50 % sur la manière de servir et à 50 % selon le nombre de jours d'absence.",
+    pourquoi: "Le CIA est la composante variable du RIFSEEP récompensant la valeur professionnelle. Il est scindé en deux volets stricts : 1. La manière de servir (50 %) évaluée au CREP (atteinte des objectifs, investissement) ; 2. L'assiduité (50 %) calculée selon le nombre de jours d'absence enregistrés sur l'année de référence.",
+    verifier: "Vérifiez que la base annuelle correspond à (10 % de votre IFSE mensuelle × 12). Contrôlez l'évaluation de votre CREP et le décompte exact de vos jours d'absence appliqués par les RH (les absences protégées comme maternité ou accident de service ne doivent pas pénaliser le CIA).",
+    reference: "Décret n° 2014-513 du 20 mai 2014, Art. L. 714-4 à L. 714-13 du CGFP et délibération cadre RIFSEEP de la collectivité"
   },
   comp_csg: {
     titre: "L'indemnité compensatrice CSG",
@@ -851,6 +851,47 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                               </div>
                               <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 leading-tight">
                                 Clause de sauvegarde individuelle garantissant le maintien des primes et avantages acquis antérieurement au RIFSEEP.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Décomposition officielle : CIA Tit. (10% IFSE x 12 mois = 50% manière de servir + 50% jours absents) */}
+                      {(selectedLigne.id === 'cia' || selectedLigne.code === '1592' || selectedLigne.code === '7610' || selectedLigne.libelle?.toUpperCase().includes('CIA')) && (
+                        <div className="p-3.5 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/40 dark:to-blue-950/30 border-2 border-indigo-300 dark:border-indigo-800 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="font-extrabold text-xs text-indigo-950 dark:text-indigo-200 uppercase tracking-wide flex items-center gap-1.5">
+                              <span>🎯 Décomposition officielle : CIA Tit.</span>
+                            </span>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-600 text-white font-mono">
+                              Rubrique Ciril {selectedLigne.code || '1592'}
+                            </span>
+                          </div>
+                          <div className="p-2 rounded-lg bg-indigo-100/70 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-800 text-[11px] text-indigo-950 dark:text-indigo-200 leading-snug">
+                            <strong>Formule de calcul :</strong> Le Complément Indemnitaire Annuel se compose de <strong>10 % de l'IFSE mensuelle × 12 mois</strong> (soit 1,2 mois d'IFSE annuelle).
+                          </div>
+                          <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-snug">
+                            Cette somme est attribuée selon <strong>deux critères stricts à parité (50 % / 50 %)</strong> :
+                          </p>
+                          <div className="space-y-1.5 pt-0.5">
+                            <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-blue-900 dark:text-blue-300">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-200 font-mono font-bold">50 %</span>
+                                <span>Manière de servir</span>
+                              </div>
+                              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 leading-tight">
+                                Évaluée lors du compte-rendu d'entretien professionnel annuel (CREP) : valeur professionnelle, atteinte des objectifs fixés, investissement et implication dans les missions.
+                              </p>
+                            </div>
+
+                            <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-900 dark:text-indigo-300">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-200 font-mono font-bold">50 %</span>
+                                <span>Nombre de jours d'absence</span>
+                              </div>
+                              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 leading-tight">
+                                Critère d'assiduité et présence effective sur l'année de référence : abattement modulé selon le barème des jours d'absence (hors congés légaux protégés).
                               </p>
                             </div>
                           </div>

@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import {
   calculateRecevabiliteCja,
   generateRecoursGracieux,
+  getDefaultRecoursContent,
   generateDemandeProtectionFonctionnelle,
   generateSaisineInstanceParitaire,
   getDefaultSaisineContent,
@@ -320,6 +321,28 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
     handleGenerateSaisine();
   }, []);
 
+  // Synchronisation continue du recours gracieux officiel dès toute modification
+  useEffect(() => {
+    const res = generateRecoursGracieux(recoursData);
+    setGeneratedRecours(res);
+  }, [recoursData]);
+
+  const handleMotifRefusChange = (newMotif: MotifRefus) => {
+    const defaults = getDefaultRecoursContent(newMotif);
+    const updated: RecoursGracieuxFormData = {
+      ...recoursData,
+      motifRefus: newMotif,
+      referenceArrete: defaults.referenceArrete,
+      motifsInvoquesParAdministration: defaults.motifsInvoquesParAdministration,
+      argumentsAgent: defaults.argumentsAgent,
+      piecesJointes: defaults.piecesJointes
+    };
+    setRecoursData(updated);
+    const res = generateRecoursGracieux(updated);
+    setGeneratedRecours(res);
+    toast.success(`Modèle adapté au motif : ${res.titre}`);
+  };
+
   const handleGenerateRecours = () => {
     const res = generateRecoursGracieux(recoursData);
     setGeneratedRecours(res);
@@ -438,9 +461,9 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans">
-      {/* ─── TOP HEADER ─── */}
-      <header className="shrink-0 bg-slate-900/95 backdrop-blur-xl border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 z-30">
+    <div className="fixed inset-0 z-[70] flex flex-col bg-slate-100 text-slate-900 overflow-hidden font-sans">
+      {/* ─── TOP HEADER (MODE CLAIR) ─── */}
+      <header className="shrink-0 bg-white/95 backdrop-blur-xl border-b border-slate-200 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 z-30 shadow-xs">
         <div className="flex items-center gap-3 min-w-0">
           <button
             type="button"
@@ -451,21 +474,21 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
             <span>Fermer le guichet</span>
           </button>
 
-          <div className="h-6 w-px bg-slate-700 shrink-0"></div>
+          <div className="h-6 w-px bg-slate-200 shrink-0"></div>
 
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-sm sm:text-base lg:text-lg font-black tracking-tight text-white flex items-center gap-2">
-                <span className="p-1 rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/30">
+              <h1 className="text-sm sm:text-base lg:text-lg font-black tracking-tight text-slate-900 flex items-center gap-2">
+                <span className="p-1 rounded-lg bg-orange-100 text-orange-600 border border-orange-200 shadow-xs">
                   <Gavel className="w-4 h-4" />
                 </span>
                 <span>Guichet d'Auto-Défense Syndicale & Requêtes Contentieuses</span>
               </h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 hidden sm:inline-flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-indigo-400" /> Docassemble Legal Engine
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200 hidden sm:inline-flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-indigo-500" /> Docassemble Legal Engine
               </span>
             </div>
-            <p className="text-xs text-slate-400 truncate">
+            <p className="text-xs text-slate-600 truncate mt-0.5">
               Permanence numérique des agents : recours gracieux, délais CJA R. 421-5, protection fonctionnelle et requêtes TA
             </p>
           </div>
@@ -478,59 +501,59 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
             target="_blank"
             rel="noopener noreferrer"
             title="Consulter le dépôt GitHub Docassemble"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold transition-all shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border border-slate-300 text-xs font-bold transition-all shadow-xs"
           >
-            <Code2 className="w-3.5 h-3.5 text-orange-400" />
+            <Code2 className="w-3.5 h-3.5 text-orange-600" />
             <span>jhpyle/docassemble</span>
-            <ExternalLink className="w-3 h-3" />
+            <ExternalLink className="w-3 h-3 text-slate-500" />
           </a>
         </div>
       </header>
 
-      {/* ─── NAVIGATION DES 6 ONGLETS DU GUICHET ─── */}
-      <div className="shrink-0 bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2 overflow-x-auto">
+      {/* ─── NAVIGATION DES 6 ONGLETS DU GUICHET (MODE CLAIR) ─── */}
+      <div className="shrink-0 bg-white border-b border-slate-200 px-4 sm:px-6 py-2 overflow-x-auto shadow-xs">
         <div className="flex items-center gap-2 min-w-max">
           {[
             {
               id: "recours",
               label: "1. Recours Gracieux & Délais CJA",
               icon: Clock,
-              color: "text-amber-400",
+              color: "text-amber-600",
               badge: "R. 421-5 CJA"
             },
             {
               id: "protection",
               label: "2. Protection Fonctionnelle",
               icon: Shield,
-              color: "text-emerald-400",
+              color: "text-emerald-600",
               badge: "L. 134-1 CGFP"
             },
             {
               id: "instances",
               label: "3. Saisine Instances (CAP, CCP, F3SCT)",
               icon: Users,
-              color: "text-rose-400",
+              color: "text-rose-600",
               badge: "CAP • CCP • F3SCT"
             },
             {
               id: "requete",
               label: "4. Requête TA & Référé L. 521-1",
               icon: Gavel,
-              color: "text-indigo-400",
+              color: "text-indigo-600",
               badge: "REP + Référé"
             },
             {
               id: "bordereau",
               label: "5. Bordereau Télérecours",
               icon: FileCheck,
-              color: "text-blue-400",
+              color: "text-blue-600",
               badge: "Norme CJA"
             },
             {
               id: "docassemble",
               label: "6. Script Docassemble (YAML/Python)",
               icon: FileCode,
-              color: "text-purple-400",
+              color: "text-purple-600",
               badge: ".yml Export"
             }
           ].map((tab) => {
@@ -550,13 +573,15 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 }}
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   isSelected
-                    ? "bg-slate-800 text-white border-2 border-orange-500 shadow-md shadow-orange-500/10"
-                    : "bg-slate-950/60 hover:bg-slate-800/60 text-slate-400 hover:text-slate-200 border border-slate-800"
+                    ? "bg-orange-50 text-orange-950 border-2 border-orange-500 shadow-xs font-extrabold"
+                    : "bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200"
                 }`}
               >
                 <Icon className={`w-4 h-4 ${tab.color}`} />
                 <span>{tab.label}</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-400">
+                <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
+                  isSelected ? "bg-white border border-orange-200 text-orange-900" : "bg-slate-200/80 border border-slate-300 text-slate-600"
+                }`}>
                   {tab.badge}
                 </span>
               </button>
@@ -569,48 +594,48 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto w-full">
 
         {/* ═══════════════════════════════════════════════════════════
-            ONGLET 1 : RECOURS GRACIEUX & DÉLAIS CJA
+            ONGLET 1 : RECOURS GRACIEUX & DÉLAIS CJA (MODE CLAIR)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === "recours" && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            {/* Bannière de contrôle de recevabilité CJA */}
-            <div className={`p-5 rounded-2xl border-2 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${
+            {/* Bannière de contrôle de recevabilité CJA (Mode Clair) */}
+            <div className={`p-5 rounded-2xl border-2 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${
               recevabiliteInfo.statut === "valide"
-                ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-200"
+                ? "bg-emerald-50 border-emerald-300 text-emerald-950"
                 : recevabiliteInfo.statut === "urgent"
-                ? "bg-amber-950/50 border-amber-500/50 text-amber-200 animate-pulse"
+                ? "bg-amber-50 border-amber-400 text-amber-950"
                 : recevabiliteInfo.statut === "inopposable_czabaj"
-                ? "bg-blue-950/40 border-blue-500/40 text-blue-200"
-                : "bg-red-950/40 border-red-500/40 text-red-200"
+                ? "bg-blue-50 border-blue-300 text-blue-950"
+                : "bg-rose-50 border-rose-300 text-rose-950"
             }`}>
               <div className="flex items-start gap-3.5">
-                <div className="p-3 rounded-xl bg-slate-900 border border-white/10 shrink-0">
-                  {recevabiliteInfo.statut === "valide" && <CheckCircle2 className="w-6 h-6 text-emerald-400" />}
-                  {recevabiliteInfo.statut === "urgent" && <AlertTriangle className="w-6 h-6 text-amber-400 animate-bounce" />}
-                  {recevabiliteInfo.statut === "inopposable_czabaj" && <Scale className="w-6 h-6 text-blue-400" />}
-                  {recevabiliteInfo.statut === "forclos" && <AlertOctagon className="w-6 h-6 text-red-400" />}
+                <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-xs shrink-0">
+                  {recevabiliteInfo.statut === "valide" && <CheckCircle2 className="w-6 h-6 text-emerald-600" />}
+                  {recevabiliteInfo.statut === "urgent" && <AlertTriangle className="w-6 h-6 text-amber-600 animate-bounce" />}
+                  {recevabiliteInfo.statut === "inopposable_czabaj" && <Scale className="w-6 h-6 text-blue-600" />}
+                  {recevabiliteInfo.statut === "forclos" && <AlertOctagon className="w-6 h-6 text-rose-600" />}
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-black text-sm uppercase tracking-wider">
+                    <span className="font-black text-sm uppercase tracking-wider text-slate-900">
                       Contrôle Automatique de Recevabilité (CJA R. 421-5) :
                     </span>
-                    <span className="font-extrabold px-2.5 py-0.5 rounded-md text-xs bg-slate-900 border border-white/20">
+                    <span className="font-extrabold px-2.5 py-0.5 rounded-md text-xs bg-white border border-slate-300 text-slate-900 shadow-xs">
                       {recevabiliteInfo.libelleStatut}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-300 mt-1.5 leading-relaxed max-w-3xl">
+                  <p className="text-xs text-slate-700 mt-1.5 leading-relaxed max-w-3xl">
                     {recevabiliteInfo.explicationJuridique}
                   </p>
                   <div className="mt-2.5 flex flex-wrap items-center gap-3 text-xs font-mono">
-                    <span className="bg-slate-900/80 px-2.5 py-1 rounded-lg border border-white/10">
+                    <span className="bg-white px-2.5 py-1 rounded-lg border border-slate-200 text-slate-800 shadow-2xs">
                       📅 Notification : <strong>{recevabiliteInfo.dateNotification}</strong>
                     </span>
-                    <span className="bg-slate-900/80 px-2.5 py-1 rounded-lg border border-white/10">
+                    <span className="bg-white px-2.5 py-1 rounded-lg border border-slate-200 text-slate-800 shadow-2xs">
                       ⏳ Échéance légale (+2 mois) : <strong>{recevabiliteInfo.dateLimiteProrogee}</strong>
                     </span>
                     {recevabiliteInfo.dateLimiteCzabaj && (
-                      <span className="bg-blue-900/60 px-2.5 py-1 rounded-lg border border-blue-500/30 text-blue-200">
+                      <span className="bg-blue-100/80 px-2.5 py-1 rounded-lg border border-blue-300 text-blue-900 font-bold shadow-2xs">
                         ⚖️ Délai Czabaj (+1 an) : <strong>{recevabiliteInfo.dateLimiteCzabaj}</strong>
                       </span>
                     )}
@@ -619,7 +644,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
               </div>
 
               <div className="shrink-0 self-end md:self-center">
-                <span className="text-xs px-3 py-1.5 rounded-xl bg-slate-900/90 border border-white/10 font-mono font-bold text-slate-300">
+                <span className="text-xs px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-mono font-bold text-slate-800 shadow-xs">
                   {recevabiliteInfo.regleAppliquee}
                 </span>
               </div>
@@ -628,27 +653,27 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
             {/* Formulaire à deux colonnes : Paramétrage du Recours & Rendu Prévisualisé */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Colonne gauche : Formulaire (5 colonnes) */}
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <h3 className="text-sm font-black text-white flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-orange-400" />
+              <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-5 space-y-4 shadow-sm text-slate-900">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                  <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-orange-600" />
                     <span>Paramètres du Recours Gracieux</span>
                   </h3>
-                  <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                  <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-orange-100 text-orange-800 border border-orange-200">
                     5 Minutes
                   </span>
                 </div>
 
-                {/* Choix du refus — Visibilité Renforcée */}
-                <div className="bg-gradient-to-br from-amber-500/20 via-orange-500/15 to-transparent border-2 border-orange-500/70 rounded-2xl p-4 shadow-lg shadow-orange-500/10 space-y-2.5 transition-all">
+                {/* Choix du refus — Visibilité Renforcée & Réactivité immédiate */}
+                <div className="bg-gradient-to-br from-amber-50 via-orange-50/70 to-white border-2 border-orange-400 rounded-2xl p-4 shadow-xs space-y-2.5 transition-all">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide flex items-center gap-2">
-                      <span className="p-1.5 rounded-lg bg-orange-500 text-slate-950 font-black shadow-xs">
+                    <label className="text-xs sm:text-sm font-black text-amber-950 uppercase tracking-wide flex items-center gap-2">
+                      <span className="p-1.5 rounded-lg bg-orange-500 text-white font-black shadow-xs">
                         <Scale className="w-4 h-4" />
                       </span>
                       <span>Nature de la décision défavorable contestée :</span>
                     </label>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-orange-500 text-slate-950 font-bold animate-pulse">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-orange-500 text-white font-bold animate-pulse shadow-xs">
                       Étape Clé
                     </span>
                   </div>
@@ -656,19 +681,24 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   <div className="relative">
                     <select
                       value={recoursData.motifRefus}
-                      onChange={(e) => setRecoursData({ ...recoursData, motifRefus: e.target.value as MotifRefus })}
-                      className="w-full bg-slate-900 border-2 border-orange-400/80 hover:border-orange-400 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-extrabold text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-orange-400 cursor-pointer"
+                      onChange={(e) => handleMotifRefusChange(e.target.value as MotifRefus)}
+                      className="w-full bg-white border-2 border-orange-400 hover:border-orange-500 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-extrabold text-slate-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-orange-300 cursor-pointer"
                     >
                       <option value="teletravail">🏢 Refus d'autorisation de télétravail (Décret 2016-151)</option>
                       <option value="temps_partiel">⏱️ Refus de travail à temps partiel (L. 612-1 CGFP)</option>
-                      <option value="rupture_conventionnelle">🤝 Refus de rupture conventionnelle (NON AUTORISÉ À GENNEVILLIERS)</option>
+                      <option value="rupture_conventionnelle">🤝 Refus de rupture conventionnelle (Décret 2019-1593)</option>
                       <option value="disponibilite">✈️ Refus de mise en disponibilité (L. 514-1 CGFP)</option>
                       <option value="crep">📊 Contestation du Compte-Rendu d'Entretien (CREP Décret 2014-1526)</option>
+                      <option value="formation_cpf">🎓 Refus réitéré de formation / Mobilisation CPF (Décret 2007-1845)</option>
+                      <option value="conges_rtt">🏖️ Refus d'octroi de congés annuels ou jours RTT (Décret 85-1250)</option>
+                      <option value="primes_rifseep">💰 Baisse / Suppression d'indemnités RIFSEEP (IFSE / CIA)</option>
+                      <option value="citis_accident">🏥 Refus d'imputabilité au service CITIS / Maladie professionnelle</option>
+                      <option value="sanction_disciplinaire">⚖️ Sanction disciplinaire du 1er groupe (Blâme / Avertissement)</option>
                     </select>
                   </div>
 
-                  <p className="text-[11px] font-semibold text-amber-200/90 flex items-center gap-1.5">
-                    <Info className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                  <p className="text-[11px] font-semibold text-amber-900 flex items-center gap-1.5">
+                    <Info className="w-3.5 h-3.5 text-orange-600 shrink-0" />
                     <span>Sélectionnez le motif pour adapter instantanément les visas CGFP et la stratégie d'argumentation.</span>
                   </p>
                 </div>
@@ -676,24 +706,24 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 {/* Dates & Mention R. 421-5 */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
                       Date de notification :
                     </label>
                     <input
                       type="date"
                       value={recoursData.dateNotificationArrete}
                       onChange={(e) => setRecoursData({ ...recoursData, dateNotificationArrete: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400 font-mono"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
                       Voies et délais mentionnés ?
                     </label>
                     <select
                       value={recoursData.mentionVoiesRecours ? "oui" : "non"}
                       onChange={(e) => setRecoursData({ ...recoursData, mentionVoiesRecours: e.target.value === "oui" })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
                     >
                       <option value="oui">Oui (délai 2 mois opposable)</option>
                       <option value="non">Non / Incomplets (Czabaj 1 an)</option>
@@ -704,61 +734,74 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 {/* Identité de l'agent */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Nom :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Nom :</label>
                     <input
                       type="text"
                       value={recoursData.nomAgent}
                       onChange={(e) => setRecoursData({ ...recoursData, nomAgent: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Prénom :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Prénom :</label>
                     <input
                       type="text"
                       value={recoursData.prenomAgent}
                       onChange={(e) => setRecoursData({ ...recoursData, prenomAgent: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Grade :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Grade :</label>
                     <input
                       type="text"
                       value={recoursData.grade}
                       onChange={(e) => setRecoursData({ ...recoursData, grade: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Service / Pôle :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Service / Pôle :</label>
                     <input
                       type="text"
                       value={recoursData.directionService}
                       onChange={(e) => setRecoursData({ ...recoursData, directionService: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Autorité destinataire (Maire / Président) :
                   </label>
                   <input
                     type="text"
                     value={recoursData.autoriteSignataire}
                     onChange={(e) => setRecoursData({ ...recoursData, autoriteSignataire: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
+                  />
+                </div>
+
+                {/* Référence arrêté */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Référence de la décision contestée :
+                  </label>
+                  <input
+                    type="text"
+                    value={recoursData.referenceArrete}
+                    onChange={(e) => setRecoursData({ ...recoursData, referenceArrete: e.target.value })}
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
                   />
                 </div>
 
                 {/* Motifs invoqués par l'administration */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Motifs énoncés dans la lettre de refus :
                   </label>
                   <textarea
@@ -766,13 +809,13 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     value={recoursData.motifsInvoquesParAdministration}
                     onChange={(e) => setRecoursData({ ...recoursData, motifsInvoquesParAdministration: e.target.value })}
                     placeholder="Ex: Nécessité de service, effectifs insuffisants, continuité..."
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
                   />
                 </div>
 
                 {/* Arguments de l'agent */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Vos arguments de contestation (Faits & Justifications) :
                   </label>
                   <textarea
@@ -780,7 +823,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     value={recoursData.argumentsAgent}
                     onChange={(e) => setRecoursData({ ...recoursData, argumentsAgent: e.target.value })}
                     placeholder="Détaillez pourquoi ce refus est infondé..."
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-400"
                   />
                 </div>
 
@@ -790,9 +833,9 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     id="chk-entretien"
                     checked={recoursData.demandeEntretien}
                     onChange={(e) => setRecoursData({ ...recoursData, demandeEntretien: e.target.checked })}
-                    className="rounded text-orange-500 focus:ring-0 bg-slate-950 border-slate-700"
+                    className="rounded text-orange-600 focus:ring-0 bg-white border-slate-300"
                   />
-                  <label htmlFor="chk-entretien" className="text-xs text-slate-300 cursor-pointer">
+                  <label htmlFor="chk-entretien" className="text-xs text-slate-700 cursor-pointer font-medium">
                     Demander formellement un entretien assisté d'un représentant syndical CFDT
                   </label>
                 </div>
@@ -800,25 +843,25 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 <button
                   type="button"
                   onClick={handleGenerateRecours}
-                  className="w-full py-3 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg shadow-orange-500/20 hover:scale-[1.01] active:scale-98 transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md shadow-orange-500/20 hover:scale-[1.01] active:scale-98 transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Générer le Recours Officiel</span>
+                  <span>Actualiser le Recours Officiel</span>
                 </button>
               </div>
 
               {/* Colonne droite : Prévisualisation A4 & Actions (7 colonnes) */}
               <div className="lg:col-span-7 flex flex-col gap-4">
-                <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3">
-                  <span className="text-xs font-bold text-slate-300 flex items-center gap-2">
-                    <FileCheck className="w-4 h-4 text-emerald-400" />
+                <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl px-4 py-3 shadow-xs">
+                  <span className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                    <FileCheck className="w-4 h-4 text-emerald-600" />
                     Courrier Officiel Prêt à l'Envoi (LRAR)
                   </span>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => handleExportDocx(generatedRecours?.titre || "Recours_Gracieux", generatedRecours?.texteOfficiel || "")}
-                      className="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      className="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Télécharger Word (.docx)</span>
@@ -826,7 +869,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <button
                       type="button"
                       onClick={() => handleCopy(generatedRecours?.texteOfficiel || "")}
-                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       <span>Copier</span>
@@ -834,7 +877,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <button
                       type="button"
                       onClick={() => window.print()}
-                      className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all cursor-pointer"
+                      className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-all cursor-pointer"
                       title="Imprimer"
                     >
                       <Printer className="w-4 h-4" />
@@ -842,8 +885,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   </div>
                 </div>
 
-                {/* Zone de prévisualisation textuelle A4 */}
-                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-4 border-slate-800 shadow-2xl overflow-x-auto min-h-[540px]">
+                {/* Zone de prévisualisation textuelle A4 (Mode Clair) */}
+                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-2 border-slate-300 shadow-md overflow-x-auto min-h-[540px]">
                   <pre className="whitespace-pre-wrap font-serif text-slate-900 select-text">
                     {generatedRecours?.texteOfficiel || "Chargement du modèle..."}
                   </pre>
@@ -854,48 +897,48 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            ONGLET 2 : PROTECTION FONCTIONNELLE (L. 134-1 CGFP)
+            ONGLET 2 : PROTECTION FONCTIONNELLE (L. 134-1 CGFP) (MODE CLAIR)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === "protection" && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            {/* Bannière de cadrage juridique */}
-            <div className="bg-emerald-950/40 border-2 border-emerald-500/40 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            {/* Bannière de cadrage juridique (Mode Clair) */}
+            <div className="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm text-emerald-950">
               <div className="flex items-start gap-3.5">
-                <div className="p-3 rounded-xl bg-slate-900 border border-emerald-500/30 text-emerald-400 shrink-0">
+                <div className="p-3 rounded-xl bg-white border border-emerald-200 text-emerald-600 shrink-0 shadow-xs">
                   <Shield className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                  <h3 className="text-sm font-black text-emerald-950 uppercase tracking-wider">
                     Obligation Légale de Protection Fonctionnelle (Art. L. 134-1 à L. 134-12 CGFP)
                   </h3>
-                  <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                  <p className="text-xs text-emerald-900/90 mt-1 max-w-3xl leading-relaxed">
                     La collectivité publique est <strong>légalement tenue</strong> de protéger tout agent victime d'agressions, menaces, diffamations, outrages ou harcèlement. L'administration dispose d'un <strong>délai strict de 2 mois</strong> pour statuer, sous peine de refus implicite attaquable devant le juge administratif avec astreinte.
                   </p>
                 </div>
               </div>
-              <div className="shrink-0 bg-slate-900 px-3.5 py-2 rounded-xl border border-emerald-500/30 text-xs font-mono text-emerald-300">
+              <div className="shrink-0 bg-white px-3.5 py-2 rounded-xl border border-emerald-300 text-xs font-mono text-emerald-900 font-bold shadow-xs">
                 Mise en demeure sous 2 mois : <strong>{generatedProtection?.miseEnDemeureDate || "Calculée automatiquement"}</strong>
               </div>
             </div>
 
             {/* Formulaire & Prévisualisation */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4">
-                <h3 className="text-sm font-black text-white border-b border-slate-800 pb-3 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-emerald-400" />
+              <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-5 space-y-4 shadow-sm text-slate-900">
+                <h3 className="text-sm font-black text-slate-900 border-b border-slate-200 pb-3 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-emerald-600" />
                   <span>Dossier Circonstancié de la Victime</span>
                 </h3>
 
                 {/* Qualification des Atteintes — Visibilité Renforcée */}
-                <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-transparent border-2 border-emerald-500/70 rounded-2xl p-4 shadow-lg shadow-emerald-500/10 space-y-2.5 transition-all">
+                <div className="bg-gradient-to-br from-emerald-50 via-teal-50/70 to-white border-2 border-emerald-400 rounded-2xl p-4 shadow-xs space-y-2.5 transition-all">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs sm:text-sm font-black text-emerald-300 uppercase tracking-wide flex items-center gap-2">
-                      <span className="p-1.5 rounded-lg bg-emerald-500 text-slate-950 font-black shadow-xs">
+                    <label className="text-xs sm:text-sm font-black text-emerald-950 uppercase tracking-wide flex items-center gap-2">
+                      <span className="p-1.5 rounded-lg bg-emerald-600 text-white font-black shadow-xs">
                         <Shield className="w-4 h-4" />
                       </span>
                       <span>Nature des atteintes subies :</span>
                     </label>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 font-bold animate-pulse">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-bold animate-pulse shadow-xs">
                       Art. L. 134-1 CGFP
                     </span>
                   </div>
@@ -904,7 +947,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <select
                       value={protectionData.typeAtteinte}
                       onChange={(e) => setProtectionData({ ...protectionData, typeAtteinte: e.target.value as TypeAtteinteProtection })}
-                      className="w-full bg-slate-900 border-2 border-emerald-400/80 hover:border-emerald-400 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-extrabold text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-emerald-400 cursor-pointer"
+                      className="w-full bg-white border-2 border-emerald-400 hover:border-emerald-500 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-extrabold text-slate-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-300 cursor-pointer"
                     >
                       <option value="agression_physique">🚨 Violences physiques volontaires au travail</option>
                       <option value="menaces_intimidations">⚠️ Menaces de mort, intimidations verbales graves</option>
@@ -914,8 +957,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     </select>
                   </div>
 
-                  <p className="text-[11px] font-semibold text-emerald-200/90 flex items-center gap-1.5">
-                    <Info className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <p className="text-[11px] font-semibold text-emerald-900 flex items-center gap-1.5">
+                    <Info className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>Déclenche la protection statutaire obligatoire et la prise en charge des frais de justice.</span>
                   </p>
                 </div>
@@ -923,81 +966,81 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 {/* Identité */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Nom :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Nom :</label>
                     <input
                       type="text"
                       value={protectionData.nomAgent}
                       onChange={(e) => setProtectionData({ ...protectionData, nomAgent: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Prénom :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Prénom :</label>
                     <input
                       type="text"
                       value={protectionData.prenomAgent}
                       onChange={(e) => setProtectionData({ ...protectionData, prenomAgent: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Grade :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Grade :</label>
                     <input
                       type="text"
                       value={protectionData.grade}
                       onChange={(e) => setProtectionData({ ...protectionData, grade: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Service :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Service :</label>
                     <input
                       type="text"
                       value={protectionData.service}
                       onChange={(e) => setProtectionData({ ...protectionData, service: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400"
                     />
                   </div>
                 </div>
 
                 {/* Chronologie des faits */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Chronologie détaillée des faits (Date, heure, lieu, paroles) :
                   </label>
                   <textarea
                     rows={3}
                     value={protectionData.chronologieFaits}
                     onChange={(e) => setProtectionData({ ...protectionData, chronologieFaits: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400"
                   />
                 </div>
 
                 {/* Témoins */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Témoins identifiés (Collègues, tiers) :
                   </label>
                   <input
                     type="text"
                     value={protectionData.temoinsIdentifies}
                     onChange={(e) => setProtectionData({ ...protectionData, temoinsIdentifies: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400"
                   />
                 </div>
 
                 {/* Dépôt de plainte & ITT */}
                 <div className="grid grid-cols-2 gap-3 pt-1">
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={protectionData.depotPlainteOuMainCourante}
                         onChange={(e) => setProtectionData({ ...protectionData, depotPlainteOuMainCourante: e.target.checked })}
-                        className="rounded text-emerald-500"
+                        className="rounded text-emerald-600 focus:ring-0"
                       />
                       Plainte / Main courante
                     </label>
@@ -1007,17 +1050,17 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                         placeholder="Réf. plainte..."
                         value={protectionData.referencePlainte}
                         onChange={(e) => setProtectionData({ ...protectionData, referencePlainte: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-[11px] text-slate-900 focus:bg-white"
                       />
                     )}
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={protectionData.arretTravailOuItt}
                         onChange={(e) => setProtectionData({ ...protectionData, arretTravailOuItt: e.target.checked })}
-                        className="rounded text-emerald-500"
+                        className="rounded text-emerald-600 focus:ring-0"
                       />
                       Arrêt de travail / ITT
                     </label>
@@ -1027,15 +1070,15 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                         placeholder="Ex: 5 jours ITT..."
                         value={protectionData.dureeItt}
                         onChange={(e) => setProtectionData({ ...protectionData, dureeItt: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-[11px] text-slate-900 focus:bg-white"
                       />
                     )}
                   </div>
                 </div>
 
                 {/* Mesures sollicitées */}
-                <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-2">
-                  <span className="text-[11px] font-bold text-slate-300 block">
+                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
+                  <span className="text-[11px] font-bold text-slate-800 block">
                     Mesures de protection obligatoires sollicitées :
                   </span>
                   {[
@@ -1044,7 +1087,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     { key: "changementAffectationConservatoire", label: "Mesure d'éloignement / changement de poste conservatoire" },
                     { key: "soutienPsychologique", label: "Accompagnement psychologique d'urgence" }
                   ].map((item) => (
-                    <label key={item.key} className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                    <label key={item.key} className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={(protectionData.mesuresUrgenceDemandeess as Record<string, boolean>)[item.key]}
@@ -1055,7 +1098,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                             [item.key]: e.target.checked
                           }
                         })}
-                        className="rounded text-emerald-500"
+                        className="rounded text-emerald-600 focus:ring-0"
                       />
                       <span>{item.label}</span>
                     </label>
@@ -1065,25 +1108,25 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 <button
                   type="button"
                   onClick={handleGenerateProtection}
-                  className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Shield className="w-4 h-4" />
                   <span>Générer la Demande de Protection</span>
                 </button>
               </div>
 
-              {/* Prévisualisation */}
+              {/* Prévisualisation (Mode Clair) */}
               <div className="lg:col-span-7 flex flex-col gap-4">
-                <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3">
-                  <span className="text-xs font-bold text-slate-300 flex items-center gap-2">
-                    <FileCheck className="w-4 h-4 text-emerald-400" />
+                <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl px-4 py-3 shadow-xs">
+                  <span className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                    <FileCheck className="w-4 h-4 text-emerald-600" />
                     Courrier Officiel de Mise en Demeure (2 Mois)
                   </span>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => handleExportDocx(generatedProtection?.titre || "Protection_Fonctionnelle", generatedProtection?.texteOfficiel || "")}
-                      className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Télécharger Word (.docx)</span>
@@ -1091,7 +1134,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <button
                       type="button"
                       onClick={() => handleCopy(generatedProtection?.texteOfficiel || "")}
-                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       <span>Copier</span>
@@ -1099,7 +1142,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   </div>
                 </div>
 
-                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-4 border-slate-800 shadow-2xl overflow-x-auto min-h-[540px]">
+                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-2 border-slate-300 shadow-md overflow-x-auto min-h-[540px]">
                   <pre className="whitespace-pre-wrap font-serif text-slate-900 select-text">
                     {generatedProtection?.texteOfficiel || "Chargement..."}
                   </pre>
@@ -1110,36 +1153,36 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            ONGLET 3 : SAISINE DES INSTANCES PARITAIRES (CAP, CCP, F3SCT)
+            ONGLET 3 : SAISINE DES INSTANCES PARITAIRES (CAP, CCP, F3SCT) (MODE CLAIR)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === "instances" && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            {/* Header info instances */}
-            <div className="bg-rose-950/40 border-2 border-rose-500/40 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            {/* Header info instances (Mode Clair) */}
+            <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm text-rose-950">
               <div className="flex items-start gap-3.5">
-                <div className="p-3 rounded-xl bg-slate-900 border border-rose-500/30 text-rose-400 shrink-0">
+                <div className="p-3 rounded-xl bg-white border border-rose-200 text-rose-600 shrink-0 shadow-xs">
                   <Users className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <span className="text-xs font-black uppercase tracking-wider text-rose-400">
+                    <span className="text-xs font-black uppercase tracking-wider text-rose-700">
                       Saisine des Instances Paritaires Territoriales
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">
                       CAP • CCP • F3SCT / CST
                     </span>
                   </div>
-                  <h2 className="text-base sm:text-lg font-black text-white">
+                  <h2 className="text-base sm:text-lg font-black text-rose-950">
                     Génération des formulaires de saisine : CAP, CCP et F3SCT
                   </h2>
-                  <p className="text-xs text-slate-300 max-w-2xl mt-0.5">
+                  <p className="text-xs text-rose-900/90 max-w-2xl mt-0.5">
                     Sécurisez vos démarches statutaires : recours évaluation (CREP) et refus de formation (CAP), contestation du licenciement d'un contractuel (CCP), et droit d'alerte, droit de retrait et inscription au registre spécial DGI (F3SCT).
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                <span className="text-xs text-rose-300 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-rose-500/30 font-bold">
+                <span className="text-xs text-rose-900 bg-white px-3 py-1.5 rounded-xl border border-rose-200 font-bold shadow-xs">
                   Code Général de la Fonction Publique
                 </span>
               </div>
@@ -1149,8 +1192,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
               {/* Colonne gauche : Formulaire de Saisine */}
               <div className="lg:col-span-5 space-y-4">
                 {/* 1. Sélection de l'Instance Paritaire */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
-                  <label className="text-xs font-black uppercase tracking-wider text-slate-300 block">
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xs text-slate-800">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-700 block">
                     1. Sélection de l'instance paritaire compétente
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -1189,14 +1232,14 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                           }}
                           className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-1.5 ${
                             isChosen
-                              ? "bg-rose-500/15 border-rose-500 text-white shadow-md shadow-rose-500/10"
-                              : "bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                              ? "bg-rose-50 border-2 border-rose-500 text-rose-950 shadow-xs font-bold"
+                              : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                           }`}
                         >
                           <div className="flex items-center justify-between">
                             <span className="font-black text-sm">{inst.title}</span>
                             <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${
-                              isChosen ? "bg-rose-500 text-white" : "bg-slate-800 text-slate-400"
+                              isChosen ? "bg-rose-600 text-white" : "bg-slate-200 text-slate-700"
                             }`}>
                               {inst.badge}
                             </span>
@@ -1209,8 +1252,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 </div>
 
                 {/* 2. Objet précis de la Saisine selon l'instance */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
-                  <label className="text-xs font-black uppercase tracking-wider text-rose-300 block">
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xs text-slate-800">
+                  <label className="text-xs font-black uppercase tracking-wider text-rose-700 block">
                     2. Objet et motif de la saisine
                   </label>
 
@@ -1243,8 +1286,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                           key={item.id}
                           className={`flex items-start gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-all ${
                             saisineData.motifCap === item.id
-                              ? "bg-rose-500/10 border-rose-500/60 text-white"
-                              : "bg-slate-950/40 border-slate-800/80 text-slate-300 hover:border-slate-700"
+                              ? "bg-rose-50 border-2 border-rose-400 text-rose-950 font-bold shadow-xs"
+                              : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                           }`}
                         >
                           <input
@@ -1252,11 +1295,11 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                             name="motifCap"
                             checked={saisineData.motifCap === item.id}
                             onChange={() => applyMotifDefaults("cap", item.id as MotifSaisineCap)}
-                            className="mt-0.5 text-rose-500"
+                            className="mt-0.5 text-rose-600"
                           />
                           <div>
                             <span className="font-bold block">{item.label}</span>
-                            <span className="text-[10px] text-slate-400">{item.ref}</span>
+                            <span className="text-[10px] text-slate-500">{item.ref}</span>
                           </div>
                         </label>
                       ))}
@@ -1297,8 +1340,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                           key={item.id}
                           className={`flex items-start gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-all ${
                             saisineData.motifCcp === item.id
-                              ? "bg-rose-500/10 border-rose-500/60 text-white"
-                              : "bg-slate-950/40 border-slate-800/80 text-slate-300 hover:border-slate-700"
+                              ? "bg-rose-50 border-2 border-rose-400 text-rose-950 font-bold shadow-xs"
+                              : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                           }`}
                         >
                           <input
@@ -1306,11 +1349,11 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                             name="motifCcp"
                             checked={saisineData.motifCcp === item.id}
                             onChange={() => applyMotifDefaults("ccp", item.id as MotifSaisineCcp)}
-                            className="mt-0.5 text-rose-500"
+                            className="mt-0.5 text-rose-600"
                           />
                           <div>
                             <span className="font-bold block">{item.label}</span>
-                            <span className="text-[10px] text-slate-400">{item.ref}</span>
+                            <span className="text-[10px] text-slate-500">{item.ref}</span>
                           </div>
                         </label>
                       ))}
@@ -1346,8 +1389,8 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                           key={item.id}
                           className={`flex items-start gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-all ${
                             saisineData.motifF3sct === item.id
-                              ? "bg-rose-500/10 border-rose-500/60 text-white"
-                              : "bg-slate-950/40 border-slate-800/80 text-slate-300 hover:border-slate-700"
+                              ? "bg-rose-50 border-2 border-rose-400 text-rose-950 font-bold shadow-xs"
+                              : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                           }`}
                         >
                           <input
@@ -1355,20 +1398,20 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                             name="motifF3sct"
                             checked={saisineData.motifF3sct === item.id}
                             onChange={() => applyMotifDefaults("f3sct_cst", item.id as MotifSaisineF3sct)}
-                            className="mt-0.5 text-rose-500"
+                            className="mt-0.5 text-rose-600"
                           />
                           <div>
                             <span className="font-bold block">{item.label}</span>
-                            <span className="text-[10px] text-slate-400">{item.ref}</span>
+                            <span className="text-[10px] text-slate-500">{item.ref}</span>
                           </div>
                         </label>
                       ))}
                     </div>
                   )}
 
-                  {/* Encadré d'alerte procédurale */}
-                  <div className="p-3 rounded-xl bg-slate-950 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2">
-                    <Info className="w-4 h-4 shrink-0 text-amber-400 mt-0.5" />
+                  {/* Encadré d'alerte procédurale (Mode Clair) */}
+                  <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs flex items-start gap-2">
+                    <Info className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
                     <div>
                       {saisineData.instance === "cap" && saisineData.motifCap === "crep" && (
                         <span><strong>Délai strict de saisine :</strong> La saisine de la CAP doit impérativement intervenir dans le <strong>délai d'un mois</strong> suivant la notification du refus de votre recours hiérarchique (ou après 2 mois de rejet implicite).</span>
@@ -1387,69 +1430,69 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 </div>
 
                 {/* 3. Données administratives de l'agent & rattachement */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
-                  <label className="text-xs font-black uppercase tracking-wider text-slate-300 block">
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xs text-slate-800">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-700 block">
                     3. Informations de l'agent & Instance
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <span className="text-[11px] text-slate-400 block mb-1">Nom :</span>
+                      <span className="text-[11px] text-slate-600 block mb-1">Nom :</span>
                       <input
                         type="text"
                         value={saisineData.nomAgent}
                         onChange={(e) => setSaisineData({ ...saisineData, nomAgent: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400"
                       />
                     </div>
                     <div>
-                      <span className="text-[11px] text-slate-400 block mb-1">Prénom :</span>
+                      <span className="text-[11px] text-slate-600 block mb-1">Prénom :</span>
                       <input
                         type="text"
                         value={saisineData.prenomAgent}
                         onChange={(e) => setSaisineData({ ...saisineData, prenomAgent: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <span className="text-[11px] text-slate-400 block mb-1">Grade / Fonction :</span>
+                      <span className="text-[11px] text-slate-600 block mb-1">Grade / Fonction :</span>
                       <input
                         type="text"
                         value={saisineData.grade}
                         onChange={(e) => setSaisineData({ ...saisineData, grade: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400"
                       />
                     </div>
                     <div>
-                      <span className="text-[11px] text-slate-400 block mb-1">Direction / Service :</span>
+                      <span className="text-[11px] text-slate-600 block mb-1">Direction / Service :</span>
                       <input
                         type="text"
                         value={saisineData.directionService}
                         onChange={(e) => setSaisineData({ ...saisineData, directionService: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <span className="text-[11px] text-slate-400 block mb-1">Collectivité employeur :</span>
+                      <span className="text-[11px] text-slate-600 block mb-1">Collectivité employeur :</span>
                       <input
                         type="text"
                         value={saisineData.collectivite}
                         onChange={(e) => setSaisineData({ ...saisineData, collectivite: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400"
                       />
                     </div>
                     <div>
-                      <span className="text-[11px] text-slate-400 block mb-1">CIG / CDG de rattachement :</span>
+                      <span className="text-[11px] text-slate-600 block mb-1">CIG / CDG de rattachement :</span>
                       <input
                         type="text"
                         value={saisineData.cigRattachement}
                         onChange={(e) => setSaisineData({ ...saisineData, cigRattachement: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400"
                       />
                     </div>
                   </div>
@@ -1457,38 +1500,38 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   {/* Dates spécifiques */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                     <div>
-                      <span className="text-[11px] text-slate-400 block mb-1">
+                      <span className="text-[11px] text-slate-600 block mb-1">
                         {saisineData.instance === "f3sct_cst" ? "Date du constat du danger :" : "Date décision / notification :"}
                       </span>
                       <input
                         type="date"
                         value={saisineData.dateNotificationDecision}
                         onChange={(e) => setSaisineData({ ...saisineData, dateNotificationDecision: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400 font-mono"
                       />
                     </div>
 
                     {saisineData.instance === "cap" && saisineData.motifCap === "crep" && (
                       <div>
-                        <span className="text-[11px] text-slate-400 block mb-1">Date recours préalable :</span>
+                        <span className="text-[11px] text-slate-600 block mb-1">Date recours préalable :</span>
                         <input
                           type="date"
                           value={saisineData.dateRecoursPrealable || ""}
                           onChange={(e) => setSaisineData({ ...saisineData, dateRecoursPrealable: e.target.value })}
-                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                          className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400 font-mono"
                         />
                       </div>
                     )}
 
                     {saisineData.instance === "f3sct_cst" && (
                       <div>
-                        <span className="text-[11px] text-slate-400 block mb-1">Lieu précis du danger :</span>
+                        <span className="text-[11px] text-slate-600 block mb-1">Lieu précis du danger :</span>
                         <input
                           type="text"
                           value={saisineData.lieuIncidentDanger || ""}
                           onChange={(e) => setSaisineData({ ...saisineData, lieuIncidentDanger: e.target.value })}
                           placeholder="Atelier, quai de chargement, bureau..."
-                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                          className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-400"
                         />
                       </div>
                     )}
@@ -1496,60 +1539,60 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 </div>
 
                 {/* 4. Faits, motifs et arguments */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
-                  <label className="text-xs font-black uppercase tracking-wider text-slate-300 block">
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xs text-slate-800">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-700 block">
                     4. Exposé des faits et moyens de défense
                   </label>
 
                   <div>
-                    <span className="text-[11px] text-slate-400 block mb-1">Circonstances factuelles détaillées :</span>
+                    <span className="text-[11px] text-slate-600 block mb-1">Circonstances factuelles détaillées :</span>
                     <textarea
                       rows={3}
                       value={saisineData.faitsEtContexte}
                       onChange={(e) => setSaisineData({ ...saisineData, faitsEtContexte: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white leading-relaxed"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 focus:bg-white leading-relaxed"
                     />
                   </div>
 
                   <div>
-                    <span className="text-[11px] text-slate-400 block mb-1">Motifs allégués par l'administration :</span>
+                    <span className="text-[11px] text-slate-600 block mb-1">Motifs allégués par l'administration :</span>
                     <textarea
                       rows={2}
                       value={saisineData.motifsInvoquesAdministration}
                       onChange={(e) => setSaisineData({ ...saisineData, motifsInvoquesAdministration: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white leading-relaxed"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 focus:bg-white leading-relaxed"
                     />
                   </div>
 
                   <div>
-                    <span className="text-[11px] text-slate-400 block mb-1">Arguments de l'agent (violation des textes, disproportion) :</span>
+                    <span className="text-[11px] text-slate-600 block mb-1">Arguments de l'agent (violation des textes, disproportion) :</span>
                     <textarea
                       rows={3}
                       value={saisineData.argumentsAgent}
                       onChange={(e) => setSaisineData({ ...saisineData, argumentsAgent: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white leading-relaxed"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 focus:bg-white leading-relaxed"
                     />
                   </div>
 
                   <div>
-                    <span className="text-[11px] text-slate-400 block mb-1">Mesures et conclusions demandées à l'instance :</span>
+                    <span className="text-[11px] text-slate-600 block mb-1">Mesures et conclusions demandées à l'instance :</span>
                     <textarea
                       rows={2}
                       value={saisineData.demandesAgent}
                       onChange={(e) => setSaisineData({ ...saisineData, demandesAgent: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white leading-relaxed"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 focus:bg-white leading-relaxed"
                     />
                   </div>
 
                   {/* Assistance syndicale CFDT */}
-                  <label className="flex items-center gap-2 pt-2 border-t border-slate-800 cursor-pointer">
+                  <label className="flex items-center gap-2 pt-2 border-t border-slate-200 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={saisineData.assistanceSyndicale}
                       onChange={(e) => setSaisineData({ ...saisineData, assistanceSyndicale: e.target.checked })}
-                      className="rounded text-rose-500"
+                      className="rounded text-rose-600 focus:ring-0"
                     />
-                    <span className="text-xs text-slate-200 font-bold">
+                    <span className="text-xs text-slate-800 font-bold">
                       Assistance de la délégation syndicale CFDT lors de la séance
                     </span>
                   </label>
@@ -1558,24 +1601,24 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 <button
                   type="button"
                   onClick={handleGenerateSaisine}
-                  className="w-full py-3.5 bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700 hover:from-rose-500 hover:to-pink-500 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg shadow-rose-600/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-3.5 bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700 hover:from-rose-500 hover:to-pink-500 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Users className="w-4 h-4" />
                   <span>Générer le Dossier Officiel de Saisine</span>
                 </button>
               </div>
 
-              {/* Colonne droite : Aperçu Officiel A4 et Pièces */}
+              {/* Colonne droite : Aperçu Officiel A4 et Pièces (Mode Clair) */}
               <div className="lg:col-span-7 flex flex-col space-y-4">
                 {/* Barre d'action rapide */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-xs">
                   <div className="flex items-center gap-2">
-                    <span className="p-2 rounded-lg bg-rose-500/20 text-rose-400">
+                    <span className="p-2 rounded-lg bg-rose-100 text-rose-600 shadow-2xs">
                       <FileText className="w-4 h-4" />
                     </span>
                     <div>
-                      <h4 className="text-xs font-bold text-white">Formulaire Officiel Conforme CGFP</h4>
-                      <p className="text-[10px] text-slate-400">Prêt pour notification à l'instance et à l'autorité</p>
+                      <h4 className="text-xs font-bold text-slate-900">Formulaire Officiel Conforme CGFP</h4>
+                      <p className="text-[10px] text-slate-500">Prêt pour notification à l'instance et à l'autorité</p>
                     </div>
                   </div>
 
@@ -1583,7 +1626,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <button
                       type="button"
                       onClick={() => handleCopy(generatedSaisine?.texteOfficiel || "")}
-                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-700"
+                      className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       <span>Copier</span>
@@ -1591,7 +1634,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <button
                       type="button"
                       onClick={() => handleExportDocx(generatedSaisine?.titre || "Saisine_Instance_Paritaire", generatedSaisine?.texteOfficiel || "")}
-                      className="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                      className="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Exporter (.docx)</span>
@@ -1599,30 +1642,30 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   </div>
                 </div>
 
-                {/* Encadré d'information légale & pièces requises */}
+                {/* Encadré d'information légale & pièces requises (Mode Clair) */}
                 {generatedSaisine && (
-                  <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 text-xs space-y-2.5">
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-2.5 text-slate-800">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-rose-400 uppercase tracking-wider text-[11px] flex items-center gap-1">
+                      <span className="font-bold text-rose-700 uppercase tracking-wider text-[11px] flex items-center gap-1">
                         <Scale className="w-3.5 h-3.5" /> Textes & Procédure applicables
                       </span>
-                      <span className="text-[10px] text-slate-400 font-mono">
+                      <span className="text-[10px] text-slate-500 font-mono">
                         {generatedSaisine.delaisEtProcedure.autoriteCompetente}
                       </span>
                     </div>
 
-                    <p className="text-slate-300 text-[11px] leading-relaxed">
+                    <p className="text-slate-700 text-[11px] leading-relaxed">
                       <strong>Délai légal :</strong> {generatedSaisine.delaisEtProcedure.delaiLegal}
                     </p>
 
-                    <div className="pt-2 border-t border-slate-800">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
+                    <div className="pt-2 border-t border-slate-200">
+                      <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider block mb-1.5">
                         Pièces obligatoires à joindre au dossier :
                       </span>
                       <ul className="space-y-1">
                         {generatedSaisine.piecesRequises.map((piece, idx) => (
-                          <li key={idx} className="flex items-start gap-1.5 text-[11px] text-slate-300">
-                            <CheckCircle2 className="w-3 h-3 text-rose-400 shrink-0 mt-0.5" />
+                          <li key={idx} className="flex items-start gap-1.5 text-[11px] text-slate-700">
+                            <CheckCircle2 className="w-3 h-3 text-rose-600 shrink-0 mt-0.5" />
                             <span>{piece}</span>
                           </li>
                         ))}
@@ -1632,7 +1675,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 )}
 
                 {/* Aperçu Feuille A4 */}
-                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-4 border-slate-800 shadow-2xl overflow-x-auto min-h-[540px]">
+                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-2 border-slate-300 shadow-md overflow-x-auto min-h-[540px]">
                   <pre className="whitespace-pre-wrap font-serif text-slate-900 select-text">
                     {generatedSaisine?.texteOfficiel || "Chargement du formulaire de saisine..."}
                   </pre>
@@ -1648,43 +1691,43 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
         {activeTab === "requete" && (
           <div className="space-y-6 animate-in fade-in duration-150">
             {/* Header info contentieux */}
-            <div className="bg-indigo-950/40 border-2 border-indigo-500/40 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
               <div className="flex items-start gap-3.5">
-                <div className="p-3 rounded-xl bg-slate-900 border border-indigo-500/30 text-indigo-400 shrink-0">
+                <div className="p-3 rounded-xl bg-white border border-indigo-200 text-indigo-600 shrink-0 shadow-xs">
                   <Gavel className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                  <h3 className="text-sm font-black text-indigo-950 uppercase tracking-wider">
                     Génération de Requête Contentieuse TA & Référé-Suspension
                   </h3>
-                  <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                  <p className="text-xs text-slate-700 mt-1 max-w-3xl leading-relaxed">
                     Formalisme strict du <strong>Code de justice administrative</strong>. Sélection guidée des moyens de légalité externe et interne, articulation conjointe d'un <strong>Référé-suspension (Art. L. 521-1 CJA)</strong> en cas d'urgence avec doute sérieux, et conclusions aux fins d'injonction sous astreinte (L. 911-1 CJA).
                   </p>
                 </div>
               </div>
               <div className="shrink-0">
-                <span className="px-3 py-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-indigo-400" /> Prêt pour Télérecours Citoyens
+                <span className="px-3 py-1.5 rounded-xl bg-white text-indigo-700 border border-indigo-300 text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                  <CheckCircle2 className="w-4 h-4 text-indigo-600" /> Prêt pour Télérecours Citoyens
                 </span>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Formulaire contentieux */}
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4">
-                <h3 className="text-sm font-black text-white border-b border-slate-800 pb-3 flex items-center gap-2">
-                  <Scale className="w-4 h-4 text-indigo-400" />
+              <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-5 space-y-4 shadow-xs">
+                <h3 className="text-sm font-black text-slate-900 border-b border-slate-200 pb-3 flex items-center gap-2">
+                  <Scale className="w-4 h-4 text-indigo-600" />
                   <span>Cadre du Litige & Moyens de Droit</span>
                 </h3>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Type de saisine contentieuse :
                   </label>
                   <select
                     value={requeteData.typeRequete}
                     onChange={(e) => setRequeteData({ ...requeteData, typeRequete: e.target.value as "rep_seul" | "rep_et_refere" })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:bg-white focus:border-indigo-500"
                   >
                     <option value="rep_et_refere">Requête au Fond (REP) + Référé-Suspension (L. 521-1 CJA)</option>
                     <option value="rep_seul">Requête au Fond seule (Recours pour Excès de Pouvoir)</option>
@@ -1692,13 +1735,13 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Tribunal Administratif territorialement compétent :
                   </label>
                   <select
                     value={requeteData.juridiction}
                     onChange={(e) => setRequeteData({ ...requeteData, juridiction: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:bg-white focus:border-indigo-500"
                   >
                     <option value="Tribunal Administratif de Cergy-Pontoise">TA de Cergy-Pontoise (Hauts-de-Seine 92, Val-d'Oise 95)</option>
                     <option value="Tribunal Administratif de Paris">TA de Paris (Paris 75)</option>
@@ -1710,31 +1753,31 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 {/* Acte attaqué */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Date arrêté attaqué :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Date arrêté attaqué :</label>
                     <input
                       type="date"
                       value={requeteData.dateDecisionAttaquee}
                       onChange={(e) => setRequeteData({ ...requeteData, dateDecisionAttaquee: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:border-indigo-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Réf. arrêté :</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Réf. arrêté :</label>
                     <input
                       type="text"
                       value={requeteData.referenceDecisionAttaquee}
                       onChange={(e) => setRequeteData({ ...requeteData, referenceDecisionAttaquee: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:border-indigo-500"
                     />
                   </div>
                 </div>
 
                 {/* Moyens Légalité Externe */}
-                <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
-                  <span className="text-xs font-black text-indigo-400 block uppercase tracking-wider">
+                <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
+                  <span className="text-xs font-black text-indigo-700 block uppercase tracking-wider">
                     1. Moyens de Légalité Externe (Forme & Procédure) :
                   </span>
-                  <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={requeteData.moyensLegaliteExterne.incompetenceAuteur}
@@ -1742,11 +1785,11 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                         ...requeteData,
                         moyensLegaliteExterne: { ...requeteData.moyensLegaliteExterne, incompetenceAuteur: e.target.checked }
                       })}
-                      className="rounded text-indigo-500"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
                     />
                     <span>Incompétence de l'auteur (défaut de délégation publiée)</span>
                   </label>
-                  <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={requeteData.moyensLegaliteExterne.viceProcedureCapCst}
@@ -1754,11 +1797,11 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                         ...requeteData,
                         moyensLegaliteExterne: { ...requeteData.moyensLegaliteExterne, viceProcedureCapCst: e.target.checked }
                       })}
-                      className="rounded text-indigo-500"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
                     />
                     <span>Vice de procédure (absence de saisine de la CAP ou du CST)</span>
                   </label>
-                  <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={requeteData.moyensLegaliteExterne.viceFormeMotivation}
@@ -1766,18 +1809,18 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                         ...requeteData,
                         moyensLegaliteExterne: { ...requeteData.moyensLegaliteExterne, viceFormeMotivation: e.target.checked }
                       })}
-                      className="rounded text-indigo-500"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
                     />
                     <span>Défaut de motivation en droit et en fait (Art. L. 211-2 CRPA)</span>
                   </label>
                 </div>
 
                 {/* Moyens Légalité Interne */}
-                <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
-                  <span className="text-xs font-black text-indigo-400 block uppercase tracking-wider">
+                <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
+                  <span className="text-xs font-black text-indigo-700 block uppercase tracking-wider">
                     2. Moyens de Légalité Interne (Fond & Qualification) :
                   </span>
-                  <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={requeteData.moyensLegaliteInterne.erreurDeDroit}
@@ -1785,11 +1828,11 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                         ...requeteData,
                         moyensLegaliteInterne: { ...requeteData.moyensLegaliteInterne, erreurDeDroit: e.target.checked }
                       })}
-                      className="rounded text-indigo-500"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
                     />
                     <span>Erreur de droit (violation directe des textes statutaires CGFP)</span>
                   </label>
-                  <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={requeteData.moyensLegaliteInterne.erreurManifesteAppreciation}
@@ -1797,11 +1840,11 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                         ...requeteData,
                         moyensLegaliteInterne: { ...requeteData.moyensLegaliteInterne, erreurManifesteAppreciation: e.target.checked }
                       })}
-                      className="rounded text-indigo-500"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
                     />
                     <span>Erreur manifeste d'appréciation (inadéquation disproportionnée)</span>
                   </label>
-                  <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={requeteData.moyensLegaliteInterne.detournementPouvoir}
@@ -1809,7 +1852,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                         ...requeteData,
                         moyensLegaliteInterne: { ...requeteData.moyensLegaliteInterne, detournementPouvoir: e.target.checked }
                       })}
-                      className="rounded text-indigo-500"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
                     />
                     <span>Détournement de pouvoir (animosité ou motifs extra-professionnels)</span>
                   </label>
@@ -1817,12 +1860,12 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
 
                 {/* Si Référé-Suspension demandé */}
                 {requeteData.typeRequete === "rep_et_refere" && (
-                  <div className="bg-amber-950/40 p-3.5 rounded-2xl border border-amber-500/30 space-y-2">
-                    <span className="text-xs font-black text-amber-400 block uppercase tracking-wider">
+                  <div className="bg-amber-50 p-3.5 rounded-2xl border border-amber-300 space-y-2">
+                    <span className="text-xs font-black text-amber-800 block uppercase tracking-wider">
                       3. Volet Référé-Suspension (L. 521-1 CJA) :
                     </span>
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-300 mb-1">
+                      <label className="block text-[11px] font-bold text-slate-800 mb-1">
                         Caractérisation de l'urgence impérieuse :
                       </label>
                       <textarea
@@ -1835,7 +1878,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                             justificationUrgence: e.target.value
                           }
                         })}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white"
+                        className="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:border-amber-500"
                       />
                     </div>
                   </div>
@@ -1844,7 +1887,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 <button
                   type="button"
                   onClick={handleGenerateRequete}
-                  className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Gavel className="w-4 h-4" />
                   <span>Générer les Requêtes Contentieuses</span>
@@ -1853,9 +1896,9 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
 
               {/* Rendu des requêtes */}
               <div className="lg:col-span-7 flex flex-col gap-4">
-                <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3">
-                  <span className="text-xs font-bold text-slate-300 flex items-center gap-2">
-                    <FileCheck className="w-4 h-4 text-indigo-400" />
+                <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl px-4 py-3 shadow-xs">
+                  <span className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                    <FileCheck className="w-4 h-4 text-indigo-600" />
                     Requête au Fond (REP) {requeteData.typeRequete === "rep_et_refere" ? "+ Requête en Référé (L. 521-1)" : ""}
                   </span>
                   <div className="flex items-center gap-2">
@@ -1870,7 +1913,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <button
                       type="button"
                       onClick={() => handleCopy((generatedRequete?.texteRep || "") + (generatedRequete?.texteRefere ? "\n\n=== REQUÊTE EN RÉFÉRÉ-SUSPENSION ===\n\n" + generatedRequete.texteRefere : ""))}
-                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       <span>Copier</span>
@@ -1878,7 +1921,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   </div>
                 </div>
 
-                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-4 border-slate-800 shadow-2xl overflow-x-auto min-h-[540px] space-y-8">
+                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-2 border-slate-300 shadow-md overflow-x-auto min-h-[540px] space-y-8">
                   <div>
                     <h4 className="font-bold text-center border-b pb-2 mb-4 text-indigo-900">
                       I. REQUÊTE AU FOND : RECOURS POUR EXCÈS DE POUVOIR (REP)
@@ -1905,43 +1948,43 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            ONGLET 4 : BORDEREAU DE PIÈCES (TÉLÉRECOURS CITOYENS)
+            ONGLET 5 : BORDEREAU DE PIÈCES (TÉLÉRECOURS CITOYENS)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === "bordereau" && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="bg-blue-950/40 border-2 border-blue-500/40 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
               <div className="flex items-start gap-3.5">
-                <div className="p-3 rounded-xl bg-slate-900 border border-blue-500/30 text-blue-400 shrink-0">
+                <div className="p-3 rounded-xl bg-white border border-blue-200 text-blue-600 shrink-0 shadow-xs">
                   <FileCheck className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                  <h3 className="text-sm font-black text-blue-950 uppercase tracking-wider">
                     Bordereau Récapitulatif Numéroté Conforme Télérecours Citoyens
                   </h3>
-                  <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                  <p className="text-xs text-slate-700 mt-1 max-w-3xl leading-relaxed">
                     Norme de l'article <strong>R. 414-5 du CJA</strong> et de l'arrêté du 14 décembre 2018 : chaque pièce doit être un fichier distinct numéroté (<code>PJ1_...pdf</code>, <code>PJ2_...pdf</code>) accompagné d'un bordereau d'inventaire détaillé précisant la date et la pagination.
                   </p>
                 </div>
               </div>
-              <div className="shrink-0 bg-slate-900 px-3.5 py-2 rounded-xl border border-blue-500/30 text-xs font-mono text-blue-300">
+              <div className="shrink-0 bg-white px-3.5 py-2 rounded-xl border border-blue-200 text-xs font-mono text-blue-800 shadow-xs">
                 {piecesList.length} pièces indexées • Total {piecesList.reduce((acc, p) => acc + p.nbPages, 0)} pages
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Liste et ajout des pièces (5 colonnes) */}
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4">
-                <h3 className="text-sm font-black text-white border-b border-slate-800 pb-3 flex items-center justify-between">
+              <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-5 space-y-4 shadow-xs">
+                <h3 className="text-sm font-black text-slate-900 border-b border-slate-200 pb-3 flex items-center justify-between">
                   <span className="flex items-center gap-2">
-                    <UploadCloud className="w-4 h-4 text-blue-400" />
+                    <UploadCloud className="w-4 h-4 text-blue-600" />
                     <span>Pièces Justificatives à Déposer</span>
                   </span>
-                  <span className="text-xs text-slate-400 font-mono">({piecesList.length} PJ)</span>
+                  <span className="text-xs text-slate-500 font-mono">({piecesList.length} PJ)</span>
                 </h3>
 
                 {/* Formulaire ajout rapide de pièce */}
-                <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-3">
-                  <span className="text-xs font-bold text-slate-200 block">
+                <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
+                  <span className="text-xs font-bold text-slate-800 block">
                     Ajouter une nouvelle pièce probante :
                   </span>
                   <div>
@@ -1950,7 +1993,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                       placeholder="Intitulé de la pièce (ex: Attestation de témoin...)"
                       value={nouvellePiece.titre}
                       onChange={(e) => setNouvellePiece({ ...nouvellePiece, titre: e.target.value })}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
+                      className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:border-blue-500"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
@@ -1959,7 +2002,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                       placeholder="Nom du fichier (ex: certif.pdf)"
                       value={nouvellePiece.nomFichier}
                       onChange={(e) => setNouvellePiece({ ...nouvellePiece, nomFichier: e.target.value })}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
+                      className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:border-blue-500"
                     />
                     <input
                       type="number"
@@ -1967,14 +2010,14 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                       min={1}
                       value={nouvellePiece.nbPages}
                       onChange={(e) => setNouvellePiece({ ...nouvellePiece, nbPages: Number(e.target.value) })}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono"
+                      className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono focus:border-blue-500"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-2 pt-1">
                     <select
                       value={nouvellePiece.categorie}
                       onChange={(e) => setNouvellePiece({ ...nouvellePiece, categorie: e.target.value as "decision" | "recours" | "echange" | "medical" | "temoignage" | "autre" })}
-                      className="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white"
+                      className="bg-white border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs text-slate-900 focus:border-blue-500"
                     >
                       <option value="decision">Décision administrative</option>
                       <option value="recours">Recours préalable / LRAR</option>
@@ -1986,7 +2029,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <button
                       type="button"
                       onClick={handleAjouterPiece}
-                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Ajouter</span>
@@ -1999,26 +2042,26 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   {piecesList.map((p) => (
                     <div
                       key={p.id}
-                      className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-start justify-between gap-2 hover:border-slate-700 transition-colors"
+                      className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start justify-between gap-2 hover:border-slate-300 transition-colors"
                     >
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5 mb-1">
-                          <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 font-mono">
+                          <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200 font-mono">
                             PJ n°{p.numero}
                           </span>
-                          <span className="text-[11px] font-mono text-slate-400">
+                          <span className="text-[11px] font-mono text-slate-500">
                             {p.nomNormalise}
                           </span>
                         </div>
-                        <p className="text-xs font-bold text-white truncate">{p.titre}</p>
-                        <p className="text-[11px] text-slate-400 mt-0.5">
+                        <p className="text-xs font-bold text-slate-900 truncate">{p.titre}</p>
+                        <p className="text-[11px] text-slate-600 mt-0.5">
                           {p.datePiece} • {p.nbPages} page(s)
                         </p>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleSupprimerPiece(p.id)}
-                        className="text-slate-500 hover:text-red-400 p-1.5 rounded-lg hover:bg-slate-900 transition-colors shrink-0"
+                        className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors shrink-0 cursor-pointer"
                         title="Supprimer la pièce"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -2030,7 +2073,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 <button
                   type="button"
                   onClick={handleGenerateBordereau}
-                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <FileCheck className="w-4 h-4" />
                   <span>Actualiser le Bordereau d'Inventaire</span>
@@ -2039,9 +2082,9 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
 
               {/* Rendu du Bordereau officiel (7 colonnes) */}
               <div className="lg:col-span-7 flex flex-col gap-4">
-                <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3">
-                  <span className="text-xs font-bold text-slate-300 flex items-center gap-2">
-                    <FileCheck className="w-4 h-4 text-blue-400" />
+                <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl px-4 py-3 shadow-xs">
+                  <span className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                    <FileCheck className="w-4 h-4 text-blue-600" />
                     Bordereau Récapitulatif Conforme R. 414-5 CJA
                   </span>
                   <div className="flex items-center gap-2">
@@ -2056,7 +2099,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                     <button
                       type="button"
                       onClick={() => handleCopy(generatedBordereau?.texteBordereau || "")}
-                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       <span>Copier</span>
@@ -2064,7 +2107,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   </div>
                 </div>
 
-                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-4 border-slate-800 shadow-2xl overflow-x-auto min-h-[540px]">
+                <div className="flex-1 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 font-serif text-xs sm:text-sm leading-relaxed border-2 border-slate-300 shadow-md overflow-x-auto min-h-[540px]">
                   <pre className="whitespace-pre-wrap font-serif text-slate-900 select-text">
                     {generatedBordereau?.texteBordereau || "Génération en cours..."}
                   </pre>
@@ -2075,20 +2118,20 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            ONGLET 5 : CODE & PACKAGE DOCASSEMBLE (.YML & PYTHON)
+            ONGLET 6 : CODE & PACKAGE DOCASSEMBLE (.YML & PYTHON)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === "docassemble" && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="bg-purple-950/40 border-2 border-purple-500/40 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="bg-purple-50 border-2 border-purple-200 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
               <div className="flex items-start gap-3.5">
-                <div className="p-3 rounded-xl bg-slate-900 border border-purple-500/30 text-purple-400 shrink-0">
+                <div className="p-3 rounded-xl bg-white border border-purple-200 text-purple-600 shrink-0 shadow-xs">
                   <Code2 className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                  <h3 className="text-sm font-black text-purple-950 uppercase tracking-wider">
                     Intégration & Export Docassemble (Jonathan Pyle)
                   </h3>
-                  <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                  <p className="text-xs text-slate-700 mt-1 max-w-3xl leading-relaxed">
                     Ce module génère le script officiel d'interview <strong>Docassemble</strong> en format YAML avec ses blocs logiques Python (calculs de recevabilité R. 421-5 CJA, champs conditionnels, templates docx). Vous pouvez le déployer directement sur votre instance Docker Docassemble ou l'intégrer à un guichet juridique autonome.
                   </p>
                 </div>
@@ -2098,7 +2141,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                   href="https://docassemble.org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-md"
+                  className="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span>Documentation Docassemble</span>
@@ -2107,13 +2150,13 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
             </div>
 
             {/* Sélecteur de scénario Docassemble */}
-            <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-2xl px-5 py-3">
+            <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl px-5 py-3 shadow-xs">
               <div className="flex items-center gap-3">
-                <span className="text-xs font-bold text-slate-300">Scénario de l'interview :</span>
+                <span className="text-xs font-bold text-slate-700">Scénario de l'interview :</span>
                 <select
                   value={docassembleScenario}
                   onChange={(e) => setDocassembleScenario(e.target.value as "recours_gracieux" | "requete_ta" | "protection_fonctionnelle" | "saisine_instances")}
-                  className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-purple-500"
+                  className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 focus:outline-none focus:bg-white focus:border-purple-500"
                 >
                   <option value="recours_gracieux">Interview 1 : Recours Gracieux & Calcul R. 421-5 CJA</option>
                   <option value="saisine_instances">Interview 2 : Saisine Instances Paritaires (CAP, CCP, F3SCT)</option>
@@ -2125,7 +2168,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
                 <button
                   type="button"
                   onClick={() => handleCopy(docassembleYaml)}
-                  className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <Copy className="w-3.5 h-3.5" />
                   <span>Copier le YAML</span>
@@ -2151,7 +2194,7 @@ export const GuichetAutoDefenseModal: React.FC<GuichetAutoDefenseModalProps> = (
             </div>
 
             {/* Visualiseur de code YAML Docassemble */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 font-mono text-xs text-slate-200 overflow-x-auto shadow-2xl max-h-[600px]">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 font-mono text-xs text-emerald-300 overflow-x-auto shadow-md max-h-[600px]">
               <pre className="whitespace-pre select-text">
                 {docassembleYaml}
               </pre>

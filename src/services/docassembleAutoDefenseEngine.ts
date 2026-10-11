@@ -28,7 +28,179 @@ export type MotifRefus =
   | "temps_partiel"
   | "rupture_conventionnelle"
   | "disponibilite"
-  | "crep";
+  | "crep"
+  | "formation_cpf"
+  | "conges_rtt"
+  | "primes_rifseep"
+  | "citis_accident"
+  | "sanction_disciplinaire";
+
+export interface DefaultRecoursContent {
+  referenceArrete: string;
+  motifsInvoquesParAdministration: string;
+  argumentsAgent: string;
+  piecesJointes: string[];
+}
+
+export function getDefaultRecoursContent(motif: MotifRefus): DefaultRecoursContent {
+  switch (motif) {
+    case "teletravail":
+      return {
+        referenceArrete: "Arrêté / Décision n° 2026-RH-849 portant refus d'autorisation de télétravail",
+        motifsInvoquesParAdministration: "Nécessité de service liée à la continuité de l'accueil physique du public et à l'organisation collective du service.",
+        argumentsAgent: `1. Les missions exercées (gestion administrative dématérialisée, saisie, suivi des dossiers) sont parfaitement éligibles au télétravail conformément au Décret n° 2016-151 et à l'accord-cadre du 13 juillet 2021.
+2. Les conditions matérielles et techniques au domicile de l'agent sont conformes aux règles de sécurité et de confidentialité du système d'information.
+3. Des collègues exerçant des fonctions analogues au sein du pôle bénéficient déjà de 1 à 2 jours de télétravail par semaine sans désorganisation.
+4. L'article 5 du décret n° 2016-151 impose un entretien préalable et une motivation circonstanciée : un refus stéréotypé constitue une erreur manifeste d'appréciation.`,
+        piecesJointes: [
+          "Fiche de poste officielle de l'agent",
+          "Planning d'activité et tableau des tâches télétravaillables",
+          "Accord-cadre télétravail de la collectivité",
+          "Échanges préalables de courriels avec la hiérarchie"
+        ]
+      };
+
+    case "temps_partiel":
+      return {
+        referenceArrete: "Arrêté / Décision n° 2026-RH-312 portant refus d'exercice des fonctions à temps partiel",
+        motifsInvoquesParAdministration: "Nécessités de service tenant au sous-effectif du service et à l'obligation de continuité du service public.",
+        argumentsAgent: `1. En application de l'article L. 612-1 du Code Général de la Fonction Publique, le refus de temps partiel ne peut intervenir que pour des motifs de service objectifs, avérés et non compensables.
+2. Le service dispose de marges de flexibilité organisationnelle par roulement des plannings d'équipe.
+3. Aucune démonstration concrète d'une perturbation du service public n'est rapportée par l'administration (jurisprudence constante du Conseil d'État).
+4. L'agent justifie d'impératifs personnels et familiaux majeurs nécessitant cet aménagement temporaire du temps de travail.`,
+        piecesJointes: [
+          "Demande initiale d'autorisation de temps partiel avec accusé de réception",
+          "Arrêté ou lettre de refus notifiée par l'autorité territoriale",
+          "Planning de service proposé démontrant la faisabilité technique",
+          "Justificatifs de situation familiale ou personnelle"
+        ]
+      };
+
+    case "rupture_conventionnelle":
+      return {
+        referenceArrete: "Courrier RH portant refus de la demande de rupture conventionnelle",
+        motifsInvoquesParAdministration: "Refus de principe opposé à toute rupture conventionnelle dans la collectivité ou contraintes de plafond d'emplois.",
+        argumentsAgent: `1. En vertu du décret n° 2019-1593 du 31 décembre 2019 et des articles L. 552-1 et L. 552-2 du CGFP, l'administration est tenue d'examiner chaque demande avec équité et sans refus systématique de principe.
+2. L'agent présente un projet de reconversion professionnelle solide et concerté, fruit de plusieurs années d'engagement irréprochable.
+3. Le refus opposé sans phase de dialogue ni examen individualisé méconnaît l'esprit des dispositions réglementaires.
+4. L'agent sollicite l'ouverture formelle d'un entretien de négociation dans le respect des textes.`,
+        piecesJointes: [
+          "Demande écrite de rupture conventionnelle transmise en LRAR",
+          "Notification de refus de la collectivité",
+          "Dossier de projet professionnel et attestations de formation"
+        ]
+      };
+
+    case "disponibilite":
+      return {
+        referenceArrete: "Arrêté n° 2026-RH-554 portant refus de mise en disponibilité pour convenances personnelles",
+        motifsInvoquesParAdministration: "Nécessités de service impérieuses et difficulté alléguée de recrutement d'un remplaçant.",
+        argumentsAgent: `1. Conformément à l'article L. 514-1 du CGFP et au décret n° 86-68, un refus de disponibilité pour convenances personnelles ne peut être fondé que sur des nécessités de service objectives et insurmontables.
+2. L'agent a déposé sa demande plus de 3 mois avant la date de départ souhaitée, délai amplement suffisant pour organiser la continuité ou un recrutement temporaire.
+3. Le motif tiré d'une tension globale d'effectifs ne constitue pas une justification légale personnalisée (CE, 16 décembre 2009).
+4. Le refus porte un préjudice financier et de carrière disproportionné à l'agent.`,
+        piecesJointes: [
+          "Demande initiale de disponibilité avec preuve de dépôt",
+          "Arrêté de refus de l'autorité territoriale",
+          "Courrier d'embauche ou justificatif du projet extérieur"
+        ]
+      };
+
+    case "crep":
+      return {
+        referenceArrete: "Compte-Rendu d'Entretien Professionnel (CREP) au titre de l'année 2025/2026",
+        motifsInvoquesParAdministration: "Notation dépréciée et baisse unilatérale des appréciations de valeur professionnelle par le N+1.",
+        argumentsAgent: `1. Recours formé dans le délai de 15 jours francs prescrit à l'article 7 du décret n° 2014-1526 du 16 décembre 2014.
+2. Discordance manifeste entre les appréciations écrites positives et la baisse injustifiée des coches d'évaluation.
+3. Griefs formulés portant sur des événements extérieurs à la période annuelle d'évaluation de référence.
+4. Violation de l'article 5 du décret n° 2014-1526 : les points litigieux n'ont fait l'objet d'aucun débat contradictoire lors de l'entretien.`,
+        piecesJointes: [
+          "CREP contesté portant la signature et les observations de l'agent",
+          "CREP des trois années antérieures démontrant la valeur professionnelle",
+          "Fiche de poste officielle de référence",
+          "Justificatifs de réalisation des objectifs et bilans d'activité"
+        ]
+      };
+
+    case "formation_cpf":
+      return {
+        referenceArrete: "Décision n° 2026-FORM-108 portant second refus de départ en formation / mobilisation CPF",
+        motifsInvoquesParAdministration: "Nécessités de service et restriction de budget formation de la direction.",
+        argumentsAgent: `1. Violation de l'article 7 du décret n° 2007-1845 et de l'article L. 422-1 du CGFP : le rejet d'une deuxième demande consécutive de formation de perfectionnement ne peut intervenir qu'après avis obligatoire de la CAP.
+2. Atteinte au droit statutaire fondamental à la formation tout au long de la vie professionnelle.
+3. L'absence temporaire de courte durée pour formation ne génère aucune interruption du service public.
+4. L'agent mobilise ses droits acquis au titre du Compte Personnel de Formation (CPF).`,
+        piecesJointes: [
+          "Première et seconde demandes de formation déposées",
+          "Décisions de refus écrites de la hiérarchie",
+          "Attestation des droits CPF et descriptif du programme CNFPT"
+        ]
+      };
+
+    case "conges_rtt":
+      return {
+        referenceArrete: "Décision de refus / annulation de pose de congés annuels ou jours RTT n° 2026-RH-77",
+        motifsInvoquesParAdministration: "Charge de travail prévisionnelle et obligation de présence simultanée de l'équipe.",
+        argumentsAgent: `1. Violation de l'article L. 621-1 du CGFP et du décret n° 85-1250 : le refus de congés ne peut être motivé que par une réelle urgence ou perturbation grave du service.
+2. La demande a été transmise dans le respect scrupuleux du calendrier de service et des délais de préavis d'usage.
+3. Les effectifs présents suffisent à maintenir la continuité pleine et entière des prestations du pôle.
+4. Absence de consultation préalable et disproportion de la mesure.`,
+        piecesJointes: [
+          "Demande de congés / RTT via le logiciel RH",
+          "Notification de refus hiérarchique",
+          "Planning prévisionnel de présence de l'équipe"
+        ]
+      };
+
+    case "primes_rifseep":
+      return {
+        referenceArrete: "Arrêté individuel n° 2026-REM-42 portant modulation à la baisse de l'IFSE / CIA",
+        motifsInvoquesParAdministration: "Révision unilatérale du montant indemnitaire servie à l'agent sans changement de fonctions.",
+        argumentsAgent: `1. Violation du principe de non-rétroactivité et de la délibération cadre de la collectivité fixant les critères d'attribution du RIFSEEP (IFSE et CIA).
+2. La baisse substantielle de l'IFSE sans modification des sujétions ni de la fiche de poste constitue une sanction pécuniaire déguisée (Art. L. 531-1 CGFP).
+3. Défaut absolu de motivation formelle en violation des articles L. 211-2 et L. 211-5 du CRPA.
+4. Atteinte injustifiée au pouvoir d'achat et aux droits financiers acquis de l'agent.`,
+        piecesJointes: [
+          "Arrêté indemnitaire modificatif attaqué",
+          "Arrêtés indemnitaires antérieurs établissant le montant de référence",
+          "Délibération municipale instaurant le RIFSEEP",
+          "Fiches de paie récentes"
+        ]
+      };
+
+    case "citis_accident":
+      return {
+        referenceArrete: "Arrêté n° 2026-SANTE-92 portant refus de reconnaissance de l'imputabilité au service (CITIS)",
+        motifsInvoquesParAdministration: "Allégation d'un état antérieur de l'agent ou défaut de lien exclusif avec le service.",
+        argumentsAgent: `1. Présomption légale d'imputabilité au service posée par l'article L. 822-18 du CGFP : l'accident est survenu au temps et sur le lieu du service dans l'exercice des missions.
+2. L'existence d'un état pathologique antérieur n'exclut aucunement l'imputabilité au service dès lors que l'événement professionnel l'a révélé ou aggravé (CE, 23 septembre 2013).
+3. Déclaration d'accident et certificat médical initial transmis dans les délais réglementaires du décret n° 2019-301.
+4. L'administration ne rapporte aucune preuve d'une cause totalement étrangère au service.`,
+        piecesJointes: [
+          "Déclaration d'accident de service et certificat médical initial (CMI)",
+          "Arrêté de refus de l'autorité territoriale",
+          "Témoignages de collègues et rapport de constatation hiérarchique",
+          "Avis éventuel du médecin de prévention"
+        ]
+      };
+
+    case "sanction_disciplinaire":
+      return {
+        referenceArrete: "Arrêté n° 2026-DISC-14 infligeant une sanction disciplinaire du 1er groupe (blâme / avertissement)",
+        motifsInvoquesParAdministration: "Manquement prétendu à l'obéissance hiérarchique ou à l'obligation de réserve.",
+        argumentsAgent: `1. Violation des droits de la défense (Art. L. 532-4 du CGFP) : omission de l'information écrite sur le droit d'accès au dossier individuel et d'assistance par le défenseur de son choix.
+2. Inexactitude matérielle des faits reprochés : les reproches sont dénués de toute preuve probante.
+3. Disproportion manifeste de la mesure disciplinaire au regard des états de service irréprochables de l'agent.
+4. Détournement de procédure constituant une mesure d'intimidation ou de harcèlement managérial.`,
+        piecesJointes: [
+          "Arrêté portant sanction disciplinaire",
+          "Courrier préalable de convocation ou d'information des griefs",
+          "Rapport de la hiérarchie",
+          "Attestations écrites de collègues et évaluations professionnelles élogieuses"
+        ]
+      };
+  }
+}
 
 export interface RecoursGracieuxFormData {
   motifRefus: MotifRefus;
@@ -435,6 +607,41 @@ En l'espèce, le compte-rendu querellé est entaché de plusieurs illégalités 
 2. Fixation d'objectifs sans concertation réelle lors de l'entretien ;
 3. Griefs portant sur des faits extérieurs à la période d'évaluation annuelle de référence ;
 4. Évaluation partiale constitutive d'un détournement de pouvoir.`;
+      break;
+
+    case "formation_cpf":
+      libelleObjet = "Recours gracieux contre le refus réitéré de formation professionnelle et mobilisation CPF";
+      baseLegale = "Articles L. 421-1 et L. 422-1 du Code Général de la Fonction Publique ; Décret n° 2007-1845 du 26 décembre 2007 (Art. 7).";
+      argumentationSpecifique = `En vertu de l'article 7 du décret n° 2007-1845, lorsque l'autorité territoriale rejette pour la seconde fois consécutive une demande de formation de perfectionnement, ce rejet ne peut légalement intervenir qu'après avis préalable de la commission administrative paritaire (CAP).
+De surcroît, le droit à la formation continue est un droit fondamental garanti par le CGFP. L'invocation vague de 'nécessités de service' sans caractériser l'impossibilité de suppléance temporaire porte une atteinte disproportionnée à l'évolution professionnelle de l'agent.`;
+      break;
+
+    case "conges_rtt":
+      libelleObjet = "Recours gracieux contestant le refus d'octroi de congés annuels / jours RTT";
+      baseLegale = "Article L. 621-1 du Code Général de la Fonction Publique ; Décret n° 85-1250 du 26 novembre 1985 relatif aux congés annuels des agents territoriaux.";
+      argumentationSpecifique = `Si l'autorité territoriale dispose du pouvoir d'organiser le service, la jurisprudence administrative constante rappelle qu'un refus de congés réguliers ne peut être légalement opposé que pour un motif exceptionnel et caractérisé de continuité absolue du service public.
+En l'espèce, les effectifs présents au sein du service permettent amplement la continuité des missions. Le refus opposé sans concertation ni proposition de dates alternatives est entaché d'erreur manifeste d'appréciation.`;
+      break;
+
+    case "primes_rifseep":
+      libelleObjet = "Recours gracieux contestant la baisse unilatérale ou suppression du régime indemnitaire RIFSEEP (IFSE / CIA)";
+      baseLegale = "Articles L. 712-1 et L. 531-1 du Code Général de la Fonction Publique ; Articles L. 211-2 et L. 211-5 du CRPA ; Délibération municipale fixant le RIFSEEP.";
+      argumentationSpecifique = `Conformément au principe de légalité et à la délibération cadre de la collectivité, la modulation à la baisse de l'IFSE sans modification des sujétions professionnelles de l'agent ni changement de fiche de poste constitue une sanction pécuniaire déguisée, prohibée par l'article L. 531-1 du CGFP.
+En outre, toute décision réduisant un avantage pécuniaire individuel doit obligatoirement être motivée en droit et en fait en application de l'article L. 211-2 du CRPA. L'absence de motivation circonstanciée entache l'acte d'une illégalité externe radicale.`;
+      break;
+
+    case "citis_accident":
+      libelleObjet = "Recours gracieux contestant le refus d'imputabilité au service de l'accident / de la maladie professionnelle (CITIS)";
+      baseLegale = "Article L. 822-18 du Code Général de la Fonction Publique ; Décret n° 2019-301 du 10 avril 2019 relatif au congé pour invalidité temporaire imputable au service (CITIS).";
+      argumentationSpecifique = `Aux termes de l'article L. 822-18 du CGFP, est présumé imputable au service tout accident survenu sur le lieu et pendant les heures du service, ou en lien direct avec l'exercice des fonctions.
+Le Conseil d'État juge avec constance (CE, 23 sept. 2013) que l'existence d'un état pathologique antérieur n'exclut pas l'imputabilité lorsque l'événement de service l'a décompensé ou aggravé. L'autorité territoriale n'apporte aucun élément permettant de renverser la présomption légale d'imputabilité.`;
+      break;
+
+    case "sanction_disciplinaire":
+      libelleObjet = "Recours gracieux tendant au retrait de l'arrêté infligeant une sanction disciplinaire du 1er groupe";
+      baseLegale = "Articles L. 532-1 à L. 532-4 du Code Général de la Fonction Publique ; Décret n° 89-677 du 18 septembre 1989 relatif à la procédure disciplinaire.";
+      argumentationSpecifique = `L'article L. 532-4 du CGFP prescrit que le fonctionnaire poursuivi a le droit à la communication intégrale de son dossier individuel et à l'assistance d'un défenseur de son choix avant toute sanction, y compris du 1er groupe (blâme ou avertissement).
+Sur le fond, la matérialité des faits invoqués n'est nullement établie par des pièces probantes. Au regard des états de service exemplaires de l'agent, la mesure querellée est manifestement disproportionnée et révèle un détournement de pouvoir.`;
       break;
   }
 
@@ -1714,6 +1921,11 @@ fields:
       - Refus de rupture conventionnelle: rupture_conventionnelle
       - Refus de disponibilité: disponibilite
       - Contestation du compte-rendu d'évaluation (CREP): crep
+      - Refus réitéré de formation ou CPF: formation_cpf
+      - Refus ou annulation de congés / RTT: conges_rtt
+      - Baisse ou suppression d'indemnités RIFSEEP: primes_rifseep
+      - Refus d'imputabilité au service (CITIS): citis_accident
+      - Sanction disciplinaire du 1er groupe: sanction_disciplinaire
   - Date de notification de la décision contestée: date_notification
     datatype: date
   - Les voies et délais de recours étaient-ils mentionnés dans la lettre/arrêté ?: mentions_recours_presentes

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "collectivite": {
+    "type": "commune",
+    "nom": "Commune Exemple — données fictives"
+  },
+  "budget": {
+    "nom": "Budget principal fictif",
+    "nature": "administratif",
+    "instruction": "M57",
+    "exercice": 2026,
+    "periode": "annuelle",
+    "base": "prevision"
+  },
+  "donnees": {
+    "recettes_reelles_fonctionnement": 12000000,
+    "depenses_reelles_fonctionnement": 10000000,
+    "remboursement_capital_dette": 500000,
+    "encours_dette_fin_exercice": 8000000
+  },
+  "provenance": {
+    "document": "Prévisions fictives 2026 pour démonstration",
+    "page_ou_tableau": "Tableau d'agrégats fictif",
+    "agregats_retraites": true,
+    "note_retraitements": "Montants fictifs en euros pour un seul budget, hors opérations d'ordre, cessions et gestion active de dette ; dépenses de fonctionnement incluant les intérêts."
+  }
+}

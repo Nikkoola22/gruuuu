@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "revenus": 2025,
+    "declaration": 2026,
+    "checked_on": "2026-09-14",
+    "scope": "Barème, QF général, décote et abattements forfaitaires seulement. Les paramètres hors calculateur restent dans le fichier original lors de l’installation."
+  },
+  "bareme_ir": {
+    "tranches": [
+      {
+        "jusqu_a": 11600,
+        "taux": 0
+      },
+      {
+        "de": 11600,
+        "a": 29579,
+        "taux": 0.11
+      },
+      {
+        "de": 29579,
+        "a": 84577,
+        "taux": 0.3
+      },
+      {
+        "de": 84577,
+        "a": 181917,
+        "taux": 0.41
+      },
+      {
+        "au_dela": 181917,
+        "taux": 0.45
+      }
+    ]
+  },
+  "quotient_familial": {
+    "plafond_gain_par_demi_part": 1807
+  },
+  "decote": {
+    "seuil_celibataire": 1982,
+    "seuil_couple": 3277,
+    "plafond_celibataire": 897,
+    "plafond_couple": 1483
+  },
+  "abattement_salaires_10pct": {
+    "taux": 0.1,
+    "minimum": 509,
+    "maximum": 14555
+  },
+  "abattement_pensions_10pct": {
+    "taux": 0.1,
+    "minimum": 454,
+    "maximum": 4439
+  },
+  "cehr": {
+    "seuils_celibataire": [
+      {
+        "de": 250000,
+        "a": 500000,
+        "taux": 0.03
+      },
+      {
+        "au_dela": 500000,
+        "taux": 0.04
+      }
+    ],
+    "seuils_couple": [
+      {
+        "de": 500000,
+        "a": 1000000,
+        "taux": 0.03
+      },
+      {
+        "au_dela": 1000000,
+        "taux": 0.04
+      }
+    ]
+  }
+}

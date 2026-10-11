@@ -19,6 +19,8 @@ const CalculateurSFTV2 = lazy(() => import("./components/CalculateurSFTV2.tsx"))
 const CalculateurNavigo = lazy(() => import("./components/CalculateurNavigo.tsx"))
 const CourriersAgentModule = lazy(() => import("./components/CourriersAgentModule.tsx"))
 const FichePaieExplainer = lazy(() => import("./components/FichePaieExplainer.tsx"))
+const SimulateurImpotRevenu = lazy(() => import("./components/SimulateurImpotRevenu.tsx"))
+const CalculateurBudgetM57 = lazy(() => import("./components/CalculateurBudgetM57.tsx"))
 const Metiers = lazy(() => import("./components/Metiers.tsx"))
 const FAQ = lazy(() => import("./components/FAQ.tsx"))
 const EspaceJeux = lazy(() => import("./components/EspaceJeux.tsx"))
@@ -199,7 +201,7 @@ interface InfoItem {
   content: string
 }
 export interface ChatbotState {
-  currentView: "menu" | "chat" | "metiers" | "calculators" | "veille" | "simul-agent" | "native-calculator" | "faq" | "jeux" | "actualites" | "veille-cdg" | "memoire-juridique" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "podcasts" | "weather"
+  currentView: "menu" | "chat" | "metiers" | "calculators" | "veille" | "simul-agent" | "native-calculator" | "faq" | "jeux" | "actualites" | "veille-cdg" | "memoire-juridique" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "podcasts" | "weather" | "simulateur-ir" | "budget-m57"
   selectedDomain: number | null
   messages: ChatMessage[]
   isProcessing: boolean
@@ -286,7 +288,7 @@ function App() {
   // --- FLUX D'ACTUALITÉS (Hook optimisé) ---
   const { rssItems, rssLoading, intercoNews, intercoLoading, fpNews, fpLoading } = useNewsFeeds()
 
-  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | 'navigo' | null>(null)
+  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | 'navigo' | 'simulateur-ir' | 'budget-m57' | null>(null)
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [logoLoadError, setLogoLoadError] = useState(false)
@@ -333,7 +335,7 @@ function App() {
     setChatState({ ...chatState, currentView: 'metiers' })
   }
 
-  const openCalculator = (calculator: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | 'navigo') => {
+  const openCalculator = (calculator: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | 'navigo' | 'simulateur-ir' | 'budget-m57') => {
     if (calculator === 'primes' || calculator === 'cia' || calculator === '13eme') {
       const keyByCalculator = {
         primes: 'calculator_primes',
@@ -1468,6 +1470,24 @@ ${indicesFactuels}
         </Suspense>
       )}
 
+      {/* --- SECTION SIMULATEUR IMPÔT SUR LE REVENU --- */}
+      {chatState.currentView === 'simulateur-ir' && (
+        <Suspense fallback={<ViewLoader />}>
+          <SimulateurImpotRevenu
+            onClose={() => setChatState({ ...chatState, currentView: 'menu' })}
+          />
+        </Suspense>
+      )}
+
+      {/* --- SECTION SANTÉ FINANCIÈRE & RATIOS M57 DE LA COLLECTIVITÉ --- */}
+      {chatState.currentView === 'budget-m57' && (
+        <Suspense fallback={<ViewLoader />}>
+          <CalculateurBudgetM57
+            onClose={() => setChatState({ ...chatState, currentView: 'menu' })}
+          />
+        </Suspense>
+      )}
+
       {/* --- SECTION SIMULATEURS NATIFS --- */}
       {chatState.currentView === 'native-calculator' && chatState.simulTool && (
         <div className={`fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-100/90 dark:bg-slate-950/90 ${showMacMenuBar ? 'pt-8' : 'pt-2'}`}>
@@ -1626,6 +1646,64 @@ ${indicesFactuels}
                       </p>
                       <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm mt-4 group-hover:translate-x-1 transition-transform">
                         <span>Auditer et expliquer ma fiche de paie →</span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Carte Simulateur Impôt sur le Revenu (IR 2026 / Revenus 2025) & Contrôle PAS */}
+                <button
+                  onClick={() => openCalculator('simulateur-ir')}
+                  className="group relative bg-white dark:bg-slate-800/80 border-2 border-emerald-500/40 dark:border-emerald-500/50 rounded-2xl p-8 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl dark:hover:shadow-emerald-500/20 hover:border-emerald-500 dark:hover:border-emerald-400 sm:col-span-2 lg:col-span-2 bg-gradient-to-br from-emerald-50/40 via-white to-teal-50/30 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-emerald-950/20 text-left"
+                >
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-600 text-white shadow-sm">
+                      ✨ Nouveau • DGFiP 2026
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                    <div className="p-6 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg text-white shrink-0">
+                      <Calculator className="w-16 h-16" />
+                    </div>
+                    <div>
+                      <div className="inline-block text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-1">
+                        Fiscalité & Prélèvement à la Source
+                      </div>
+                      <h4 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white">Impôt sur le Revenu & PAS</h4>
+                      <p className="text-slate-600 dark:text-slate-300 font-medium text-sm mt-2 leading-relaxed max-w-xl">
+                        Simulez votre impôt net avec le barème 2026 (revenus 2025), comparez votre taux de PAS précompté sur le bulletin et découvrez si vous aurez un <strong>trop-perçu remboursé</strong> ou un reliquat DGFiP.
+                      </p>
+                      <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm mt-4 group-hover:translate-x-1 transition-transform">
+                        <span>Calculer mon impôt et vérifier mon PAS →</span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Carte Santé Financière & Ratios M57 de la Collectivité */}
+                <button
+                  onClick={() => openCalculator('budget-m57')}
+                  className="group relative bg-white dark:bg-slate-800/80 border-2 border-indigo-500/40 dark:border-indigo-500/50 rounded-2xl p-8 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl dark:hover:shadow-indigo-500/20 hover:border-indigo-500 dark:hover:border-indigo-400 sm:col-span-2 lg:col-span-2 bg-gradient-to-br from-indigo-50/40 via-white to-purple-50/30 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-indigo-950/20 text-left"
+                >
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-600 text-white shadow-sm">
+                      🏛️ M57 • Contrôles CRC
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                    <div className="p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg text-white shrink-0">
+                      <Landmark className="w-16 h-16" />
+                    </div>
+                    <div>
+                      <div className="inline-block text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider mb-1">
+                        Finances Locales & Ratios Prudentiels
+                      </div>
+                      <h4 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white">Santé Financière M57</h4>
+                      <p className="text-slate-600 dark:text-slate-300 font-medium text-sm mt-2 leading-relaxed max-w-xl">
+                        Épargne brute, capacité de désendettement (seuils CRC 10/12 ans), poids de la masse salariale (012), <strong>checklist des pièces CRC</strong> et générateur de notes d'arbitrage M57.
+                      </p>
+                      <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm mt-4 group-hover:translate-x-1 transition-transform">
+                        <span>Analyser le budget M57 & kit d'audit CRC →</span>
                       </div>
                     </div>
                   </div>
@@ -1995,6 +2073,34 @@ ${indicesFactuels}
             <Suspense fallback={<ViewLoader />}>
               <div className="calc-tool-enter relative z-10 py-6 px-4">
                 <FichePaieExplainer
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
+            </Suspense>
+          )}
+          {activeCalculator === 'simulateur-ir' && (
+            <Suspense fallback={<ViewLoader />}>
+              <div className="calc-tool-enter relative z-10 py-6 px-4">
+                <SimulateurImpotRevenu
+                  onClose={() => {
+                    setActiveCalculator(null)
+                    if (calculatorsSectionRef.current) {
+                      calculatorsSectionRef.current.scrollTop = 0
+                    }
+                  }}
+                />
+              </div>
+            </Suspense>
+          )}
+          {activeCalculator === 'budget-m57' && (
+            <Suspense fallback={<ViewLoader />}>
+              <div className="calc-tool-enter relative z-10 py-6 px-4">
+                <CalculateurBudgetM57
                   onClose={() => {
                     setActiveCalculator(null)
                     if (calculatorsSectionRef.current) {

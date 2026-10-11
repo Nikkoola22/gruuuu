@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import CirilBulletinView from './CirilBulletinView';
+import SimulateurImpotRevenu from './SimulateurImpotRevenu';
 import {
   computeOpenFiscaPay,
   parseUploadedPaySlipWithMeta,
@@ -41,6 +42,7 @@ interface FichePaieExplainerProps {
 export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps) {
   // Preset sélectionné par défaut
   const [selectedPresetId, setSelectedPresetId] = useState<string>("cat_c_adjoint");
+  const [showSimulateurIR, setShowSimulateurIR] = useState<boolean>(false);
 
   // Paramètres de calcul dynamiques
   const [params, setParams] = useState<CalculParams>(() => {
@@ -290,6 +292,16 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
   const pctRetraite = Math.round(((result.openFiscaBenchmark.cnraclTheorique + result.openFiscaBenchmark.rafpTheorique) / brut) * 100);
   const pctCsg = Math.round((result.openFiscaBenchmark.csgTheorique / brut) * 100);
   const pctPas = Math.max(0, 100 - pctNet - pctRetraite - pctCsg);
+
+  if (showSimulateurIR) {
+    return (
+      <SimulateurImpotRevenu
+        onClose={() => setShowSimulateurIR(false)}
+        initialNetFiscalMensuel={result.totaux.netFiscal}
+        initialTauxPas={params.tauxPas}
+      />
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-16">
@@ -696,21 +708,30 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
               onApplyMultiParams={(multi) => setParams(prev => ({ ...prev, ...multi }))}
             />
 
-            {/* Bannière d'accès direct vers l'explication complexe */}
+            {/* Bannière d'accès direct vers l'explication complexe & Simulateur IR */}
             <div className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                 <Sparkles className="w-4 h-4 text-orange-500 shrink-0" />
-                <span>Vous souhaitez analyser les {result.lignes.length} rubriques ligne par ligne, le score de conformité et le code Python ?</span>
+                <span>Net fiscal calculé : <strong>{Math.round(result.totaux.netFiscal || 0)} €/mois</strong> (~ {Math.round((result.totaux.netFiscal || 0) * 12).toLocaleString('fr-FR')} €/an). Voulez-vous vérifier votre impôt sur le revenu et votre prélèvement à la source (PAS) ?</span>
               </div>
-              <button
-                onClick={() => {
-                  setExplanationMode('complexe');
-                  setTimeout(() => synthesisSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
-                }}
-                className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold shrink-0 cursor-pointer shadow-xs"
-              >
-                Passer à l'Explication Complexe (Synthèse) →
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => setShowSimulateurIR(true)}
+                  className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shrink-0 cursor-pointer shadow-xs flex items-center gap-1.5"
+                >
+                  <Calculator className="w-3.5 h-3.5" />
+                  <span>Simuler mon Impôt (IR & PAS) →</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setExplanationMode('complexe');
+                    setTimeout(() => synthesisSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
+                  }}
+                  className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold shrink-0 cursor-pointer shadow-xs"
+                >
+                  Synthèse Complexe →
+                </button>
+              </div>
             </div>
           </div>
         ) : (

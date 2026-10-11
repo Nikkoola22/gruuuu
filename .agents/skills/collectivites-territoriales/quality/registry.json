@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "scope": "Volet public local : revue ciblée de sources et méthodes, pas certification du droit ni du dossier.",
+  "sources": {
+    "m57": {
+      "title": "DGCL/DGFiP — Référentiel budgétaire et comptable M57",
+      "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/budget/instructions-budgetaires-et-comptables/le-referentiel-m57/le-referentiel-budgetaire-et-comptable-m57",
+      "consulted_on": "2026-09-14",
+      "scope": "Portail des documents M57, dont le millésime 2026 ; contrôler le document applicable au budget."
+    },
+    "cfu": {
+      "title": "DGCL/DGFiP — Compte financier unique",
+      "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/budget/le-compte-financier-unique-cfu",
+      "consulted_on": "2026-09-14",
+      "scope": "Comptes 2026 et articulation avec M57 et M4 ; ne pas appliquer rétroactivement le calendrier."
+    },
+    "equilibre": {
+      "title": "CGCT — Article L1612-4",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000051731697",
+      "consulted_on": "2026-09-14",
+      "scope": "Conditions de l'équilibre réel ; le script d'indicateurs n'évalue pas ces conditions."
+    },
+    "roles": {
+      "title": "DGCL/DGFiP — Distinction ordonnateur-comptable",
+      "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/execution-des-recettes-et-des-depenses-locales/la-distinction-ordonnateur-comptable",
+      "consulted_on": "2026-09-14",
+      "scope": "Compétences et séparation des fonctions dans l'exécution publique."
+    },
+    "cicf": {
+      "title": "DGCL/DGFiP — Contrôle interne",
+      "url": "https://www.collectivites-locales.gouv.fr/le-controle-interne",
+      "consulted_on": "2026-09-14",
+      "scope": "Outillage de maîtrise des risques, dont DMRA 2026 ; pas un diagnostic de la collectivité utilisatrice."
+    },
+    "budget-control": {
+      "title": "DGCL — Contrôle budgétaire",
+      "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/budget/controle-budgetaire",
+      "consulted_on": "2026-09-14",
+      "scope": "Champ du contrôle budgétaire et articulation préfet/CRC."
+    },
+    "crc": {
+      "title": "DGCL — Examen de la gestion par la CRC",
+      "url": "https://www.collectivites-locales.gouv.fr/gerer-les-finances-publiques-locales/qualite-et-controle-des-comptes-locaux/examen-de-la-gestion-par-la-chambre-regionale-des-comptes",
+      "consulted_on": "2026-09-14",
+      "scope": "Régularité, économie et résultats de la gestion ; distinction avec l'opportunité des objectifs politiques."
+    },
+    "actes": {
+      "title": "DGCL — Contrôle de légalité",
+      "url": "https://www.collectivites-locales.gouv.fr/connaitre-les-acteurs-et-les-institutions/controle-de-legalite",
+      "consulted_on": "2026-09-14",
+      "scope": "Contrôle des actes ; qualifier acte, compétence et formalités applicables."
+    },
+    "marches": {
+      "title": "DAJ — Avis relatif aux seuils de procédure formalisée",
+      "url": "https://www.economie.gouv.fr/daj/commande-publique-lavis-relatif-aux-nouveaux-seuils-de-procedure-formalisee-est-publie",
+      "consulted_on": "2026-09-14",
+      "scope": "Point d'entrée vers l'avis et l'annexe 2 du code pour la période 2026-2027 ; aucun seuil automatisé dans le skill."
+    },
+    "marches-transitions": {
+      "title": "DAJ — Mesures de simplification et rehaussement des seuils",
+      "url": "https://www.economie.gouv.fr/files/files/directions_services/daj/media-document/FT_Mesures%20de%20simplification%20du%20droit%20de%20la%20commande%20publique%20et%20rehaussement%20des%20seuils.pdf",
+      "consulted_on": "2026-09-14",
+      "scope": "Entrées en vigueur distinctes en 2026 pour fournitures/services et travaux ; lire les décrets cités pour le cas réel."
+    },
+    "rh-rsu": {
+      "title": "DGAFP — Base de données sociales",
+      "url": "https://www.fonction-publique.gouv.fr/etudes-statistiques-et-publications/la-base-de-donnees-sociales-bds",
+      "consulted_on": "2026-09-14",
+      "scope": "RSU/BDS et liste territoriale d'indicateurs ; les indicateurs d'État et hospitaliers sont distincts."
+    },
+    "rh-ldg": {
+      "title": "DGAFP — Lignes directrices de gestion",
+      "url": "https://www.fonction-publique.gouv.fr/etre-agent-public/mon-parcours-professionnel/les-lignes-directrices-de-gestion-en-matiere-de-valorisation-des-parcours-professionnels",
+      "consulted_on": "2026-09-14",
+      "scope": "Prendre le versant territorial et l'autorité compétente ; ne décide pas d'une promotion individuelle."
+    },
+    "donnees": {
+      "title": "CNIL — Collectivités : principes de protection des données",
+      "url": "https://www.cnil.fr/fr/collectivites-territoriales/les-principes-cles-de-la-protection-des-donnees",
+      "consulted_on": "2026-09-14",
+      "scope": "Finalité, minimisation, accès et conservation ; ne constitue pas une validation d'un hébergement."
+    },
+    "indicateurs": {
+      "title": "CRC Île-de-France — Rapport sur la situation financière de Paris 2021-2024, annexe sur l'épargne et le désendettement",
+      "url": "https://www.ccomptes.fr/sites/default/files/2025-10/IDR2025-42.pdf",
+      "consulted_on": "2026-09-14",
+      "scope": "Définitions financières seulement ; aucun chiffre, seuil d'alerte ni constat sur Paris n'est transposé à une autre entité."
+    }
+  },
+  "rules": [
+    {
+      "id": "collectivites.indicateurs",
+      "scope": "Calcul technique sur agrégats annuels retraités d'un seul budget administratif M57 2026. Pas d'équilibre légal ni de consolidation.",
+      "sources": [
+        "indicateurs",
+        "equilibre"
+      ],
+      "value": {
+        "instruction": "M57",
+        "nature": "administratif",
+        "devise": "EUR",
+        "formules": "rrf-drf;eb-capital;eb/rrf*100;dette/eb"
+      },
+      "status": "verified",
+      "period_type": "exercice_ou_date_operation",
+      "periods": [
+        2026
+      ],
+      "verified_on": "2026-09-14",
+      "review_due": "2026-10-14"
+    },
+    {
+      "id": "collectivites.budget",
+      "scope": "Cadrage documentaire des référentiels et du CFU ; pas de conversion de comptes.",
+      "sources": [
+        "m57",
+        "cfu",
+        "roles",
+        "budget-control"
+      ],
+      "value": {
+        "mode": "revue_documentaire",
+        "verification_dossier": false
+      },
+      "status": "verified",
+      "period_type": "exercice_ou_date_operation",
+      "periods": [
+        2026
+      ],
+      "verified_on": "2026-09-14",
+      "review_due": "2026-10-14"
+    },
+    {
+      "id": "collectivites.audit",
+      "scope": "Préparation des contrôles internes et suivi des recommandations ; aucun pouvoir CRC.",
+      "sources": [
+        "cicf",
+        "crc",
+        "roles"
+      ],
+      "value": {
+        "mode": "revue_documentaire",
+        "certification": false
+      },
+      "status": "verified",
+      "period_type": "exercice_ou_date_operation",
+      "periods": [
+        2026
+      ],
+      "verified_on": "2026-09-14",
+      "review_due": "2026-10-14"
+    },
+    {
+      "id": "collectivites.achats",
+      "scope": "Cadrage d'un achat selon entité, besoin et date ; aucune sélection automatique de procédure.",
+      "sources": [
+        "marches",
+        "marches-transitions"
+      ],
+      "value": {
+        "mode": "revue_documentaire",
+        "seuils_automatiques": false
+      },
+      "status": "verified",
+      "period_type": "exercice_ou_date_operation",
+      "periods": [
+        2026
+      ],
+      "verified_on": "2026-09-14",
+      "review_due": "2026-10-14"
+    },
+    {
+      "id": "collectivites.rh",
+      "scope": "Revue documentaire de la FPT ; aucune décision ni calcul individuel de paie, retraite ou carrière.",
+      "sources": [
+        "rh-rsu",
+        "rh-ldg",
+        "donnees"
+      ],
+      "value": {
+        "mode": "revue_documentaire",
+        "decision_individuelle": false
+      },
+      "status": "verified",
+      "period_type": "exercice_ou_date_operation",
+      "periods": [
+        2026
+      ],
+      "verified_on": "2026-09-14",
+      "review_due": "2026-10-14"
+    },
+    {
+      "id": "collectivites.actes",
+      "scope": "Préparation des actes, compétence et validation humaine ; aucune télétransmission.",
+      "sources": [
+        "actes",
+        "donnees"
+      ],
+      "value": {
+        "mode": "revue_documentaire",
+        "transmission": false
+      },
+      "status": "verified",
+      "period_type": "exercice_ou_date_operation",
+      "periods": [
+        2026
+      ],
+      "verified_on": "2026-09-14",
+      "review_due": "2026-10-14"
+    }
+  ]
+}

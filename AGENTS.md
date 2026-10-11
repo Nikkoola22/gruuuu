@@ -30,6 +30,9 @@ Fichier de configuration d'agent basé sur la spécification open-source [agents
 ### 5. 🏡 Immobilier & Notariat
 - **[fr-droit-immobilier](skills/fr-droit-immobilier/SKILL.md)** & **[notaire](skills/notaire/SKILL.md)** : Baux d'habitation et commerciaux, copropriété, diagnostics obligatoires, actes authentiques, droit patrimonial et formalités foncières.
 
+### 6. 📊 Finances, Budgets & Gestion des Collectivités Locales
+- **[collectivites-territoriales](.agents/skills/collectivites-territoriales/SKILL.md)** : Gestion budgétaire M57/M4, CFU, inventaire et dette, contrôle interne, préparation aux contrôles de la Chambre Régionale des Comptes (CRC), commande publique et cohérence RH/RSU territoriale (issu du kit *Paperasse 2026 V2*).
+
 ## 🔗 Dépôts de Référence Intégrés (Outillage, MCP & LegalTech)
 - **Legal Skills Open** : `ThomasMoreAI/legal-skills-open/fr` (Ensemble des compétences juridiques ouvertes et méthodologies expertes).
 - **Open Data Jurisprudence & Décisions Judiciaires** :

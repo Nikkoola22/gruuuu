@@ -217,6 +217,8 @@ export interface RecoursGracieuxFormData {
   referenceArrete: string;
   motifsInvoquesParAdministration: string;
   argumentsAgent: string;
+}
+
 export interface DefaultProtectionContent {
   qualificationAtteinte: string;
   chronologieFaits: string;

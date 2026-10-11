@@ -12,7 +12,7 @@ interface Props {
   theme: 'light' | 'dark';
   toggleTheme: () => void;
   currentView?: string;
-  setView: (view: "menu" | "chat" | "calculators" | "metiers" | "faq" | "jeux" | "actualites" | "veille" | "veille-cdg" | "podcasts" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "simul-agent") => void;
+  setView: (view: "menu" | "chat" | "calculators" | "metiers" | "faq" | "jeux" | "actualites" | "veille" | "veille-cdg" | "podcasts" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "simul-agent" | "weather") => void;
   openCalculator: (calc: 'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie') => void;
   onClose?: () => void;
 }
@@ -87,7 +87,7 @@ export default function MacMenuBar({
   }, []);
 
   // Helper to select view and close dropdowns
-  const selectView = (view: "menu" | "chat" | "calculators" | "metiers" | "faq" | "jeux" | "actualites" | "veille" | "veille-cdg" | "podcasts" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "simul-agent") => {
+  const selectView = (view: "menu" | "chat" | "calculators" | "metiers" | "faq" | "jeux" | "actualites" | "veille" | "veille-cdg" | "podcasts" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "simul-agent" | "weather") => {
     setView(view);
     setActiveDropdown(null);
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -186,6 +186,10 @@ export default function MacMenuBar({
                     <span className="text-[9px] px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-300">CFDT</span>
                   </button>
                   <button onClick={() => selectView('podcasts')} className="w-full text-left px-3 py-1.5 hover:bg-blue-600 hover:text-white rounded-md text-amber-500 font-bold">Podcasts 🎧</button>
+                  <button onClick={() => selectView('weather')} className="w-full text-left px-3 py-1.5 hover:bg-blue-600 hover:text-white rounded-md text-sky-400 font-bold flex items-center justify-between">
+                    <span>Breezy Météo v6.2.2 🌤️</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">Live</span>
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -486,6 +490,16 @@ export default function MacMenuBar({
               )}
             </AnimatePresence>
           </div>
+
+          {/* Breezy Weather Widget */}
+          <button
+            onClick={() => selectView("weather")}
+            className="px-2 py-0.5 rounded font-medium text-[11px] transition-colors flex items-center gap-1.5 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 text-sky-500 dark:text-sky-400 group"
+            title="Ouvrir Breezy Weather (v6.2.2)"
+          >
+            <span className="group-hover:scale-125 transition-transform">🌤️</span>
+            <span className="hidden sm:inline font-semibold">Météo</span>
+          </button>
 
           {/* Clock & Notifications Drawer */}
           <div className="relative">

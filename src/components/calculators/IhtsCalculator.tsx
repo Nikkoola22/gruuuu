@@ -108,24 +108,24 @@ export const IhtsCalculator: React.FC = () => {
   const resultat = calculateIhts();
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-fadeIn pb-12">
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700">
+    <div className="w-full max-w-4xl mx-auto space-y-4 animate-fadeIn pb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-sm border border-slate-200 dark:border-slate-700">
         
-        <div className="flex items-center gap-3 mb-8">
-          <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl text-emerald-600 dark:text-emerald-400">
-            <Clock className="w-6 h-6" />
+        <div className="flex items-center gap-3 mb-3 sm:mb-3.5">
+          <div className="p-2 sm:p-2.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl text-emerald-600 dark:text-emerald-400">
+            <Clock className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Calcul d'heures supplémentaires</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Indemnités Horaires pour Travaux Supplémentaires (IHTS)</p>
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Calcul d'heures supplémentaires</h2>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Indemnités Horaires pour Travaux Supplémentaires (IHTS)</p>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
             {/* Indice Majoré */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1 sm:mb-1.5">
                 Indice Majoré (IM)
               </label>
               <input
@@ -135,13 +135,13 @@ export const IhtsCalculator: React.FC = () => {
                 value={im}
                 onChange={(e) => setIm(e.target.value === "" ? "" : Number(e.target.value))}
                 placeholder="Ex: 400"
-                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-lg font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-3.5 py-2 sm:py-2.5 text-base font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
               />
             </div>
             
             {/* NBI */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1 sm:mb-1.5">
                 NBI (points)
               </label>
               <input
@@ -151,14 +151,14 @@ export const IhtsCalculator: React.FC = () => {
                 value={nbi}
                 onChange={(e) => setNbi(e.target.value === "" ? "" : Number(e.target.value))}
                 placeholder="Ex: 10"
-                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-lg font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-3.5 py-2 sm:py-2.5 text-base font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
               />
             </div>
 
             {/* Zone IR */}
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+              <div className="flex items-center justify-between mb-1 sm:mb-1.5">
+                <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Zone d'indemnité (IR)
                 </label>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/70 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-700">
@@ -168,7 +168,7 @@ export const IhtsCalculator: React.FC = () => {
               <select
                 value={3}
                 disabled
-                className="w-full bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-white cursor-not-allowed opacity-90"
+                className="w-full bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-600 rounded-xl px-3.5 py-2 sm:py-2.5 text-sm font-bold text-slate-900 dark:text-white cursor-not-allowed opacity-90"
               >
                 <option value={3}>Zone 1 (3% - Gennevilliers / IDF)</option>
               </select>
@@ -180,7 +180,7 @@ export const IhtsCalculator: React.FC = () => {
 
           {/* RÉSULTAT IMMÉDIAT POUR 1 HEURE SUPPLÉMENTAIRE */}
           {isImValid && (
-            <div className="p-5 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-300 dark:border-emerald-700 rounded-2xl shadow-sm space-y-3 animate-fadeIn">
+            <div className="p-3.5 sm:p-4 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-300 dark:border-emerald-700 rounded-2xl shadow-sm space-y-2.5 animate-fadeIn">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-200 dark:border-emerald-800/60 pb-3">
                 <div>
                   <div className="flex items-center gap-2">

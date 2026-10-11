@@ -35,6 +35,7 @@ const HomeMenu = lazy(() => import("./components/HomeMenu.tsx"))
 const LuxuryChat = lazy(() => import("./components/ui/LuxuryChat.tsx").then(m => ({ default: m.LuxuryChat })))
 const AdminPanel = lazy(() => import("./components/AdminPanel.tsx"))
 const AdminLogin = lazy(() => import("./components/AdminLogin.tsx"))
+const BreezyWeatherApp = lazy(() => import("./components/BreezyWeatherApp.tsx"))
 import SimulateurCarriere from "./components/SimulateurCarriere.tsx"
 import { NetPaySimulator } from "./components/calculators/NetPaySimulator"
 import { IhtsCalculator } from "./components/calculators/IhtsCalculator"
@@ -198,7 +199,7 @@ interface InfoItem {
   content: string
 }
 export interface ChatbotState {
-  currentView: "menu" | "chat" | "metiers" | "calculators" | "veille" | "simul-agent" | "native-calculator" | "faq" | "jeux" | "actualites" | "veille-cdg" | "memoire-juridique" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "podcasts"
+  currentView: "menu" | "chat" | "metiers" | "calculators" | "veille" | "simul-agent" | "native-calculator" | "faq" | "jeux" | "actualites" | "veille-cdg" | "memoire-juridique" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "podcasts" | "weather"
   selectedDomain: number | null
   messages: ChatMessage[]
   isProcessing: boolean
@@ -1454,6 +1455,13 @@ ${indicesFactuels}
         </Suspense>
       )}
 
+      {/* --- SECTION BREEZY WEATHER v6.2.2 --- */}
+      {chatState.currentView === 'weather' && (
+        <Suspense fallback={<ViewLoader />}>
+          <BreezyWeatherApp onClose={() => setChatState({ ...chatState, currentView: 'menu' })} theme={theme} />
+        </Suspense>
+      )}
+
       {chatState.currentView === 'podcasts' && (
         <Suspense fallback={<ViewLoader />}>
           <EspacePodcastsFigurines onClose={() => setChatState({ ...chatState, currentView: 'menu' })} theme={theme} />
@@ -1462,7 +1470,7 @@ ${indicesFactuels}
 
       {/* --- SECTION SIMULATEURS NATIFS --- */}
       {chatState.currentView === 'native-calculator' && chatState.simulTool && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-slate-100/90 dark:bg-slate-950/90 overflow-y-auto relative">
+        <div className={`fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-slate-100/90 dark:bg-slate-950/90 ${showMacMenuBar ? 'pt-8' : 'pt-2'}`}>
           {/* Fond d'écran discret pour les simulateurs ouverts */}
           <div
             className="fixed inset-0 bg-cover bg-center bg-no-repeat pointer-events-none z-0 opacity-12 dark:opacity-[0.06] transition-opacity duration-300"
@@ -1471,33 +1479,35 @@ ${indicesFactuels}
           <div className="fixed inset-0 bg-gradient-to-b from-white/60 via-slate-50/40 to-white/70 dark:from-slate-950/80 dark:via-slate-900/60 dark:to-slate-950/85 pointer-events-none z-0 backdrop-blur-[1px]" />
           <OrangeGeometricBackground />
 
-          <div className="relative z-10 max-w-7xl mx-auto w-full p-4 sm:p-6 pb-32 space-y-6 mt-4">
-            <button
-              onClick={() => {
-                const isActe = [
-                  'arr-nomination', 'arr-titularisation', 'arr-echelon', 'arr-grade',
-                  'arr-teletravail', 'arr-temps-partiel', 'arr-conge-parental', 'arr-disponibilite',
-                  'arr-detachement', 'arr-integration', 'arr-reintegration',
-                  'arr-mutation-externe', 'arr-mutation-interne', 'delib-poste', 'delib-rifseep'
-                ].includes(chatState.simulTool || '');
-                setChatState({ ...chatState, currentView: isActe ? 'metiers' : 'calculators', simulTool: null })
-              }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group cursor-pointer"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>
-                {[
-                  'arr-nomination', 'arr-titularisation', 'arr-echelon', 'arr-grade',
-                  'arr-teletravail', 'arr-temps-partiel', 'arr-conge-parental', 'arr-disponibilite',
-                  'arr-detachement', 'arr-integration', 'arr-reintegration',
-                  'arr-mutation-externe', 'arr-mutation-interne', 'delib-poste', 'delib-rifseep'
-                ].includes(chatState.simulTool || '') 
-                  ? "Retour aux Aides aux Gestionnaires" 
-                  : "Retour aux calculateurs"}
-              </span>
-            </button>
+          <div className="relative z-10 max-w-5xl mx-auto w-full px-2 sm:px-4 pb-16 space-y-2">
+            <div>
+              <button
+                onClick={() => {
+                  const isActe = [
+                    'arr-nomination', 'arr-titularisation', 'arr-echelon', 'arr-grade',
+                    'arr-teletravail', 'arr-temps-partiel', 'arr-conge-parental', 'arr-disponibilite',
+                    'arr-detachement', 'arr-integration', 'arr-reintegration',
+                    'arr-mutation-externe', 'arr-mutation-interne', 'delib-poste', 'delib-rifseep'
+                  ].includes(chatState.simulTool || '');
+                  setChatState({ ...chatState, currentView: isActe ? 'metiers' : 'calculators', simulTool: null })
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
+                <span>
+                  {[
+                    'arr-nomination', 'arr-titularisation', 'arr-echelon', 'arr-grade',
+                    'arr-teletravail', 'arr-temps-partiel', 'arr-conge-parental', 'arr-disponibilite',
+                    'arr-detachement', 'arr-integration', 'arr-reintegration',
+                    'arr-mutation-externe', 'arr-mutation-interne', 'delib-poste', 'delib-rifseep'
+                  ].includes(chatState.simulTool || '') 
+                    ? "Retour aux Aides aux Gestionnaires" 
+                    : "Retour aux calculateurs"}
+                </span>
+              </button>
+            </div>
             
-            <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="w-full">
               <Suspense fallback={<ViewLoader />}>
                 {chatState.simulTool === 'net-pay' && <NetPaySimulator />}
                 {chatState.simulTool === 'ihts' && <IhtsCalculator />}

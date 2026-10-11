@@ -803,7 +803,7 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                       {!selectedLigne.id?.toLowerCase().includes('cia') &&
                        selectedLigne.code !== '1592' &&
                        selectedLigne.code !== '7610' &&
-                       !selectedLigne.libelle?.toUpperCase().includes('CIA') &&
+                       !/\bCIA\b/i.test(selectedLigne.libelle || '') &&
                        (selectedLigne.id === 'ifse' || selectedLigne.code === '1591' || selectedLigne.code === '2591' || selectedLigne.libelle?.toUpperCase().includes('IFSE')) && (
                         <div className="p-3.5 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/30 border-2 border-amber-300 dark:border-amber-800 space-y-2.5">
                           <div className="flex items-center justify-between">
@@ -862,7 +862,15 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                       )}
 
                       {/* Décomposition officielle : CIA Tit. (10% IFSE x 12 mois = 50% manière de servir + 50% jours absents) */}
-                      {(selectedLigne.id === 'cia' || selectedLigne.code === '1592' || selectedLigne.code === '7610' || selectedLigne.libelle?.toUpperCase().includes('CIA')) && (
+                      {selectedLigne.code !== '1584' &&
+                       selectedLigne.id !== 'montant_net_social' &&
+                       !/social/i.test(selectedLigne.libelle || '') &&
+                       !/sécurité\s*sociale/i.test(selectedLigne.libelle || '') &&
+                       (selectedLigne.id === 'cia' ||
+                        selectedLigne.code === '1592' ||
+                        selectedLigne.code === '7610' ||
+                        /\bCIA\b/i.test(selectedLigne.libelle || '') ||
+                        /compl.*indemnitaire\s*annuel/i.test(selectedLigne.libelle || '')) && (
                         <div className="p-3.5 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/40 dark:to-blue-950/30 border-2 border-indigo-300 dark:border-indigo-800 space-y-2.5">
                           <div className="flex items-center justify-between">
                             <span className="font-extrabold text-xs text-indigo-950 dark:text-indigo-200 uppercase tracking-wide flex items-center gap-1.5">

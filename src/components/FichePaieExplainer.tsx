@@ -1124,7 +1124,14 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                       )}
 
                       {/* Bloc explicatif spécifique CIA Tit. (10% IFSE x 12 mois = 50% manière de servir + 50% jours absents) */}
-                      {(ligne.id === 'cia' || ligne.code === '1592' || ligne.code === '7610' || /cia\b/i.test(ligne.libelle || '') || /compl.*indemnitaire\s*annuel/i.test(ligne.libelle || '')) && (
+                      {ligne.code !== '1584' &&
+                       ligne.id !== 'montant_net_social' &&
+                       !/social/i.test(ligne.libelle || '') &&
+                       (ligne.id === 'cia' ||
+                        ligne.code === '1592' ||
+                        ligne.code === '7610' ||
+                        /\bcia\b/i.test(ligne.libelle || '') ||
+                        /compl.*indemnitaire\s*annuel/i.test(ligne.libelle || '')) && (
                         <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-cyan-500/10 border border-indigo-500/30 dark:border-indigo-500/20 space-y-3">
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-xs uppercase tracking-wider text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5">

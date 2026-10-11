@@ -76,7 +76,7 @@ export const RttCalculator: React.FC = () => {
   // ─────────────────────────────────────────────────────────────────────────────
   // 1. ÉTATS DU CALCULATEUR RYTHME FIXE
   // ─────────────────────────────────────────────────────────────────────────────
-  const [heuresParSemaine, setHeuresParSemaine] = useState<number>(37.5);
+  const [heuresParSemaine, setHeuresParSemaine] = useState<number>(38);
   const [quotite, setQuotite] = useState<string>("100");
   const [fractionnement, setFractionnement] = useState<number>(0);
 

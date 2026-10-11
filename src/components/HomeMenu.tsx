@@ -508,34 +508,6 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 <span className="relative z-10 text-[11px] sm:text-xs xl:text-sm font-extrabold text-center tracking-tight leading-tight min-h-[1.75rem] sm:min-h-[2.2rem] flex items-center justify-center">Breezy<br />Météo</span>
               </button>
 
-              {/* Spotlight Impôt sur le Revenu & Contrôle PAS */}
-              <button
-                onClick={() => {
-                  setChatState({ ...chatState, currentView: "simulateur-ir" });
-                  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-                }}
-                title="Simulateur Impôt sur le Revenu & Vérification PAS (Barème 2026 / Revenus 2025)"
-                className="relative flex flex-col items-center justify-start gap-1 sm:gap-1.5 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 group min-w-[92px] sm:min-w-[105px] xl:min-w-[96px] xl:flex-1 p-1.5 sm:p-2 xl:p-2 rounded-xl xl:rounded-2xl hover:-translate-y-0.5 shrink-0 snap-center"
-                onMouseEnter={() => setHoveredQuickAccessIndex(101)}
-                onMouseLeave={() => setHoveredQuickAccessIndex(null)}
-              >
-                <AnimatePresence>
-                  {hoveredQuickAccessIndex === 101 && (
-                    <motion.span
-                      className="absolute inset-0 h-full w-full bg-emerald-500/10 dark:bg-emerald-500/15 block rounded-xl xl:rounded-2xl z-0 border border-emerald-500/25 shadow-md pointer-events-none"
-                      layoutId="quickAccessHover"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1, transition: { duration: 0.15 } }}
-                      exit={{ opacity: 0, transition: { duration: 0.15, delay: 0.1 } }}
-                    />
-                  )}
-                </AnimatePresence>
-                <div className="relative z-10 p-2 sm:p-3 rounded-xl xl:rounded-2xl bg-gradient-to-br from-emerald-500/15 via-teal-500/15 to-emerald-600/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-emerald-500/25 transition-all duration-200 ring-1 ring-emerald-500/20">
-                  <Calculator className="w-6 h-6 sm:w-8 sm:h-8" />
-                </div>
-                <span className="relative z-10 text-[11px] sm:text-xs xl:text-sm font-extrabold text-center tracking-tight leading-tight min-h-[1.75rem] sm:min-h-[2.2rem] flex items-center justify-center">Impôt<br />& PAS</span>
-              </button>
-
               {/* 9. Spotlight Bourse Emploi Anchor Link */}
               <a
                 href="https://www.emploi-territorial.fr/emploi-mobilite/?search-col=99599"

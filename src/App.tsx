@@ -1360,7 +1360,18 @@ ${indicesFactuels}
       {/* --- SECTION GRILLES INDICIAIRES / MÉTIERS --- */}
       {chatState.currentView === 'metiers' && (
         <Suspense fallback={<ViewLoader />}>
-          <Metiers theme={theme} onClose={() => setChatState({ ...chatState, currentView: 'menu' })} onOpenCalculator={(toolId) => setChatState({ ...chatState, currentView: 'native-calculator', simulTool: toolId })} />
+          <Metiers
+            theme={theme}
+            onClose={() => setChatState({ ...chatState, currentView: 'menu' })}
+            onOpenCalculator={(toolId) => {
+              if (toolId === 'budget-m57') {
+                setChatState({ ...chatState, currentView: 'budget-m57' });
+              } else {
+                setChatState({ ...chatState, currentView: 'native-calculator', simulTool: toolId });
+              }
+            }}
+            onOpenM57={() => setChatState({ ...chatState, currentView: 'budget-m57' })}
+          />
         </Suspense>
       )}
 
@@ -1651,64 +1662,6 @@ ${indicesFactuels}
                   </div>
                 </button>
 
-                {/* Carte Simulateur Impôt sur le Revenu (IR 2026 / Revenus 2025) & Contrôle PAS */}
-                <button
-                  onClick={() => openCalculator('simulateur-ir')}
-                  className="group relative bg-white dark:bg-slate-800/80 border-2 border-emerald-500/40 dark:border-emerald-500/50 rounded-2xl p-8 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl dark:hover:shadow-emerald-500/20 hover:border-emerald-500 dark:hover:border-emerald-400 sm:col-span-2 lg:col-span-2 bg-gradient-to-br from-emerald-50/40 via-white to-teal-50/30 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-emerald-950/20 text-left"
-                >
-                  <div className="absolute top-4 right-4 flex items-center gap-1.5">
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-600 text-white shadow-sm">
-                      ✨ Nouveau • DGFiP 2026
-                    </span>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg text-white shrink-0">
-                      <Calculator className="w-16 h-16" />
-                    </div>
-                    <div>
-                      <div className="inline-block text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-1">
-                        Fiscalité & Prélèvement à la Source
-                      </div>
-                      <h4 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white">Impôt sur le Revenu & PAS</h4>
-                      <p className="text-slate-600 dark:text-slate-300 font-medium text-sm mt-2 leading-relaxed max-w-xl">
-                        Simulez votre impôt net avec le barème 2026 (revenus 2025), comparez votre taux de PAS précompté sur le bulletin et découvrez si vous aurez un <strong>trop-perçu remboursé</strong> ou un reliquat DGFiP.
-                      </p>
-                      <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm mt-4 group-hover:translate-x-1 transition-transform">
-                        <span>Calculer mon impôt et vérifier mon PAS →</span>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-
-                {/* Carte Santé Financière & Ratios M57 de la Collectivité */}
-                <button
-                  onClick={() => openCalculator('budget-m57')}
-                  className="group relative bg-white dark:bg-slate-800/80 border-2 border-indigo-500/40 dark:border-indigo-500/50 rounded-2xl p-8 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl dark:hover:shadow-indigo-500/20 hover:border-indigo-500 dark:hover:border-indigo-400 sm:col-span-2 lg:col-span-2 bg-gradient-to-br from-indigo-50/40 via-white to-purple-50/30 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-indigo-950/20 text-left"
-                >
-                  <div className="absolute top-4 right-4 flex items-center gap-1.5">
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-600 text-white shadow-sm">
-                      🏛️ M57 • Contrôles CRC
-                    </span>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                    <div className="p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg text-white shrink-0">
-                      <Landmark className="w-16 h-16" />
-                    </div>
-                    <div>
-                      <div className="inline-block text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider mb-1">
-                        Finances Locales & Ratios Prudentiels
-                      </div>
-                      <h4 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white">Santé Financière M57</h4>
-                      <p className="text-slate-600 dark:text-slate-300 font-medium text-sm mt-2 leading-relaxed max-w-xl">
-                        Épargne brute, capacité de désendettement (seuils CRC 10/12 ans), poids de la masse salariale (012), <strong>checklist des pièces CRC</strong> et générateur de notes d'arbitrage M57.
-                      </p>
-                      <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm mt-4 group-hover:translate-x-1 transition-transform">
-                        <span>Analyser le budget M57 & kit d'audit CRC →</span>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-
                 {/* Carte Remboursement Carte Navigo */}
                 <button
                   onClick={() => openCalculator('navigo')}
@@ -1973,6 +1926,26 @@ ${indicesFactuels}
                     <h4 className="text-2xl font-bold text-slate-800 dark:text-white">CIA</h4>
                     <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
                     <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold dark:font-semibold">
+                      <span className="text-sm">Ouvrir le calculateur</span>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Carte Impôt sur le Revenu (IR 2026 / Revenus 2025) & Contrôle PAS */}
+                <button
+                  onClick={() => openCalculator('simulateur-ir')}
+                  className="group relative bg-white dark:bg-slate-800/80 border border-emerald-200 dark:border-emerald-500/20 rounded-2xl p-8 shadow-sm hover:shadow-lg dark:hover:shadow-emerald-500/10 hover:border-emerald-300 dark:hover:border-emerald-500/40 hover:scale-105 hover:-translate-y-2 transition-transform duration-150"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 dark:from-emerald-500/5 via-transparent to-teal-50/50 dark:to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-2xl"></div>
+                  <div className="relative z-10 flex flex-col items-center gap-6">
+                    <div className="p-6 bg-gradient-to-br from-emerald-100 dark:from-slate-900/80 to-teal-100 dark:to-slate-800/80 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-500/30">
+                      <Calculator className="w-16 h-16 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <h4 className="text-2xl font-bold text-slate-800 dark:text-white text-center">Impôt & PAS</h4>
+                    <p className="text-center text-slate-500 dark:text-slate-400 font-medium dark:font-normal text-sm">
+                      Barème officiel 2026, vérification du prélèvement à la source et solde DGFiP
+                    </p>
+                    <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold dark:font-semibold">
                       <span className="text-sm">Ouvrir le calculateur</span>
                     </div>
                   </div>

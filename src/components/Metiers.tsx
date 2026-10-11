@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { 
   ArrowLeft, FileSignature, FileBadge, Baby, UserCheck, UserPlus, 
   RefreshCw, Briefcase, LayoutList, Award, Clock, 
-  Search
+  Search, Landmark
 } from "lucide-react";
 import { SimulationActeModule } from "./SimulationActeModule";
 
@@ -169,7 +169,7 @@ const ACTES_CATALOG: ActeItem[] = [
   },
 ];
 
-const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) => void; theme?: 'light' | 'dark' }> = ({ onClose, onOpenCalculator, theme = 'dark' }) => {
+const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) => void; onOpenM57?: () => void; theme?: 'light' | 'dark' }> = ({ onClose, onOpenCalculator, onOpenM57, theme = 'dark' }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -316,6 +316,49 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
         {/* Module 2 : Simulation d'Actes RH */}
         <section>
           <SimulationActeModule theme={theme} />
+        </section>
+
+        {/* Module 3 : Finances & Stratégie Territoriale - Santé Financière M57 */}
+        <section className="pt-6 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl text-indigo-600 dark:text-indigo-400">
+              <Landmark className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Finances Locales & Ratios M57</h2>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Contrôle interne, seuils d'alerte CRC (Chambres Régionales des Comptes) et prospective budgétaire</p>
+            </div>
+          </div>
+
+          <div
+            onClick={() => onOpenM57 ? onOpenM57() : onOpenCalculator("budget-m57")}
+            className="group relative bg-white dark:bg-slate-800/90 border-2 border-indigo-500/30 hover:border-indigo-500 dark:hover:border-indigo-400 rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-xl dark:hover:shadow-indigo-500/20 transition-all duration-300 cursor-pointer bg-gradient-to-br from-indigo-50/40 via-white to-purple-50/30 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-indigo-950/20"
+          >
+            <div className="absolute top-4 right-4 flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-600 text-white shadow-sm">
+                🏛️ M57 • Contrôles CRC
+              </span>
+            </div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <div className="p-5 sm:p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform">
+                <Landmark className="w-12 h-12 sm:w-16 sm:h-16" />
+              </div>
+              <div className="space-y-2">
+                <div className="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider">
+                  Outil d'Aide à la Décision & Contrôle Financier
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                  Santé Financière & Ratios M57 de la Collectivité
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed max-w-3xl">
+                  Analysez l'épargne brute, l'épargne nette, la capacité de désendettement (seuils CRC 10 et 12 ans), le poids des charges de personnel (chapitre 012). Comprend également la <strong>checklist interactive des pièces à réunir pour la CRC</strong> et les <strong>générateurs de notes d'arbitrage M57</strong>.
+                </p>
+                <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs sm:text-sm pt-2 group-hover:translate-x-1 transition-transform">
+                  <span>Accéder à l'analyse M57 & Kit d'Audit CRC →</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
         
       </div>

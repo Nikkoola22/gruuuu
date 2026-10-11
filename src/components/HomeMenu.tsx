@@ -536,34 +536,6 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 <span className="relative z-10 text-[11px] sm:text-xs xl:text-sm font-extrabold text-center tracking-tight leading-tight min-h-[1.75rem] sm:min-h-[2.2rem] flex items-center justify-center">Impôt<br />& PAS</span>
               </button>
 
-              {/* Spotlight Santé Financière & Ratios M57 */}
-              <button
-                onClick={() => {
-                  setChatState({ ...chatState, currentView: "budget-m57" });
-                  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-                }}
-                title="Santé Financière M57, Ratios CRC & Kit d'Audit"
-                className="relative flex flex-col items-center justify-start gap-1 sm:gap-1.5 text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200 group min-w-[92px] sm:min-w-[105px] xl:min-w-[96px] xl:flex-1 p-1.5 sm:p-2 xl:p-2 rounded-xl xl:rounded-2xl hover:-translate-y-0.5 shrink-0 snap-center"
-                onMouseEnter={() => setHoveredQuickAccessIndex(102)}
-                onMouseLeave={() => setHoveredQuickAccessIndex(null)}
-              >
-                <AnimatePresence>
-                  {hoveredQuickAccessIndex === 102 && (
-                    <motion.span
-                      className="absolute inset-0 h-full w-full bg-indigo-500/10 dark:bg-indigo-500/15 block rounded-xl xl:rounded-2xl z-0 border border-indigo-500/25 shadow-md pointer-events-none"
-                      layoutId="quickAccessHover"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1, transition: { duration: 0.15 } }}
-                      exit={{ opacity: 0, transition: { duration: 0.15, delay: 0.1 } }}
-                    />
-                  )}
-                </AnimatePresence>
-                <div className="relative z-10 p-2 sm:p-3 rounded-xl xl:rounded-2xl bg-gradient-to-br from-indigo-500/15 via-purple-500/15 to-indigo-600/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-indigo-500/25 transition-all duration-200 ring-1 ring-indigo-500/20">
-                  <Landmark className="w-6 h-6 sm:w-8 sm:h-8" />
-                </div>
-                <span className="relative z-10 text-[11px] sm:text-xs xl:text-sm font-extrabold text-center tracking-tight leading-tight min-h-[1.75rem] sm:min-h-[2.2rem] flex items-center justify-center">Santé<br />M57</span>
-              </button>
-
               {/* 9. Spotlight Bourse Emploi Anchor Link */}
               <a
                 href="https://www.emploi-territorial.fr/emploi-mobilite/?search-col=99599"

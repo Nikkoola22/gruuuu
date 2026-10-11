@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Send, ArrowLeft, Bot, Sparkles, Scale, Check, Copy, MessageSquareText, Search } from 'lucide-react';
+import { Send, ArrowLeft, Bot, Sparkles, Scale, Check, Copy, MessageSquareText, Search, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ModalAlbertDGAFP } from '../ModalAlbertDGAFP';
+import { getAlbertConfig, type AlbertConfig } from '../../services/albertDgafpEngine';
 
 export interface ChatMessage {
   type: 'user' | 'assistant';
@@ -39,6 +41,8 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [isAlbertModalOpen, setIsAlbertModalOpen] = useState(false);
+  const [albertConfig, setAlbertConfig] = useState<AlbertConfig>(() => getAlbertConfig());
 
   // Centrer le scroll juste au-dessous du header à l'arrivée sur la vue
   useEffect(() => {
@@ -132,6 +136,28 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
                 CGFP, Légifrance & Règlements Gennevilliers
               </p>
             </div>
+          </div>
+
+          {/* Bouton Connecteur Albert DINUM / DGAFP */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsAlbertModalOpen(true)}
+              className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer border ${
+                albertConfig.enabled
+                  ? 'bg-blue-600/15 hover:bg-blue-600/25 text-blue-500 dark:text-blue-400 border-blue-500/40'
+                  : 'bg-slate-500/10 hover:bg-slate-500/20 text-slate-500 dark:text-slate-400 border-slate-500/30'
+              }`}
+              title="Configurer l'IA souveraine Albert (DINUM / DGAFP)"
+            >
+              <span className="text-xs">🇫🇷</span>
+              <span className="hidden sm:inline">Albert DINUM</span>
+              <span className="sm:hidden">Albert</span>
+              {albertConfig.apiKey ? (
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Clé API Albert active" />
+              ) : (
+                <span className="text-[10px] text-blue-400 font-normal hidden md:inline">• RAG DGAFP</span>
+              )}
+            </button>
           </div>
         </div>
 
@@ -316,6 +342,13 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
         </div>
 
       </div>
+
+      {/* Modal de configuration Albert DINUM / DGAFP */}
+      <ModalAlbertDGAFP
+        isOpen={isAlbertModalOpen}
+        onClose={() => setIsAlbertModalOpen(false)}
+        onConfigChanged={(cfg) => setAlbertConfig(cfg)}
+      />
     </div>
   );
 };

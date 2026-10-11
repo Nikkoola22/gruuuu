@@ -933,10 +933,39 @@ Question d'un agent territorial : ${question}
   }
 
   const traiterQuestion = async (question: string) => {
+    // 🇫🇷 Intégration Albert DINUM & Pipeline RAG DGAFP (DGAFP/assistant-rh)
+    const { getAlbertConfig, expandQueryDgafp, callAlbertAPI } = await import("./services/albertDgafpEngine.ts")
+    const albertConfig = getAlbertConfig()
+
+    let queryAUtiliser = question
+    let acronymesNote = ""
+
+    if (albertConfig.enabled) {
+      const expansion = expandQueryDgafp(question)
+      queryAUtiliser = expansion.expandedPrompt
+      if (expansion.acronymesDetectes.length > 0) {
+        acronymesNote = `\n\n📌 *Acronymes RH identifiés (DGAFP) : ${expansion.acronymesDetectes.map(a => a.terme).join(', ')}*`
+      }
+    }
+
+    // Si une clé Albert DINUM est configurée, appel prioritaire au LLM souverain Albert
+    if (albertConfig.apiKey && albertConfig.apiKey.trim().length > 5) {
+      try {
+        const albertReponse = await callAlbertAPI([
+          { role: "user", content: queryAUtiliser }
+        ], albertConfig)
+        if (albertReponse && albertReponse.length > 30) {
+          return `${albertReponse}${acronymesNote}\n\n🇫🇷 *Réponse générée par Albert DINUM (${albertConfig.model}) • Référentiel DGAFP*`
+        }
+      } catch (albertErr) {
+        console.warn("[Albert DINUM] Rebasculement sur le pipeline local:", albertErr)
+      }
+    }
+
     // ⚡ Interrogation transparente de l'API PISTE Légifrance en parallèle
     // (import dynamique : legifrance.ts et ses données statutaires restent hors du bundle initial)
     const pistePromise = import("./services/legifrance.ts")
-      .then(m => m.queryPisteLegifrance(question))
+      .then(m => m.queryPisteLegifrance(queryAUtiliser))
       .catch(err => {
         console.warn("[PISTE] Erreur transparente:", err)
         return []
@@ -951,8 +980,8 @@ Question d'un agent territorial : ${question}
       teletravailData,
     } = await loadSearchDeps()
 
-    const idsLocaux = rechercherAvecPriorite(question, 4).map(section => section.id)
-    const faqContexte = genererContexteFAQ(question)
+    const idsLocaux = rechercherAvecPriorite(queryAUtiliser, 4).map(section => section.id)
+    const faqContexte = genererContexteFAQ(queryAUtiliser)
 
     let idsFinals = idsLocaux
 
@@ -1075,6 +1104,11 @@ RÈGLES STRICTES :
 - Si l'information n'est pas présente dans les documents internes, tente d'utiliser la section PISTE Légifrance si disponible.
 - Sinon réponds UNIQUEMENT : "Je ne trouve pas cette information dans nos documents internes. Contactez la CFDT au 01 40 85 64 64."
 
+${albertConfig.triangulationDgafp ? `STRUCTURE DE RÉPONSE DGAFP (3 VOLETS RECOMMANDÉS) :
+### 1. 📌 Règle statutaire & Base légale (CGFP, décrets)
+### 2. 📋 Modalités pratiques & Démarches (conditions, formulaires Gennevilliers, délais)
+### 3. 🔗 Références juridiques & Sources officielles (Légifrance, circulaires)` : ''}
+
 DOCUMENTATION :
 ${contenuCible}
     `
@@ -1097,15 +1131,19 @@ ${contenuCible}
 
     const buildMessages = (systemPrompt: string) => [
       { role: "system", content: systemPrompt },
-      { role: "user", content: question },
+      { role: "user", content: queryAUtiliser },
     ]
 
     const reponseCore = await appelPerplexity(buildMessages(systemPromptSommaire))
     if (!isInternalNotFound(reponseCore)) {
+      let footer = ""
       if (pisteResults && pisteResults.length > 0) {
-        return `${reponseCore}\n\n⚡ *Source : API PISTE Légifrance (DILA) & Fonds Statutaire CGFP*`
+        footer += "\n\n⚡ *Source : API PISTE Légifrance (DILA) & Fonds Statutaire CGFP*"
       }
-      return reponseCore
+      if (acronymesNote) {
+        footer += acronymesNote
+      }
+      return `${reponseCore}${footer}`
     }
 
     if (faqContexte) {

@@ -189,12 +189,12 @@ export const OPENFISCA_VARIABLES_DICTIONARY: Record<string, OpenFiscaVariableInf
   },
   rifseep_ifse: {
     id: "rifseep_ifse",
-    nom: "RIFSEEP - IFSE (Partie Principale)",
-    description: "Indemnité de Fonctions, de Sujétions et d'Expertise, tenant compte du niveau de responsabilités et de l'expérience professionnelle.",
+    nom: "RIFSEEP - IFSE Tit. (4 composantes)",
+    description: "Indemnité de Fonctions, de Sujétions et d'Expertise (IFSE Tit.). Composée de 4 IFSE cumulatives : IFSE 1 (Prime de fonctions), IFSE 2 (Prime des contraintes de poste), IFSE 3 (Samedis, dimanches et astreintes), IFSE 4 (Avantages acquis).",
     openfiscaModule: "openfisca_france/model/prestations/fonctions_publiques/primes.py",
     githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/fonctions_publiques/primes.py`,
-    legalReference: "Décret n° 2014-513 & Délibération cadre de la Ville de Gennevilliers",
-    formule: "montant_mensuel_fixe_deliberation_collectivite",
+    legalReference: "Art. L. 714-4 à L. 714-13 CGFP & Décret n° 2014-513 & Délibération cadre de la collectivité",
+    formule: "IFSE_Totale = IFSE_1 (fonctions) + IFSE_2 (contraintes) + IFSE_3 (samedis/dimanches/astreintes) + IFSE_4 (avantages acquis)",
     categorie: "primes",
     nature: "gain"
   },
@@ -1119,13 +1119,14 @@ export function computeOpenFiscaPay(params: CalculParams, metadata?: ParseMetada
   if (ifse > 0) {
     lignes.push({
       id: "ifse",
-      code: "0200",
-      libelle: "RIFSEEP - IFSE mensuelle (Fonctions & Expertise)",
+      code: "1591",
+      libelle: "RIFSEEP - IFSE Tit. (4 composantes)",
       montantGain: ifse,
       openFiscaVar: OPENFISCA_VARIABLES_DICTIONARY.rifseep_ifse,
       montantTheoriqueOpenFisca: ifse,
       estConforme: true,
-      explicationLigne: `Prime principale mensuelle fixée selon votre groupe de fonctions dans la grille RIFSEEP de la Ville de Gennevilliers.`
+      explicationLigne: `Indemnité de Fonctions, de Sujétions et d'Expertise (rubrique Ciril 1591) composée de 4 volets cumulatifs : IFSE 1 (Prime de fonctions), IFSE 2 (Prime des contraintes de poste), IFSE 3 (Samedis, dimanches et astreintes), IFSE 4 (Avantages acquis).`,
+      conseilAgent: `Vérifiez sur votre arrêté individuel RIFSEEP la ventilation chiffrée de vos 4 IFSE (fonctions, contraintes, astreintes/week-ends, avantages acquis). Tout changement de poste ou de sujétion doit faire l'objet d'un arrêté modificatif sans régression de vos droits acquis.`
     });
   }
 
@@ -2041,7 +2042,7 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "2008": { cat: "gain", expl: "tib", libelle: "Trt indiciaire CNR P2" },
   "2009": { cat: "gain", expl: "nbi", libelle: "NBI Titulaire P2" },
   "2012": { cat: "gain", expl: "residence", libelle: "Indem. de Résidence Tit P2" },
-  "2591": { cat: "gain", expl: "ifse", libelle: "IFSE Tit. P2" },
+  "2591": { cat: "gain", expl: "ifse", libelle: "IFSE Tit. P2 (4 composantes)" },
   "2860": { cat: "gain", expl: "comp_csg", libelle: "Indemnité Compens. CSG TitP2" },
   "1033": { cat: "retenue", expl: "cnracl_detache", libelle: "CNRACL Détaché dans Collect." },
   "18": { cat: "retenue", expl: "vieillesse_deplaf", libelle: "Urssaf Vieillesse Déplafonnée (Régime Général)" },
@@ -2060,7 +2061,7 @@ const CODES_CIRIL_KNOWN: Record<string, {
   "1679": { cat: "gain", expl: "tib", libelle: "Traitement fraction. R" },
   "194": { cat: "gain", expl: "nbi_detache", libelle: "NBI détaché" },
   "7201": { cat: "gain", expl: "vacations", libelle: "Vacations" },
-  "1591": { cat: "gain", expl: "ifse" },
+  "1591": { cat: "gain", expl: "ifse", libelle: "IFSE Tit. (4 composantes)" },
   "1592": { cat: "gain", expl: "cia", libelle: "CIA / IFSE RG" },
   "1690": { cat: "gain", expl: "autres_primes" },
   "1510": { cat: "gain", expl: "transport" },
@@ -2241,6 +2242,8 @@ function computeOpenFiscaPayDepuisLignesReelles(
     if (idsUtilises.has(idLigne)) idLigne = `${idLigne}_${idx}`;
     idsUtilises.add(idLigne);
 
+    const estIfse = known?.expl === "ifse" || lr.code === "1591" || lr.code === "2591" || /ifse/i.test(lr.libelle);
+
     lignes.push({
       id: idLigne,
       code: lr.code,
@@ -2260,7 +2263,12 @@ function computeOpenFiscaPayDepuisLignesReelles(
           : undefined) ?? OPENFISCA_VARIABLES_DICTIONARY.primes_fonction_publique,
       montantTheoriqueOpenFisca: Math.abs(montant),
       estConforme: true,
-      explicationLigne: `Rubrique ${lr.code} du bulletin original — copiée telle quelle (aucun recalcul).`
+      explicationLigne: estIfse
+        ? `Indemnité de Fonctions, de Sujétions et d'Expertise (rubrique Ciril 1591/2591). Dans votre collectivité, l'IFSE Tit. est composée de 4 IFSE cumulatives : IFSE 1 (Prime de fonctions), IFSE 2 (Prime des contraintes de poste), IFSE 3 (Samedis, dimanches et astreintes) et IFSE 4 (Avantages acquis).`
+        : `Rubrique ${lr.code} du bulletin original — copiée telle quelle (aucun recalcul).`,
+      conseilAgent: estIfse
+        ? `Consultez votre arrêté RIFSEEP individuel pour vérifier le montant précis alloué à chacune de vos 4 composantes IFSE (fonctions, contraintes, astreintes/week-ends, maintien des avantages acquis). En cas de mobilité ou de réorganisation, la part IFSE 4 (avantages acquis) reste garantie.`
+        : undefined
     });
   }
 

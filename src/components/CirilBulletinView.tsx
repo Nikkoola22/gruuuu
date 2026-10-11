@@ -97,12 +97,12 @@ const CODES_EXPLIQUES: Record<string, {
     reference: "Décret n° 2016-588 du 11 mai 2016"
   },
   ifse: {
-    titre: "L'IFSE : votre prime principale",
-    simple: "Votre prime mensuelle liée à votre poste : elle récompense vos responsabilités, vos sujétions et votre expertise. Son montant vient de la grille RIFSEEP de la Ville selon votre métier et vos fonctions.",
-    pourquoi: "Depuis le RIFSEEP, l'IFSE remplace les anciennes primes. Elle est fixée par un groupe de fonctions, révisé à chaque changement de poste.",
-    verifier: "Comparez votre montant avec la grille de votre filière métier, publiée par la Ville.",
-    attention: "Après une mobilité interne, l'ancien groupe de fonctions est parfois resté appliqué : faites vérifier le vôtre.",
-    reference: "Décret n° 2014-513 du 20 mai 2014 et délibération de la Ville"
+    titre: "L'IFSE Tit. : composée de 4 IFSE",
+    simple: "Votre prime principale RIFSEEP (rubrique Ciril 1591). Dans la collectivité, l'IFSE Tit. est composée de 4 IFSE cumulatives : IFSE 1 (Prime de fonctions), IFSE 2 (Prime des contraintes de poste), IFSE 3 (Samedis, dimanches et astreintes) et IFSE 4 (Avantages acquis).",
+    pourquoi: "L'IFSE Tit. regroupe l'ensemble de votre régime indemnitaire mensuel de base selon 4 volets complémentaires : 1. IFSE 1 (Prime de fonctions) valorisant les responsabilités, l'expertise et l'encadrement du poste ; 2. IFSE 2 (Prime des contraintes de poste) compensant la pénibilité et les sujétions particulières ; 3. IFSE 3 (Pour les samedis, dimanches et astreintes) valorisant le travail le week-end et la disponibilité d'astreinte ; 4. IFSE 4 (Pour les avantages acquis) maintenant individuellement les primes antérieures à la bascule RIFSEEP.",
+    verifier: "Votre arrêté individuel RIFSEEP détaille précisément la ventilation en euros de ces 4 composantes (IFSE 1, IFSE 2, IFSE 3 et IFSE 4).",
+    attention: "En cas de mobilité, de changement d'horaires ou de fin d'astreintes, seule la part correspondante (ex: IFSE 2 ou IFSE 3) peut être révisée, conformément à la délibération cadre de la Ville.",
+    reference: "Décret n° 2014-513 du 20 mai 2014, Art. L. 712-1 du CGFP et délibération relative au RIFSEEP"
   },
   cia: {
     titre: "Le CIA : votre bonus annuel",
@@ -798,6 +798,64 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                       <p className="text-[13px] leading-relaxed text-slate-700 dark:text-slate-300">
                         {expl?.simple || selectedLigne.explicationLigne}
                       </p>
+
+                      {/* Décomposition officielle : 4 IFSE */}
+                      {(selectedLigne.id === 'ifse' || selectedLigne.code === '1591' || selectedLigne.code === '2591' || selectedLigne.libelle?.toUpperCase().includes('IFSE')) && (
+                        <div className="p-3.5 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/30 border-2 border-amber-300 dark:border-amber-800 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="font-extrabold text-xs text-amber-950 dark:text-amber-200 uppercase tracking-wide flex items-center gap-1.5">
+                              <span>🏛️ Décomposition officielle : 4 IFSE</span>
+                            </span>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-600 text-white font-mono">
+                              IFSE Tit.
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-snug">
+                            Dans votre collectivité, le montant de l'<strong>IFSE Tit.</strong> est composé de l'addition de <strong>4 IFSE cumulatives</strong> :
+                          </p>
+                          <div className="space-y-1.5 pt-0.5">
+                            <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200 font-mono">IFSE 1</span>
+                                <span>Prime de fonctions</span>
+                              </div>
+                              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 leading-tight">
+                                Liée aux responsabilités, au niveau d'expertise, à la technicité et à l'encadrement selon votre groupe de fonctions RIFSEEP.
+                              </p>
+                            </div>
+
+                            <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-orange-200 dark:border-orange-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-orange-900 dark:text-orange-300">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-200 font-mono">IFSE 2</span>
+                                <span>Prime des contraintes de poste</span>
+                              </div>
+                              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 leading-tight">
+                                Compense les sujétions particulières, la pénibilité physique, l'exposition aux risques et contraintes spécifiques du service.
+                              </p>
+                            </div>
+
+                            <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-purple-200 dark:border-purple-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-900 dark:text-purple-300">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-200 font-mono">IFSE 3</span>
+                                <span>Samedis, dimanches & astreintes</span>
+                              </div>
+                              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 leading-tight">
+                                Rémunère les contraintes calendaires atypiques : travail régulier du week-end (samedi/dimanche) et disponibilité d'astreinte.
+                              </p>
+                            </div>
+
+                            <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-900 dark:text-emerald-300">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 font-mono">IFSE 4</span>
+                                <span>Avantages acquis</span>
+                              </div>
+                              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 leading-tight">
+                                Clause de sauvegarde individuelle garantissant le maintien des primes et avantages acquis antérieurement au RIFSEEP.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                       {expl?.pourquoi && (
                         <div className="text-[12px] leading-relaxed text-slate-600 dark:text-slate-300">

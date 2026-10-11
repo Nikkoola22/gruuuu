@@ -1034,6 +1034,69 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                         </div>
                       </div>
 
+                      {/* Bloc explicatif spécifique IFSE Tit. (4 volets) */}
+                      {(ligne.id === 'ifse' || ligne.code === '1591' || ligne.code === '2591' || /ifse/i.test(ligne.libelle)) && (
+                        <div className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-purple-500/10 border border-amber-500/30 dark:border-amber-500/20 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-300 flex items-center gap-1.5">
+                              <ShieldCheck className="w-4 h-4 text-amber-600" />
+                              Architecture de votre IFSE Tit. — 4 volets cumulatifs
+                            </span>
+                            <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-800">
+                              Rubrique Ciril {ligne.code || '1591'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Dans votre collectivité territoriale, l'<strong>IFSE Tit.</strong> versée chaque mois résulte de l'addition de <strong>4 composantes distinctes</strong> :
+                          </p>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                            {/* IFSE 1 */}
+                            <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300 mb-1">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200 font-mono">IFSE 1</span>
+                                <span>Prime de fonctions</span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 leading-snug">
+                                Valorise les responsabilités exercées, l'expertise requise, la technicité et le niveau d'encadrement selon le groupe de fonctions RIFSEEP.
+                              </p>
+                            </div>
+
+                            {/* IFSE 2 */}
+                            <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-orange-200 dark:border-orange-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-orange-900 dark:text-orange-300 mb-1">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-200 font-mono">IFSE 2</span>
+                                <span>Prime des contraintes de poste</span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 leading-snug">
+                                Compense les sujétions particulières de l'activité, la pénibilité physique, l'exposition aux risques et les conditions d'exercice.
+                              </p>
+                            </div>
+
+                            {/* IFSE 3 */}
+                            <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-purple-200 dark:border-purple-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-900 dark:text-purple-300 mb-1">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-200 font-mono">IFSE 3</span>
+                                <span>Samedis, dimanches & astreintes</span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 leading-snug">
+                                Rémunère les contraintes horaires atypiques : travail régulier du week-end (samedis/dimanches) et la disponibilité d'astreinte opérationnelle.
+                              </p>
+                            </div>
+
+                            {/* IFSE 4 */}
+                            <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/60 shadow-xs">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-900 dark:text-emerald-300 mb-1">
+                                <span className="px-1.5 py-0.5 rounded text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 font-mono">IFSE 4</span>
+                                <span>Avantages acquis</span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 leading-snug">
+                                Clause de sauvegarde individuelle maintenant le niveau de rémunération et les avantages acquis par l'agent antérieurement au RIFSEEP.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Conseil de l'agent & Impact Retraite */}
                       {ligne.conseilAgent && (
                         <div className="p-3.5 bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800/50 rounded-xl flex items-start gap-3">

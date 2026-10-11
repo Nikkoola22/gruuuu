@@ -799,8 +799,12 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
                         {expl?.simple || selectedLigne.explicationLigne}
                       </p>
 
-                      {/* Décomposition officielle : 4 IFSE */}
-                      {(selectedLigne.id === 'ifse' || selectedLigne.code === '1591' || selectedLigne.code === '2591' || selectedLigne.libelle?.toUpperCase().includes('IFSE')) && (
+                      {/* Décomposition officielle : 4 IFSE (Strictement réservé à l'IFSE, exclu pour le CIA) */}
+                      {!selectedLigne.id?.toLowerCase().includes('cia') &&
+                       selectedLigne.code !== '1592' &&
+                       selectedLigne.code !== '7610' &&
+                       !selectedLigne.libelle?.toUpperCase().includes('CIA') &&
+                       (selectedLigne.id === 'ifse' || selectedLigne.code === '1591' || selectedLigne.code === '2591' || selectedLigne.libelle?.toUpperCase().includes('IFSE')) && (
                         <div className="p-3.5 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/30 border-2 border-amber-300 dark:border-amber-800 space-y-2.5">
                           <div className="flex items-center justify-between">
                             <span className="font-extrabold text-xs text-amber-950 dark:text-amber-200 uppercase tracking-wide flex items-center gap-1.5">

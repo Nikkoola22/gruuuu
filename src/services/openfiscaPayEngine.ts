@@ -2243,8 +2243,8 @@ function computeOpenFiscaPayDepuisLignesReelles(
     if (idsUtilises.has(idLigne)) idLigne = `${idLigne}_${idx}`;
     idsUtilises.add(idLigne);
 
-    const estIfse = known?.expl === "ifse" || lr.code === "1591" || lr.code === "2591" || /ifse/i.test(lr.libelle);
     const estCia = known?.expl === "cia" || lr.code === "1592" || lr.code === "7610" || /cia\b/i.test(lr.libelle) || /compl.*indemnitaire\s*annuel/i.test(lr.libelle);
+    const estIfse = !estCia && (known?.expl === "ifse" || lr.code === "1591" || lr.code === "2591" || /ifse/i.test(lr.libelle));
 
     lignes.push({
       id: idLigne,

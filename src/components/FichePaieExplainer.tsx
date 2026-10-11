@@ -1034,8 +1034,13 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                         </div>
                       </div>
 
-                      {/* Bloc explicatif spécifique IFSE Tit. (4 volets) */}
-                      {(ligne.id === 'ifse' || ligne.code === '1591' || ligne.code === '2591' || /ifse/i.test(ligne.libelle)) && (
+                      {/* Bloc explicatif spécifique IFSE Tit. (4 volets) - Strictement réservé à l'IFSE, exclu pour le CIA */}
+                      {!ligne.id?.toLowerCase().includes('cia') &&
+                       ligne.code !== '1592' &&
+                       ligne.code !== '7610' &&
+                       !/cia\b/i.test(ligne.libelle || '') &&
+                       !/compl.*indemnitaire\s*annuel/i.test(ligne.libelle || '') &&
+                       (ligne.id === 'ifse' || ligne.code === '1591' || ligne.code === '2591' || /ifse/i.test(ligne.libelle)) && (
                         <div className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-purple-500/10 border border-amber-500/30 dark:border-amber-500/20 space-y-3">
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-300 flex items-center gap-1.5">

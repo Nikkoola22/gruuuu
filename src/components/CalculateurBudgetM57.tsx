@@ -74,12 +74,12 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
   // Onglet actif : 'deliberations' | 'ratios' | 'pieces' | 'rapport' | 'note'
   const [activeTab, setActiveTab] = useState<'deliberations' | 'ratios' | 'pieces' | 'rapport' | 'note'>('deliberations');
 
-  // Budget de délibération sélectionné
-  const [selectedDelibKey, setSelectedDelibKey] = useState<'principal' | 'restauration' | 'cinema'>('principal');
+  // Budget de délibération sélectionné (BP 2026, BP 2025, BS 2026 Principal, Restauration, Cinéma)
+  const [selectedDelibKey, setSelectedDelibKey] = useState<'bp_2026' | 'bp_2025' | 'principal' | 'restauration' | 'cinema'>('bp_2026');
   const deliberationActive: DeliberationBudgetInfo = DELIBERATIONS_GENNEVILLIERS_2026[selectedDelibKey];
 
   // Formulaire budget M57
-  const [formData, setFormData] = useState<BudgetM57Input>(PRESETS_COLLECTIVITES.gennevilliers_principal_delib_2026);
+  const [formData, setFormData] = useState<BudgetM57Input>(PRESETS_COLLECTIVITES.gennevilliers_bp_2026);
 
   // État interactif des pièces CRC
   const [piecesCRC, setPiecesCRC] = useState<PieceCheckItem[]>(PIECES_CRC_INITIAL);
@@ -102,8 +102,12 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
   };
 
   // Injection directe d'une délibération dans le calculateur de ratios
-  const injecterDeliberationDansRatios = (key: 'principal' | 'restauration' | 'cinema') => {
-    if (key === 'principal') {
+  const injecterDeliberationDansRatios = (key: 'bp_2026' | 'bp_2025' | 'principal' | 'restauration' | 'cinema') => {
+    if (key === 'bp_2026') {
+      chargerPreset('gennevilliers_bp_2026');
+    } else if (key === 'bp_2025') {
+      chargerPreset('gennevilliers_bp_2025');
+    } else if (key === 'principal') {
       chargerPreset('gennevilliers_principal_delib_2026');
     } else if (key === 'restauration') {
       chargerPreset('gennevilliers_restauration_2026');
@@ -300,80 +304,118 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
               Données budgétaires officielles certifiées :
             </span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
             <button
-              onClick={() => chargerPreset('gennevilliers_principal_delib_2026')}
-              className="p-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
+              onClick={() => chargerPreset('gennevilliers_bp_2026')}
+              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
             >
               <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                Budget Principal (BS 2026)
+                BP 2026 Primitif
               </div>
-              <div className="text-[11px] text-slate-500 dark:text-slate-400">Délib. 2026/S6/004 • BS 27,29 M€</div>
+              <div className="text-[10px] text-slate-500 dark:text-slate-400">250,67 M€ • Délib. 2026/S1/001</div>
+            </button>
+            <button
+              onClick={() => chargerPreset('gennevilliers_bp_2025')}
+              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
+            >
+              <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                BP 2025 Primitif
+              </div>
+              <div className="text-[10px] text-slate-500 dark:text-slate-400">238,28 M€ • Délib. 12/02/2025</div>
+            </button>
+            <button
+              onClick={() => chargerPreset('gennevilliers_principal_delib_2026')}
+              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
+            >
+              <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                BS 2026 Principal
+              </div>
+              <div className="text-[10px] text-slate-500 dark:text-slate-400">27,29 M€ • Délib. 2026/S6/004</div>
             </button>
             <button
               onClick={() => chargerPreset('gennevilliers_cfu_2025')}
-              className="p-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
+              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
             >
               <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                CFU 2025 Exécution Réelle
+                CFU 2025 Exécution
               </div>
-              <div className="text-[11px] text-slate-500 dark:text-slate-400">Excédent fct. +17,39 M€ • Affectation 1068</div>
+              <div className="text-[10px] text-slate-500 dark:text-slate-400">Excédent +17,39 M€ • Compte 1068</div>
             </button>
             <button
               onClick={() => chargerPreset('gennevilliers_restauration_2026')}
-              className="p-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
+              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
             >
               <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                Annexe Restauration Personnel
+                Annexe Restauration
               </div>
-              <div className="text-[11px] text-slate-500 dark:text-slate-400">Délib. 2026/S6/005 • BS 36,19 k€ (Unanimité)</div>
+              <div className="text-[10px] text-slate-500 dark:text-slate-400">36,19 k€ • Unanimité</div>
             </button>
             <button
               onClick={() => chargerPreset('gennevilliers_cinema_2026')}
-              className="p-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
+              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
             >
               <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                Annexe Cinéma Jean Vigo
+                Annexe Cinéma Vigo
               </div>
-              <div className="text-[11px] text-slate-500 dark:text-slate-400">Délib. 2026/S6/006 • BS 24,58 k€ (Unanimité)</div>
+              <div className="text-[10px] text-slate-500 dark:text-slate-400">24,58 k€ • Unanimité</div>
             </button>
           </div>
         </div>
 
         {/* ─────────────────────────────────────────────────────────────────── */}
-        {/* 1. ONGLET DÉLIBÉRATIONS & CFU 2026 (DONNÉES DES 4 PDF OFFICIELS)   */}
+        {/* 1. ONGLET DÉLIBÉRATIONS & CFU 2026 (DONNÉES DES 6 ACTES PDF)        */}
         {/* ─────────────────────────────────────────────────────────────────── */}
         {activeTab === 'deliberations' && (
           <div className="space-y-6">
             
             {/* Sélecteur de Délibération */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
                 <div>
                   <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
                     <Stamp className="w-4 h-4 text-amber-500" />
                     Actes Officiels du Conseil Municipal de Gennevilliers
                   </h2>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Séance du 23 Septembre 2026 • Contrôle de légalité Préfecture des Hauts-de-Seine (29/09/2026)
+                    Séances du 12 février 2025, 4 février 2026 et 23 septembre 2026 • Télétransmissions Préfecture certifiées
                   </p>
                 </div>
 
-                {/* Sélecteur de budget annexe / principal */}
-                <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-bold">
+                {/* Sélecteur parmi les délibérations */}
+                <div className="inline-flex flex-wrap rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-bold gap-1">
+                  <button
+                    onClick={() => setSelectedDelibKey('bp_2026')}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                      selectedDelibKey === 'bp_2026'
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    BP 2026 (250,67 M€)
+                  </button>
+                  <button
+                    onClick={() => setSelectedDelibKey('bp_2025')}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                      selectedDelibKey === 'bp_2025'
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    BP 2025 (238,28 M€)
+                  </button>
                   <button
                     onClick={() => setSelectedDelibKey('principal')}
-                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                    className={`px-2.5 py-1.5 rounded-lg transition-all ${
                       selectedDelibKey === 'principal'
                         ? 'bg-indigo-600 text-white shadow-xs'
                         : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
-                    Budget Principal (Commune)
+                    BS 2026 & CFU 2025
                   </button>
                   <button
                     onClick={() => setSelectedDelibKey('restauration')}
-                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                    className={`px-2.5 py-1.5 rounded-lg transition-all ${
                       selectedDelibKey === 'restauration'
                         ? 'bg-indigo-600 text-white shadow-xs'
                         : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
@@ -383,7 +425,7 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                   </button>
                   <button
                     onClick={() => setSelectedDelibKey('cinema')}
-                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                    className={`px-2.5 py-1.5 rounded-lg transition-all ${
                       selectedDelibKey === 'cinema'
                         ? 'bg-indigo-600 text-white shadow-xs'
                         : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
@@ -406,9 +448,10 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                   <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Adoption & Signatures</div>
                   <div className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5">
                     Présidence : {deliberationActive.maire} (Maire)
+                    {deliberationActive.secretaireSeance ? ` • Secrétaire : ${deliberationActive.secretaireSeance}` : ''}
                   </div>
                   <div className="text-[11px] text-slate-600 dark:text-slate-400">
-                    Vote : {deliberationActive.typeVote === 'unanimite' ? 'Adopté à l’unanimité' : 'Adopté à la majorité'} ({deliberationActive.votesPour} pour, {deliberationActive.votesContre} contre)
+                    Vote : {deliberationActive.typeVote === 'unanimite' ? 'Adopté à l’unanimité' : 'Adopté à la majorité'} ({deliberationActive.votesPour} pour, {deliberationActive.votesContre} contre{deliberationActive.votesAbstention ? `, ${deliberationActive.votesAbstention} abst.` : ''})
                   </div>
                 </div>
 
@@ -426,7 +469,7 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
               {/* Bouton d'action directe : injecter dans le simulateur */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                 <div className="text-xs text-slate-500 dark:text-slate-400">
-                  Transmis au contrôle de légalité le 29/09/2026 • Visas CGCT L. 2121-12, L. 1612-11, L. 2311-5 & M57.
+                  Visas CGCT L. 2121-12, L. 1612-11, L. 2311-5 & Instruction M57. Acte rendu exécutoire.
                 </div>
                 <button
                   onClick={() => injecterDeliberationDansRatios(selectedDelibKey)}
@@ -438,117 +481,164 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
               </div>
             </div>
 
-            {/* Cadre 1 : Affectation du résultat du CFU 2025 (Mécanisme M57) */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white flex items-center gap-2">
-                  <Scale className="w-4 h-4 text-indigo-500" />
-                  1. Clôture du Compte Financier Unique (CFU) 2025 & Affectation du Résultat
-                </h3>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400">
-                  Instruction M57
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Résultat Fct. Cumulé</span>
-                  <div className="text-lg font-black text-emerald-600 dark:text-emerald-400 mt-1">
-                    {deliberationActive.cfu2025.fonctionnementResultatCumule >= 0 ? '+' : ''}
-                    {deliberationActive.cfu2025.fonctionnementResultatCumule.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
-                  </div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">Excédent de gestion constaté au CFU</div>
+            {/* DASHBOARD COMPARATIF BP 2025 vs BP 2026 (Quand on consulte les budgets primitifs) */}
+            {(selectedDelibKey === 'bp_2026' || selectedDelibKey === 'bp_2025') && (
+              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm space-y-4">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-indigo-500" />
+                    Comparatif Pluriannuel Officiel : Budget Primitif 2025 ➔ Budget Primitif 2026
+                  </h3>
+                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                    Croissance budgétaire globale : +5,20 % (+12,39 M€)
+                  </span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Solde Exécution Invest.</span>
-                  <div className={`text-lg font-black mt-1 ${
-                    deliberationActive.cfu2025.investissementResultatCumule >= 0
-                      ? 'text-emerald-600 dark:text-emerald-400'
-                      : 'text-amber-600 dark:text-amber-400'
-                  }`}>
-                    {deliberationActive.cfu2025.investissementResultatCumule.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
-                  </div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">
-                    {deliberationActive.cfu2025.investissementResultatCumule < 0 ? 'Déficit d’exécution à couvrir' : 'Excédent reporté'}
-                  </div>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Restes à Réaliser (RAR)</span>
-                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-1">
-                    Dépenses : {deliberationActive.cfu2025.restesARealiserDepenses.toLocaleString('fr-FR')} €
-                  </div>
-                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200">
-                    Recettes : {deliberationActive.cfu2025.restesARealiserRecettes.toLocaleString('fr-FR')} €
-                  </div>
-                  <div className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold mt-0.5">
-                    Besoin net RAR : {(deliberationActive.cfu2025.restesARealiserDepenses - deliberationActive.cfu2025.restesARealiserRecettes).toLocaleString('fr-FR')} €
-                  </div>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Besoin Net Total Invest.</span>
-                  <div className="text-lg font-black text-indigo-600 dark:text-indigo-400 mt-1">
-                    {deliberationActive.cfu2025.besoinNetFinancement.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
-                  </div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">Déficit + solde net des restes à réaliser</div>
-                </div>
-              </div>
-
-              {/* Affectation votée */}
-              <div className="p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 space-y-2">
-                <div className="text-xs font-bold uppercase tracking-wider text-indigo-900 dark:text-indigo-200">
-                  Affectation Réglementaire du Résultat Délibérée par le Conseil Municipal :
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-900">
-                    <span className="font-semibold text-slate-600 dark:text-slate-400">Compte 1068 (Réserves capitalisées) :</span>
-                    <div className="text-sm font-black text-indigo-600 dark:text-indigo-400">
-                      {deliberationActive.cfu2025.affectationCompte1068.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
-                    </div>
-                    <span className="text-[10px] text-slate-400">Priorité M57 pour couvrir le besoin d'investissement</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Budget Global Voté</span>
+                    <div className="text-base font-black text-slate-900 dark:text-white mt-1">250 668 105 €</div>
+                    <div className="text-[11px] text-slate-500">BP 2025 : 238 277 172 €</div>
+                    <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">+12,39 M€ (+5,20 %)</div>
                   </div>
 
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-900">
-                    <span className="font-semibold text-slate-600 dark:text-slate-400">Ligne R002 (Report fonctionnement) :</span>
-                    <div className="text-sm font-black text-emerald-600 dark:text-emerald-400">
-                      {deliberationActive.cfu2025.affectationLigneR002.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
-                    </div>
-                    <span className="text-[10px] text-slate-400">Marge de manœuvre conservée en gestion courante</span>
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Masse Salariale (Chap. 012)</span>
+                    <div className="text-base font-black text-indigo-600 dark:text-indigo-400 mt-1">96 063 865 €</div>
+                    <div className="text-[11px] text-slate-500">BP 2025 : 91 397 205 €</div>
+                    <div className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold mt-0.5">+4,67 M€ (+5,11 %, GVT & carrières)</div>
                   </div>
 
-                  <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-900">
-                    <span className="font-semibold text-slate-600 dark:text-slate-400">
-                      {deliberationActive.cfu2025.affectationLigneD001 !== undefined ? 'Ligne D001 (Déficit reporté) :' : 'Ligne R001 (Excédent reporté) :'}
-                    </span>
-                    <div className="text-sm font-black text-amber-600 dark:text-amber-400">
-                      {(deliberationActive.cfu2025.affectationLigneD001 ?? deliberationActive.cfu2025.affectationLigneR001 ?? 0).toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
-                    </div>
-                    <span className="text-[10px] text-slate-400">Reprise comptable en section d'investissement</span>
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Section d'Investissement</span>
+                    <div className="text-base font-black text-emerald-600 dark:text-emerald-400 mt-1">82 517 370 €</div>
+                    <div className="text-[11px] text-slate-500">BP 2025 : 66 980 005 €</div>
+                    <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">+15,54 M€ (+23,20 %, équipements)</div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Équipements & Travaux (21+23)</span>
+                    <div className="text-base font-black text-amber-600 dark:text-amber-400 mt-1">53 868 283 €</div>
+                    <div className="text-[11px] text-slate-500">BP 2025 : 43 451 658 €</div>
+                    <div className="text-[10px] text-amber-600 dark:text-amber-400 font-bold mt-0.5">+10,42 M€ (+23,98 %, chantiers publics)</div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Cadre 2 : Budget Supplémentaire 2026 par Chapitre */}
+            {/* Cadre Clôture CFU 2025 & Affectation (Si applicable) */}
+            {deliberationActive.cfu2025 && (
+              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm space-y-4">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white flex items-center gap-2">
+                    <Scale className="w-4 h-4 text-indigo-500" />
+                    Clôture du Compte Financier Unique (CFU) 2025 & Affectation Réglementaire du Résultat
+                  </h3>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400">
+                    Instruction M57
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Résultat Fct. Cumulé</span>
+                    <div className="text-lg font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                      {deliberationActive.cfu2025.fonctionnementResultatCumule >= 0 ? '+' : ''}
+                      {deliberationActive.cfu2025.fonctionnementResultatCumule.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                    </div>
+                    <div className="text-[10px] text-slate-500 mt-0.5">Excédent de gestion constaté au CFU</div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Solde Exécution Invest.</span>
+                    <div className={`text-lg font-black mt-1 ${
+                      deliberationActive.cfu2025.investissementResultatCumule >= 0
+                        ? 'text-emerald-600 dark:text-emerald-400'
+                        : 'text-amber-600 dark:text-amber-400'
+                    }`}>
+                      {deliberationActive.cfu2025.investissementResultatCumule.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                    </div>
+                    <div className="text-[10px] text-slate-500 mt-0.5">
+                      {deliberationActive.cfu2025.investissementResultatCumule < 0 ? 'Déficit d’exécution à couvrir' : 'Excédent reporté'}
+                    </div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Restes à Réaliser (RAR)</span>
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-1">
+                      Dépenses : {deliberationActive.cfu2025.restesARealiserDepenses.toLocaleString('fr-FR')} €
+                    </div>
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                      Recettes : {deliberationActive.cfu2025.restesARealiserRecettes.toLocaleString('fr-FR')} €
+                    </div>
+                    <div className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold mt-0.5">
+                      Besoin net RAR : {(deliberationActive.cfu2025.restesARealiserDepenses - deliberationActive.cfu2025.restesARealiserRecettes).toLocaleString('fr-FR')} €
+                    </div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Besoin Net Total Invest.</span>
+                    <div className="text-lg font-black text-indigo-600 dark:text-indigo-400 mt-1">
+                      {deliberationActive.cfu2025.besoinNetFinancement.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                    </div>
+                    <div className="text-[10px] text-slate-500 mt-0.5">Déficit + solde net des restes à réaliser</div>
+                  </div>
+                </div>
+
+                {/* Affectation votée */}
+                <div className="p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 space-y-2">
+                  <div className="text-xs font-bold uppercase tracking-wider text-indigo-900 dark:text-indigo-200">
+                    Affectation Réglementaire du Résultat Délibérée par le Conseil Municipal :
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-900">
+                      <span className="font-semibold text-slate-600 dark:text-slate-400">Compte 1068 (Réserves capitalisées) :</span>
+                      <div className="text-sm font-black text-indigo-600 dark:text-indigo-400">
+                        {deliberationActive.cfu2025.affectationCompte1068.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                      </div>
+                      <span className="text-[10px] text-slate-400">Priorité M57 pour couvrir le besoin d'investissement</span>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-900">
+                      <span className="font-semibold text-slate-600 dark:text-slate-400">Ligne R002 (Report fonctionnement) :</span>
+                      <div className="text-sm font-black text-emerald-600 dark:text-emerald-400">
+                        {deliberationActive.cfu2025.affectationLigneR002.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                      </div>
+                      <span className="text-[10px] text-slate-400">Marge de manœuvre conservée en gestion courante</span>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-900">
+                      <span className="font-semibold text-slate-600 dark:text-slate-400">
+                        {deliberationActive.cfu2025.affectationLigneD001 !== undefined ? 'Ligne D001 (Déficit reporté) :' : 'Ligne R001 (Excédent reporté) :'}
+                      </span>
+                      <div className="text-sm font-black text-amber-600 dark:text-amber-400">
+                        {(deliberationActive.cfu2025.affectationLigneD001 ?? deliberationActive.cfu2025.affectationLigneR001 ?? 0).toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                      </div>
+                      <span className="text-[10px] text-slate-400">Reprise comptable en section d'investissement</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Tableaux Annexes par Chapitre */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-slate-800 shadow-sm space-y-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
                 <div>
                   <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white flex items-center gap-2">
                     <Building2 className="w-4 h-4 text-indigo-500" />
-                    2. Tableaux Annexes du Budget Supplémentaire 2026 Voté par Chapitre
+                    Tableaux Officiels par Chapitre ({deliberationActive.titre})
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Équilibre budgétaire général arrêté à : <strong className="text-slate-800 dark:text-slate-200">{deliberationActive.bs2026.totalGeneral.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €</strong>
+                    Équilibre budgétaire général voté : <strong className="text-slate-800 dark:text-slate-200">{deliberationActive.montantTotalEquilibre.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €</strong>
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-300">
-                    Fonct. : {deliberationActive.bs2026.fonctionnementTotal.toLocaleString('fr-FR')} €
+                    Fonct. : {deliberationActive.sectionFonctionnementTotal.toLocaleString('fr-FR')} €
                   </span>
                   <span className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-300">
-                    Invest. : {deliberationActive.bs2026.investissementTotal.toLocaleString('fr-FR')} €
+                    Invest. : {deliberationActive.sectionInvestissementTotal.toLocaleString('fr-FR')} €
                   </span>
                 </div>
               </div>
@@ -557,7 +647,7 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
               <div className="space-y-3">
                 <div className="text-xs font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
                   <ChevronRight className="w-3.5 h-3.5" />
-                  Section de Fonctionnement ({deliberationActive.bs2026.fonctionnementTotal.toLocaleString('fr-FR')} €)
+                  Section de Fonctionnement ({deliberationActive.sectionFonctionnementTotal.toLocaleString('fr-FR')} €)
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -565,10 +655,10 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 font-bold text-xs text-slate-800 dark:text-slate-200 flex justify-between">
                       <span>Dépenses de Fonctionnement</span>
-                      <span>Montant BS</span>
+                      <span>Montant Voté</span>
                     </div>
                     <div className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                      {deliberationActive.bs2026.depensesFonctionnement.map((c, i) => (
+                      {deliberationActive.depensesFonctionnement.map((c, i) => (
                         <div key={i} className="px-3.5 py-2 flex items-center justify-between text-xs hover:bg-slate-50 dark:hover:bg-slate-800/50">
                           <div>
                             <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400 mr-2">Chap. {c.chapitre}</span>
@@ -583,7 +673,7 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                       <div className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800/80 font-bold text-xs flex justify-between">
                         <span>Total Dépenses Fonctionnement</span>
                         <span className="font-mono text-indigo-600 dark:text-indigo-400">
-                          {deliberationActive.bs2026.fonctionnementTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                          {deliberationActive.sectionFonctionnementTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
                         </span>
                       </div>
                     </div>
@@ -593,10 +683,10 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 font-bold text-xs text-slate-800 dark:text-slate-200 flex justify-between">
                       <span>Recettes de Fonctionnement</span>
-                      <span>Montant BS</span>
+                      <span>Montant Voté</span>
                     </div>
                     <div className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                      {deliberationActive.bs2026.recettesFonctionnement.map((c, i) => (
+                      {deliberationActive.recettesFonctionnement.map((c, i) => (
                         <div key={i} className="px-3.5 py-2 flex items-center justify-between text-xs hover:bg-slate-50 dark:hover:bg-slate-800/50">
                           <div>
                             <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 mr-2">Chap. {c.chapitre}</span>
@@ -610,7 +700,7 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                       <div className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800/80 font-bold text-xs flex justify-between">
                         <span>Total Recettes Fonctionnement</span>
                         <span className="font-mono text-emerald-600 dark:text-emerald-400">
-                          {deliberationActive.bs2026.fonctionnementTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                          {deliberationActive.sectionFonctionnementTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
                         </span>
                       </div>
                     </div>
@@ -622,7 +712,7 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
               <div className="space-y-3 pt-2">
                 <div className="text-xs font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
                   <ChevronRight className="w-3.5 h-3.5" />
-                  Section d'Investissement ({deliberationActive.bs2026.investissementTotal.toLocaleString('fr-FR')} €)
+                  Section d'Investissement ({deliberationActive.sectionInvestissementTotal.toLocaleString('fr-FR')} €)
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -630,16 +720,16 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 font-bold text-xs text-slate-800 dark:text-slate-200 flex justify-between">
                       <span>Dépenses d'Investissement</span>
-                      <span>Total BS (Reports inclus)</span>
+                      <span>Montant Voté</span>
                     </div>
                     <div className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                      {deliberationActive.bs2026.depensesInvestissement.map((c, i) => (
+                      {deliberationActive.depensesInvestissement.map((c, i) => (
                         <div key={i} className="px-3.5 py-2 flex items-center justify-between text-xs hover:bg-slate-50 dark:hover:bg-slate-800/50">
                           <div>
                             <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400 mr-2">Chap. {c.chapitre}</span>
                             <span className="text-slate-700 dark:text-slate-300">{c.libelle}</span>
                             {c.reports2025 && c.reports2025 > 0 ? (
-                              <div className="text-[10px] text-slate-400">dont RAR 2025 : {c.reports2025.toLocaleString('fr-FR')} €</div>
+                              <div className="text-[10px] text-slate-400">dont RAR : {c.reports2025.toLocaleString('fr-FR')} €</div>
                             ) : null}
                           </div>
                           <span className="font-mono font-bold text-slate-900 dark:text-white shrink-0">
@@ -650,7 +740,7 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                       <div className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800/80 font-bold text-xs flex justify-between">
                         <span>Total Dépenses Investissement</span>
                         <span className="font-mono text-indigo-600 dark:text-indigo-400">
-                          {deliberationActive.bs2026.investissementTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                          {deliberationActive.sectionInvestissementTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
                         </span>
                       </div>
                     </div>
@@ -660,16 +750,16 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 font-bold text-xs text-slate-800 dark:text-slate-200 flex justify-between">
                       <span>Recettes d'Investissement</span>
-                      <span>Total BS (Reports inclus)</span>
+                      <span>Montant Voté</span>
                     </div>
                     <div className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                      {deliberationActive.bs2026.recettesInvestissement.map((c, i) => (
+                      {deliberationActive.recettesInvestissement.map((c, i) => (
                         <div key={i} className="px-3.5 py-2 flex items-center justify-between text-xs hover:bg-slate-50 dark:hover:bg-slate-800/50">
                           <div>
                             <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 mr-2">Chap. {c.chapitre}</span>
                             <span className="text-slate-700 dark:text-slate-300">{c.libelle}</span>
                             {c.reports2025 && c.reports2025 > 0 ? (
-                              <div className="text-[10px] text-slate-400">dont RAR 2025 : {c.reports2025.toLocaleString('fr-FR')} €</div>
+                              <div className="text-[10px] text-slate-400">dont RAR : {c.reports2025.toLocaleString('fr-FR')} €</div>
                             ) : null}
                           </div>
                           <span className="font-mono font-bold text-slate-900 dark:text-white shrink-0">
@@ -680,7 +770,7 @@ ${resultat.diagnosticGlobal.pointsVigilance.map((pv, idx) => `**Observation n°$
                       <div className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800/80 font-bold text-xs flex justify-between">
                         <span>Total Recettes Investissement</span>
                         <span className="font-mono text-emerald-600 dark:text-emerald-400">
-                          {deliberationActive.bs2026.investissementTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                          {deliberationActive.sectionInvestissementTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
                         </span>
                       </div>
                     </div>

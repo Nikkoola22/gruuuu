@@ -704,7 +704,7 @@ const FroggerContractuel: React.FC<FroggerContractuelProps> = ({ onClose }) => {
         </div>
 
         {/* Title & Stats */}
-        <div className="text-center mb-6 w-full animate-fade-in">
+        <div className="text-center mb-6 pt-12 sm:pt-0 w-full animate-fade-in">
           <h1 className="text-3xl sm:text-5xl font-black tracking-widest mb-2 uppercase" style={{fontFamily: 'monospace', color: '#4ade80', textShadow: '0 0 25px rgba(74,222,128,0.6)'}}>
             CHASSE AU <span style={{color: '#38bdf8', textShadow: '0 0 25px rgba(56,189,248,0.7)'}}>CDI</span>
           </h1>
@@ -728,7 +728,7 @@ const FroggerContractuel: React.FC<FroggerContractuelProps> = ({ onClose }) => {
             ref={canvasRef}
             width={CANVAS_WIDTH}
             height={CANVAS_HEIGHT}
-            className="block max-w-full h-auto mx-auto"
+            className="block w-full max-w-full h-auto mx-auto touch-none select-none"
           />
 
           {/* Overlays */}
@@ -792,55 +792,59 @@ const FroggerContractuel: React.FC<FroggerContractuelProps> = ({ onClose }) => {
           )}
         </div>
 
-        {/* Console de contrôle rétro (Visible uniquement sur mobile / tablette) */}
-        <div className="w-full max-w-xs sm:max-w-sm mt-6 p-4 bg-slate-800/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-xl md:hidden flex justify-between items-center select-none touch-none backdrop-blur-md">
-          {/* Croix directionnelle (D-PAD) */}
-          <div className="relative w-28 h-28 flex items-center justify-center bg-slate-700/40 rounded-full border border-slate-600/50 shadow-inner">
-            <div className="absolute w-20 h-7 bg-slate-900 rounded-md flex justify-between px-0.5">
-              <button 
-                onPointerDown={(e) => { e.preventDefault(); handleTouch("left"); }} 
-                className="w-6 h-full text-slate-400 font-bold active:text-white active:scale-90 text-sm flex items-center justify-center"
+        {/* Console de contrôle rétro ergonomique (Visible sur mobile / tablette) */}
+        <div className="w-full max-w-sm mt-5 p-4 bg-slate-900/90 border border-slate-700/80 rounded-3xl shadow-xl md:hidden flex justify-between items-center select-none touch-none backdrop-blur-md">
+          {/* Croix directionnelle (D-PAD large pour pouce smartphone) */}
+          <div className="flex flex-col items-center gap-1.5">
+            <button
+              type="button"
+              onPointerDown={(e) => { e.preventDefault(); handleTouch("up"); }}
+              className="w-14 h-12 bg-slate-800 active:bg-emerald-500/30 border-2 border-slate-600 active:border-emerald-400 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg active:scale-95 transition-all"
+            >
+              ▲
+            </button>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onPointerDown={(e) => { e.preventDefault(); handleTouch("left"); }}
+                className="w-14 h-12 bg-slate-800 active:bg-emerald-500/30 border-2 border-slate-600 active:border-emerald-400 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg active:scale-95 transition-all"
               >
                 ◀
               </button>
-              <button 
-                onPointerDown={(e) => { e.preventDefault(); handleTouch("right"); }} 
-                className="w-6 h-full text-slate-400 font-bold active:text-white active:scale-90 text-sm flex items-center justify-center"
+              <button
+                type="button"
+                onPointerDown={(e) => { e.preventDefault(); handleTouch("down"); }}
+                className="w-14 h-12 bg-slate-800 active:bg-emerald-500/30 border-2 border-slate-600 active:border-emerald-400 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg active:scale-95 transition-all"
+              >
+                ▼
+              </button>
+              <button
+                type="button"
+                onPointerDown={(e) => { e.preventDefault(); handleTouch("right"); }}
+                className="w-14 h-12 bg-slate-800 active:bg-emerald-500/30 border-2 border-slate-600 active:border-emerald-400 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg active:scale-95 transition-all"
               >
                 ▶
               </button>
             </div>
-            <div className="absolute w-7 h-20 bg-slate-900 rounded-md flex flex-col justify-between py-0.5 items-center">
-              <button 
-                onPointerDown={(e) => { e.preventDefault(); handleTouch("up"); }} 
-                className="w-full h-6 text-slate-400 font-bold active:text-white active:scale-90 text-sm flex items-center justify-center"
-              >
-                ▲
-              </button>
-              <button 
-                onPointerDown={(e) => { e.preventDefault(); handleTouch("down"); }} 
-                className="w-full h-6 text-slate-400 font-bold active:text-white active:scale-90 text-sm flex items-center justify-center"
-              >
-                ▼
-              </button>
-            </div>
-            <div className="absolute w-7 h-7 bg-slate-800 rounded-full border border-slate-950 shadow pointer-events-none" />
           </div>
 
           {/* Bouton d'action rouge (START/RESTART) */}
-          <div className="flex flex-col items-center gap-1 pr-2">
+          <div className="flex flex-col items-center gap-1.5 pr-1">
             <button 
+              type="button"
               onPointerDown={(e) => { 
                 e.preventDefault(); 
                 if (gameState === "ready" || gameState === "gameover" || gameState === "victory") {
                   startNewGame();
+                } else {
+                  handleTouch("up");
                 }
               }}
-              className="w-12 h-12 bg-red-600 active:bg-red-800 rounded-full border-4 border-slate-900 shadow-md flex items-center justify-center active:scale-90 transition-all text-white font-extrabold text-[10px]"
+              className="w-16 h-16 bg-gradient-to-br from-rose-500 to-red-700 active:from-rose-600 active:to-red-800 rounded-full border-4 border-slate-950 shadow-[0_0_20px_rgba(244,63,94,0.4)] flex items-center justify-center active:scale-90 transition-all text-white font-black text-xs tracking-wider"
             >
-              START
+              {gameState === "playing" ? "SAUT" : "START"}
             </button>
-            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Action</span>
+            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Action</span>
           </div>
         </div>
         

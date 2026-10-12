@@ -1038,14 +1038,18 @@ const FlappyAgent: React.FC<FlappyAgentProps> = ({ onClose }) => {
 
         {/* Canvas Area */}
         <div
-          className="relative bg-slate-900/90 border-2 border-cyan-500/30 rounded-3xl p-3 shadow-[0_0_50px_rgba(6,182,212,0.25)] cursor-pointer"
-          onClick={handleJump}
+          className="relative w-full max-w-[520px] bg-slate-900/90 border-2 border-cyan-500/30 rounded-3xl p-2 sm:p-3 shadow-[0_0_50px_rgba(6,182,212,0.25)] cursor-pointer touch-none select-none"
+          onPointerDown={(e) => {
+            if ((e.target as HTMLElement).closest("button")) return;
+            e.preventDefault();
+            handleJump();
+          }}
         >
           <canvas
             ref={canvasRef}
             width={CANVAS_WIDTH}
             height={CANVAS_HEIGHT}
-            className="rounded-2xl border border-slate-800 block shadow-inner"
+            className="w-full max-w-full h-auto rounded-2xl border border-slate-800 block shadow-inner touch-none select-none"
           />
 
           {/* HUD Score */}

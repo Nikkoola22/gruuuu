@@ -225,9 +225,9 @@ const EspaceJeux: React.FC<EspaceJeuxProps> = ({ onClose }) => {
                 <div className="absolute inset-0 transition-opacity duration-500 opacity-80 group-hover:opacity-90 bg-gradient-to-t from-black via-black/90 to-transparent" />
                 <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
-                <div className="relative z-10 p-4 sm:p-8 transform translate-y-8 sm:translate-y-12 group-hover:translate-y-0 transition-transform duration-500 flex flex-col justify-end h-full">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-3">
-                    <div className={`p-3 ${theme.bg} backdrop-blur-md rounded-xl border ${theme.border} ${theme.text} shadow-lg ${theme.shadow} shrink-0 w-fit`}>
+                <div className="relative z-10 p-4 sm:p-8 transform translate-y-0 md:translate-y-12 md:group-hover:translate-y-0 transition-transform duration-500 flex flex-col justify-end h-full">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-4 mb-2 sm:mb-3">
+                    <div className={`p-2.5 sm:p-3 ${theme.bg} backdrop-blur-md rounded-xl border ${theme.border} ${theme.text} shadow-lg ${theme.shadow} shrink-0 w-fit`}>
                       <Icon className={`${game.iconSizeClass || "w-7 h-7"} group-hover:animate-pulse`} />
                     </div>
                     <h3 className={`${game.titleSizeClass || "text-2xl sm:text-3xl"} font-bold tracking-tight drop-shadow-md ${isLight ? "text-slate-900" : "text-white"}`}>
@@ -235,14 +235,14 @@ const EspaceJeux: React.FC<EspaceJeuxProps> = ({ onClose }) => {
                     </h3>
                   </div>
                   
-                  <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
+                  <div className="grid grid-rows-[1fr] md:grid-rows-[0fr] md:group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
                     <div className="overflow-hidden">
-                      <p className={`font-medium text-sm leading-relaxed mb-5 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
+                      <p className={`font-medium text-xs sm:text-sm leading-relaxed mb-3 sm:mb-5 line-clamp-2 sm:line-clamp-none ${isLight ? "text-slate-700" : "text-slate-300"}`}>
                         {game.description}
                       </p>
-                      <div className={`inline-flex items-center gap-2 px-5 py-2.5 ${theme.btnBg} text-white rounded-full font-semibold text-sm shadow-lg transform group-hover:scale-105 transition-all duration-300`}>
+                      <div className={`inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 ${theme.btnBg} text-white rounded-full font-semibold text-xs sm:text-sm shadow-lg transform group-hover:scale-105 active:scale-95 transition-all duration-300`}>
                         <span>{game.actionText}</span>
-                        <ArrowRight className="w-4 h-4" />
+                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                     </div>
                   </div>

@@ -311,6 +311,19 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
     }
   };
 
+  const fireBullet = () => {
+    if (!shootModeRef.current || gameState !== "playing") return;
+    bulletsRef.current.push({
+      x: paddleRef.current.x + paddleRef.current.width / 2 - 2,
+      y: paddleRef.current.y,
+      width: 4,
+      height: 12,
+      vy: -8,
+      color: "#f43f5e",
+      active: true
+    });
+  };
+
   // Clavier & Souris et initialisation des étoiles
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -874,10 +887,10 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0,
       }} />
 
-      <div className="max-w-4xl mx-auto relative z-10">
+      <div className="max-w-4xl mx-auto relative z-10 w-full px-2 sm:px-4">
         
         {/* Retour button */}
-        <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50">
+        <div className="absolute top-0 left-2 sm:top-2 sm:left-4 z-50">
           <button
             type="button"
             onClick={onClose}
@@ -889,22 +902,22 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         </div>
 
         {/* Title & Stats */}
-        <div className="text-center mb-6 animate-fade-in">
-          <h1 className="text-3xl sm:text-5xl font-black tracking-widest mb-2 uppercase" style={{fontFamily: 'monospace', color: '#ff7900', textShadow: '0 0 25px rgba(255,121,0,0.6), 0 0 60px rgba(255,121,0,0.3)'}}>
+        <div className="text-center mb-4 sm:mb-6 pt-11 sm:pt-2 animate-fade-in">
+          <h1 className="text-2xl sm:text-5xl font-black tracking-widest mb-2 uppercase" style={{fontFamily: 'monospace', color: '#ff7900', textShadow: '0 0 25px rgba(255,121,0,0.6), 0 0 60px rgba(255,121,0,0.3)'}}>
             CASSE-BRIQUE <span style={{color: '#cc00ff', textShadow: '0 0 25px rgba(204,0,255,0.7)'}}>CFDT</span>
           </h1>
-          <p className="text-xs sm:text-sm font-semibold max-w-lg mx-auto mb-6 tracking-widest" style={{color: 'rgba(255,255,255,0.6)', fontFamily: 'monospace'}}>
+          <p className="text-xs sm:text-sm font-semibold max-w-lg mx-auto mb-4 sm:mb-6 tracking-widest" style={{color: 'rgba(255,255,255,0.6)', fontFamily: 'monospace'}}>
             LIBÉREZ VOS ACQUIS SOCIAUX — DÉTRUISEZ LES BRIQUES !
           </p>
 
-          <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-6 text-sm font-bold">
-            <span className="px-4 py-2 rounded-xl font-mono text-xs shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(180,0,255,0.5)', color: '#d8b4fe', letterSpacing: '0.1em'}}>
-              LEVEL <span className="text-white text-base font-black ml-1">0{level}</span>
+          <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-6 text-sm font-bold">
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(180,0,255,0.5)', color: '#d8b4fe', letterSpacing: '0.1em'}}>
+              LEVEL <span className="text-white text-sm sm:text-base font-black ml-1">0{level}</span>
             </span>
-            <span className="px-4 py-2 rounded-xl font-mono text-xs shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(255,121,0,0.5)', color: '#fdba74', letterSpacing: '0.1em'}}>
-              SCORE <span className="text-amber-400 text-base font-black ml-1">{String(score).padStart(6, '0')}</span>
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(255,121,0,0.5)', color: '#fdba74', letterSpacing: '0.1em'}}>
+              SCORE <span className="text-amber-400 text-sm sm:text-base font-black ml-1">{String(score).padStart(6, '0')}</span>
             </span>
-            <span className="px-4 py-2 rounded-xl font-mono text-xs flex items-center gap-2 shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(239,68,68,0.5)', color: '#fca5a5', letterSpacing: '0.1em'}}>
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs flex items-center gap-2 shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(239,68,68,0.5)', color: '#fca5a5', letterSpacing: '0.1em'}}>
               VIES
               <span className="flex gap-1">
                 {Array.from({ length: Math.max(0, lives) }).map((_, idx) => (
@@ -914,7 +927,7 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
               </span>
             </span>
             {activePowerUp && (
-              <span className="px-4 py-2 rounded-xl font-mono text-xs flex items-center gap-1.5 animate-bounce shadow-[0_0_20px_rgba(255,121,0,0.4)]" style={{background: 'rgba(255,121,0,0.2)', border: '1px solid rgba(255,121,0,0.6)', color: '#ff7900', letterSpacing: '0.08em'}}>
+              <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs flex items-center gap-1.5 animate-bounce shadow-[0_0_20px_rgba(255,121,0,0.4)]" style={{background: 'rgba(255,121,0,0.2)', border: '1px solid rgba(255,121,0,0.6)', color: '#ff7900', letterSpacing: '0.08em'}}>
                 <Zap className="w-3.5 h-3.5 fill-current" />
                 {activePowerUp}
               </span>
@@ -923,20 +936,20 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         </div>
 
         {/* Game Area Container */}
-        <div className="max-w-5xl mx-auto backdrop-blur-2xl rounded-3xl p-4 sm:p-6 relative overflow-hidden" style={{background: 'rgba(5,2,20,0.9)', border: '1px solid rgba(180,0,255,0.4)', boxShadow: '0 0 50px rgba(180,0,255,0.2), inset 0 0 60px rgba(0,0,0,0.8)'}}>
+        <div className="max-w-5xl mx-auto backdrop-blur-2xl rounded-3xl p-2.5 sm:p-6 relative overflow-hidden" style={{background: 'rgba(5,2,20,0.9)', border: '1px solid rgba(180,0,255,0.4)', boxShadow: '0 0 50px rgba(180,0,255,0.2), inset 0 0 60px rgba(0,0,0,0.8)'}}>
           
           {gameState === "ready" && (
-            <div className="text-center py-16 relative z-10 animate-fade-in">
+            <div className="text-center py-12 sm:py-16 relative z-10 animate-fade-in">
               <div className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center transform -rotate-3 hover:rotate-0 transition-transform" style={{background: 'linear-gradient(135deg, rgba(255,121,0,0.3), rgba(204,0,255,0.3))', border: '2px solid rgba(255,121,0,0.6)', boxShadow: '0 0 35px rgba(255,121,0,0.4)'}}>
                 <Activity className="w-10 h-10 text-amber-400 drop-shadow-[0_0_10px_rgba(255,121,0,0.8)]" />
               </div>
               <h2 className="text-3xl font-black mb-3 tracking-widest uppercase" style={{fontFamily: 'monospace', color: '#ff7900', textShadow: '0 0 20px rgba(255,121,0,0.7)'}}>PRESS START</h2>
               <p className="max-w-md mx-auto mb-8 text-sm leading-relaxed" style={{color: 'rgba(255,255,255,0.6)', fontFamily: 'monospace'}}>
-                Dirigez la raquette <span style={{color: '#ff7900', fontWeight: 800}}>CFDT</span> avec la souris, le doigt ou les flèches du clavier. Attrapez les capsules bonus !
+                Dirigez la raquette <span style={{color: '#ff7900', fontWeight: 800}}>CFDT</span> avec la souris, le doigt ou les boutons tactiles. Attrapez les capsules bonus !
               </p>
               <button
                 onClick={startNewGame}
-                className="mx-auto px-10 py-4 font-black rounded-full text-base tracking-widest uppercase flex items-center justify-center gap-3 transition-all hover:scale-105 active:scale-95 shadow-[0_0_35px_rgba(255,121,0,0.6)]"
+                className="mx-auto px-8 sm:px-10 py-4 font-black rounded-full text-sm sm:text-base tracking-widest uppercase flex items-center justify-center gap-3 transition-all hover:scale-105 active:scale-95 shadow-[0_0_35px_rgba(255,121,0,0.6)]"
                 style={{fontFamily: 'monospace', background: 'linear-gradient(135deg, #ff7900, #e65c00)', color: '#fff', border: '1px solid rgba(255,255,255,0.4)'}}
               >
                 <Play className="w-6 h-6 fill-white" />
@@ -946,7 +959,7 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
           )}
 
           {gameState === "gameover" && (
-            <div className="text-center py-16 relative z-10 animate-scale-up">
+            <div className="text-center py-12 sm:py-16 relative z-10 animate-scale-up">
               <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{background: 'rgba(239,68,68,0.15)', border: '2px solid rgba(239,68,68,0.5)', boxShadow: '0 0 30px rgba(239,68,68,0.3)'}}>
                 <Heart className="w-10 h-10" style={{color: '#ef4444'}} />
               </div>
@@ -966,7 +979,7 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
           )}
 
           {gameState === "victory" && (
-            <div className="text-center py-16 relative z-10 animate-scale-up">
+            <div className="text-center py-12 sm:py-16 relative z-10 animate-scale-up">
               <Trophy className="w-20 h-20 mx-auto mb-6 animate-bounce" style={{color: '#facc15', filter: 'drop-shadow(0 0 20px #facc1588)'}} />
               <h2 className="text-3xl font-black mb-3 tracking-widest uppercase" style={{fontFamily: 'monospace', color: '#facc15', textShadow: '0 0 20px #facc1566'}}>VICTOIRE !</h2>
               <p className="max-w-sm mx-auto mb-8 text-sm" style={{color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace'}}>
@@ -984,27 +997,66 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
           )}
 
           {gameState === "playing" && (
-            <div className="relative flex justify-center">
-              <canvas
-                ref={canvasRef}
-                width={CANVAS_WIDTH}
-                height={CANVAS_HEIGHT}
-                onMouseMove={handleMouseMove}
-                onTouchMove={handleTouchMove}
-                className="rounded-xl cursor-none max-w-full block"
-                style={{border: '2px solid rgba(180,0,255,0.35)', boxShadow: '0 0 30px rgba(180,0,255,0.2)'}}
-              />
+            <div className="flex flex-col items-center">
+              <div className="relative flex justify-center w-full">
+                <canvas
+                  ref={canvasRef}
+                  width={CANVAS_WIDTH}
+                  height={CANVAS_HEIGHT}
+                  onMouseMove={handleMouseMove}
+                  onTouchStart={handleTouchMove}
+                  onTouchMove={handleTouchMove}
+                  className="rounded-xl md:cursor-none w-full max-w-full h-auto block touch-none select-none"
+                  style={{border: '2px solid rgba(180,0,255,0.35)', boxShadow: '0 0 30px rgba(180,0,255,0.2)'}}
+                />
+              </div>
+
+              {/* Contrôles tactiles Smartphone / Tablette */}
+              <div className="flex md:hidden gap-2.5 mt-3 w-full max-w-md select-none touch-none">
+                <button
+                  type="button"
+                  onPointerDown={(e) => { e.preventDefault(); keysRef.current.left = true; }}
+                  onPointerUp={() => { keysRef.current.left = false; }}
+                  onPointerLeave={() => { keysRef.current.left = false; }}
+                  onPointerCancel={() => { keysRef.current.left = false; }}
+                  className="flex-1 py-3.5 bg-slate-900/90 active:bg-purple-900/60 border border-purple-500/40 rounded-2xl text-white font-black text-base flex items-center justify-center active:scale-95 transition-all shadow-lg"
+                  aria-label="Gauche"
+                >
+                  ◀ GAUCHE
+                </button>
+                {activePowerUp?.includes("Tir") && (
+                  <button
+                    type="button"
+                    onPointerDown={(e) => { e.preventDefault(); fireBullet(); }}
+                    className="flex-1 py-3.5 bg-gradient-to-r from-rose-600 to-orange-600 active:from-rose-500 active:to-orange-500 border border-rose-400 rounded-2xl text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1 active:scale-95 transition-all shadow-[0_0_20px_rgba(244,63,94,0.5)] animate-pulse"
+                    aria-label="Tirer"
+                  >
+                    🔫 TIRER
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onPointerDown={(e) => { e.preventDefault(); keysRef.current.right = true; }}
+                  onPointerUp={() => { keysRef.current.right = false; }}
+                  onPointerLeave={() => { keysRef.current.right = false; }}
+                  onPointerCancel={() => { keysRef.current.right = false; }}
+                  className="flex-1 py-3.5 bg-slate-900/90 active:bg-purple-900/60 border border-purple-500/40 rounded-2xl text-white font-black text-base flex items-center justify-center active:scale-95 transition-all shadow-lg"
+                  aria-label="Droite"
+                >
+                  DROITE ▶
+                </button>
+              </div>
             </div>
           )}
 
         </div>
 
         {/* Game Instructions */}
-        <div className="mt-6 p-4 rounded-xl text-xs font-mono flex items-start gap-3 max-w-2xl mx-auto" style={{background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,121,0,0.2)', color: 'rgba(255,255,255,0.4)'}}>
+        <div className="mt-4 sm:mt-6 p-4 rounded-xl text-xs font-mono flex items-start gap-3 max-w-2xl mx-auto" style={{background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,121,0,0.2)', color: 'rgba(255,255,255,0.4)'}}>
           <Sparkles className="w-4 h-4 shrink-0 mt-0.5" style={{color: '#ff7900'}} />
           <div>
             <strong className="block mb-1" style={{color: '#ff7900', letterSpacing: '0.08em'}}>CONTROLS :</strong>
-            SOURIS / DOIGT / FLÈCHES ←→ — ESPACE = TIR | &#x2764; vie | ⇔ raquette large | ⏳ balle lente | 🔮 multi-balles | 🔫 mode tir
+            GLISSER SUR L'ÉCRAN / BOUTONS TACTILES / SOURIS / FLÈCHES ←→ — ESPACE ou BOUTON = TIR | &#x2764; vie | ⇔ raquette large | ⏳ balle lente | 🔮 multi-balles | 🔫 mode tir
           </div>
         </div>
 

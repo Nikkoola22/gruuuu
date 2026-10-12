@@ -179,9 +179,9 @@ const VictoryConfetti: React.FC = () => {
 };
 
 const getTextSizeClass = (text: string) => {
-  if (text.length > 55) return "text-xs sm:text-xs md:text-sm leading-snug font-medium";
-  if (text.length > 30) return "text-xs sm:text-sm md:text-base leading-snug font-semibold";
-  return "text-sm sm:text-base md:text-lg font-bold leading-snug";
+  if (text.length > 55) return "text-[10px] sm:text-xs md:text-sm leading-tight font-medium";
+  if (text.length > 30) return "text-[11px] sm:text-sm md:text-base leading-tight font-semibold";
+  return "text-xs sm:text-base md:text-lg font-bold leading-snug";
 };
 
 // ─── Composant Principal MemoryRH ─────────────────────────────────────────────
@@ -260,7 +260,7 @@ const MemoryRH: React.FC<MemoryRHProps> = ({ onClose }) => {
     setVictory(false);
   };
   return (
-    <div className="relative z-30 isolate min-h-screen flex flex-col overflow-x-hidden bg-[#1e133c] text-white touch-none select-none font-sans">
+    <div className="relative z-30 isolate min-h-screen flex flex-col overflow-x-hidden bg-[#1e133c] text-white select-none font-sans">
       
       {/* --- Serene Night Landscape Background --- */}
       {/* Sky Gradient */}
@@ -296,40 +296,40 @@ const MemoryRH: React.FC<MemoryRHProps> = ({ onClose }) => {
       <div className="max-w-4xl mx-auto relative z-10 w-full h-full flex flex-col">
         
         {/* Top UI Bar */}
-        <div className="w-full flex justify-between items-center px-4 sm:px-8 py-4 sm:py-6">
+        <div className="w-full flex justify-between items-center px-3 sm:px-8 py-4 sm:py-6 gap-2">
           
           {/* Bouton Retour */}
           <button
             onClick={onClose}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0"
+            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span>Retour</span>
           </button>
 
           {/* Energy/Coups Bar */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className="relative flex items-center">
-              <div className="absolute -left-4 z-10 text-yellow-400 text-3xl font-black drop-shadow-[0_0_10px_rgba(250,204,21,0.8)] animate-pulse">
+              <div className="absolute -left-3 sm:-left-4 z-10 text-yellow-400 text-2xl sm:text-3xl font-black drop-shadow-[0_0_10px_rgba(250,204,21,0.8)] animate-pulse">
                 ⚡
               </div>
-              <div className="w-32 sm:w-40 h-6 sm:h-8 bg-blue-900/50 rounded-r-full border-2 border-blue-400/30 overflow-hidden pl-4 shadow-inner relative backdrop-blur-sm">
+              <div className="w-24 sm:w-40 h-6 sm:h-8 bg-blue-900/50 rounded-r-full border-2 border-blue-400/30 overflow-hidden pl-4 shadow-inner relative backdrop-blur-sm">
                 {/* Fill bar representing moves left / progress */}
                 <div className="h-full bg-gradient-to-r from-purple-500 to-pink-400 w-[60%] rounded-r-full shadow-[0_0_10px_#a855f7]" />
                 <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
               </div>
             </div>
-            <span className="text-xl sm:text-2xl font-black drop-shadow-md">{moves}</span>
+            <span className="text-lg sm:text-2xl font-black drop-shadow-md">{moves}</span>
           </div>
 
           {/* Score & Multiplier */}
-          <div className="flex items-center gap-3">
-            <span className="text-2xl sm:text-3xl font-black drop-shadow-md">{matches * 100}</span>
-            <button onClick={handleRestart} className="relative w-12 h-14 sm:w-14 sm:h-16 flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-transform" title="Recommencer">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-xl sm:text-3xl font-black drop-shadow-md">{matches * 100}</span>
+            <button onClick={handleRestart} className="relative w-11 h-12 sm:w-14 sm:h-16 flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-transform" title="Recommencer">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-purple-700 opacity-90 shadow-[0_0_15px_rgba(168,85,247,0.6)]" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
               <div className="absolute inset-1 bg-gradient-to-br from-purple-300 to-purple-600 opacity-90" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
               <div className="absolute -top-1 -right-1 text-yellow-300 animate-pulse">✨</div>
-              <span className="relative z-10 text-white font-black text-sm sm:text-base">1X</span>
+              <span className="relative z-10 text-white font-black text-xs sm:text-base">1X</span>
             </button>
           </div>
 
@@ -357,8 +357,8 @@ const MemoryRH: React.FC<MemoryRHProps> = ({ onClose }) => {
             </div>
           ) : (
             // Cards game board (Diamond-like centering if possible, else nice grid)
-            <div className="w-full max-w-3xl px-4 flex justify-center">
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 sm:gap-5 justify-center items-center">
+            <div className="w-full max-w-3xl px-3 sm:px-4 flex justify-center">
+              <div className="w-full grid grid-cols-3 sm:grid-cols-4 gap-2.5 sm:gap-5 justify-items-center items-center">
                 {cards.map((card, idx) => {
                   const isFlipped = card.isFlipped || card.isMatched;
                   const isTerm = card.type === "term";
@@ -367,7 +367,7 @@ const MemoryRH: React.FC<MemoryRHProps> = ({ onClose }) => {
                     <div 
                       key={card.id}
                       onClick={() => handleCardClick(idx)}
-                      className="h-28 sm:h-36 md:h-40 aspect-square mx-auto perspective cursor-pointer select-none group"
+                      className="w-full max-w-[105px] sm:max-w-[144px] md:max-w-[160px] aspect-square mx-auto perspective cursor-pointer select-none group"
                     >
                       <div 
                         className={`w-full h-full relative duration-500 transform-style-3d ${

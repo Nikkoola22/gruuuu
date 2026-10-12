@@ -476,6 +476,7 @@ const GeoguessrGennevilliers: React.FC<GeoguessrGennevilliersProps> = ({ onClose
             guessMarkerRef.current = null;
           }
           map.setView([48.933, 2.298], 13);
+          setTimeout(() => map.invalidateSize(), 150);
         }
     }
   }, [showAnswer, round, guess]);
@@ -764,8 +765,30 @@ const GeoguessrGennevilliers: React.FC<GeoguessrGennevilliersProps> = ({ onClose
               </div>
 
               {/* Leaflet container */}
-              <div className="relative flex-1 bg-slate-950 border border-slate-850 rounded-2xl overflow-hidden shadow-inner min-h-[400px]">
-                <div ref={mapContainerRef} className="w-full h-full min-h-[400px] z-10" />
+              <div className="relative flex-1 bg-slate-950 border border-slate-850 rounded-2xl overflow-hidden shadow-inner min-h-[340px] sm:min-h-[400px]">
+                <div ref={mapContainerRef} className="w-full h-full min-h-[340px] sm:min-h-[400px] z-10" />
+              </div>
+
+              {/* Bouton d'action rapide mobile sous la carte */}
+              <div className="lg:hidden mt-3">
+                {showAnswer ? (
+                  <button
+                    onClick={handleNextRound}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black rounded-xl shadow-lg transition-all uppercase tracking-wide text-xs active:scale-95"
+                  >
+                    <span>Continuer</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleValidateGuess(false)}
+                    disabled={!guess}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-sky-500 hover:bg-sky-400 disabled:bg-slate-800 disabled:text-slate-500 text-slate-950 font-black rounded-xl transition-all uppercase tracking-wide text-xs shadow-lg active:scale-95"
+                  >
+                    <MapPin className="w-4 h-4" />
+                    Valider mon placement
+                  </button>
+                )}
               </div>
             </div>
 

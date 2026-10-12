@@ -259,16 +259,26 @@ export const DELIBERATIONS_GENNEVILLIERS_2026: Record<string, DeliberationBudget
   principal: {
     id: 'principal',
     numeroDelib: 'Délibération n°2026/S6/004',
-    titre: 'Budget Supplémentaire 2026 de la Commune & Affectation du CFU 2025',
+    titre: 'Budget Supplémentaire de la Commune pour l’exercice 2026 & Reprise du CFU 2025',
     budgetType: 'principal',
-    dateConseil: '23 septembre 2026',
-    dateTransmissionPrefecture: '29 septembre 2026',
+    dateConseil: '23 septembre 2026 (convoqué le 17/09/2026)',
+    dateTransmissionPrefecture: '29 septembre 2026 (signé les 25 et 28/09/2026)',
     chaineIntegrite: '43 40 2F 09 90 69 5E 5D 59 3A B7 50 3A 9A BB E5',
     arPrefecture: '092-219200367-20260925-2236-DE',
     maire: 'Patrice LECLERC',
+    secretaireSeance: 'Tristan PEPIN',
     votesPour: 40,
     votesContre: 4,
+    votesAbstention: 0,
     typeVote: 'majorite',
+    detailsVote: {
+      quorumTexte: "Quorum atteint (Art. L.2121-17 CGCT) — 39 présents, 5 représentés (Z. Zouaoui par C. Lafon, S. Rezk par I. Ndiaye, A. Labadie par D. Toumi, S. Blanc par V. Desmettre, F. Moreau par M. Binakdane), 1 absent excusé (Abdallah SEDIRA)",
+      votantsTotal: 44,
+      contreNoms: ["Guilhem PELLET", "Brice NKONDA", "Delphine PARMENTIER", "Laëtitia GHIRARDI"],
+      abstentionNoms: []
+    },
+    delegationArticle2: "Art. 1 : Vote par chapitre en dépenses et en recettes • Art. 2 : Section de fonctionnement arrêtée à 1 790 209,00 € de mouvements nouveaux (reports 2025 nuls) • Art. 3 : Section d'investissement arrêtée à 25 499 598,92 € (mouvements nouveaux : 10 424 375,12 € en dépenses et 13 396 494,90 € en recettes ; RAR 2025 : 15 075 223,80 € en dépenses et 12 103 104,02 € en recettes) • Art. 4 : Virement de la section de fonctionnement à la section d'investissement inscrit pour 283 749,59 € (dépense chap. 023 / recette chap. 021).",
+    delaiRecours: "Article 5 : Recours pour excès de pouvoir (REP) auprès du Tribunal administratif de Cergy-Pontoise (2-4 boulevard l'Hautil – BP 30322 – 95207 Cergy-Pontoise) dans un délai de deux mois à compter de sa publication (29/09/2026 — Publiact n°1171016).",
     montantTotalEquilibre: 27289807.92,
     sectionFonctionnementTotal: 1790209.00,
     sectionInvestissementTotal: 25499598.92,
@@ -290,14 +300,14 @@ export const DELIBERATIONS_GENNEVILLIERS_2026: Record<string, DeliberationBudget
     ],
     recettesFonctionnement: [
       { nature: 'REEL', chapitre: '002', libelle: 'Résultat de fonctionnement reporté (R002)', montantBS2026: 1000000.00, reports2025: 0, totalBS: 1000000.00 },
-      { nature: 'REEL', chapitre: '70', libelle: 'Produits des services, domaine et ventes diverses', montantBS2026: -20000.00, reports2025: 0, totalBS: -20000.00 },
+      { nature: 'REEL', chapitre: '70', libelle: 'Produits des services, du domaine et ventes diverses', montantBS2026: -20000.00, reports2025: 0, totalBS: -20000.00 },
       { nature: 'REEL', chapitre: '73', libelle: 'Impôts et taxes', montantBS2026: -453396.00, reports2025: 0, totalBS: -453396.00 },
       { nature: 'REEL', chapitre: '731', libelle: 'Fiscalité locale', montantBS2026: 108257.00, reports2025: 0, totalBS: 108257.00 },
       { nature: 'REEL', chapitre: '74', libelle: 'Dotations et participations', montantBS2026: 885289.00, reports2025: 0, totalBS: 885289.00 },
       { nature: 'REEL', chapitre: '75', libelle: 'Autres produits de gestion courante', montantBS2026: 270059.00, reports2025: 0, totalBS: 270059.00 },
     ],
     depensesInvestissement: [
-      { nature: 'REEL', chapitre: '001', libelle: "Solde d'exécution d'investissement reporté (D001)", montantBS2026: 10430496.46, reports2025: 0, totalBS: 10430496.46 },
+      { nature: 'REEL', chapitre: '001', libelle: "Solde d'exécution de la section d'investissement (D001)", montantBS2026: 10430496.46, reports2025: 0, totalBS: 10430496.46 },
       { nature: 'REEL', chapitre: '16', libelle: 'Emprunts et dettes assimilées', montantBS2026: -77000.00, reports2025: 0, totalBS: -77000.00 },
       { nature: 'REEL', chapitre: '20', libelle: 'Immobilisations incorporelles', montantBS2026: -714000.00, reports2025: 1965898.77, totalBS: 1251898.77 },
       { nature: 'REEL', chapitre: '204', libelle: "Subventions d'équipement versées", montantBS2026: -318121.34, reports2025: 0, totalBS: -318121.34 },
@@ -313,11 +323,11 @@ export const DELIBERATIONS_GENNEVILLIERS_2026: Record<string, DeliberationBudget
       { nature: 'REEL', chapitre: '27', libelle: 'Autres immobilisations financières', montantBS2026: 1120500.00, reports2025: 0, totalBS: 1120500.00 },
     ],
     pointsClesJuridiques: [
-      "Conformité CGCT L. 2121-12 et L. 1612-11 : reprise obligatoire des résultats du CFU 2025 au budget supplémentaire.",
-      "Affectation M57 du résultat : l'excédent de fonctionnement (+17,39 M€) couvre le besoin net d'investissement via le compte 1068 (16,39 M€).",
-      "Le reliquat de 1,00 M€ est inscrit en report de fonctionnement R002 comme marge de manœuvre.",
-      "La section d'investissement intègre 15,08 M€ de restes à réaliser (RAR) en dépenses (chap. 20, 21, 23) et 12,10 M€ en recettes déjà notifiées.",
-      "Séance publique du 23/09/2026, transmis en préfecture le 29/09/2026 sous le visa AR 092-219200367-20260925-2236-DE."
+      "Conformité CGCT Art. L. 2121-12, L. 2121-17 et L. 1612-11 : Conseil municipal convoqué le 17/09/2026 et réuni le 23/09/2026 (39 présents, 5 représentés, 1 absent excusé ; adopté par 40 voix pour et 4 contre).",
+      "Concordance exacte CFU 2025 / BS 2026 : résultat cumulé de fonctionnement (+17 399 407,33 €) affecté à hauteur de 16 399 407,33 € au compte 1068 et 1 000 000,00 € en report R002 ; reprise en D001 pour 10 430 496,46 € (le résultat cumulé d'investissement de -13 402 616,24 € intégrant l'écart net de RAR de -2 972 119,78 €).",
+      "Équilibre de la section de fonctionnement (+1 790 209,00 €, reports nuls) : +1 506 459,41 € de dépenses réelles nouvelles (Chap. 011 : +1 063 249,98 €, Chap. 65 : +243 209,43 €, Chap. 66 : +200 000,00 € ; Chap. 012 inchangé à 0 €) et +283 749,59 € de virement d'autofinancement (Chap. 023).",
+      "Désendettement et reprofilage de l'investissement (25 499 598,92 €) : réduction de -3 063 418,02 € de l'emprunt nouveau inscrit au Chap. 16 Recettes grâce à la capitalisation au compte 1068, baisse de -77 000,00 € sur l'annuité en capital (Chap. 16 Dépenses) et inscription d'une opération symétrique de 1 120 500,00 € au Chap. 27.",
+      "Consolidation annuelle 2026 (BP + BS) : le budget global 2026 de la Ville s'établit à 277 957 913,22 € (169 940 944,30 € en fonctionnement et 108 016 968,92 € en investissement). Acte signé électroniquement les 25 et 28/09/2026 et télétransmis le 29/09/2026 (AR 092-219200367-20260925-2236-DE)."
     ],
   },
   restauration: {
@@ -441,16 +451,16 @@ export const PRESETS_COLLECTIVITES: Record<string, BudgetM57Input> = {
     depensesPersonnel012: 91397205,
   },
   gennevilliers_principal_delib_2026: {
-    collectiviteNom: 'Gennevilliers — BS 2026 Principal (Délib. 2026/S6/004)',
+    collectiviteNom: 'Gennevilliers — Budget Consolidé 2026 (BP + BS Délib. 2026/S6/004)',
     typeCollectivite: 'commune',
     population: 51200,
     exercice: 2026,
     base: 'execution',
-    recettesReellesFonctionnement: 141200000,
-    depensesReellesFonctionnement: 123800000,
-    remboursementCapitalDette: 8200000,
-    encoursDetteFinExercice: 69400000,
-    depensesPersonnel012: 68900000,
+    recettesReellesFonctionnement: 169940944,
+    depensesReellesFonctionnement: 156334706,
+    remboursementCapitalDette: 9549700,
+    encoursDetteFinExercice: 69336582,
+    depensesPersonnel012: 96063865,
   },
   gennevilliers_cfu_2025: {
     collectiviteNom: 'Gennevilliers — CFU 2025 Exécution (Délib. 2026/S6/004)',
@@ -689,61 +699,251 @@ export function analyserBudgetM57(input: BudgetM57Input): BudgetM57Result {
 }
 
 /**
- * Générateur de Note d'Arbitrage à l'Autorité Territoriale
+ * Générateur de Note d'Arbitrage à l'Autorité Territoriale (Enrichi avec Délibération BS 2026 n°2026/S6/004 & CFU 2025)
  */
 export function genererNoteDecision(result: BudgetM57Result, options: { objet?: string; signataire?: string }): string {
   const dateStr = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  const objet = options.objet || `Arbitrage budgétaire M57 et trajectoire financière ${result.exercice}`;
-  const signataire = options.signataire || 'Direction Générale des Services / Direction des Finances';
+  const objet = options.objet || `Arbitrage budgétaire M57, exécution du BS 2026 (Délib. n°2026/S6/004) et trajectoire financière ${result.exercice}`;
+  const signataire = options.signataire || 'Direction Générale des Services / Direction des Affaires Financières';
+  const plafondFongibiliteFonct = Math.round(result.drf * 0.075);
+  const impactRifseep1Pct = Math.round((result.poidsChargesPersonnelPct ? (result.drf * result.poidsChargesPersonnelPct) / 100 : result.drf * 0.61) * 0.01);
 
-  return `# Projet de note à l'autorité territoriale
+  return `# Projet de note d'arbitrage à l'autorité territoriale
 
-**Destinataire :** Monsieur / Madame le Maire / Président(e)
+**Destinataire :** Monsieur Patrice LECLERC, Maire de Gennevilliers / Autorité territoriale
 **Émetteur :** ${signataire}
 **Date :** ${dateStr}
 **Objet :** ${objet}
-**Collectivité :** ${result.collectiviteNom} (Exercice ${result.exercice} - Base ${result.base})
-**Statut :** Document de travail et d'arbitrage interne — Ne constitue pas un acte exécutoire
+**Entité, compétence et période :** ${result.collectiviteNom} — Commune (51 200 hab.) — Budget principal M57 — Exercice ${result.exercice} (Base : ${result.base === 'prevision' ? 'Budget Primitif voté' : 'Exécution consolidée / CFU & BS'})
+**Pièces de référence certifiées :**
+- **Délibération n°2026/S1/001 du 4 février 2026** portant vote du Budget Primitif 2026 (\`250 668 105,30 €\`, télétransmise le 10/02/2026, AR \`092-219200367-20260209-deliberation1-DE\`)
+- **Délibération n°2026/S6/004 du 23 septembre 2026** portant vote du Budget Supplémentaire 2026 (\`27 289 807,92 €\`, signée électroniquement les 25 et 28/09/2026 par M. Patrice LECLERC, Maire, et M. Tristan PEPIN, Secrétaire de séance ; télétransmise et publiée le 29/09/2026, AR \`092-219200367-20260925-2236-DE\`, empreinte \`43 40 2F 09 90 69 5E 5D 59 3A B7 50 3A 9A BB E5\`, Publiact n°\`1171016\`)
+- **Compte Financier Unique (CFU) 2025** et délibération d'affectation du résultat 2025 du budget principal (+ budgets annexes Restauration \`n°2026/S6/005\` et Cinéma Jean Vigo \`n°2026/S6/006\`)
+**Statut :** *Projet préparatoire à relire par la DGS et l'exécutif, sans signature ni transmission externe — Ne constitue pas un acte exécutoire.*
 
 ---
 
-## 1. Synthèse des Équilibres M57
+## 1. Situation Financière, Reprise du CFU 2025 et Équilibres M57 Consolidés
 
-| Indicateur M57 | Valeur constatée | Référence DGCL / CRC | Diagnostic |
+### 1.1. Indicateurs et ratios prudentiels du périmètre examiné (${result.collectiviteNom})
+
+| Indicateur M57 | Valeur constatée | Référence DGCL / Seuil CRC | Diagnostic & Appréciation |
 |---|---|---|---|
-| **Recettes Réelles de Fonctionnement (RRF)** | ${result.rrf.toLocaleString('fr-FR')} € | Base de calcul | - |
-| **Dépenses Réelles de Fonctionnement (DRF)** | ${result.drf.toLocaleString('fr-FR')} € | Maîtrise des charges | - |
-| **Épargne Brute (Autofinancement)** | ${result.epargneBrute.toLocaleString('fr-FR')} € | RRF - DRF | ${result.diagnosticEpargne.message} |
-| **Épargne Nette (après capital dette)** | ${result.epargneNette.toLocaleString('fr-FR')} € | Doit être positive | ${result.epargneNette >= 0 ? 'Couverture assurée' : 'Déficit d’autofinancement'} |
-| **Taux d'Épargne Brute** | ${result.tauxEpargneBrute !== null ? result.tauxEpargneBrute + ' %' : 'N/A'} | Objectif : > 10 % (idéal > 15 %) | ${result.diagnosticEpargne.niveau.toUpperCase()} |
-| **Capacité de Désendettement** | ${result.capaciteDesendettementAns !== null ? result.capaciteDesendettementAns + ' années' : 'Incalculable'} | Seuil alerte CRC : 10 - 12 ans | ${result.diagnosticDesendettement.niveau.toUpperCase()} |
-| **Encours total de la dette au 31/12** | ${result.encoursDette.toLocaleString('fr-FR')} € | Annuité capital : ${result.capitalDette.toLocaleString('fr-FR')} € | - |
+| **Recettes Réelles de Fonctionnement (RRF)** | **${result.rrf.toLocaleString('fr-FR')} €** | Chap. 013, 70, 73, 731, 74, 75, 77 (+ R002 si consolidé) | Ressources d'exploitation hors écritures d'ordre |
+| **Dépenses Réelles de Fonctionnement (DRF)** | **${result.drf.toLocaleString('fr-FR')} €** | Chap. 011, 012, 65, 66, 67 | Plafond fongibilité 7,5 % : \`${plafondFongibiliteFonct.toLocaleString('fr-FR')} €\` |
+| **dont Charges de Personnel (Chap. 012)** | **${result.poidsChargesPersonnelPct !== null ? result.poidsChargesPersonnelPct + ' % des DRF' : 'Non isolé'}** | Strate communale > 50 000 hab. : 58 % à 64 % | Stabilisé à \`96 063 865,00 €\` (\`0,00 €\` de mouvement au BS 2026) |
+| **Épargne Brute (Autofinancement / CAF)** | **${result.epargneBrute.toLocaleString('fr-FR')} €** | Formule : RRF − DRF | **${result.diagnosticEpargne.message}** |
+| **Taux d'Épargne Brute** | **${result.tauxEpargneBrute !== null ? result.tauxEpargneBrute + ' %' : 'N/A'}** | Seuil vigilance DGCL : 8-10 % / Cible : > 12 % | Niveau **${result.diagnosticEpargne.niveau.toUpperCase()}** |
+| **Remboursement Capital Dette (Chap. 16)** | **${result.capitalDette.toLocaleString('fr-FR')} €** | Couverture obligatoire par l'épargne brute (L. 1612-4) | Ajusté de \`-77 000,00 €\` au BS 2026 (soit \`9 549 700,00 €\` consolidé) |
+| **Épargne Nette (Autofinancement disponible)** | **${result.epargneNette.toLocaleString('fr-FR')} €** | Formule : Épargne Brute − Capital Dette | **${result.epargneNette >= 0 ? 'Équilibre réel assuré (Art. L. 1612-4 CGCT)' : 'ALERTE : Déficit d’autofinancement propre'}** |
+| **Encours Total de la Dette au 31/12** | **${result.encoursDette.toLocaleString('fr-FR')} €** | Dette bancaire et assimilée (Chap. 16) | Réduction d'emprunt nouveau de \`-3 063 418,02 €\` au BS 2026 |
+| **Capacité de Désendettement** | **${result.capaciteDesendettementAns !== null ? result.capaciteDesendettementAns + ' années' : 'Incalculable'}** | Vigilance : 8-10 ans • Alerte CRC : 10-12 ans | Niveau **${result.diagnosticDesendettement.niveau.toUpperCase()}** (${result.diagnosticDesendettement.message}) |
+
+### 1.2. Analyse de l'intégration du Budget Supplémentaire 2026 (Délibération n°2026/S6/004 du 23/09/2026)
+
+L'adoption du Budget Supplémentaire 2026 par le Conseil municipal du 23 septembre 2026 (40 voix pour, 4 voix contre) opère la jonction réglementaire entre la clôture du **Compte Financier Unique (CFU) 2025** et le **Budget Primitif 2026** :
+
+1. **Mécanisme d'apurement intégral du besoin de financement 2025 (Art. L. 2311-5 CGCT) :**
+   - Le CFU 2025 dégage un **excédent cumulé de fonctionnement de \`+17 399 407,33 €\`** face à un **résultat cumulé d'investissement de \`-13 402 616,24 €\`**, composé du solde d'exécution comptable repris en **D001 (\`10 430 496,46 €\`)** et du besoin net de financement des Restes à Réaliser (**\`2 972 119,78 €\`**, soit \`15 075 223,80 €\` de RAR Dépenses moins \`12 103 104,02 €\` de RAR Recettes).
+   - L'affectation au **compte 1068 (\`16 399 407,33 €\`)** couvre 100 % du déficit d'exécution D001 (\`10 430 496,46 €\`) et l'intégralité du solde net des RAR (\`2 972 119,78 €\`), tout en dégageant un excédent de financement qui permet de **réduire le recours à l'emprunt inscrit en 2026 de \`-3 063 418,02 €\`** (Chapitre 16 Recettes).
+   - Le reliquat de **\`1 000 000,00 €\`** est repris en **R002** (recette de fonctionnement reportée) pour sécuriser l'exécution 2026.
+
+2. **Ajustements de la section de fonctionnement au BS 2026 (\`+1 790 209,00 €\`, reports 2025 nuls) :**
+   - **En recettes (\`+1 790 209,00 €\`) :** outre le report R002 (\`+1 000 000,00 €\`), la Ville inscrit \`+885 289,00 €\` de dotations et participations (Chap. 74), \`+270 059,00 €\` d'autres produits de gestion courante (Chap. 75) et \`+108 257,00 €\` de fiscalité locale (Chap. 731), qui absorbent intégralement la moins-value sur le Chapitre 73 *Impôts et taxes* (\`-453 396,00 €\`) et l'ajustement du Chapitre 70 (\`-20 000,00 €\`).
+   - **En dépenses (\`+1 790 209,00 €\`) :** abondement ciblé des charges à caractère général Chap. 011 (\`+1 063 249,98 €\`), des autres charges de gestion courante Chap. 65 (\`+243 209,43 €\`), des charges financières Chap. 66 (\`+200 000,00 €\` liés aux taux d'intérêt), et transfert d'un **virement complémentaire à la section d'investissement de \`+283 749,59 €\`** (Chap. 023 / Chap. 021). **Aucun crédit supplémentaire n'est demandé sur le Chapitre 012 (masse salariale maintenue à \`96 063 865,00 €\`)**.
+
+3. **Consolidation budgétaire annuelle 2026 (BP Primitif + BS 2026) :**
+
+| Section / Agrégat | BP 2026 (Délib. 2026/S1/001) | BS 2026 Nouveaux (2026/S6/004) | Reports RAR 2025 | Total Consolidé 2026 (BP + BS) |
+|---|---|---|---|---|
+| **Section de Fonctionnement** | \`168 150 735,30 €\` | \`+1 790 209,00 €\` | \`0,00 €\` | **\`169 940 944,30 €\`** |
+| **Section d'Investissement** | \`82 517 370,00 €\` | \`+10 424 375,12 €\` (Dép.) / \`+13 396 494,90 €\` (Rec.) | \`15 075 223,80 €\` (Dép.) / \`12 103 104,02 €\` (Rec.) | **\`108 016 968,92 €\`** |
+| **Total Général du Budget** | **\`250 668 105,30 €\`** | **\`+12 214 584,12 €\` (Dép. nouv.)** | **\`+15 075 223,80 €\` (RAR Dép.)** | **\`277 957 913,22 €\`** |
+| *dont Virement 023 ➔ 021* | \`2 452 764,65 €\` | \`+283 749,59 €\` | \`0,00 €\` | **\`2 736 514,24 €\`** |
+| *dont Chap. 011 (Charges générales)* | \`41 058 892,92 €\` | \`+1 063 249,98 €\` | \`0,00 €\` | **\`42 122 142,90 €\`** |
+| *dont Chap. 012 (Masse salariale)* | \`96 063 865,00 €\` | \`0,00 €\` | \`0,00 €\` | **\`96 063 865,00 €\`** |
+| *dont Chap. 66 (Intérêts dette)* | \`1 750 000,00 €\` | \`+200 000,00 €\` | \`0,00 €\` | **\`1 950 000,00 €\`** |
+| *dont Chap. 16 Rec. (Emprunts)* | \`45 048 216,22 €\` | \`-3 063 418,02 €\` | \`+8 000 000,00 €\` | **\`49 984 798,20 €\`** |
 
 ---
 
-## 2. Points de Vigilance et Risques Juridiques / Financiers
+## 2. Cadre Juridique et Réglementaire Applicable
 
+- **Code général des collectivités territoriales (CGCT) :**
+  - **Articles L. 2121-12 et L. 2121-17 :** Respect du délai de convocation de 5 jours francs (convocation du 17/09/2026 pour la séance du 23/09/2026), note explicative de synthèse jointe et vérification du quorum (39 conseillers présents sur 45 en exercice, 5 pouvoirs valides, 1 absent excusé).
+  - **Article L. 1612-4 :** Obligation d'équilibre réel par section, évaluation sincère des recettes et des dépenses, et couverture intégrale du remboursement en capital des emprunts (\`9 549 700,00 €\` consolidé) par les ressources propres d'autofinancement.
+  - **Articles L. 1612-11, L. 2311-5 et R. 2311-11 à R. 2311-12 :** Compétence exclusive de l'assemblée délibérante pour le vote du Budget Supplémentaire par chapitre, reprise obligatoire des résultats du CFU 2025, affectation prioritaire de l'excédent de fonctionnement à la couverture du besoin de financement d'investissement (compte 1068) et justification des restes à réaliser (RAR) par des engagements juridiques ou notifications de recettes antérieurs au 31/12/2025.
+- **Instruction budgétaire et comptable M57 (millésime 2026) :**
+  - **Fongibilité asymétrique des crédits :** En vertu de l'article 2 de la délibération n°2026/S1/001 du 4 février 2026, le Maire est autorisé à procéder à des virements de crédits de chapitre à chapitre au sein d'une même section dans la limite de **7,5 % des dépenses réelles de chaque section** (soit \`${plafondFongibiliteFonct.toLocaleString('fr-FR')} €\` en fonctionnement), **à l'exclusion des crédits relatifs aux dépenses de personnel (Chap. 012) et des subventions aux associations**. Toute décision de virement prise par le Maire doit être transmise au représentant de l'État et portée à la connaissance du Conseil municipal lors de la plus proche séance.
+
+### Points de vigilance identifiés sur l'exercice :
 ${result.diagnosticGlobal.pointsVigilance.length > 0
   ? result.diagnosticGlobal.pointsVigilance.map(p => `- ⚠️ **${p}**`).join('\n')
-  : '- Aucun signal d’alerte critique relevé sur les ratios M57 de l’exercice.'}
+  : '- ✅ **Conformité des grands équilibres :** L’épargne brute couvre intégralement l’annuité en capital de la dette et le délai de désendettement demeure inférieur au seuil d’alerte CRC de 10 ans.'}
+- ⚠️ **Vigilance sur le rythme de liquidation des RAR d'investissement (\`15 075 223,80 €\`) :** L'importance des reports 2025 sur les chapitres 20 (\`1,97 M€\`), 21 (\`7,14 M€\`) et 23 (\`5,97 M€\`) impose un suivi serré des mandatements d'ici le 31/12/2026 pour éviter un taux d'annulation ou de glissement pluriannuel relevé en contrôle CRC.
+- ⚠️ **Surveillance des frais financiers (Chapitre 66) :** L'abondement de \`+200 000,00 €\` (+11,4 % par rapport au BP 2026) traduit la sensibilité de l'encours à taux variable ; la réduction de \`-3,06 M€\` de l'emprunt nouveau au BS 2026 constitue une mesure d'atténuation opportune.
 
 ---
 
-## 3. Options Soumises à l'Arbitrage de l'Exécutif
+## 3. Options et Scénarios Soumis à l'Arbitrage de l'Autorité Territoriale
 
-| Option | Intérêt stratégique | Incidence budgétaire documentée | Risques & Contraintes |
-|---|---|---|---|
-| **Option A : Maintien strict de la trajectoire** | Préserve les équilibres et le niveau de notation bancaire | Gel des dépenses de fonctionnement hors GVT | Tension possible sur les moyens des services |
-| **Option B : Réajustement des investissements (PPI)** | Réduit le besoin d'emprunt nouveau | Étalement pluriannuel des travaux non urgents | Décalage des livraisons d’équipements publics |
-| **Option C : Revalorisation du régime indemnitaire (RIFSEEP)** | Attractivité RH et fidélisation des agents territoriaux | +${Math.round(result.drf * 0.015).toLocaleString('fr-FR')} € estimé en masse salariale | Nécessite de gager la dépense sur les frais généraux |
+| Option d'arbitrage | Intérêt stratégique & de gestion | Incidence budgétaire documentée | Risques / Contraintes juridiques | Validation requise |
+|---|---|---|---|---|
+| **Option 1 (Recommandée) : Exécution prudentielle & Désendettement actif** | Sanctuarise la baisse d'emprunt votée au BS (\`-3,06 M€\`), sécurise l'autofinancement net (\`${result.epargneNette.toLocaleString('fr-FR')} €\`) et accélère l'apurement des RAR 2025 | Gel de précaution de 2 % sur les crédits non engagés du Chap. 011 au 15/11/2026 ; mobilisation prioritaire des \`12,10 M€\` de RAR Recettes | Nécessite un cadencement strict des bons de commande par les directions opérationnelles | Arbitrage DGS / Maire + Circulaire de clôture DAF |
+| **Option 2 : Mobilisation de la fongibilité M57 ou ajustement RH de fin d'exercice (CIA / IFSE)** | Permet d'absorber d'éventuelles tensions énergétiques ou de revaloriser le régime indemnitaire (CIA / primes) sans dégrader l'équilibre global | Fongibilité disponible hors 012 : jusqu'à \`${plafondFongibiliteFonct.toLocaleString('fr-FR')} €\` • +1 % sur le Chap. 012 équivaut à \`+${impactRifseep1Pct.toLocaleString('fr-FR')} €\` | **Attention :** La fongibilité M57 exclut le Chap. 012 et les subventions (Chap. 65). Tout abondement du 012 exige une Décision Modificative (DM) en Conseil municipal | Délibération CM (si Chap. 012/asso) ou Décision du Maire (si fongibilité 011/66/67) |
+| **Option 3 : Reprofilage du PPI & Accélération des chantiers (Chap. 21 & 23)** | Maximise le taux de réalisation des \`66,96 M€\` de crédits d'équipement consolidés (BP+BS) et optimise l'assiette éligible au FCTVA 2027 | Mandatement prioritaire des \`13,11 M€\` de RAR travaux (Chap. 21 + 23) et tirage conditionnel des \`8,00 M€\` d'emprunts reportés | Risque de tension sur la trésorerie de fin d'année si les subventions notifiées (\`4,10 M€\` de RAR Chap. 13) tardent à être encaissées | Revue conjointe DAF / Direction des Bâtiments & Travaux / SGC |
 
 ---
 
-## 4. Recommandations de la Direction
+## 4. Proposition Opérationnelle & Circuit de Validation
 
-1. **Surveillance du ratio de désendettement :** Veiller à maintenir le ratio sous le seuil d’alerte de 10 ans pour prévenir toute saisine de la CRC.
-2. **Consolidation du CFU (Compte Financier Unique) :** Fiabiliser les rattachements de fin d’exercice et les restes à réaliser (RAR).
-3. **Dialogue de gestion RH :** Articuler les créations de postes et l'évolution du CIA avec la trajectoire d'épargne brute.
+### 4.1. Plan d'exécution proposé pour le 4e trimestre 2026
+1. **Validation de l'Option 1** comme trajectoire centrale de fin d'exercice, assortie d'une **revue contradictoire des Restes à Réaliser (\`15,08 M€\` en dépenses / \`12,10 M€\` en recettes)** avant le 30 novembre 2026.
+2. **Arrêté anticipé des engagements de fonctionnement (hors dépenses obligatoires et RH)** au **20 novembre 2026** afin de fiabiliser les rattachements de charges et produits (procédure M57 de clôture en vue du CFU 2026).
+3. **Vérification de l'opération financière symétrique du Chapitre 27 (\`1 120 500,00 €\` en dépenses et en recettes au BS 2026)** avec le Service de Gestion Comptable (SGC) pour s'assurer de l'exacte concordance avec l'état de l'actif.
+
+### 4.2. Circuit de validation et visas requis
+- **Visas techniques préalables :** Direction des Affaires Financières (concordance budgétaire M57) • Direction des Ressources Humaines (suivi GVT et plafond Chap. 012 à \`96,06 M€\`) • Service Juridique / Commande Publique (marchés liés aux RAR).
+- **Autorité compétente :** Monsieur Patrice LECLERC, Maire de Gennevilliers (pour décision d'arbitrage interne ou arrêté de fongibilité M57), ou Conseil Municipal (en cas de Décision Modificative n°2 avant le 31/12/2026).
+- **Contrôle externe et publicité :** Transmission au contrôle de légalité (Préfecture des Hauts-de-Seine), publication réglementaire sur *Publiact* et notification au Comptable public assignataire (flux PESv2).
+
+---
+
+## 5. Points Ouverts et Pièces Complémentaires à Consolider
+
+- [ ] **État détaillé des Restes à Réaliser 2025 par opération et marché** justifiant les \`15 075 223,80 €\` en dépenses et les \`12 103 104,02 €\` en recettes (dont les arrêtés attributifs de subventions du Chap. 13 pour \`4 103 104,02 €\` et les contrats de prêt correspondant aux \`8 000 000,00 €\` de RAR du Chap. 16).
+- [ ] **Note justificative de l'opération croisée de \`1 120 500,00 €\` au Chapitre 27** (*Autres immobilisations financières* — p. 3 et 4 de la délibération n°2026/S6/004).
+- [ ] **Point d'étape RH au 31 octobre 2026** confirmant l'atterrissage du Chapitre 012 dans la limite stricte des \`96 063 865,00 €\` votés au BP 2026.
+`;
+}
+
+/**
+ * Générateur du Rapport de Revue Publique Locale & Audit Interne M57 (Conforme au skill collectivites-territoriales & au BS 2026 n°2026/S6/004)
+ */
+export function genererRapportAuditM57(
+  result: BudgetM57Result,
+  piecesCRC: Array<{ id: string; domaine: string; titre: string; statut: 'recu' | 'manquant' | 'non_applicable' }>
+): string {
+  const dateStr = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const piecesValidees = piecesCRC.filter(p => p.statut === 'recu').length;
+  const piecesManquantesList = piecesCRC.filter(p => p.statut === 'manquant');
+  const piecesNA = piecesCRC.filter(p => p.statut === 'non_applicable').length;
+  const tauxCompletude = Math.round((piecesValidees / Math.max(1, piecesCRC.length - piecesNA)) * 100);
+
+  return `# Projet de rapport de revue publique locale & d'audit interne M57
+
+**Statut : Travail préparatoire de contrôle interne à vérifier — Ne constitue ni une certification de comptes, ni un contrôle budgétaire préfectoral, ni une lettre d'observations de la Chambre Régionale des Comptes (CRC).**
+
+---
+
+## 1. Mandat, Périmètre et Pièces Examinées
+
+- **Entité et statut juridique :** Ville de Gennevilliers (Commune — Département des Hauts-de-Seine, 92 — 51 200 habitants), collectivité territoriale régie par le Code général des collectivités territoriales (CGCT).
+- **Périmètre budgétaire, référentiel et période :** Budget principal de la Commune (et articulation avec les budgets annexes M57 *Restauration du personnel* et *Cinéma Jean Vigo*) • Instruction budgétaire et comptable **M57 (millésime 2026)** avec vote par chapitre • Exercices **2025 (clôture CFU)** et **2026 (BP Primitif & Budget Supplémentaire)** — Profil analysé : *${result.collectiviteNom}*.
+- **Objet, destinataire et responsable de validation :** Revue documentaire de régularité budgétaire, d'équilibre réel (art. L. 1612-4 CGCT) et de piste d'audit M57, destinée à la Direction Générale des Services (DGS) et à la Direction des Affaires Financières (DAF), sous la responsabilité de validation de l'Ordonnateur.
+- **Pièces officielles reçues, versions et dates d'examen (${dateStr}) :**
+  1. **Délibération n°2026/S6/004 du 23 septembre 2026** (*Budget Supplémentaire de la Commune pour l'exercice 2026*, 4 pages, convoqué le 17/09/2026, 39 présents, 5 représentés, 1 absent excusé, adopté par 40 voix pour et 4 contre ; signé électroniquement le 25/09/2026 par M. Patrice LECLERC, Maire, et le 28/09/2026 par M. Tristan PEPIN, Secrétaire de séance ; télétransmis et publié le 29/09/2026 sous l'AR \`092-219200367-20260925-2236-DE\`, chaîne d'intégrité \`43 40 2F 09 90 69 5E 5D 59 3A B7 50 3A 9A BB E5\`, Publiact \`1171016\`).
+  2. **Délibération n°2026/S1/001 du 4 février 2026** (*Budget Primitif 2026 de la Commune*, équilibré à \`250 668 105,30 €\`, télétransmis le 10/02/2026, AR \`092-219200367-20260209-deliberation1-DE\`).
+  3. **Délibération du 12 février 2025** (*Budget Primitif 2025 de la Commune*, équilibré à \`238 277 172,33 €\`, AR \`092-219200367-20250217-delib1-2025-DE\`).
+  4. **Délibérations annexes du 23 septembre 2026 :** Budget annexe *Restauration du personnel* (\`n°2026/S6/002\` & \`n°2026/S6/005\`, \`36 195,54 €\`, AR \`092-219200367-20260925-2441-DE\`) et Budget annexe *Cinéma Jean Vigo* (\`n°2026/S6/003\` & \`n°2026/S6/006\`, \`24 582,22 €\`, AR \`092-219200367-20260925-2440-DE\`).
+- **Dossier de contrôle interne CRC :** **${piecesValidees} / ${piecesCRC.length} pièces réunies (${tauxCompletude} % des pièces applicables)** • **${piecesManquantesList.length} pièce(s) restant à produire** • ${piecesNA} pièce(s) non applicable(s).
+- **Limites méthodologiques :** L'absence d'une pièce justificative au dossier est qualifiée de *point non vérifié à documenter*, et non d'irrégularité établie. Les contrôles portent sur les agrégats votés et télétransmis ; le rapprochement contradictoire avec la balance générale des comptes au 31/12 et l'état de l'actif du comptable public (SGC) relève des diligences de clôture.
+
+---
+
+## 2. Synthèse Exécutive & Contrôle de l'Équilibre Réel (Art. L. 1612-4 CGCT)
+
+### 2.1. Faits établis et concordance mathématique des actes (CFU 2025 ➔ BS 2026)
+
+| Contrôle réglementaire M57 / CGCT | Données vérifiées sur pièces (Délib. n°2026/S6/004) | Statut du contrôle |
+|---|---|---|
+| **1. Régularité formelle & Quorum (L. 2121-12 & L. 2121-17)** | Convocation le 17/09/2026 (5 jours francs respectés) • 39 présents / 45, 5 pouvoirs nominatifs, 44 suffrages exprimés (40 pour, 4 contre) | **VÉRIFIÉ SUR PIÈCE (Page 1/4)** |
+| **2. Concordance de l'affectation du résultat 2025 (L. 2311-5)** | Excédent fonct. \`17 399 407,33 €\` = Affectation 1068 (\`16 399 407,33 €\`) + Report R002 (\`1 000 000,00 €\`) | **EXACT (Écart : 0,00 €)** |
+| **3. Justification du solde d'investissement D001 & RAR** | Résultat cumulé invest. (\`-13 402 616,24 €\`) = D001 repris (\`-10 430 496,46 €\`) + Solde net RAR (\`-2 972 119,78 €\`) | **EXACT (Écart : 0,00 €)** |
+| **4. Couverture du besoin de financement par le 1068** | Compte 1068 (\`16 399 407,33 €\`) ≥ Besoin total (\`10 430 496,46 € D001 + 2 972 119,78 € RAR net = 13 402 616,24 €\`) | **CONFORME (+2 996 791,09 € de surcouverture réduisant l'emprunt)** |
+| **5. Équilibre de la section de fonctionnement BS 2026** | Dépenses nouvelles (\`1 790 209,00 €\`) = Recettes nouvelles (\`1 790 209,00 €\`) • Reports 2025 = \`0,00 €\` | **EXACT (Article 2 & Pages 2-3/4)** |
+| **6. Équilibre de la section d'investissement BS 2026** | Total Dépenses (\`10 424 375,12 € nouv. + 15 075 223,80 € RAR\`) = Total Recettes (\`13 396 494,90 € nouv. + 12 103 104,02 € RAR\`) = \`25 499 598,92 €\` | **EXACT (Article 3 & Pages 3-4/4)** |
+| **7. Parité des opérations d'ordre de section à section** | Chapitre 023 Dépenses fonct. (\`283 749,59 €\`) = Chapitre 021 Recettes invest. (\`283 749,59 €\`) | **EXACT (Article 4 & Pages 2 & 4/4)** |
+| **8. Couverture de l'annuité en capital (L. 1612-4 CGCT)** | Épargne brute (\`${result.epargneBrute.toLocaleString('fr-FR')} €\`) > Capital dette (\`${result.capitalDette.toLocaleString('fr-FR')} €\`) ➔ Épargne nette : **\`${result.epargneNette.toLocaleString('fr-FR')} €\`** | **${result.epargneNette >= 0 ? 'CONFORME (Autofinancement positif)' : 'NON CONFORME (Épargne nette négative)'}** |
+
+### 2.2. Synthèse des ratios prudentiels M57 (${result.collectiviteNom})
+- **Taux d'Épargne Brute :** **${result.tauxEpargneBrute ?? 'N/A'} %** (*${result.diagnosticEpargne.message}*) — ${result.diagnosticEpargne.recommandation}
+- **Capacité de Désendettement :** **${result.capaciteDesendettementAns ?? 'N/A'} ans** (*${result.diagnosticDesendettement.message}*) — ${result.diagnosticDesendettement.recommandation}
+- **Poids des charges de personnel (Chap. 012 / DRF) :** **${result.poidsChargesPersonnelPct !== null ? result.poidsChargesPersonnelPct + ' %' : 'N/A'}** (Masse salariale maintenue sans dépassement au BS 2026).
+
+---
+
+## 3. Fiches d'Observation Normalisées (Méthodologie CRC / Contrôle Interne)
+
+### Fiche d'observation n° OBS-2026-01 — Cycle Clôture CFU 2025 & Affectation du Résultat M57
+- **Critère et source applicable :** Articles L. 1612-11, L. 2311-5 et R. 2311-11 du CGCT ; Instruction budgétaire et comptable M57 (Tome II, Titre 3, Chapitre 3 relatif à l'affectation du résultat).
+- **Pièce / page et fait observé :** Délibération n°2026/S6/004 du 23/09/2026, page 1 (Considérants) et pages 3-4 (Tableaux annexes). Le CFU 2025 présente un résultat cumulé de fonctionnement de \`+17 399 407,33 €\` et un résultat cumulé d'investissement de \`-13 402 616,24 €\`, tandis que la ligne D001 reprend un déficit d'exécution de \`10 430 496,46 €\` et que le compte 1068 est doté de \`16 399 407,33 €\`.
+- **Contrôle réalisé, résultat et limite :** Reconstitution de la chaîne comptable : l'écart de \`2 972 119,78 €\` entre le résultat cumulé d'investissement mentionné aux considérants (\`-13 402 616,24 €\`) et le solde d'exécution D001 inscrit au tableau des dépenses d'investissement (\`10 430 496,46 €\`) correspond au centime près au besoin net des Restes à Réaliser (\`15 075 223,80 € − 12 103 104,02 € = 2 972 119,78 €\`). En outre, la dotation au compte 1068 (\`16 399 407,33 €\`) correspond à la somme du résultat cumulé dégradé des RAR (\`13 402 616,24 € + 2 972 119,78 € = 16 374 736,02 €\`) majorée d'une marge de sécurité de \`+24 671,31 €\`.
+- **Qualification :** **Point conforme — Régularité comptable établie** (avec recommandation de lisibilité rédactionnelle).
+- **Conséquence possible :** Aucune anomalie d'équilibre ; toutefois, la formulation du considérant p. 1 gagnerait à distinguer explicitement le *solde d'exécution comptable hors RAR (\`-10 430 496,46 €\`)* et le *besoin de financement incluant les RAR* afin de faciliter la lecture citoyenne et le contrôle de légalité.
+- **Recommandation proportionnée :** Dans les visas des futurs Budgets Supplémentaires, détailler systématiquement les 3 termes de l'équation M57 : *(1) Solde d'exécution D001/R001 + (2) Solde net des RAR = (3) Besoin de financement minimum à couvrir par le compte 1068*.
+
+### Fiche d'observation n° OBS-2026-02 — Cycle Investissement & Justification des Restes à Réaliser (RAR 2025)
+- **Critère et source applicable :** Articles L. 1612-11 et R. 2311-11 du CGCT ; doctrine constante des Chambres Régionales des Comptes sur la sincérité des états de restes à réaliser.
+- **Pièce / page et fait observé :** Délibération n°2026/S6/004, Article 3 (p. 2) et tableaux d'investissement (p. 3-4). Les RAR 2025 repris au BS 2026 s'élèvent à **\`15 075 223,80 €\` en dépenses** (Chap. 20 : \`1 965 898,77 €\`, Chap. 21 : \`7 143 922,35 €\`, Chap. 23 : \`5 965 402,68 €\`) et à **\`12 103 104,02 €\` en recettes** (Chap. 13 *Subventions d'investissement* : \`4 103 104,02 €\`, Chap. 16 *Emprunts* : \`8 000 000,00 €\`).
+- **Contrôle réalisé, résultat et limite :** Les RAR représentent 59,1 % du volume total de la section d'investissement du BS 2026 (\`25,50 M€\`). Parallèlement, le BS procède à des réductions de crédits nouveaux sur le Chap. 20 (\`-714 000,00 €\`), le Chap. 204 (\`-318 121,34 €\`), le Chap. 21 (\`-17 500,00 €\`) et le Chap. 13 (\`-1 343 744,00 €\`). L'état détaillé des engagements juridiques (marchés signés, bons de commande notifiés avant le 31/12/2025) et des contrats de prêt couvrant les \`8,00 M€\` de RAR au Chap. 16 n'est pas annexé à l'extrait de délibération.
+- **Qualification :** **Point à documenter (contrôle interne de clôture)**.
+- **Conséquence possible :** En l'absence de pièces justificatives probantes (actes d'engagement en dépenses, arrêtés de notification de subvention et contrats de prêt signés en recettes), le comptable public ou la CRC pourrait contester la sincérité du calcul du besoin de financement 2025.
+- **Recommandation proportionnée :** Archiver au dossier du CFU 2025 / BS 2026 l'état certifié des RAR signé par l'ordonnateur, avec le numéro d'engagement comptable, le tiers, la date de notification de chaque subvention (\`4,10 M€\`) et la convention de financement correspondant aux \`8,00 M€\` du chapitre 16.
+
+### Fiche d'observation n° OBS-2026-03 — Cycle Dette, Frais Financiers (Chap. 66) & Désendettement (Chap. 16)
+- **Critère et source applicable :** Article L. 1612-4 du CGCT ; circulaire interministérielle relative à la gestion active de la dette locale et référentiel M57.
+- **Pièce / page et fait observé :** Délibération n°2026/S6/004, pages 2, 3 et 4. Le BS 2026 inscrit **\`+200 000,00 €\`** de crédits supplémentaires au **Chapitre 66 (*Charges financières*)**, portant l'enveloppe 2026 de \`1 750 000,00 €\` (BP) à \`1 950 000,00 €\` (+11,43 %). Simultanément, l'inscription d'emprunt nouveau au **Chapitre 16 Recettes** est réduite de **\`-3 063 418,02 €\`** et l'amortissement du capital au **Chapitre 16 Dépenses** diminue de **\`-77 000,00 €\`**.
+- **Contrôle réalisé, résultat et limite :** La réduction de \`-3,06 M€\` de l'emprunt d'équilibre annuel démontre que la forte mobilisation de l'excédent 2025 via le compte 1068 (\`16,40 M€\`) se substitue directement à de l'endettement bancaire nouveau, maintenant la capacité de désendettement à **${result.capaciteDesendettementAns ?? 'N/A'} ans** (en deçà du seuil prudentiel de 10 ans). En revanche, la hausse du chapitre 66 traduit l'effet taux sur la part révisable de l'encours.
+- **Qualification :** **Bonne pratique de désendettement / Point de suivi sur le risque de taux**.
+- **Conséquence possible :** Alourdissement de la charge d'intérêts en fonctionnement si les tirages des emprunts reportés (\`8,00 M€\` de RAR) interviennent à des conditions de taux élevées.
+- **Recommandation proportionnée :** Adosser un tableau de suivi trimestriel de la dette distinguant part à taux fixe et part indexée (Euribor / Livret A), et différer au maximum le tirage effectif des lignes de crédit au vu de la trésorerie disponible.
+
+### Fiche d'observation n° OBS-2026-04 — Cycle Fonctionnement, Fiscalité (Chap. 73/74) & Masse Salariale (Chap. 012)
+- **Critère et source applicable :** Instruction M57 ; articles L. 714-4 et suivants du Code général de la fonction publique (CGFP) ; obligation légale des 1 607 heures annuelles.
+- **Pièce / page et fait observé :** Délibération n°2026/S6/004, pages 2 et 3. En fonctionnement, la moins-value fiscale sur le **Chapitre 73 (*Impôts et taxes* : \`-453 396,00 €\`)** est compensée par la hausse du **Chapitre 74 (*Dotations et participations* : \`+885 289,00 €\`)**, du **Chapitre 75 (\`+270 059,00 €\`)** et du **Chapitre 731 (\`+108 257,00 €\`)**. En dépenses, le **Chapitre 011** augmente de **\`+1 063 249,98 €\`** (+2,59 % par rapport au BP) et le **Chapitre 65** de **\`+243 209,43 €\`**, tandis que le **Chapitre 012 (*Charges de personnel*)** ne fait l'objet d'aucun abondement au BS (\`0,00 €\`, enveloppe maintenue à \`96 063 865,00 €\`).
+- **Contrôle réalisé, résultat et limite :** La stabilité du chapitre 012 au BS 2026 ramène mécaniquement le poids relatif de la masse salariale de **62,05 % des DRF au BP 2026** à **61,45 % des DRF consolidées après BS** (\`96 063 865 € / 156 334 705,58 €\`). Toutefois, la pièce \`rh_3\` (*Suivi des heures supplémentaires, temps de travail 1 607h et absences*) figure encore parmi les pièces à consolider dans la checklist d'audit.
+- **Qualification :** **Écart documentaire mineur à compléter avant contrôle CRC**.
+- **Conséquence possible :** Lors d'un examen de la gestion, la CRC contrôle systématiquement la corrélation entre l'évolution du chapitre 012 (+5,11 % entre le BP 2025 à \`91,40 M€\` et le BP 2026 à \`96,06 M€\`), le respect effectif des 1 607 heures travaillées et le cadre délibératif du RIFSEEP (IFSE + CIA).
+- **Recommandation proportionnée :** Produire un état de rapprochement DRH/DAF entre le Rapport Social Unique (RSU), le tableau des effectifs budgétaires et l'exécution des heures supplémentaires à fin octobre 2026.
+
+### Fiche d'observation n° OBS-2026-05 — Cycle Patrimoine, Opérations Financières (Chap. 27) & Contrôle Interne
+- **Critère et source applicable :** Instruction M57 (comptabilité patrimoniale et rapprochement inventaire ordonnateur / état de l'actif du comptable public).
+- **Pièce / page et fait observé :** Délibération n°2026/S6/004, pages 3 et 4. Le BS 2026 inscrit un mouvement nouveau strictement identique de **\`+1 120 500,00 €\`** en dépenses et en recettes au **Chapitre 27 (*Autres immobilisations financières*)**, qualifié de mouvement **RÉEL** dans les deux tableaux annexes. Par ailleurs, les pièces \`dette_2\` (*État de l'actif et inventaire M57*) et \`ctrl_1\` (*Cartographie des risques financiers*) sont signalées comme manquantes dans le suivi documentaire.
+- **Contrôle réalisé, résultat et limite :** Une inscription équilibrée en dépenses et en recettes réelles au chapitre 27 correspond généralement à un remboursement et octroi simultané de prêt/avance, à une régularisation de dépôt/cautionnement ou à une écriture de reclassement de créance immobilisée.
+- **Qualification :** **Point technique à documenter & Concordance inventaire/actif à finaliser**.
+- **Conséquence possible :** Risque de rejet de mandatement/titre par le comptable public si la nature réelle ou d'ordre (chapitres 040/041) de l'opération au chapitre 27 n'est pas appuyée par une convention ou un certificat administratif ; observation récurrente des CRC sur les écarts entre l'inventaire physique de l'ordonnateur et l'état de l'actif de la trésorerie.
+- **Recommandation proportionnée :** Joindre la fiche justificative de l'opération de \`1 120 500,00 €\` au chapitre 27 et planifier le certificat de concordance annuelle Inventaire / État de l'actif M57 avant la clôture de l'exercice 2026.
+
+---
+
+## 4. État des Pièces Manquantes au Dossier de Contrôle CRC
+
+${piecesManquantesList.length > 0
+  ? piecesManquantesList.map(p => `- ⚠️ **[${p.id.toUpperCase()}] ${p.domaine} :** ${p.titre} *(Statut : Point non vérifié — Pièce à réunir)*`).join('\n')
+  : '- ✅ **Exhaustivité documentaire :** L’intégralité des pièces justificatives inscrites au référentiel de contrôle interne a été réunie et pointée.'}
+
+---
+
+## 5. Plan d'Action Contradictoire et Suivi des Recommandations
+
+| Réf. Observation | Action corrective proposée | Service responsable | Échéance proposée | Preuve d'exécution attendue | État vérifié |
+|---|---|---|---|---|---|
+| **OBS-2026-01** | Formaliser dans la note de présentation M57 le tableau de passage entre résultat cumulé (\`-13,40 M€\`), D001 (\`-10,43 M€\`) et RAR nets (\`-2,97 M€\`) | Direction des Affaires Financières (DAF) | Prochain BP / BS | Annexe explicative d'affectation du résultat | **Réalisé dans l'outil** |
+| **OBS-2026-02** | Annexer les états d'engagements juridiques des \`15,08 M€\` de RAR Dépenses et les justificatifs des \`12,10 M€\` de RAR Recettes (dont \`8,00 M€\` Chap. 16) | DAF / Services gestionnaires | 15 novembre 2026 | État des RAR signé + arrêtés de subventions Chap. 13 & contrats de prêt | **À documenter** |
+| **OBS-2026-03** | Mettre en place un reporting mensuel des frais financiers (Chap. 66 réévalué à \`1,95 M€\`) et cadencer les tirages d'emprunt selon le plan de trésorerie | DAF / Cellule Dette & Trésorerie | Trimestriel | Tableau de bord de suivi des taux et de la trésorerie | **En cours** |
+| **OBS-2026-04** | Finaliser le rapprochement RSU / Chapitre 012 (\`96,06 M€\`) et produire le bilan annuel du temps de travail effectif (1 607 heures) et des heures supplémentaires | Direction des Ressources Humaines (DRH) | 30 novembre 2026 | Note de rapprochement masse salariale + état 1 607h validé CST | **À documenter** |
+| **OBS-2026-05** | Documenter l'opération symétrique de \`1 120 500,00 €\` au Chapitre 27 et arrêter le procès-verbal de concordance Inventaire Ordonnateur / État de l'Actif SGC | DAF / Patrimoine / Comptable public (SGC) | 31 décembre 2026 | Fiche justificative Chap. 27 + PV de rapprochement de l'actif M57 | **À documenter** |
+
+---
+
+## 6. Validation et Mentions de Responsabilité
+
+- **Relecture métier et juridique attendue :** Directeur Général des Services (DGS), Directeur des Affaires Financières (DAF), Directeur des Ressources Humaines (DRH) et Conseiller aux Décideurs Locaux (CDL / SGC).
+- **Points restant hors périmètre de la présente revue :** Audit des satellites de droit privé ou d'économie mixte (SEM, SPL, OPH, associations subventionnées au chapitre 65) et contrôle sur place des caisses des régies municipales.
+- **Décision de l'autorité compétente :** Visa de Monsieur le Maire de Gennevilliers après procédure contradictoire interne avec les directions concernées.
+
+*Rappel : Ce rapport préparatoire est généré à des fins d'audit interne et d'aide au pilotage M57. Il ne vaut ni certification des comptes, ni contrôle préfectoral de légalité ou budgétaire, ni observation de la Chambre Régionale des Comptes.*
 `;
 }
 

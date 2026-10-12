@@ -816,7 +816,7 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
               </div>
 
               {/* Sidebar Gauges */}
-              <div className="flex-1 flex flex-col gap-3.5 w-full lg:sticky lg:top-20">
+              <div className="flex-1 order-first lg:order-none grid grid-cols-2 lg:flex lg:flex-col gap-2.5 sm:gap-3.5 w-full lg:sticky lg:top-20">
                 <GaugeCard title="Budget Restant" value={budget} icon={Landmark} colorClass="text-emerald-400" borderGlow="shadow-[0_0_20px_rgba(16,185,129,0.15)]" type="currency" />
                 <GaugeCard title="Agents municipaux" value={agentsSat} icon={Users} colorClass="text-blue-400" borderGlow="shadow-[0_0_20px_rgba(59,130,246,0.15)]" type="percent" />
                 <GaugeCard title="Conseil Municipal" value={elusSat} icon={Building2} colorClass="text-purple-400" borderGlow="shadow-[0_0_20px_rgba(168,85,247,0.15)]" type="percent" />

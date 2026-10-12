@@ -396,7 +396,7 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
           <button
             onClick={() => !isSpinning && setCurrentFilter("all")}
             disabled={isSpinning}
-            className={`px-4  text-xs sm:text-sm font-medium rounded-full border transition-all duration-200 ${currentFilter === "all"
+            className={`px-4 py-2 text-xs sm:text-sm font-medium rounded-full border transition-all duration-200 ${currentFilter === "all"
                 ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-slate-200 dark:border-slate-700 shadow-sm"
                 : "bg-transparent text-slate-500 dark:text-slate-400 border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50"
               }`}
@@ -406,7 +406,7 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
           <button
             onClick={() => !isSpinning && setCurrentFilter("qvt")}
             disabled={isSpinning}
-            className={`px-4  text-xs sm:text-sm font-semibold rounded-full border transition-all duration-200 ${currentFilter === "qvt"
+            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-full border transition-all duration-200 ${currentFilter === "qvt"
                 ? "bg-blue-600 text-white border-blue-600 shadow"
                 : "bg-slate-900/60 text-blue-400 border-blue-500/30 hover:bg-blue-500/10 disabled:opacity-50"
               }`}
@@ -416,7 +416,7 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
           <button
             onClick={() => !isSpinning && setCurrentFilter("management")}
             disabled={isSpinning}
-            className={`px-4  text-xs sm:text-sm font-semibold rounded-full border transition-all duration-200 ${currentFilter === "management"
+            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-full border transition-all duration-200 ${currentFilter === "management"
                 ? "bg-emerald-600 text-white border-emerald-600 shadow"
                 : "bg-slate-900/60 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/10 disabled:opacity-50"
               }`}
@@ -426,7 +426,7 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
           <button
             onClick={() => !isSpinning && setCurrentFilter("carriere")}
             disabled={isSpinning}
-            className={`px-4  text-xs sm:text-sm font-semibold rounded-full border transition-all duration-200 ${currentFilter === "carriere"
+            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-full border transition-all duration-200 ${currentFilter === "carriere"
                 ? "bg-purple-600 text-white border-purple-600 shadow"
                 : "bg-slate-900/60 text-purple-400 border-purple-500/30 hover:bg-purple-500/10 disabled:opacity-50"
               }`}
@@ -436,7 +436,7 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
           <button
             onClick={() => !isSpinning && setCurrentFilter("detente")}
             disabled={isSpinning}
-            className={`px-4  text-xs sm:text-sm font-semibold rounded-full border transition-all duration-200 ${currentFilter === "detente"
+            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-full border transition-all duration-200 ${currentFilter === "detente"
                 ? "bg-amber-600 text-white border-amber-600 shadow"
                 : "bg-slate-900/60 text-amber-400 border-amber-500/30 hover:bg-amber-500/10 disabled:opacity-50"
               }`}
@@ -446,19 +446,19 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
         </div>
 
         {/* Content Box */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-gradient-to-br from-slate-800/80 via-purple-900/40 to-slate-800/80 backdrop-blur border border-purple-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-gradient-to-br from-slate-800/80 via-purple-900/40 to-slate-800/80 backdrop-blur border border-purple-500/30 rounded-3xl p-4 sm:p-8 shadow-2xl">
 
           {/* Wheel Container */}
           <div className="flex flex-col items-center justify-center relative pb-10 pt-4">
 
             {/* Wooden Base Stand */}
-            <div className="absolute -bottom-2 w-[220px] h-[30px] bg-gradient-to-r from-[#b47a46] via-[#e3aa74] to-[#b47a46] rounded-full shadow-[0_10px_20px_rgba(0,0,0,0.5)] border-b-4 border-[#8c5a2c] z-0" style={{ clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)' }} />
-            <div className="absolute -bottom-4 flex justify-between w-[180px] z-0">
+            <div className="absolute -bottom-2 w-[200px] sm:w-[220px] h-[30px] bg-gradient-to-r from-[#b47a46] via-[#e3aa74] to-[#b47a46] rounded-full shadow-[0_10px_20px_rgba(0,0,0,0.5)] border-b-4 border-[#8c5a2c] z-0" style={{ clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)' }} />
+            <div className="absolute -bottom-4 flex justify-between w-[160px] sm:w-[180px] z-0">
               <div className="w-8 h-4 bg-gray-900 rounded-b-xl shadow-lg" />
               <div className="w-8 h-4 bg-gray-900 rounded-b-xl shadow-lg" />
             </div>
 
-            <div className="relative w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] md:w-[410px] md:h-[410px] mx-auto select-none z-10">
+            <div className="relative w-[260px] h-[260px] sm:w-[380px] sm:h-[380px] md:w-[410px] md:h-[410px] mx-auto select-none z-10">
 
               {/* Top pointer indicator - metal peg with red arrow */}
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-40 filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.6)] animate-bounce-slow flex flex-col items-center">
@@ -498,7 +498,7 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
               <button
                 onClick={spinWheel}
                 disabled={isSpinning}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-slate-100 via-slate-300 to-slate-500 border border-slate-400 shadow-[0_10px_20px_rgba(0,0,0,0.5),inset_0_2px_5px_rgba(255,255,255,0.8)] flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 group cursor-pointer"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-slate-100 via-slate-300 to-slate-500 border border-slate-400 shadow-[0_10px_20px_rgba(0,0,0,0.5),inset_0_2px_5px_rgba(255,255,255,0.8)] flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 group cursor-pointer"
               >
                 {/* 4 small screws on the hub */}
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-slate-400 shadow-inner" />
@@ -507,7 +507,7 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-slate-400 shadow-inner" />
 
                 {/* Orange Dome */}
-                <div className={`w-12 h-12 rounded-full shadow-[0_5px_10px_rgba(0,0,0,0.4),inset_0_4px_6px_rgba(255,255,255,0.6)] flex items-center justify-center ${isSpinning ? 'bg-gradient-to-b from-orange-600 to-red-700' : 'bg-gradient-to-b from-orange-400 to-red-600 group-hover:from-orange-300 group-hover:to-red-500'
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-[0_5px_10px_rgba(0,0,0,0.4),inset_0_4px_6px_rgba(255,255,255,0.6)] flex items-center justify-center ${isSpinning ? 'bg-gradient-to-b from-orange-600 to-red-700' : 'bg-gradient-to-b from-orange-400 to-red-600 group-hover:from-orange-300 group-hover:to-red-500'
                   }`}>
                   {/* Reflection on dome */}
                   <div className="absolute top-2.5 w-6 h-3 bg-white/40 rounded-full blur-[1px]" style={{ clipPath: 'ellipse(50% 50% at 50% 20%)' }} />
@@ -518,7 +518,7 @@ const RouletteQVT: React.FC<RouletteQVTProps> = ({ onClose }) => {
             <button
               onClick={spinWheel}
               disabled={isSpinning}
-              className="mt-8 px-8  bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-purple-900/40 hover:opacity-95 hover:scale-[1.02] transition-all duration-150 active:scale-98 disabled:opacity-50 flex items-center gap-2 btn-shine relative z-20"
+              className="mt-8 px-8 py-3.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-purple-900/40 hover:opacity-95 hover:scale-[1.02] transition-all duration-150 active:scale-98 disabled:opacity-50 flex items-center gap-2 btn-shine relative z-20"
             >
               <Sparkles className={`w-5 h-5 ${isSpinning ? 'animate-spin' : ''}`} />
               <span>Je lance la roulette</span>

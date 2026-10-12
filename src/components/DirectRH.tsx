@@ -523,7 +523,7 @@ const DirectRH: React.FC<DirectRHProps> = ({ onClose }) => {
                 </div>
               )}
             </div>
-            <span className="text-[9px] text-teal-100 font-bold uppercase tracking-wider mt-1.5 hidden sm:block drop-shadow-md">{g.label}</span>
+            <span className="text-[8px] sm:text-[9px] text-teal-100 font-bold uppercase tracking-wider mt-1 block drop-shadow-md">{g.label}</span>
           </div>
         );
       })}

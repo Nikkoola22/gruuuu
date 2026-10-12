@@ -1057,7 +1057,7 @@ const FAQQuiz: React.FC<FAQQuizProps> = ({ onClose }) => {
 
             <button
               onClick={handleRestart}
-              className="w-full  bg-gradient-to-r from-orange-500 via-purple-600 to-pink-600 text-white font-bold rounded-2xl hover:opacity-95 transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-purple-950/50 hover:scale-[1.01] active:scale-[0.99] btn-shine"
+              className="w-full py-3.5 bg-gradient-to-r from-orange-500 via-purple-600 to-pink-600 text-white font-bold rounded-2xl hover:opacity-95 transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-purple-950/50 hover:scale-[1.01] active:scale-[0.99] btn-shine"
             >
               <RotateCcw className="w-5 h-5" />
               <span>Nouveau quiz (10 questions aléatoires)</span>
@@ -1070,13 +1070,13 @@ const FAQQuiz: React.FC<FAQQuizProps> = ({ onClose }) => {
     return (
       <div
         ref={quizTopRef}
-        className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700/50 relative overflow-hidden transition-all duration-300"
+        className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-3xl p-5 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700/50 relative overflow-hidden transition-all duration-300"
       >
         <div className="flex items-center justify-between mb-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3  rounded-full shadow-sm">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-full shadow-sm">
             Question {currentIndex + 1} / {questions.length}
           </span>
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 px-3  rounded-full shadow-sm">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 px-3 py-1 rounded-full shadow-sm">
             Score : {score}
           </span>
         </div>
@@ -1113,8 +1113,8 @@ const FAQQuiz: React.FC<FAQQuizProps> = ({ onClose }) => {
             const isCorrect = i === current.correctIndex;
             const isSelected = i === selectedOption;
 
-            let btnClass = "w-full text-left px-5 py-3.5 rounded-2xl border-2 font-medium transition-all duration-200 flex items-center group relative overflow-hidden ";
-            let badgeClass = "w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm mr-4 shrink-0 transition-all duration-200 font-mono ";
+            let btnClass = "w-full text-left px-4 sm:px-5 py-3.5 rounded-2xl border-2 font-medium transition-all duration-200 flex items-center group relative overflow-hidden ";
+            let badgeClass = "w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm mr-3 sm:mr-4 shrink-0 transition-all duration-200 font-mono ";
 
             if (!answered) {
               btnClass += "border-slate-800 bg-slate-900/90 text-slate-200 hover:border-amber-500/60 hover:bg-slate-800/90 hover:shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:scale-[1.01] active:scale-[0.99] cursor-pointer";
@@ -1142,7 +1142,7 @@ const FAQQuiz: React.FC<FAQQuizProps> = ({ onClose }) => {
                 <span className={badgeClass}>
                   {String.fromCharCode(65 + i)}
                 </span>
-                <span className="flex-1 leading-snug">{option}</span>
+                <span className="flex-1 leading-snug text-sm sm:text-base">{option}</span>
               </button>
             );
           })}
@@ -1175,7 +1175,7 @@ const FAQQuiz: React.FC<FAQQuizProps> = ({ onClose }) => {
         {answered && (
           <button
             onClick={handleNext}
-            className="w-full  bg-gradient-to-r from-orange-500 via-purple-600 to-pink-600 text-white font-bold rounded-2xl hover:opacity-95 transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-purple-950/50 hover:scale-[1.01] active:scale-[0.99] btn-shine"
+            className="w-full py-3.5 bg-gradient-to-r from-orange-500 via-purple-600 to-pink-600 text-white font-bold rounded-2xl hover:opacity-95 transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-purple-950/50 hover:scale-[1.01] active:scale-[0.99] btn-shine"
           >
             <span>
               {currentIndex + 1 < questions.length
@@ -1190,7 +1190,7 @@ const FAQQuiz: React.FC<FAQQuizProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="relative z-30 isolate min-h-screen flex flex-col pt-6 sm:pt-10 overflow-x-hidden bg-slate-50 dark:bg-slate-900 transition-colors duration-500  sm: px-4 sm:px-6 lg:px-8 font-sans text-slate-800 dark:text-slate-100">
+    <div className="relative z-30 isolate min-h-screen flex flex-col pt-6 sm:pt-10 pb-12 overflow-x-hidden bg-slate-50 dark:bg-slate-900 transition-colors duration-500 px-4 sm:px-6 lg:px-8 font-sans text-slate-800 dark:text-slate-100">
       {/* Soft background glow */}
       <div style={{
         position: 'fixed', top: '50%', left: '50%',
@@ -1200,11 +1200,11 @@ const FAQQuiz: React.FC<FAQQuizProps> = ({ onClose }) => {
         filter: 'blur(40px)', pointerEvents: 'none', zIndex: 0,
       }} />
 
-      <div className="max-w-2xl mx-auto relative z-10">
+      <div className="max-w-2xl mx-auto relative z-10 w-full">
 
         {/* Retour button */}
         {onClose && (
-          <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50">
+          <div className="absolute top-0 left-0 sm:top-2 sm:left-0 z-50">
             <button
               type="button"
               onClick={onClose}
@@ -1217,7 +1217,7 @@ const FAQQuiz: React.FC<FAQQuizProps> = ({ onClose }) => {
         )}
 
         {/* Title */}
-        <div className="text-center mb-8 animate-fade-in">
+        <div className="text-center mb-8 pt-12 sm:pt-0 animate-fade-in">
           <h1 className="text-3xl sm:text-5xl font-light tracking-tight mb-2 text-slate-800 dark:text-slate-100">
             Quiz FAQ
           </h1>

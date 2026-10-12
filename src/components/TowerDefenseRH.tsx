@@ -283,9 +283,10 @@ const TowerDefenseRH: React.FC<TowerDefenseProps> = ({ onClose }) => {
     let clientY = 0;
 
     if ('touches' in e) {
-      if (e.touches.length === 0) return null;
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
+      const touch = e.touches[0] || e.changedTouches[0];
+      if (!touch) return null;
+      clientX = touch.clientX;
+      clientY = touch.clientY;
     } else {
       clientX = e.clientX;
       clientY = e.clientY;
@@ -350,7 +351,13 @@ const TowerDefenseRH: React.FC<TowerDefenseProps> = ({ onClose }) => {
 
   const handleTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
-    if (hoverTile) placeTowerAt(hoverTile.c, hoverTile.r);
+    const coords = getGridCoords(e);
+    if (coords) {
+      setHoverTile({ c: coords.c, r: coords.r });
+      placeTowerAt(coords.c, coords.r);
+    } else if (hoverTile) {
+      placeTowerAt(hoverTile.c, hoverTile.r);
+    }
   };
 
   // Main Game Loop

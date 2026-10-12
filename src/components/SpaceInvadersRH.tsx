@@ -1046,6 +1046,18 @@ const SpaceInvadersRH: React.FC<SpaceInvadersRHProps> = ({ onClose }) => {
             ref={canvasRef}
             width={CANVAS_WIDTH}
             height={CANVAS_HEIGHT}
+            onTouchStart={(e) => {
+              if (gameState !== "playing" || !canvasRef.current) return;
+              const rect = canvasRef.current.getBoundingClientRect();
+              const touchX = ((e.touches[0].clientX - rect.left) / rect.width) * CANVAS_WIDTH;
+              playerRef.current.x = Math.max(10, Math.min(CANVAS_WIDTH - playerRef.current.width - 10, touchX - playerRef.current.width / 2));
+            }}
+            onTouchMove={(e) => {
+              if (gameState !== "playing" || !canvasRef.current) return;
+              const rect = canvasRef.current.getBoundingClientRect();
+              const touchX = ((e.touches[0].clientX - rect.left) / rect.width) * CANVAS_WIDTH;
+              playerRef.current.x = Math.max(10, Math.min(CANVAS_WIDTH - playerRef.current.width - 10, touchX - playerRef.current.width / 2));
+            }}
             className="w-full h-full max-w-full max-h-full object-contain rounded-xl sm:rounded-2xl border border-slate-800 block shadow-inner touch-none select-none"
           />
 
@@ -1072,7 +1084,7 @@ const SpaceInvadersRH: React.FC<SpaceInvadersRHProps> = ({ onClose }) => {
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-white mb-2">Chasse aux Bureaucraties</h2>
               <p className="text-slate-300 text-xs sm:text-sm max-w-xs mb-5 leading-relaxed">
-                Dirigez votre chasseur avec les boutons tactiles ou le clavier et éliminez les bugs !
+                Dirigez votre chasseur avec les boutons tactiles, en glissant le doigt sur l'écran ou au clavier !
               </p>
               <button
                 onClick={startNewGame}
@@ -1110,15 +1122,18 @@ const SpaceInvadersRH: React.FC<SpaceInvadersRHProps> = ({ onClose }) => {
         {/* Mobile Controls */}
         <div className="flex gap-2.5 sm:gap-4 mt-3 sm:mt-4 w-full max-w-[min(94vw,480px)] px-1">
           <button
+            type="button"
             onPointerDown={(e) => { e.preventDefault(); keysRef.current["ArrowLeft"] = true; }}
             onPointerUp={() => { keysRef.current["ArrowLeft"] = false; }}
             onPointerLeave={() => { keysRef.current["ArrowLeft"] = false; }}
+            onPointerCancel={() => { keysRef.current["ArrowLeft"] = false; }}
             className="flex-1 py-3.5 sm:py-4 bg-slate-900 border border-slate-800 hover:border-purple-500 rounded-2xl flex items-center justify-center active:scale-95 touch-none select-none shadow-lg active:bg-slate-800"
             aria-label="Gauche"
           >
             <LeftIcon className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
           </button>
           <button
+            type="button"
             onClick={fireLaser}
             onPointerDown={(e) => { e.preventDefault(); fireLaser(); }}
             className="flex-1.5 py-3.5 sm:py-4 bg-gradient-to-r from-purple-600/30 to-pink-600/30 border border-purple-500/50 hover:bg-purple-500/40 text-purple-200 font-black rounded-2xl flex items-center justify-center gap-1.5 active:scale-95 uppercase tracking-wider text-xs sm:text-sm shadow-lg active:bg-purple-600/50 touch-none select-none"
@@ -1127,9 +1142,11 @@ const SpaceInvadersRH: React.FC<SpaceInvadersRHProps> = ({ onClose }) => {
             <Crosshair className="w-5 h-5 text-pink-400" /> TIRER
           </button>
           <button
+            type="button"
             onPointerDown={(e) => { e.preventDefault(); keysRef.current["ArrowRight"] = true; }}
             onPointerUp={() => { keysRef.current["ArrowRight"] = false; }}
             onPointerLeave={() => { keysRef.current["ArrowRight"] = false; }}
+            onPointerCancel={() => { keysRef.current["ArrowRight"] = false; }}
             className="flex-1 py-3.5 sm:py-4 bg-slate-900 border border-slate-800 hover:border-purple-500 rounded-2xl flex items-center justify-center active:scale-95 touch-none select-none shadow-lg active:bg-slate-800"
             aria-label="Droite"
           >

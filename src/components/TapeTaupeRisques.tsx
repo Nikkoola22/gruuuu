@@ -235,7 +235,7 @@ const TapeTaupeRisques: React.FC<TapeTaupeRisquesProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col pt-4 overflow-x-hidden bg-sky-200 text-slate-800 touch-none select-none font-sans">
+    <div className="relative min-h-screen flex flex-col pt-4 overflow-x-hidden bg-sky-200 text-slate-800 select-none font-sans">
       
       {/* Sky Clouds (Background) */}
       <div className="absolute top-10 left-10 w-32 h-12 bg-white rounded-full opacity-80 pointer-events-none" style={{ boxShadow: '40px -10px 0 10px white, 80px 0 0 0 white' }}></div>
@@ -296,7 +296,7 @@ const TapeTaupeRisques: React.FC<TapeTaupeRisquesProps> = ({ onClose }) => {
           <div className="absolute top-10 left-0 w-full h-8 bg-[#65a30d] border-b-4 border-[#4d7c0f] z-10" />
 
           {/* Dirt Area (with scattered rocks) */}
-          <div className="relative w-full h-full mt-20 p-2 sm:p-4 grid grid-cols-3 grid-rows-3 gap-x-2 gap-y-6 sm:gap-y-8 z-10 pb-8">
+          <div className="relative w-full h-full mt-20 p-2 sm:p-4 grid grid-cols-3 grid-rows-3 gap-x-2 gap-y-6 sm:gap-y-8 z-10 pb-8 touch-none">
             
             {/* Random rocks */}
             <div className="absolute top-32 left-8 w-6 h-3 bg-[#78716c] rounded-[100%] opacity-80 pointer-events-none" />
@@ -325,19 +325,19 @@ const TapeTaupeRisques: React.FC<TapeTaupeRisquesProps> = ({ onClose }) => {
                       <div className="absolute inset-0 bg-orange-400 rounded-full opacity-30 blur-md" />
                       
                       {/* Mole Body (Flame shape/Character) */}
-                      <div className={`relative flex flex-col items-center justify-center p-2 rounded-t-full rounded-b-[2rem] shadow-lg w-20 h-24 ${difficulty === 'hard' || mole.def.isDanger ? 'bg-gradient-to-t from-red-600 to-orange-400 border-2 border-orange-300' : 'bg-gradient-to-t from-blue-500 to-cyan-400 border-2 border-cyan-200'}`}>
+                      <div className={`relative flex flex-col items-center justify-center p-1.5 sm:p-2 rounded-t-full rounded-b-[2rem] shadow-lg w-16 h-20 sm:w-20 sm:h-24 ${difficulty === 'hard' || mole.def.isDanger ? 'bg-gradient-to-t from-red-600 to-orange-400 border-2 border-orange-300' : 'bg-gradient-to-t from-blue-500 to-cyan-400 border-2 border-cyan-200'}`}>
                         
                         {/* Eyes */}
-                        <div className="absolute top-8 flex gap-3 w-full justify-center">
-                          <div className="w-2.5 h-3.5 bg-black rounded-full" />
-                          <div className="w-2.5 h-3.5 bg-black rounded-full" />
+                        <div className="absolute top-6 sm:top-8 flex gap-2.5 sm:gap-3 w-full justify-center">
+                          <div className="w-2 h-3 sm:w-2.5 sm:h-3.5 bg-black rounded-full" />
+                          <div className="w-2 h-3 sm:w-2.5 sm:h-3.5 bg-black rounded-full" />
                         </div>
                         
                         {/* Emoji inside */}
-                        <div className="text-3xl mt-1 drop-shadow-md z-10">{mole.def.emoji}</div>
+                        <div className="text-2xl sm:text-3xl mt-1 drop-shadow-md z-10">{mole.def.emoji}</div>
                         
                         {/* Label Badge */}
-                        <div className="absolute -bottom-3 z-20 bg-black/80 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full whitespace-nowrap border border-white/30 shadow-md">
+                        <div className="absolute -bottom-3 z-20 bg-black/85 text-white text-[8px] sm:text-[9px] font-black uppercase px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap border border-white/30 shadow-md">
                           {mole.def.label}
                         </div>
                       </div>

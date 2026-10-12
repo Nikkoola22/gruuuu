@@ -230,21 +230,23 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
     setActivePowerUp(null);
     if (powerupTimerRef.current) clearTimeout(powerupTimerRef.current);
 
-          paddleRef.current = { x: 360, y: 560, width: 80, height: 16 };
-    ballsRef.current = [{ x: 400, y: 540, vx: 7, vy: -8, radius: 6, active: true, trail: [] }];
+    paddleRef.current = { x: 350, y: 560, width: 100, height: 16 };
+    ballsRef.current = [{ x: 400, y: 540, vx: 8.5, vy: -9.5, radius: 7, active: true, trail: [] }];
     particlesRef.current = [];
     powerupsRef.current = [];
+    bulletsRef.current = [];
+    shootModeRef.current = false;
     
     initBricks(1);
     setGameState("playing");
   }, [initBricks]);
 
-  // Déclencher un effet de particules d'explosion
+  // Déclencher un effet de particules d'explosion (optimisé mobile sans shadowBlur)
   const createExplosion = (x: number, y: number, color: string) => {
     const particles: Particle[] = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 10; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 3 + 1;
+      const speed = Math.random() * 4 + 1.5;
       particles.push({
         x,
         y,
@@ -253,10 +255,13 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         size: Math.random() * 3 + 2,
         color,
         alpha: 1,
-        life: Math.random() * 20 + 20
+        life: Math.random() * 16 + 12
       });
     }
-    particlesRef.current = [...particlesRef.current, ...particles];
+    particlesRef.current.push(...particles);
+    if (particlesRef.current.length > 60) {
+      particlesRef.current.splice(0, particlesRef.current.length - 60);
+    }
   };
 
   // Activer un bonus
@@ -264,7 +269,7 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
     if (type === "life") {
       setLives((l) => l + 1);
     } else if (type === "wide") {
-      paddleRef.current.width = 145;
+      paddleRef.current.width = 150;
       setActivePowerUp("Raquette Large");
       if (powerupTimerRef.current) clearTimeout(powerupTimerRef.current);
       powerupTimerRef.current = setTimeout(() => {
@@ -273,15 +278,15 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
       }, 8000);
     } else if (type === "slow") {
       ballsRef.current.forEach((b) => {
-        b.vx *= 0.65;
-        b.vy *= 0.65;
+        b.vx *= 0.7;
+        b.vy *= 0.7;
       });
       setActivePowerUp("Balle Ralentie");
       if (powerupTimerRef.current) clearTimeout(powerupTimerRef.current);
       powerupTimerRef.current = setTimeout(() => {
         ballsRef.current.forEach((b) => {
-          b.vx /= 0.65;
-          b.vy /= 0.65;
+          b.vx /= 0.7;
+          b.vy /= 0.7;
         });
         setActivePowerUp(null);
       }, 8000);
@@ -318,13 +323,15 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
       y: paddleRef.current.y,
       width: 4,
       height: 12,
-      vy: -8,
+      vy: -11,
       color: "#f43f5e",
       active: true
     });
   };
 
-  // Clavier & Souris et initialisation des étoiles
+  // Clavier & pré-rendu du décor statique (Offscreen Canvas pour fluidité maximale sur smartphone)
+  const bgCanvasRef = useRef<HTMLCanvasElement | null>(null);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") keysRef.current.left = true;
@@ -337,12 +344,11 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
           y: paddleRef.current.y,
           width: 4,
           height: 12,
-          vy: -8,
+          vy: -11,
           color: "#f43f5e",
           active: true
         });
       }
-
     };
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") keysRef.current.left = false;
@@ -352,18 +358,58 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
-    // Initialiser les étoiles spatiales
-    const stars = [];
-    for (let i = 0; i < 150; i++) {
-      stars.push({
-        x: Math.random() * CANVAS_WIDTH,
-        y: Math.random() * CANVAS_HEIGHT,
-        size: Math.random() * 1.5 + 0.5,
-        alpha: Math.random(),
-        speed: (Math.random() * 0.012 + 0.004) * (Math.random() > 0.5 ? 1 : -1)
-      });
+    // Pré-rendre le fond Arkanoid + grille + bordures métalliques + vignette une seule fois
+    const offscreen = document.createElement("canvas");
+    offscreen.width = CANVAS_WIDTH;
+    offscreen.height = CANVAS_HEIGHT;
+    const bctx = offscreen.getContext("2d");
+    if (bctx) {
+      bctx.fillStyle = "#000044";
+      bctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+      bctx.strokeStyle = "#000066";
+      bctx.lineWidth = 1;
+      bctx.beginPath();
+      for (let i = -CANVAS_HEIGHT; i < CANVAS_WIDTH + CANVAS_HEIGHT; i += 40) {
+        bctx.moveTo(i, 0);
+        bctx.lineTo(i - CANVAS_HEIGHT, CANVAS_HEIGHT);
+        bctx.moveTo(i, 0);
+        bctx.lineTo(i + CANVAS_HEIGHT, CANVAS_HEIGHT);
+      }
+      bctx.stroke();
+
+      // Bordure métallique retro
+      bctx.fillStyle = "#9ca3af";
+      bctx.fillRect(0, 0, 16, CANVAS_HEIGHT);
+      bctx.fillRect(CANVAS_WIDTH - 16, 0, 16, CANVAS_HEIGHT);
+      bctx.fillRect(0, 0, CANVAS_WIDTH, 16);
+
+      bctx.fillStyle = "#4b5563";
+      bctx.fillRect(12, 16, 4, CANVAS_HEIGHT - 16);
+      bctx.fillRect(CANVAS_WIDTH - 16, 16, 4, CANVAS_HEIGHT - 16);
+      bctx.fillRect(16, 12, CANVAS_WIDTH - 32, 4);
+
+      bctx.fillStyle = "#374151";
+      for (let y = 40; y < CANVAS_HEIGHT; y += 80) {
+        bctx.fillRect(0, y, 16, 4);
+        bctx.fillRect(CANVAS_WIDTH - 16, y, 16, 4);
+      }
+      for (let x = 40; x < CANVAS_WIDTH; x += 120) {
+        bctx.fillRect(x, 0, 4, 16);
+      }
+
+      // Vignette pré-calculée
+      const vignetteGrad = bctx.createRadialGradient(
+        CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, CANVAS_WIDTH * 0.35,
+        CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, CANVAS_WIDTH * 0.65
+      );
+      vignetteGrad.addColorStop(0, "rgba(0,0,0,0)");
+      vignetteGrad.addColorStop(0.7, "rgba(0,0,0,0.22)");
+      vignetteGrad.addColorStop(1, "rgba(0,0,0,0.65)");
+      bctx.fillStyle = vignetteGrad;
+      bctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
-    starsRef.current = stars;
+    bgCanvasRef.current = offscreen;
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
@@ -377,7 +423,6 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
     if (!canvas || gameState !== "playing") return;
     const rect = canvas.getBoundingClientRect();
     const relativeX = e.clientX - rect.left;
-    // Ajuster au centre de la raquette
     const halfWidth = paddleRef.current.width / 2;
     let newX = (relativeX / rect.width) * CANVAS_WIDTH - halfWidth;
     
@@ -400,32 +445,33 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
     paddleRef.current.x = newX;
   };
 
-  // Boucle de jeu
+  // Boucle de jeu avec Delta-Time (garantit la même vitesse réelle sur smartphone 30Hz/60Hz/120Hz)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
     let animationId: number;
+    let lastTime = performance.now();
 
-    const updateGame = () => {
+    const updateGame = (dt: number) => {
       if (gameState !== "playing") return;
 
-      // 1. Déplacer la raquette au clavier
-      const paddleSpeed = 8;
+      // 1. Déplacer la raquette au clavier / boutons tactiles
+      const paddleSpeed = 13 * dt;
       if (keysRef.current.left) {
-        paddleRef.current.x = Math.max(0, paddleRef.current.x - paddleSpeed);
+        paddleRef.current.x = Math.max(16, paddleRef.current.x - paddleSpeed);
       }
       if (keysRef.current.right) {
-        paddleRef.current.x = Math.min(CANVAS_WIDTH - paddleRef.current.width, paddleRef.current.x + paddleSpeed);
+        paddleRef.current.x = Math.min(CANVAS_WIDTH - 16 - paddleRef.current.width, paddleRef.current.x + paddleSpeed);
       }
 
-      
       // 1.5 Update Bullets
+      let pointsEarned = 0;
       bulletsRef.current.forEach(bullet => {
         if (!bullet.active) return;
-        bullet.y += bullet.vy;
+        bullet.y += bullet.vy * dt;
         if (bullet.y < 0) bullet.active = false;
         
         bricksRef.current.forEach(brick => {
@@ -438,9 +484,9 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
           ) {
             brick.isHit = true;
             bullet.active = false;
-            setScore(s => s + brick.points);
+            pointsEarned += brick.points;
             createExplosion(brick.x + brick.width / 2, brick.y + brick.height / 2, brick.color);
-            shakeRef.current = Math.max(shakeRef.current, 5);
+            shakeRef.current = Math.max(shakeRef.current, 4);
           }
         });
       });
@@ -450,35 +496,25 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
       const activeBalls = ballsRef.current.filter((b) => b.active);
       
       activeBalls.forEach((ball) => {
-        // Enregistrer la traînée de la balle
-        ball.trail = ball.trail || [];
-        ball.trail.push({ x: ball.x, y: ball.y });
-        if (ball.trail.length > 8) {
-          ball.trail.shift();
-        }
-
-        ball.x += ball.vx;
-        ball.y += ball.vy;
+        ball.x += ball.vx * dt;
+        ball.y += ball.vy * dt;
 
         // Rebond murs latéraux
-        if (ball.x - ball.radius < 0) {
-          ball.x = ball.radius;
-          ball.vx = -ball.vx;
-          shakeRef.current = Math.max(shakeRef.current, 3);
+        if (ball.x - ball.radius < 16) {
+          ball.x = 16 + ball.radius;
+          ball.vx = Math.abs(ball.vx);
           playSound('wall');
         }
-        if (ball.x + ball.radius > CANVAS_WIDTH) {
-          ball.x = CANVAS_WIDTH - ball.radius;
-          ball.vx = -ball.vx;
-          shakeRef.current = Math.max(shakeRef.current, 3);
+        if (ball.x + ball.radius > CANVAS_WIDTH - 16) {
+          ball.x = CANVAS_WIDTH - 16 - ball.radius;
+          ball.vx = -Math.abs(ball.vx);
           playSound('wall');
         }
 
         // Rebond plafond
-        if (ball.y - ball.radius < 0) {
-          ball.y = ball.radius;
-          ball.vy = -ball.vy;
-          shakeRef.current = Math.max(shakeRef.current, 3);
+        if (ball.y - ball.radius < 16) {
+          ball.y = 16 + ball.radius;
+          ball.vy = Math.abs(ball.vy);
           playSound('wall');
         }
 
@@ -491,22 +527,19 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         // Rebond sur la raquette
         const pad = paddleRef.current;
         if (
+          ball.vy > 0 &&
           ball.y + ball.radius >= pad.y &&
-          ball.y - ball.radius <= pad.y + pad.height &&
-          ball.x >= pad.x &&
-          ball.x <= pad.x + pad.width
+          ball.y - ball.radius <= pad.y + pad.height + 6 &&
+          ball.x + ball.radius >= pad.x &&
+          ball.x - ball.radius <= pad.x + pad.width
         ) {
-          // Angle de rebond selon le point d'impact sur la raquette
           const impact = ball.x - (pad.x + pad.width / 2);
-          const ratio = impact / (pad.width / 2); // Entre -1 et 1
+          const ratio = Math.max(-1, Math.min(1, impact / (pad.width / 2)));
           const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
           
-          ball.vy = -Math.abs(ball.vy);
-          ball.vx = ratio * speed * 0.9;
-          // Sécurité anti-balles infiniment horizontales
-          if (Math.abs(ball.vx) > speed * 0.95) ball.vx = Math.sign(ball.vx) * speed * 0.95;
+          ball.vx = ratio * speed * 0.85;
+          ball.vy = -Math.sqrt(Math.max(25, speed * speed - ball.vx * ball.vx));
           ball.y = pad.y - ball.radius;
-          shakeRef.current = Math.max(shakeRef.current, 4);
           playSound('paddle');
         }
 
@@ -514,7 +547,6 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         bricksRef.current.forEach((brick) => {
           if (brick.isHit) return;
 
-          // Box collision simple
           if (
             ball.x + ball.radius >= brick.x &&
             ball.x - ball.radius <= brick.x + brick.width &&
@@ -522,12 +554,11 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
             ball.y - ball.radius <= brick.y + brick.height
           ) {
             brick.isHit = true;
-            setScore((s) => s + brick.points);
+            pointsEarned += brick.points;
             createExplosion(brick.x + brick.width / 2, brick.y + brick.height / 2, brick.color);
-            shakeRef.current = Math.max(shakeRef.current, 8);
+            shakeRef.current = Math.max(shakeRef.current, 5);
             playSound('brick');
 
-            // Physique de rebond sur la brique
             const overlapX = Math.min(ball.x + ball.radius - brick.x, brick.x + brick.width - (ball.x - ball.radius));
             const overlapY = Math.min(ball.y + ball.radius - brick.y, brick.y + brick.height - (ball.y - ball.radius));
 
@@ -562,6 +593,10 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         });
       });
 
+      if (pointsEarned > 0) {
+        setScore((s) => s + pointsEarned);
+      }
+
       // Mettre à jour la liste des balles actives
       ballsRef.current = ballsRef.current.filter((b) => b.active);
 
@@ -574,13 +609,12 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
             setGameState("gameover");
           } else {
             playSound('death');
-            // Remettre une balle sur la raquette
             ballsRef.current = [{
               x: paddleRef.current.x + paddleRef.current.width / 2,
               y: paddleRef.current.y - 10,
-              vx: 7,
-              vy: -8,
-              radius: 6,
+              vx: 8.5,
+              vy: -9.5,
+              radius: 7,
               active: true,
               trail: []
             }];
@@ -591,9 +625,8 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
 
       // Déplacer les power-ups
       powerupsRef.current.forEach((pup) => {
-        pup.y += 4; // vitesse de chute rapide
+        pup.y += 4.5 * dt;
 
-        // Collision raquette
         const pad = paddleRef.current;
         if (
           pup.y + pup.size >= pad.y &&
@@ -603,17 +636,17 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         ) {
           applyPowerUp(pup.type);
           playSound('powerup');
-          pup.y = 9999; // Supprimer
+          pup.y = 9999;
         }
       });
       powerupsRef.current = powerupsRef.current.filter((pup) => pup.y < CANVAS_HEIGHT);
 
       // Mettre à jour les particules
       particlesRef.current.forEach((part) => {
-        part.x += part.vx;
-        part.y += part.vy;
-        part.life--;
-        part.alpha = Math.max(0, part.life / 30);
+        part.x += part.vx * dt;
+        part.y += part.vy * dt;
+        part.life -= dt;
+        part.alpha = Math.max(0, part.life / 25);
       });
       particlesRef.current = particlesRef.current.filter((part) => part.life > 0);
 
@@ -623,10 +656,10 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
         if (levelRef.current === 1) {
           setLevel(2);
           initBricks(2);
-                paddleRef.current = { x: 360, y: 560, width: 80, height: 16 };
-          ballsRef.current = [{ x: 400, y: 540, vx: 7, vy: -8, radius: 6, active: true, trail: [] }];
+          paddleRef.current = { x: 350, y: 560, width: 100, height: 16 };
+          ballsRef.current = [{ x: 400, y: 540, vx: 9, vy: -10, radius: 7, active: true, trail: [] }];
           powerupsRef.current = [];
-          shakeRef.current = 15;
+          shakeRef.current = 10;
         } else {
           playSound('victory');
           setGameState("victory");
@@ -636,256 +669,132 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
 
     const drawGame = () => {
       ctx.save();
-      // Effet de secousse de l'écran (camera shake)
       if (shakeRef.current > 0) {
         const dx = (Math.random() - 0.5) * 4;
         const dy = (Math.random() - 0.5) * 4;
         ctx.translate(dx, dy);
-        shakeRef.current--;
+        shakeRef.current = Math.max(0, shakeRef.current - 1);
       }
 
-      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-      // === FOND RETRO ARCANOID ===
-      ctx.fillStyle = "#000044";
-      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      
-      // Grille diagonale (losanges) subtile
-      ctx.save();
-      ctx.strokeStyle = "#000066";
-      ctx.lineWidth = 1;
-      for (let i = -CANVAS_HEIGHT; i < CANVAS_WIDTH + CANVAS_HEIGHT; i += 40) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i - CANVAS_HEIGHT, CANVAS_HEIGHT);
-        ctx.stroke();
-        
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i + CANVAS_HEIGHT, CANVAS_HEIGHT);
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      // Bordure métallique retro
-      ctx.fillStyle = "#9ca3af"; // silver
-      ctx.fillRect(0, 0, 16, CANVAS_HEIGHT); // left
-      ctx.fillRect(CANVAS_WIDTH - 16, 0, 16, CANVAS_HEIGHT); // right
-      ctx.fillRect(0, 0, CANVAS_WIDTH, 16); // top
-      
-      ctx.fillStyle = "#4b5563"; // dark silver for 3D effect
-      ctx.fillRect(12, 16, 4, CANVAS_HEIGHT - 16); // left inner
-      ctx.fillRect(CANVAS_WIDTH - 16, 16, 4, CANVAS_HEIGHT - 16); // right inner
-      ctx.fillRect(16, 12, CANVAS_WIDTH - 32, 4); // top inner
-      
-      // Joints métalliques
-      ctx.fillStyle = "#374151";
-      for (let y = 40; y < CANVAS_HEIGHT; y += 80) {
-        ctx.fillRect(0, y, 16, 4);
-        ctx.fillRect(CANVAS_WIDTH - 16, y, 16, 4);
-      }
-      for (let x = 40; x < CANVAS_WIDTH; x += 120) {
-        ctx.fillRect(x, 0, 4, 16);
+      // 1. Dessiner le fond pré-calculé en un seul appel ultra-rapide
+      if (bgCanvasRef.current) {
+        ctx.drawImage(bgCanvasRef.current, 0, 0);
+      } else {
+        ctx.fillStyle = "#000044";
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       }
 
+      // 2. Dessiner les briques
+      ctx.font = "bold 8px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
       bricksRef.current.forEach((brick) => {
         if (brick.isHit) return;
 
-        // Brick body
         ctx.fillStyle = brick.color;
         ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
 
-        // Top and Left bevel (light)
-        ctx.fillStyle = 'rgba(255,255,255,0.5)';
-        ctx.beginPath();
-        ctx.moveTo(brick.x, brick.y);
-        ctx.lineTo(brick.x + brick.width, brick.y);
-        ctx.lineTo(brick.x + brick.width - 4, brick.y + 4);
-        ctx.lineTo(brick.x + 4, brick.y + 4);
-        ctx.lineTo(brick.x + 4, brick.y + brick.height - 4);
-        ctx.lineTo(brick.x, brick.y + brick.height);
-        ctx.fill();
+        // Biseau haut/gauche rapide
+        ctx.fillStyle = "rgba(255,255,255,0.45)";
+        ctx.fillRect(brick.x, brick.y, brick.width, 3);
+        ctx.fillRect(brick.x, brick.y, 3, brick.height);
 
-        // Bottom and Right bevel (dark)
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
-        ctx.beginPath();
-        ctx.moveTo(brick.x + brick.width, brick.y + brick.height);
-        ctx.lineTo(brick.x, brick.y + brick.height);
-        ctx.lineTo(brick.x + 4, brick.y + brick.height - 4);
-        ctx.lineTo(brick.x + brick.width - 4, brick.y + brick.height - 4);
-        ctx.lineTo(brick.x + brick.width - 4, brick.y + 4);
-        ctx.lineTo(brick.x + brick.width, brick.y);
-        ctx.fill();
+        // Biseau bas/droite rapide
+        ctx.fillStyle = "rgba(0,0,0,0.45)";
+        ctx.fillRect(brick.x, brick.y + brick.height - 3, brick.width, 3);
+        ctx.fillRect(brick.x + brick.width - 3, brick.y, 3, brick.height);
 
-        // Texte monospace discret (sans ombre)
-        ctx.save();
-        ctx.fillStyle = 'rgba(0,0,0,0.6)';
-        ctx.font = 'bold 8px monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(brick.text, brick.x + brick.width / 2, brick.y + brick.height / 2 + 1);
-        ctx.restore();
+        ctx.fillStyle = "rgba(0,0,0,0.75)";
+        ctx.fillText(brick.text, brick.x + brick.width / 2, brick.y + brick.height / 2 + 0.5);
       });
 
-      // Raquette style capsule métallique (Arkanoid)
+      // 3. Raquette style capsule métallique (Arkanoid)
       const pad = paddleRef.current;
-      ctx.save();
-      
-      // Corps central gris métallique
-      const padGrad = ctx.createLinearGradient(pad.x, pad.y, pad.x, pad.y + pad.height);
-      padGrad.addColorStop(0, '#f3f4f6');
-      padGrad.addColorStop(0.3, '#9ca3af');
-      padGrad.addColorStop(1, '#4b5563');
-      ctx.fillStyle = padGrad;
+      ctx.fillStyle = "#d1d5db";
       ctx.fillRect(pad.x + pad.height / 2, pad.y, pad.width - pad.height, pad.height);
-      
-      // Embouts ronds orange/rouge
-      const endGrad = ctx.createLinearGradient(pad.x, pad.y, pad.x, pad.y + pad.height);
-      endGrad.addColorStop(0, '#fca5a5');
-      endGrad.addColorStop(0.3, '#ef4444');
-      endGrad.addColorStop(1, '#7f1d1d');
-      ctx.fillStyle = endGrad;
-      
-      // Embout gauche
+      ctx.fillStyle = "#f9fafb";
+      ctx.fillRect(pad.x + pad.height / 2, pad.y, pad.width - pad.height, 4);
+      ctx.fillStyle = "#4b5563";
+      ctx.fillRect(pad.x + pad.height / 2, pad.y + pad.height - 4, pad.width - pad.height, 4);
+
+      ctx.fillStyle = "#ef4444";
       ctx.beginPath();
       ctx.arc(pad.x + pad.height / 2, pad.y + pad.height / 2, pad.height / 2, Math.PI / 2, Math.PI * 1.5);
       ctx.fill();
-      
-      // Embout droit
       ctx.beginPath();
       ctx.arc(pad.x + pad.width - pad.height / 2, pad.y + pad.height / 2, pad.height / 2, Math.PI * 1.5, Math.PI / 2);
       ctx.fill();
 
-      // Text CFDT en noir discret
-      ctx.font = 'bold 10px sans-serif';
-      ctx.fillStyle = 'rgba(0,0,0,0.5)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('CFDT', pad.x + pad.width / 2, pad.y + pad.height / 2 + 0.5);
-      ctx.restore();
+      ctx.font = "bold 10px sans-serif";
+      ctx.fillStyle = "rgba(0,0,0,0.65)";
+      ctx.fillText("CFDT", pad.x + pad.width / 2, pad.y + pad.height / 2 + 0.5);
 
-      // Dessiner les balles (Style retro solide)
+      // 4. Dessiner les balles
       ballsRef.current.forEach((ball) => {
         if (!ball.active) return;
-        
-        // Balle principale (Cyan solide avec ombre)
+
         ctx.fillStyle = "rgba(0,0,0,0.4)";
         ctx.beginPath();
         ctx.arc(ball.x + 3, ball.y + 3, ball.radius, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = "#22d3ee"; // Cyan
+        ctx.fillStyle = "#22d3ee";
         ctx.beginPath();
         ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
         ctx.fill();
-        
-        // Reflet blanc en haut à gauche
+
         ctx.fillStyle = "#ffffff";
         ctx.beginPath();
-        ctx.arc(ball.x - ball.radius * 0.3, ball.y - ball.radius * 0.3, ball.radius * 0.3, 0, Math.PI * 2);
+        ctx.arc(ball.x - ball.radius * 0.3, ball.y - ball.radius * 0.3, ball.radius * 0.35, 0, Math.PI * 2);
         ctx.fill();
       });
 
-      // Dessiner les tirs (bullets)
+      // 5. Dessiner les tirs (bullets)
+      ctx.fillStyle = "#ef4444";
       bulletsRef.current.forEach(b => {
         if (!b.active) return;
-        ctx.fillStyle = "#ef4444";
         ctx.fillRect(b.x, b.y, b.width, b.height);
       });
 
-      // Dessiner les power-ups (Capsule retro)
+      // 6. Dessiner les power-ups
+      ctx.font = "bold 9px sans-serif";
       powerupsRef.current.forEach((pup) => {
-        // Ombre
-        ctx.fillStyle = "rgba(0,0,0,0.5)";
-        ctx.beginPath();
-        ctx.roundRect(pup.x - pup.size + 4, pup.y - pup.size / 2 + 4, pup.size * 2, pup.size, pup.size / 2);
-        ctx.fill();
-
-        // Capsule (gauche colorée, droite blanche) — radii au format [tl, tr, br, bl]
         ctx.fillStyle = pup.color;
-        ctx.beginPath();
-        ctx.roundRect(pup.x - pup.size, pup.y - pup.size / 2, pup.size, pup.size, [pup.size/2, 0, 0, pup.size/2]);
-        ctx.fill();
-
+        ctx.fillRect(pup.x - pup.size, pup.y - pup.size / 2, pup.size, pup.size);
         ctx.fillStyle = "#ffffff";
-        ctx.beginPath();
-        ctx.roundRect(pup.x, pup.y - pup.size / 2, pup.size, pup.size, [0, pup.size/2, pup.size/2, 0]);
-        ctx.fill();
-
+        ctx.fillRect(pup.x, pup.y - pup.size / 2, pup.size, pup.size);
         ctx.fillStyle = "#000000";
-        ctx.font = "bold 9px sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
         ctx.fillText(pup.label, pup.x, pup.y + 0.5);
       });
 
-      // Dessiner les particules
+      // 7. Dessiner les particules (sans shadowBlur coûteux sur mobile)
       particlesRef.current.forEach((part) => {
-        ctx.save();
         ctx.globalAlpha = part.alpha;
         ctx.fillStyle = part.color;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = part.color;
-        ctx.beginPath();
-        ctx.arc(part.x, part.y, part.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
+        ctx.fillRect(part.x - part.size / 2, part.y - part.size / 2, part.size, part.size);
       });
-
-      // === POST-PROCESSING & SHADER PASS (ReShade / SweetFX CRT & Vignette Glow Style) ===
-      ctx.save();
-      
-      // 1. Vignette optique (Ambient Occlusion aux bords du canvas)
-      const vignetteGrad = ctx.createRadialGradient(
-        CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, CANVAS_WIDTH * 0.35,
-        CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, CANVAS_WIDTH * 0.65
-      );
-      vignetteGrad.addColorStop(0, 'rgba(0,0,0,0)');
-      vignetteGrad.addColorStop(0.7, 'rgba(0,0,0,0.3)');
-      vignetteGrad.addColorStop(1, 'rgba(0,0,0,0.85)');
-      ctx.fillStyle = vignetteGrad;
-      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-      // 2. Scanlines CRT (Lignes horizontales rétro émulateur arcade)
-      ctx.fillStyle = 'rgba(10, 15, 30, 0.08)';
-      for (let y = 0; y < CANVAS_HEIGHT; y += 4) {
-        ctx.fillRect(0, y, CANVAS_WIDTH, 1.5);
-      }
-
-      // 3. Bloom / Chromatic Aberration Subtile (Lueur globale arcade)
-      const bloomGrad = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
-      bloomGrad.addColorStop(0, 'rgba(204,0,255,0.03)');
-      bloomGrad.addColorStop(0.5, 'rgba(255,121,0,0.02)');
-      bloomGrad.addColorStop(1, 'rgba(0,200,255,0.03)');
-      ctx.fillStyle = bloomGrad;
-      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx.globalAlpha = 1;
 
       ctx.restore();
-
-      ctx.restore(); // pour le Screen Shake
     };
 
-    const loop = () => {
-      updateGame();
+    const loop = (now: number) => {
+      const elapsed = now - lastTime;
+      lastTime = now;
+      // Normaliser sur une base 60 FPS (16.667ms), plafonné pour éviter les sauts en cas d'onglet inactif
+      const dt = Math.min(Math.max(elapsed / 16.667, 0.5), 2.5);
+      updateGame(dt);
       drawGame();
       animationId = requestAnimationFrame(loop);
     };
 
-    loop();
+    animationId = requestAnimationFrame(loop);
 
     return () => cancelAnimationFrame(animationId);
-  }, [gameState]);
+  }, [gameState, initBricks, playSound]);
 
   return (
     <div className="relative z-30 isolate min-h-screen flex flex-col pt-6 sm:pt-10 overflow-x-hidden font-sans" style={{background: 'linear-gradient(180deg, #050014 0%, #0a0028 100%)'}}>
-      {/* Fond néon ambiant */}
-      <div style={{
-        position: 'fixed', top: '30%', left: '50%',
-        transform: 'translate(-50%,-50%)',
-        width: 700, height: 500, borderRadius: '50%',
-        background: 'radial-gradient(ellipse at center, rgba(180,0,255,0.08) 0%, transparent 70%)',
-        filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0,
-      }} />
 
       <div className="max-w-4xl mx-auto relative z-10 w-full px-2 sm:px-4">
         
@@ -903,7 +812,7 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
 
         {/* Title & Stats */}
         <div className="text-center mb-4 sm:mb-6 pt-11 sm:pt-2 animate-fade-in">
-          <h1 className="text-2xl sm:text-5xl font-black tracking-widest mb-2 uppercase" style={{fontFamily: 'monospace', color: '#ff7900', textShadow: '0 0 25px rgba(255,121,0,0.6), 0 0 60px rgba(255,121,0,0.3)'}}>
+          <h1 className="text-2xl sm:text-5xl font-black tracking-widest mb-2 uppercase" style={{fontFamily: 'monospace', color: '#ff7900', textShadow: '0 0 25px rgba(255,121,0,0.6)'}}>
             CASSE-BRIQUE <span style={{color: '#cc00ff', textShadow: '0 0 25px rgba(204,0,255,0.7)'}}>CFDT</span>
           </h1>
           <p className="text-xs sm:text-sm font-semibold max-w-lg mx-auto mb-4 sm:mb-6 tracking-widest" style={{color: 'rgba(255,255,255,0.6)', fontFamily: 'monospace'}}>
@@ -911,23 +820,23 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-6 text-sm font-bold">
-            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(180,0,255,0.5)', color: '#d8b4fe', letterSpacing: '0.1em'}}>
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs shadow-md" style={{background: 'rgba(15,10,35,0.95)', border: '1px solid rgba(180,0,255,0.5)', color: '#d8b4fe', letterSpacing: '0.1em'}}>
               LEVEL <span className="text-white text-sm sm:text-base font-black ml-1">0{level}</span>
             </span>
-            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(255,121,0,0.5)', color: '#fdba74', letterSpacing: '0.1em'}}>
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs shadow-md" style={{background: 'rgba(15,10,35,0.95)', border: '1px solid rgba(255,121,0,0.5)', color: '#fdba74', letterSpacing: '0.1em'}}>
               SCORE <span className="text-amber-400 text-sm sm:text-base font-black ml-1">{String(score).padStart(6, '0')}</span>
             </span>
-            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs flex items-center gap-2 shadow-[0_4px_12px_rgba(0,0,0,0.5)]" style={{background: 'rgba(15,10,35,0.85)', border: '1px solid rgba(239,68,68,0.5)', color: '#fca5a5', letterSpacing: '0.1em'}}>
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs flex items-center gap-2 shadow-md" style={{background: 'rgba(15,10,35,0.95)', border: '1px solid rgba(239,68,68,0.5)', color: '#fca5a5', letterSpacing: '0.1em'}}>
               VIES
               <span className="flex gap-1">
                 {Array.from({ length: Math.max(0, lives) }).map((_, idx) => (
-                  <Heart key={idx} className="w-4 h-4 text-rose-500 fill-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
+                  <Heart key={idx} className="w-4 h-4 text-rose-500 fill-rose-500" />
                 ))}
                 {lives <= 0 && <span className="text-rose-500 font-bold text-xs">---</span>}
               </span>
             </span>
             {activePowerUp && (
-              <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs flex items-center gap-1.5 animate-bounce shadow-[0_0_20px_rgba(255,121,0,0.4)]" style={{background: 'rgba(255,121,0,0.2)', border: '1px solid rgba(255,121,0,0.6)', color: '#ff7900', letterSpacing: '0.08em'}}>
+              <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs flex items-center gap-1.5 animate-bounce" style={{background: 'rgba(255,121,0,0.2)', border: '1px solid rgba(255,121,0,0.6)', color: '#ff7900', letterSpacing: '0.08em'}}>
                 <Zap className="w-3.5 h-3.5 fill-current" />
                 {activePowerUp}
               </span>
@@ -935,13 +844,13 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
           </div>
         </div>
 
-        {/* Game Area Container */}
-        <div className="max-w-5xl mx-auto backdrop-blur-2xl rounded-3xl p-2.5 sm:p-6 relative overflow-hidden" style={{background: 'rgba(5,2,20,0.9)', border: '1px solid rgba(180,0,255,0.4)', boxShadow: '0 0 50px rgba(180,0,255,0.2), inset 0 0 60px rgba(0,0,0,0.8)'}}>
+        {/* Game Area Container (sans backdrop-blur coûteux sur mobile) */}
+        <div className="max-w-5xl mx-auto rounded-3xl p-2.5 sm:p-6 relative overflow-hidden" style={{background: '#050214', border: '1px solid rgba(180,0,255,0.4)', boxShadow: '0 10px 30px rgba(0,0,0,0.6)'}}>
           
           {gameState === "ready" && (
             <div className="text-center py-12 sm:py-16 relative z-10 animate-fade-in">
               <div className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center transform -rotate-3 hover:rotate-0 transition-transform" style={{background: 'linear-gradient(135deg, rgba(255,121,0,0.3), rgba(204,0,255,0.3))', border: '2px solid rgba(255,121,0,0.6)', boxShadow: '0 0 35px rgba(255,121,0,0.4)'}}>
-                <Activity className="w-10 h-10 text-amber-400 drop-shadow-[0_0_10px_rgba(255,121,0,0.8)]" />
+                <Activity className="w-10 h-10 text-amber-400" />
               </div>
               <h2 className="text-3xl font-black mb-3 tracking-widest uppercase" style={{fontFamily: 'monospace', color: '#ff7900', textShadow: '0 0 20px rgba(255,121,0,0.7)'}}>PRESS START</h2>
               <p className="max-w-md mx-auto mb-8 text-sm leading-relaxed" style={{color: 'rgba(255,255,255,0.6)', fontFamily: 'monospace'}}>
@@ -980,7 +889,7 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
 
           {gameState === "victory" && (
             <div className="text-center py-12 sm:py-16 relative z-10 animate-scale-up">
-              <Trophy className="w-20 h-20 mx-auto mb-6 animate-bounce" style={{color: '#facc15', filter: 'drop-shadow(0 0 20px #facc1588)'}} />
+              <Trophy className="w-20 h-20 mx-auto mb-6 animate-bounce" style={{color: '#facc15'}} />
               <h2 className="text-3xl font-black mb-3 tracking-widest uppercase" style={{fontFamily: 'monospace', color: '#facc15', textShadow: '0 0 20px #facc1566'}}>VICTOIRE !</h2>
               <p className="max-w-sm mx-auto mb-8 text-sm" style={{color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace'}}>
                 SCORE FINAL : <span style={{color: '#22c55e', fontWeight: 700}}>{String(score).padStart(6, '0')}</span>
@@ -1007,7 +916,7 @@ const CasseBrique: React.FC<CasseBriqueProps> = ({ onClose }) => {
                   onTouchStart={handleTouchMove}
                   onTouchMove={handleTouchMove}
                   className="rounded-xl md:cursor-none w-full max-w-full h-auto block touch-none select-none"
-                  style={{border: '2px solid rgba(180,0,255,0.35)', boxShadow: '0 0 30px rgba(180,0,255,0.2)'}}
+                  style={{border: '2px solid rgba(180,0,255,0.35)'}}
                 />
               </div>
 

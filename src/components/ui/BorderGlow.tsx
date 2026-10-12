@@ -3,6 +3,7 @@ import React from 'react';
 interface BorderGlowProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
+  innerClassName?: string;
   glowColor?: string;
   borderWidth?: string;
 }
@@ -10,6 +11,7 @@ interface BorderGlowProps extends React.HTMLAttributes<HTMLDivElement> {
 export const BorderGlow: React.FC<BorderGlowProps> = ({
   children,
   className = '',
+  innerClassName = 'bg-slate-950/90',
   glowColor = 'from-orange-500 via-amber-400 to-amber-600',
   borderWidth = 'p-[1px]',
   ...props
@@ -19,7 +21,7 @@ export const BorderGlow: React.FC<BorderGlowProps> = ({
       <div
         className={`absolute -inset-1 bg-gradient-to-r ${glowColor} opacity-75 blur-sm transition duration-500 group-hover:opacity-100 group-hover:blur-md animate-gradient-x`}
       />
-      <div className="relative rounded-2xl bg-slate-950/90 h-full w-full backdrop-blur-xl">
+      <div className={`relative rounded-2xl ${innerClassName} h-full w-full backdrop-blur-xl`}>
         {children}
       </div>
     </div>

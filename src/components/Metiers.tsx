@@ -212,72 +212,77 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-10 space-y-16">
+      <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
         
-        {/* Module 1 : Actes RH (Arrêtés) */}
-        <section>
+        {/* Module 1 : Actes RH (Arrêtés) — Thème Violet / Pourpre */}
+        <section className="rounded-3xl p-6 sm:p-8 bg-purple-50/50 dark:bg-purple-950/15 border-2 border-purple-200/80 dark:border-purple-800/50 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-xl text-purple-600 dark:text-purple-400">
+            <div className="flex items-center gap-3.5">
+              <div className="p-3 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl text-white shadow-md shadow-purple-500/20">
                 <LayoutList className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Actes RH (Arrêtés)</h2>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">Générez rapidement vos arrêtés administratifs pré-remplis (CGFP, LDG, CIG Petite Couronne)</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-purple-600 text-white">
+                    Bloc 1 • Arrêtés Individuels
+                  </span>
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">Actes RH (Arrêtés)</h2>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">Générez rapidement vos arrêtés administratifs pré-remplis (CGFP, LDG, CIG Petite Couronne)</p>
               </div>
             </div>
 
             {/* Barre de recherche rapide */}
             <div className="relative w-full md:w-72">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-purple-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Rechercher un arrêté..."
-                className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm"
+                className="w-full bg-white dark:bg-slate-800 border border-purple-200 dark:border-purple-700/60 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm"
               />
             </div>
           </div>
 
           {/* Onglets / Filtres par catégorie */}
-          <div className="flex flex-wrap items-center gap-2 mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+          <div className="flex flex-wrap items-center gap-2 mb-8 border-b border-purple-200/70 dark:border-purple-800/50 pb-4">
             <button
               onClick={() => setSelectedCategory("all")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === "all"
                   ? "bg-purple-600 text-white shadow-sm"
-                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-purple-100/60 dark:hover:bg-slate-700 border border-purple-200 dark:border-slate-700"
               }`}
             >
               Tous les arrêtés ({ACTES_CATALOG.length})
             </button>
             <button
               onClick={() => setSelectedCategory("carriere")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === "carriere"
                   ? "bg-purple-600 text-white shadow-sm"
-                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-purple-100/60 dark:hover:bg-slate-700 border border-purple-200 dark:border-slate-700"
               }`}
             >
               Carrière & Progression (4)
             </button>
             <button
               onClick={() => setSelectedCategory("temps")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === "temps"
                   ? "bg-purple-600 text-white shadow-sm"
-                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-purple-100/60 dark:hover:bg-slate-700 border border-purple-200 dark:border-slate-700"
               }`}
             >
               Temps de travail & Absences (4)
             </button>
             <button
               onClick={() => setSelectedCategory("mobilite")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === "mobilite"
                   ? "bg-purple-600 text-white shadow-sm"
-                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-purple-100/60 dark:hover:bg-slate-700 border border-purple-200 dark:border-slate-700"
               }`}
             >
               Mobilités & Affectations (5)
@@ -301,7 +306,7 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-purple-200 dark:border-slate-700">
               <p className="text-slate-500 dark:text-slate-400 text-sm">Aucun arrêté ne correspond à votre recherche "{searchQuery}".</p>
               <button 
                 onClick={() => { setSelectedCategory("all"); setSearchQuery(""); }}
@@ -313,38 +318,48 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
           )}
         </section>
 
-        {/* Module 2 : Simulation d'Actes RH */}
-        <section>
+        {/* Module 2 : Simulation d'Actes RH — Thème Émeraude / Teal */}
+        <section className="rounded-3xl p-4 sm:p-6 bg-gradient-to-br from-teal-50/80 via-emerald-50/40 to-cyan-50/60 dark:from-teal-950/25 dark:via-slate-900 dark:to-emerald-950/20 border-2 border-teal-300/80 dark:border-teal-800/60 shadow-sm">
+          <div className="flex items-center gap-2 mb-3 px-1">
+            <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-teal-600 text-white shadow-xs">
+              Bloc 2 • Ingénierie Juridique & Contrats CGFP
+            </span>
+          </div>
           <SimulationActeModule theme={theme} />
         </section>
 
-        {/* Module 3 : Finances & Stratégie Territoriale - Santé Financière M57 */}
-        <section className="pt-6 border-t border-slate-200 dark:border-slate-800">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl text-indigo-600 dark:text-indigo-400">
+        {/* Module 3 : Finances & Stratégie Territoriale - Santé Financière M57 — Thème Ambre / Or */}
+        <section className="rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-amber-50/80 via-orange-50/40 to-yellow-50/50 dark:from-amber-950/25 dark:via-slate-900 dark:to-orange-950/20 border-2 border-amber-300/80 dark:border-amber-700/60 shadow-sm">
+          <div className="flex items-center gap-3.5 mb-6">
+            <div className="p-3 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl text-white shadow-md shadow-amber-500/20">
               <Landmark className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Finances Locales & Ratios M57</h2>
-              <p className="text-slate-500 dark:text-slate-400 text-sm">Contrôle interne, seuils d'alerte CRC (Chambres Régionales des Comptes) et prospective budgétaire</p>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-600 text-white">
+                  Bloc 3 • Pilotage Budgétaire & Audit CRC
+                </span>
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">Finances Locales & Ratios M57</h2>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">Contrôle interne, seuils d'alerte CRC (Chambres Régionales des Comptes) et prospective budgétaire</p>
             </div>
           </div>
 
           <div
             onClick={() => onOpenM57 ? onOpenM57() : onOpenCalculator("budget-m57")}
-            className="group relative bg-white dark:bg-slate-800/90 border-2 border-indigo-500/30 hover:border-indigo-500 dark:hover:border-indigo-400 rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-xl dark:hover:shadow-indigo-500/20 transition-all duration-300 cursor-pointer bg-gradient-to-br from-indigo-50/40 via-white to-purple-50/30 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-indigo-950/20"
+            className="group relative bg-white dark:bg-slate-800/95 border-2 border-amber-400/60 hover:border-amber-500 dark:border-amber-600/50 dark:hover:border-amber-400 rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-xl dark:hover:shadow-amber-500/15 transition-all duration-300 cursor-pointer bg-gradient-to-br from-white via-amber-50/30 to-orange-50/40 dark:from-slate-800/95 dark:via-slate-800/80 dark:to-amber-950/30"
           >
             <div className="absolute top-4 right-4 flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-600 text-white shadow-sm">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-sm">
                 🏛️ M57 • Contrôles CRC
               </span>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-              <div className="p-5 sm:p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform">
+              <div className="p-5 sm:p-6 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-lg shadow-amber-500/25 text-white shrink-0 group-hover:scale-105 transition-transform">
                 <Landmark className="w-12 h-12 sm:w-16 sm:h-16" />
               </div>
               <div className="space-y-2">
-                <div className="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider">
+                <div className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">
                   Outil d'Aide à la Décision & Contrôle Financier
                 </div>
                 <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
@@ -353,7 +368,7 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
                 <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed max-w-3xl">
                   Analysez l'épargne brute, l'épargne nette, la capacité de désendettement (seuils CRC 10 et 12 ans), le poids des charges de personnel (chapitre 012). Comprend également la <strong>checklist interactive des pièces à réunir pour la CRC</strong> et les <strong>générateurs de notes d'arbitrage M57</strong>.
                 </p>
-                <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs sm:text-sm pt-2 group-hover:translate-x-1 transition-transform">
+                <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-xs sm:text-sm pt-2 group-hover:translate-x-1 transition-transform">
                   <span>Accéder à l'analyse M57 & Kit d'Audit CRC →</span>
                 </div>
               </div>

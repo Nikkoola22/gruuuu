@@ -166,7 +166,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
           {/* 1. Header épuré & Navigation 2 Modes */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-5">
             <div className="flex items-start sm:items-center gap-3.5">
-              <div className="p-3 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 text-indigo-500 dark:text-indigo-400 rounded-2xl border border-indigo-500/30 shadow-inner shrink-0">
+              <div className="p-3 bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-2xl shadow-md shadow-teal-500/20 shrink-0">
                 <FileSignature className="w-6 h-6" />
               </div>
               <div>
@@ -177,7 +177,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                   <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
                     Modèles indicatifs (non officiels)
                   </span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-500/20">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
                     Export .docx
                   </span>
                 </div>
@@ -194,7 +194,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                 onClick={() => setActiveTab("generator")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
                   activeTab === "generator"
-                    ? "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                    ? "bg-white dark:bg-slate-800 text-teal-700 dark:text-teal-400 shadow-sm"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
@@ -207,15 +207,15 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                 onClick={() => setActiveTab("catalog")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
                   activeTab === "catalog"
-                    ? "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                    ? "bg-white dark:bg-slate-800 text-teal-700 dark:text-teal-400 shadow-sm"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
-                <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
+                <BookOpen className="w-3.5 h-3.5 text-teal-600" />
                 <span>Catalogue des Modèles</span>
                 <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
                   activeTab === "catalog"
-                    ? "bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+                    ? "bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-300"
                     : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
                 }`}>
                   {totalTemplatesCount}
@@ -230,11 +230,11 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
               {/* Barre de saisie centrale */}
               <div className={`flex flex-col sm:flex-row gap-2.5 p-2 sm:p-2.5 rounded-2xl border-2 transition-all ${
                 isLight
-                  ? "bg-indigo-50/70 border-indigo-300 focus-within:border-indigo-600 shadow-md shadow-indigo-500/5 focus-within:ring-2 focus-within:ring-indigo-500/20"
-                  : "bg-slate-950/80 border-indigo-500/50 focus-within:border-indigo-400 shadow-md shadow-indigo-500/10 focus-within:ring-2 focus-within:ring-indigo-500/20"
+                  ? "bg-teal-50/70 border-teal-300 focus-within:border-teal-600 shadow-md shadow-teal-500/5 focus-within:ring-2 focus-within:ring-teal-500/20"
+                  : "bg-slate-950/80 border-teal-500/50 focus-within:border-teal-400 shadow-md shadow-teal-500/10 focus-within:ring-2 focus-within:ring-teal-500/20"
               }`}>
                 <div className="relative flex-1 flex items-center">
-                  <Search className="w-4 h-4 text-indigo-500 absolute left-3.5 pointer-events-none" />
+                  <Search className="w-4 h-4 text-teal-600 absolute left-3.5 pointer-events-none" />
                   <input
                     type="text"
                     value={statutInput}
@@ -264,7 +264,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                   type="button"
                   onClick={() => handleExecuteStatut()}
                   disabled={isStatutLoading}
-                  className="px-6 py-3 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs rounded-xl shadow-md shadow-indigo-900/30 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shrink-0 transform active:scale-98"
+                  className="px-6 py-3 bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold text-xs rounded-xl shadow-md shadow-teal-900/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shrink-0 transform active:scale-98"
                 >
                   {isStatutLoading ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />
@@ -293,13 +293,13 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                       }}
                       className={`p-3.5 rounded-2xl border text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer flex flex-col justify-between gap-2.5 ${
                         isLight
-                          ? "bg-slate-50/80 hover:bg-indigo-50/60 border-slate-200 hover:border-indigo-300"
-                          : "bg-slate-950/50 hover:bg-[#141E38] border-slate-800 hover:border-indigo-500/50"
+                          ? "bg-slate-50/80 hover:bg-teal-50/60 border-slate-200 hover:border-teal-300"
+                          : "bg-slate-950/50 hover:bg-teal-950/30 border-slate-800 hover:border-teal-500/50"
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-2xl">{item.icon}</span>
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20">
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
                           {item.badge}
                         </span>
                       </div>
@@ -313,7 +313,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-1 text-[11px] font-bold text-indigo-600 dark:text-indigo-400 pt-1 border-t border-slate-200/60 dark:border-slate-800/80">
+                      <div className="flex items-center gap-1 text-[11px] font-bold text-teal-600 dark:text-teal-400 pt-1 border-t border-slate-200/60 dark:border-slate-800/80">
                         <span>Générer</span>
                         <ArrowRight className="w-3 h-3" />
                       </div>
@@ -339,7 +339,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                     value={templateSearchQuery}
                     onChange={(e) => setTemplateSearchQuery(e.target.value)}
                     placeholder="Filtrer par titre, article CGFP ou mot-clé..."
-                    className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-teal-500"
                   />
                   {templateSearchQuery && (
                     <button
@@ -358,7 +358,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                   <select
                     value={selectedThemeFilter}
                     onChange={(e) => setSelectedThemeFilter(e.target.value)}
-                    className="px-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold focus:outline-hidden focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                    className="px-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500 cursor-pointer"
                   >
                     <option value="all">Tous les thèmes ({totalTemplatesCount})</option>
                     {ALL_THEMES_TEMPLATES.map((thm) => (
@@ -388,7 +388,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                       onClick={() => setSelectedTypeFilter(t.id)}
                       className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
                         isActive
-                          ? "bg-indigo-600 text-white shadow-xs"
+                          ? "bg-teal-600 text-white shadow-xs"
                           : isLight
                             ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
                             : "bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80"
@@ -416,7 +416,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                         setSelectedTypeFilter("all");
                         setTemplateSearchQuery("");
                       }}
-                      className="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 cursor-pointer"
+                      className="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 border border-teal-200 dark:border-teal-800 cursor-pointer"
                     >
                       Réinitialiser les filtres
                     </button>
@@ -435,7 +435,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                           style.border
                         } ${
                           isLight
-                            ? "bg-white hover:bg-indigo-50/40 border-slate-200"
+                            ? "bg-white hover:bg-teal-50/40 border-slate-200"
                             : "bg-slate-950/60 hover:bg-slate-800/80 border-slate-800"
                         }`}
                       >
@@ -449,7 +449,7 @@ export function SimulationActeModule({ theme = "dark" }: { theme?: "light" | "da
                             </span>
                           </div>
 
-                          <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-500 transition-colors line-clamp-2 leading-snug">
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-teal-600 transition-colors line-clamp-2 leading-snug">
                             {tpl.name}
                           </h4>
 

@@ -317,11 +317,11 @@ function App() {
   const [showExpandSearch, setShowExpandSearch] = useState(false)
   const [lastQuestion, setLastQuestion] = useState<string>("")
   const [showMacMenuBar, setShowMacMenuBar] = useState<boolean>(() => {
-    const saved = localStorage.getItem('showMacMenuBar');
-    return saved === null ? true : saved === 'true';
+    const saved = localStorage.getItem('showMacMenuBar_v2');
+    return saved === null ? false : saved === 'true';
   })
   useEffect(() => {
-    localStorage.setItem('showMacMenuBar', String(showMacMenuBar));
+    localStorage.setItem('showMacMenuBar_v2', String(showMacMenuBar));
   }, [showMacMenuBar]);
 
   const newsMarqueeRef = useRef<HTMLDivElement>(null)

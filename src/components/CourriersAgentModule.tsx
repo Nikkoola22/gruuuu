@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Mail,
   Download,
@@ -31,7 +32,7 @@ interface CourriersAgentModuleProps {
   onClose?: () => void;
 }
 
-const STORAGE_KEY_PROFILE = 'agent_profile_gennevilliers_v2';
+const STORAGE_KEY_PROFILE = 'agent_profile_gennevilliers_v3';
 
 export default function CourriersAgentModule({ onClose }: CourriersAgentModuleProps) {
   // Profil de l'agent persistant en LocalStorage
@@ -39,11 +40,19 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
     try {
       const saved = localStorage.getItem(STORAGE_KEY_PROFILE);
       if (saved) return JSON.parse(saved);
-      // Migration éventuelle si l'ancien profil stocké était l'exemple DUPONT par défaut
+      // Migration éventuelle si l'ancien profil stocké était l'exemple par défaut
+      const oldSavedV2 = localStorage.getItem('agent_profile_gennevilliers_v2');
+      if (oldSavedV2) {
+        const parsed = JSON.parse(oldSavedV2);
+        if (parsed.nom === 'GARNIER' && parsed.prenom === 'Atlas') {
+          return DEFAULT_AGENT_PROFILE;
+        }
+        return parsed;
+      }
       const oldSaved = localStorage.getItem('agent_profile_gennevilliers_v1');
       if (oldSaved) {
         const parsed = JSON.parse(oldSaved);
-        if (parsed.nom === 'DUPONT' && parsed.prenom === 'Marie') {
+        if ((parsed.nom === 'DUPONT' && parsed.prenom === 'Marie') || (parsed.nom === 'GARNIER' && parsed.prenom === 'Atlas')) {
           return DEFAULT_AGENT_PROFILE;
         }
         return parsed;
@@ -891,11 +900,17 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
       </div>
 
       {/* ─────────────────────────────────────────────────────────────────────────────
-          4. MODAL PARAMÉTRAGE PROFIL AGENT
+          4. MODAL PARAMÉTRAGE PROFIL AGENT (Rendu via Portal sur document.body pour centrage parfait)
       ───────────────────────────────────────────────────────────────────────────── */}
-      {showProfileModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in print:hidden">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 max-h-[90vh] overflow-y-auto space-y-5">
+      {showProfileModal && createPortal(
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in print:hidden"
+          onClick={() => setShowProfileModal(false)}
+        >
+          <div
+            className="bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 max-h-[90vh] overflow-y-auto space-y-5 my-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
@@ -1141,7 +1156,8 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

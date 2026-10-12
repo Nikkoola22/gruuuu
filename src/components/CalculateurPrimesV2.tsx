@@ -338,40 +338,40 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
 
   const getDirectionVisual = (dir: string) => {
     const map: Record<string, { icon: typeof Building2; colorClass: string }> = {
-      DAF: { icon: Wallet, colorClass: 'text-amber-400 bg-amber-500/10 border-amber-500/30' },
-      DAJ: { icon: Scale, colorClass: 'text-slate-300 bg-slate-500/10 border-slate-500/30' },
-      DCCS: { icon: HandHelping, colorClass: 'text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/30' },
-      DCJ: { icon: BookOpen, colorClass: 'text-pink-400 bg-pink-500/10 border-pink-500/30' },
-      DE: { icon: Trees, colorClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' },
-      DG: { icon: Crown, colorClass: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30' },
-      DH: { icon: Home, colorClass: 'text-orange-400 bg-orange-500/10 border-orange-500/30' },
-      DDU: { icon: Map, colorClass: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30' },
-      DESS: { icon: Shield, colorClass: 'text-violet-400 bg-violet-500/10 border-violet-500/30' },
-      DME: { icon: Baby, colorClass: 'text-green-400 bg-green-500/10 border-green-500/30' },
-      DRH: { icon: Users, colorClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30' },
-      DMS: { icon: HeartPulse, colorClass: 'text-rose-400 bg-rose-500/10 border-rose-500/30' },
-      DMSP: { icon: HeartPulse, colorClass: 'text-red-400 bg-red-500/10 border-red-500/30' },
-      DMRU: { icon: Landmark, colorClass: 'text-amber-400 bg-amber-500/10 border-amber-500/30' },
-      DPE: { icon: Baby, colorClass: 'text-teal-400 bg-teal-500/10 border-teal-500/30' },
-      DPO: { icon: FolderKanban, colorClass: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30' },
-      DPB: { icon: Building, colorClass: 'text-blue-400 bg-blue-500/10 border-blue-500/30' },
-      DRU: { icon: Map, colorClass: 'text-slate-300 bg-slate-500/10 border-slate-500/30' },
-      DSA: { icon: HandHelping, colorClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' },
-      DSI: { icon: Cpu, colorClass: 'text-blue-400 bg-blue-500/10 border-blue-500/30' },
-      'Toutes dir°': { icon: Briefcase, colorClass: 'text-neutral-400 bg-neutral-500/10 border-neutral-500/30' },
+      DAF: { icon: Wallet, colorClass: 'text-amber-600 bg-amber-50 border-amber-200' },
+      DAJ: { icon: Scale, colorClass: 'text-slate-700 bg-slate-100 border-slate-300' },
+      DCCS: { icon: HandHelping, colorClass: 'text-fuchsia-600 bg-fuchsia-50 border-fuchsia-200' },
+      DCJ: { icon: BookOpen, colorClass: 'text-pink-600 bg-pink-50 border-pink-200' },
+      DE: { icon: Trees, colorClass: 'text-emerald-600 bg-emerald-50 border-emerald-200' },
+      DG: { icon: Crown, colorClass: 'text-yellow-600 bg-yellow-50 border-yellow-200' },
+      DH: { icon: Home, colorClass: 'text-orange-600 bg-orange-50 border-orange-200' },
+      DDU: { icon: Map, colorClass: 'text-cyan-600 bg-cyan-50 border-cyan-200' },
+      DESS: { icon: Shield, colorClass: 'text-violet-600 bg-violet-50 border-violet-200' },
+      DME: { icon: Baby, colorClass: 'text-green-600 bg-green-50 border-green-200' },
+      DRH: { icon: Users, colorClass: 'text-sky-600 bg-sky-50 border-sky-200' },
+      DMS: { icon: HeartPulse, colorClass: 'text-rose-600 bg-rose-50 border-rose-200' },
+      DMSP: { icon: HeartPulse, colorClass: 'text-red-600 bg-red-50 border-red-200' },
+      DMRU: { icon: Landmark, colorClass: 'text-amber-600 bg-amber-50 border-amber-200' },
+      DPE: { icon: Baby, colorClass: 'text-teal-600 bg-teal-50 border-teal-200' },
+      DPO: { icon: FolderKanban, colorClass: 'text-indigo-600 bg-indigo-50 border-indigo-200' },
+      DPB: { icon: Building, colorClass: 'text-blue-600 bg-blue-50 border-blue-200' },
+      DRU: { icon: Map, colorClass: 'text-slate-700 bg-slate-100 border-slate-300' },
+      DSA: { icon: HandHelping, colorClass: 'text-emerald-600 bg-emerald-50 border-emerald-200' },
+      DSI: { icon: Cpu, colorClass: 'text-blue-600 bg-blue-50 border-blue-200' },
+      'Toutes dir°': { icon: Briefcase, colorClass: 'text-neutral-600 bg-neutral-100 border-neutral-300' },
     }
-    return map[dir] || { icon: Wrench, colorClass: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30' }
+    return map[dir] || { icon: Wrench, colorClass: 'text-cyan-600 bg-cyan-50 border-cyan-200' }
   }
 
   return (
-    <div className="min-h-screen bg-slate-950/85 backdrop-blur-xs flex flex-col font-sans text-slate-100 selection:bg-cyan-500 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-50/95 backdrop-blur-xs flex flex-col font-sans text-slate-900 selection:bg-cyan-500 selection:text-white">
       
       {/* Background Glow Overlay */}
       <div 
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 rounded-full"
         style={{
           width: 1000, height: 1000,
-          background: 'radial-gradient(ellipse at center, rgba(6,182,212,0.1) 0%, rgba(59,130,246,0.05) 50%, transparent 75%)',
+          background: 'radial-gradient(ellipse at center, rgba(6,182,212,0.12) 0%, rgba(59,130,246,0.06) 50%, transparent 75%)',
           filter: 'blur(70px)'
         }}
       />
@@ -379,14 +379,14 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
       <div className="relative z-10 flex flex-col flex-1">
 
         {/* --- Top Sticky Navigation Header --- */}
-        <div className="bg-slate-900/90 backdrop-blur-2xl py-4 px-4 sm:px-8 border-b border-slate-800 shadow-[0_4px_25px_rgba(0,0,0,0.6)] sticky top-0 z-30">
+        <div className="bg-white/95 backdrop-blur-2xl py-4 px-4 sm:px-8 border-b border-slate-200 shadow-sm sticky top-0 z-30">
           <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
             
             <div className="flex items-center gap-4">
               {onClose && (
                 <button
                   onClick={onClose}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
                   title="Retour aux calculateurs"
                 >
                   <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -395,28 +395,28 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
               )}
 
               <div>
-                <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
-                  <TrendingUp className="w-6 h-6 text-cyan-400" />
+                <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                  <TrendingUp className="w-6 h-6 text-cyan-600" />
                   Calculateur de Primes RIFSEEP
                 </h1>
-                <p className="text-xs text-slate-400 font-medium">
+                <p className="text-xs text-slate-500 font-medium">
                   Simulation complète IFSE 1, IFSE 2, IFSE 3 et primes spéciales
                 </p>
               </div>
             </div>
 
             {totalMonthly > 0 && (
-              <div className="bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 px-4 py-2 rounded-xl sm:rounded-2xl flex items-center gap-2 font-mono font-bold text-xs shadow-inner">
-                <Coins className="w-4 h-4 text-cyan-400 animate-pulse" />
+              <div className="bg-cyan-50 border border-cyan-200 text-cyan-800 px-4 py-2 rounded-xl sm:rounded-2xl flex items-center gap-2 font-mono font-bold text-xs shadow-xs">
+                <Coins className="w-4 h-4 text-cyan-600 animate-pulse" />
                 <span>Estimé:</span>
-                <span className="text-cyan-200 text-sm">{totalMonthly.toLocaleString('fr-FR')}€/mois</span>
+                <span className="text-cyan-950 text-sm font-black">{totalMonthly.toLocaleString('fr-FR')}€/mois</span>
               </div>
             )}
           </div>
         </div>
 
         {/* --- Interactive Stepper Header --- */}
-        <div className="bg-slate-900/60 border-b border-slate-800 py-3.5 px-4 sm:px-8 shadow-sm">
+        <div className="bg-white/80 border-b border-slate-200 py-3.5 px-4 sm:px-8 shadow-xs">
           <div className="max-w-3xl mx-auto">
             <div className="flex items-center justify-between overflow-x-auto pb-1">
               {STEPS.map((step, idx) => {
@@ -439,15 +439,15 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                     >
                       <div className={`w-10 h-10 rounded-xl sm:rounded-2xl flex items-center justify-center font-bold text-sm transition-all ${
                         status === 'completed'
-                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                          ? 'bg-emerald-50 text-emerald-600 border border-emerald-300'
                           : isActive
-                            ? 'bg-cyan-500 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-110'
-                            : 'bg-slate-800 text-slate-500 border border-slate-700'
+                            ? 'bg-cyan-600 text-white shadow-md shadow-cyan-500/30 scale-110'
+                            : 'bg-slate-100 text-slate-400 border border-slate-200'
                       }`}>
                         {status === 'completed' ? <CheckCircle2 className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
                       </div>
                       <span className={`text-[11px] hidden sm:block ${
-                        isActive ? 'font-black text-white' : 'font-medium text-slate-400'
+                        isActive ? 'font-black text-slate-900' : 'font-medium text-slate-500'
                       }`}>
                         {step.title}
                       </span>
@@ -455,7 +455,7 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
 
                     {idx < STEPS.length - 1 && (
                       <div className={`w-6 sm:w-10 h-0.5 mx-2 transition-all ${
-                        getStepStatus(STEPS[idx + 1].id) !== 'pending' ? 'bg-cyan-500' : 'bg-slate-800'
+                        getStepStatus(STEPS[idx + 1].id) !== 'pending' ? 'bg-cyan-500' : 'bg-slate-200'
                       }`} />
                     )}
                   </div>
@@ -470,43 +470,43 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
           <div className="max-w-3xl mx-auto">
 
             {/* Step Header Banner */}
-            <div className="mb-6 p-4 sm:p-6 rounded-xl sm:rounded-2xl lg:rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl backdrop-blur-2xl">
+            <div className="mb-6 p-4 sm:p-6 rounded-xl sm:rounded-2xl lg:rounded-3xl bg-white border border-slate-200 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="p-3.5 rounded-xl sm:rounded-2xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 shrink-0">
+                <div className="p-3.5 rounded-xl sm:rounded-2xl bg-cyan-50 border border-cyan-200 text-cyan-600 shrink-0">
                   <StepIcon className="w-6 h-6" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-mono font-bold text-slate-400">Étape {currentStep}/6</span>
-                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold text-cyan-300 bg-cyan-500/10 border border-cyan-500/30">
+                    <span className="text-xs font-mono font-bold text-slate-500">Étape {currentStep}/6</span>
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold text-cyan-700 bg-cyan-50 border border-cyan-200">
                       {currentStepData.subtitle}
                     </span>
                   </div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white mb-1 tracking-tight">{currentStepData.title}</h2>
-                  <p className="text-slate-400 text-xs sm:text-sm leading-relaxed font-medium">{currentStepData.description}</p>
+                  <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1 tracking-tight">{currentStepData.title}</h2>
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-medium">{currentStepData.description}</p>
                 </div>
               </div>
 
               {showTip && (
-                <div className="mt-4 p-3.5 bg-amber-500/10 border border-amber-500/25 rounded-xl sm:rounded-2xl flex items-center justify-between text-xs text-amber-300 font-medium">
+                <div className="mt-4 p-3.5 bg-amber-50 border border-amber-200 rounded-xl sm:rounded-2xl flex items-center justify-between text-xs text-amber-800 font-medium">
                   <span className="flex items-center gap-2">
-                    <Info className="w-4 h-4 text-amber-400 shrink-0" />
+                    <Info className="w-4 h-4 text-amber-600 shrink-0" />
                     {currentStepData.tip}
                   </span>
-                  <button onClick={() => setShowTip(false)} aria-label="Fermer l'astuce" className="text-slate-500 hover:text-white text-xs px-1.5">✕</button>
+                  <button onClick={() => setShowTip(false)} aria-label="Fermer l'astuce" className="text-slate-400 hover:text-slate-700 text-xs px-1.5 cursor-pointer">✕</button>
                 </div>
               )}
             </div>
 
             {/* Step Body Card */}
-            <div className="p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl lg:rounded-3xl bg-slate-900/90 border border-slate-800 shadow-[0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-2xl">
+            <div className="p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl lg:rounded-3xl bg-white border border-slate-200 shadow-md">
               
               {/* ÉTAPE 1: Catégorie */}
               {currentStep === 1 && (
                 <div className="space-y-4 sm:space-y-6">
                   <div className="text-center mb-4">
-                    <h3 className="text-lg font-black text-white mb-1">Sélectionnez votre catégorie statutaire</h3>
-                    <p className="text-xs text-slate-400">Niveau de qualification RH requis pour votre grille</p>
+                    <h3 className="text-lg font-black text-slate-900 mb-1">Sélectionnez votre catégorie statutaire</h3>
+                    <p className="text-xs text-slate-500">Niveau de qualification RH requis pour votre grille</p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -520,18 +520,18 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                         <button
                           key={cat.key}
                           onClick={() => handleCategorySelect(cat.key)}
-                          className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl lg:rounded-3xl border-2 text-left transition-all duration-300 relative overflow-hidden group ${
+                          className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl lg:rounded-3xl border-2 text-left transition-all duration-300 relative overflow-hidden group cursor-pointer ${
                             isSelected
-                              ? 'border-cyan-400 bg-cyan-950/50 shadow-[0_0_30px_rgba(6,182,212,0.25)] scale-[1.02]'
-                              : 'border-slate-800 bg-slate-950/80 hover:border-slate-700 hover:bg-slate-900'
+                              ? 'border-cyan-500 bg-cyan-50/70 shadow-md shadow-cyan-500/15 scale-[1.02]'
+                              : 'border-slate-200 bg-slate-50/80 hover:border-cyan-300 hover:bg-white'
                           }`}
                         >
                           <div className="flex justify-between items-start mb-3">
-                            <span className="text-2xl sm:text-3xl font-black text-white font-mono">{cat.key}</span>
-                            {isSelected && <CheckCircle2 className="w-6 h-6 text-cyan-400" />}
+                            <span className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">{cat.key}</span>
+                            {isSelected && <CheckCircle2 className="w-6 h-6 text-cyan-600" />}
                           </div>
-                          <h4 className="font-bold text-white text-sm mb-1">{cat.level}</h4>
-                          <p className="text-[11px] text-slate-400 font-medium">{cat.sub}</p>
+                          <h4 className="font-bold text-slate-800 text-sm mb-1">{cat.level}</h4>
+                          <p className="text-[11px] text-slate-500 font-medium">{cat.sub}</p>
                         </button>
                       )
                     })}
@@ -543,32 +543,32 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
               {currentStep === 2 && (
                 <div className="space-y-3 sm:space-y-5">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-base font-bold text-white">Fonctions disponibles (Cat. {selectedCategory})</h3>
-                    <span className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20">
+                    <h3 className="text-base font-bold text-slate-900">Fonctions disponibles (Cat. {selectedCategory})</h3>
+                    <span className="text-xs font-mono text-cyan-700 bg-cyan-50 px-2.5 py-1 rounded-lg border border-cyan-200 font-bold">
                       {functionsForCategory.length} fonctions
                     </span>
                   </div>
 
-                  <div className="max-h-80 overflow-y-auto pr-1 space-y-2.5 scrollbar-thin scrollbar-thumb-slate-700">
+                  <div className="max-h-80 overflow-y-auto pr-1 space-y-2.5 scrollbar-thin scrollbar-thumb-slate-300">
                     {functionsForCategory.map((item) => {
                       const isSelected = selectedFunctionIndex === item.globalIdx
                       return (
                         <button
                           key={item.globalIdx}
                           onClick={() => handleFunctionSelect(item.globalIdx)}
-                          className={`w-full p-4 rounded-xl sm:rounded-2xl border transition-all text-left flex items-center justify-between gap-4 ${
+                          className={`w-full p-4 rounded-xl sm:rounded-2xl border-2 transition-all text-left flex items-center justify-between gap-4 cursor-pointer ${
                             isSelected
-                              ? 'border-cyan-400 bg-cyan-950/40 shadow-[0_0_20px_rgba(6,182,212,0.2)]'
-                              : 'border-slate-800 bg-slate-950/60 hover:border-slate-700 hover:bg-slate-900'
+                              ? 'border-cyan-500 bg-cyan-50/70 shadow-sm'
+                              : 'border-slate-200 bg-slate-50/60 hover:border-cyan-300 hover:bg-white'
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${isSelected ? 'border-cyan-400 bg-cyan-400 text-slate-950' : 'border-slate-700'}`}>
+                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${isSelected ? 'border-cyan-600 bg-cyan-600 text-white' : 'border-slate-300 bg-white'}`}>
                               {isSelected && <span className="text-[10px] font-black">✓</span>}
                             </div>
-                            <span className="text-sm font-extrabold text-white">{item.functionName}</span>
+                            <span className="text-sm font-extrabold text-slate-900">{item.functionName}</span>
                           </div>
-                          <span className="text-base font-black text-cyan-400 font-mono">{item.amount}€/mois</span>
+                          <span className="text-base font-black text-cyan-700 font-mono">{item.amount}€/mois</span>
                         </button>
                       )
                     })}
@@ -581,7 +581,7 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                 <div className="space-y-4 sm:space-y-6">
                   {/* Directions */}
                   <div>
-                    <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-3 font-mono">1. Choisissez votre Direction</h4>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 mb-3 font-mono">1. Choisissez votre Direction</h4>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto pr-1">
                       {allDirections.map(dir => {
                         const isSelected = selectedDirection === dir
@@ -592,18 +592,18 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                           <button
                             key={dir}
                             onClick={() => handleDirectionSelect(dir)}
-                            className={`p-3 rounded-xl sm:rounded-2xl border transition-all text-left flex items-center gap-2.5 ${
+                            className={`p-3 rounded-xl sm:rounded-2xl border-2 transition-all text-left flex items-center gap-2.5 cursor-pointer ${
                               isSelected
-                                ? 'border-teal-400 bg-teal-950/50 shadow-[0_0_15px_rgba(20,184,166,0.3)]'
-                                : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'
+                                ? 'border-teal-500 bg-teal-50/70 shadow-sm'
+                                : 'border-slate-200 bg-slate-50/60 hover:border-teal-300 hover:bg-white'
                             }`}
                           >
                             <div className={`p-2 rounded-xl border ${visual.colorClass} shrink-0`}>
                               <DirIcon className="w-4 h-4" />
                             </div>
                             <div className="min-w-0">
-                              <span className="font-bold text-white text-xs block truncate">{dir}</span>
-                              <span className="text-[10px] text-slate-400 truncate block">{getDirectionFullName(dir)}</span>
+                              <span className="font-bold text-slate-900 text-xs block truncate">{dir}</span>
+                              <span className="text-[10px] text-slate-500 truncate block">{getDirectionFullName(dir)}</span>
                             </div>
                           </button>
                         )
@@ -613,12 +613,12 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
 
                   {/* Services */}
                   {selectedDirection && availableServices.length > 0 && (
-                    <div ref={serviceSectionRef} className="pt-2 border-t border-slate-800">
-                      <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 font-mono">2. Filtrer par Service (Optionnel)</h4>
+                    <div ref={serviceSectionRef} className="pt-3 border-t border-slate-200">
+                      <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 mb-2 font-mono">2. Filtrer par Service (Optionnel)</h4>
                       <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => handleServiceSelect('')}
-                          className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${selectedService === '' ? 'border-teal-400 bg-teal-500/20 text-teal-300' : 'border-slate-800 bg-slate-950 text-slate-400'}`}
+                          className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${selectedService === '' ? 'border-teal-500 bg-teal-600 text-white shadow-xs' : 'border-slate-200 bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                         >
                           Tous services
                         </button>
@@ -626,7 +626,7 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                           <button
                             key={service}
                             onClick={() => handleServiceSelect(service)}
-                            className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${selectedService === service ? 'border-teal-400 bg-teal-500/20 text-teal-300' : 'border-slate-800 bg-slate-950 text-slate-400'}`}
+                            className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${selectedService === service ? 'border-teal-500 bg-teal-600 text-white shadow-xs' : 'border-slate-200 bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                           >
                             {service}
                           </button>
@@ -637,8 +637,8 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
 
                   {/* Jobs */}
                   {selectedDirection && (
-                    <div ref={jobSectionRef} className="pt-2 border-t border-slate-800">
-                      <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 font-mono">3. Sélectionnez votre Métier</h4>
+                    <div ref={jobSectionRef} className="pt-3 border-t border-slate-200">
+                      <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 mb-2 font-mono">3. Sélectionnez votre Métier</h4>
                       <div className="max-h-48 overflow-y-auto pr-1 space-y-2">
                         {availableJobs.map(job => {
                           const isSelected = selectedJob === job
@@ -646,14 +646,14 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                             <button
                               key={job}
                               onClick={() => handleJobSelect(job)}
-                              className={`w-full p-3 rounded-xl sm:rounded-2xl border text-left flex justify-between items-center text-xs transition-all ${
+                              className={`w-full p-3 rounded-xl sm:rounded-2xl border-2 text-left flex justify-between items-center text-xs transition-all cursor-pointer ${
                                 isSelected
-                                  ? 'border-teal-400 bg-teal-950/40 text-white font-bold shadow-[0_0_15px_rgba(20,184,166,0.2)]'
-                                  : 'border-slate-800 bg-slate-950 text-slate-300 hover:border-slate-700'
+                                  ? 'border-teal-500 bg-teal-50/70 text-teal-950 font-bold shadow-xs'
+                                  : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-teal-300 hover:bg-white'
                               }`}
                             >
                               <span>{job}</span>
-                              {isSelected && <CheckCircle2 className="w-4 h-4 text-teal-400" />}
+                              {isSelected && <CheckCircle2 className="w-4 h-4 text-teal-600" />}
                             </button>
                           )
                         })}
@@ -663,8 +663,8 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
 
                   {/* Available Primes List */}
                   {selectedJob && (
-                    <div ref={primesSectionRef} className="pt-4 border-t border-slate-800">
-                      <h4 className="text-xs font-black uppercase tracking-wider text-teal-400 mb-3 font-mono">Primes de sujétion applicables (IFSE 2)</h4>
+                    <div ref={primesSectionRef} className="pt-4 border-t border-slate-200">
+                      <h4 className="text-xs font-black uppercase tracking-wider text-teal-700 mb-3 font-mono">Primes de sujétion applicables (IFSE 2)</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {availablePrimesForSelectedJob.map(prime => {
                           const isSelected = selectedIFSE2.has(prime.realIdx)
@@ -672,17 +672,17 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                             <button
                               key={`${prime.motif}-${prime.realIdx}`}
                               onClick={() => handleToggleIFSE2(prime.realIdx)}
-                              className={`p-3.5 rounded-xl sm:rounded-2xl border text-left transition-all ${
+                              className={`p-3.5 rounded-xl sm:rounded-2xl border-2 text-left transition-all cursor-pointer ${
                                 isSelected
-                                  ? 'border-teal-400 bg-teal-950/40 shadow-[0_0_15px_rgba(20,184,166,0.2)]'
-                                  : 'border-slate-800 bg-slate-950 opacity-60 hover:opacity-100'
+                                  ? 'border-teal-500 bg-teal-50/80 shadow-xs'
+                                  : 'border-slate-200 bg-slate-50 opacity-75 hover:opacity-100 hover:bg-white'
                               }`}
                             >
                               <div className="flex justify-between items-start mb-1">
-                                <span className="font-bold text-white text-xs">{prime.motif}</span>
-                                <span className="text-emerald-400 font-mono font-black text-xs">+{prime.amount}€</span>
+                                <span className="font-bold text-slate-900 text-xs">{prime.motif}</span>
+                                <span className="text-emerald-600 font-mono font-black text-xs">+{prime.amount}€</span>
                               </div>
-                              <span className="text-[10px] text-slate-400 block">{prime.service}</span>
+                              <span className="text-[10px] text-slate-500 block">{prime.service}</span>
                             </button>
                           )
                         })}
@@ -698,8 +698,8 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                 <div className="space-y-4 sm:space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     {/* Samedis */}
-                    <div className="bg-slate-950 p-4 sm:p-5 rounded-xl sm:rounded-2xl lg:rounded-3xl border border-slate-800">
-                      <label className="text-xs font-bold text-slate-300 block mb-3 uppercase tracking-wider font-mono">
+                    <div className="bg-slate-50 p-4 sm:p-5 rounded-xl sm:rounded-2xl lg:rounded-3xl border border-slate-200">
+                      <label className="text-xs font-bold text-slate-700 block mb-3 uppercase tracking-wider font-mono">
                         Samedis travaillés / mois
                       </label>
                       <div className="flex gap-2 mb-4">
@@ -707,21 +707,21 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                           <button
                             key={n}
                             onClick={() => setWeekendSaturdays(n)}
-                            className={`flex-1 py-2.5 rounded-xl font-bold font-mono text-xs border transition-all ${
+                            className={`flex-1 py-2.5 rounded-xl font-bold font-mono text-xs border transition-all cursor-pointer ${
                               weekendSaturdays === n
-                                ? 'bg-purple-500 text-white border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)]'
-                                : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                                ? 'bg-purple-600 text-white border-purple-600 shadow-md shadow-purple-500/25'
+                                : 'bg-white border-slate-200 text-slate-600 hover:border-purple-300'
                             }`}
                           >
                             {n}
                           </button>
                         ))}
                       </div>
-                      <label className="text-[11px] text-slate-400 block mb-1">Forfait par samedi :</label>
+                      <label className="text-[11px] text-slate-600 font-medium block mb-1">Forfait par samedi :</label>
                       <select
                         value={weekendRateSat}
                         onChange={e => setWeekendRateSat(Number(e.target.value))}
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-purple-400 font-mono"
+                        className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none focus:border-purple-500 font-mono font-bold"
                       >
                         {[40, 60, 80].map(r => (
                           <option key={r} value={r}>{r} € / samedi</option>
@@ -730,8 +730,8 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                     </div>
 
                     {/* Dimanches */}
-                    <div className="bg-slate-950 p-4 sm:p-5 rounded-xl sm:rounded-2xl lg:rounded-3xl border border-slate-800">
-                      <label className="text-xs font-bold text-slate-300 block mb-3 uppercase tracking-wider font-mono">
+                    <div className="bg-slate-50 p-4 sm:p-5 rounded-xl sm:rounded-2xl lg:rounded-3xl border border-slate-200">
+                      <label className="text-xs font-bold text-slate-700 block mb-3 uppercase tracking-wider font-mono">
                         Dimanches travaillés / mois
                       </label>
                       <div className="flex gap-2 mb-4">
@@ -739,21 +739,21 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                           <button
                             key={n}
                             onClick={() => setWeekendSundays(n)}
-                            className={`flex-1 py-2.5 rounded-xl font-bold font-mono text-xs border transition-all ${
+                            className={`flex-1 py-2.5 rounded-xl font-bold font-mono text-xs border transition-all cursor-pointer ${
                               weekendSundays === n
-                                ? 'bg-purple-500 text-white border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)]'
-                                : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                                ? 'bg-purple-600 text-white border-purple-600 shadow-md shadow-purple-500/25'
+                                : 'bg-white border-slate-200 text-slate-600 hover:border-purple-300'
                             }`}
                           >
                             {n}
                           </button>
                         ))}
                       </div>
-                      <label className="text-[11px] text-slate-400 block mb-1">Forfait par dimanche :</label>
+                      <label className="text-[11px] text-slate-600 font-medium block mb-1">Forfait par dimanche :</label>
                       <select
                         value={weekendRateSun}
                         onChange={e => setWeekendRateSun(Number(e.target.value))}
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-purple-400 font-mono"
+                        className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none focus:border-purple-500 font-mono font-bold"
                       >
                         {[40, 60, 80].map(r => (
                           <option key={r} value={r}>{r} € / dimanche</option>
@@ -763,9 +763,9 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                   </div>
 
                   {ifse3Total > 0 && (
-                    <div className="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl sm:rounded-2xl text-center">
-                      <span className="text-purple-300 font-bold text-xs font-mono">
-                        Total IFSE 3 (Week-ends) : <b className="text-purple-200 text-base">{ifse3Total}€/mois</b>
+                    <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl sm:rounded-2xl text-center">
+                      <span className="text-purple-800 font-bold text-xs font-mono">
+                        Total IFSE 3 (Week-ends) : <b className="text-purple-950 text-base">{ifse3Total}€/mois</b>
                       </span>
                     </div>
                   )}
@@ -782,22 +782,22 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                         <button
                           key={idx}
                           onClick={() => handleToggleSpecialPrime(idx)}
-                          className={`w-full p-4 rounded-xl sm:rounded-2xl border transition-all text-left flex items-center justify-between ${
+                          className={`w-full p-4 rounded-xl sm:rounded-2xl border-2 transition-all text-left flex items-center justify-between cursor-pointer ${
                             isSelected
-                              ? 'border-amber-400 bg-amber-950/40 shadow-[0_0_15px_rgba(245,158,11,0.2)]'
-                              : 'border-slate-800 bg-slate-950 opacity-70 hover:opacity-100'
+                              ? 'border-amber-500 bg-amber-50/80 shadow-xs'
+                              : 'border-slate-200 bg-slate-50/70 hover:border-amber-300 hover:bg-white'
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${isSelected ? 'bg-amber-400 border-amber-400 text-slate-950' : 'border-slate-700'}`}>
+                            <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${isSelected ? 'bg-amber-500 border-amber-500 text-white' : 'border-slate-300 bg-white'}`}>
                               {isSelected && <span className="text-[10px] font-black">✓</span>}
                             </div>
                             <div>
-                              <h4 className="font-bold text-white text-xs">{prime.name}</h4>
-                              <p className="text-[11px] text-slate-400">{prime.desc}</p>
+                              <h4 className="font-bold text-slate-900 text-xs">{prime.name}</h4>
+                              <p className="text-[11px] text-slate-500">{prime.desc}</p>
                             </div>
                           </div>
-                          <span className="text-amber-400 font-mono font-black text-sm">+{prime.amount}€</span>
+                          <span className="text-amber-700 font-mono font-black text-sm">+{prime.amount}€</span>
                         </button>
                       )
                     })}
@@ -810,16 +810,16 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                 <div className="space-y-4 sm:space-y-6">
                   
                   {/* Hero Result Banner */}
-                  <BorderGlow glowColor="from-cyan-500 via-emerald-400 to-teal-500">
-                    <div className="p-5 sm:p-8 text-center bg-slate-950/90 rounded-xl sm:rounded-2xl lg:rounded-3xl">
-                      <p className="text-cyan-400 text-xs font-bold tracking-widest uppercase mb-1 font-mono">
-                        <ShinyText text="TOTAL RIFSEEP ESTIMÉ" color="#22d3ee" shineColor="#ffffff" speed={2} />
+                  <BorderGlow glowColor="from-cyan-500 via-emerald-400 to-teal-500" innerClassName="bg-white">
+                    <div className="p-5 sm:p-8 text-center bg-gradient-to-br from-cyan-50 via-white to-teal-50 rounded-xl sm:rounded-2xl lg:rounded-3xl border border-cyan-200">
+                      <p className="text-cyan-700 text-xs font-bold tracking-widest uppercase mb-1 font-mono">
+                        <ShinyText text="TOTAL RIFSEEP ESTIMÉ" color="#0e7490" shineColor="#06b6d4" speed={2} />
                       </p>
-                      <p className="text-5xl sm:text-6xl font-black text-white font-mono tracking-tight my-2">
-                        {totalMonthly.toLocaleString('fr-FR')}€<span className="text-lg text-slate-400 font-normal">/mois</span>
+                      <p className="text-5xl sm:text-6xl font-black text-slate-900 font-mono tracking-tight my-2">
+                        {totalMonthly.toLocaleString('fr-FR')}€<span className="text-lg text-slate-500 font-normal">/mois</span>
                       </p>
-                      <p className="text-slate-300 text-xs sm:text-sm font-medium">
-                        Soit une enveloppe annuelle d'environ <strong className="text-cyan-300 font-bold">{(totalMonthly * 12).toLocaleString('fr-FR')}€</strong>
+                      <p className="text-slate-600 text-xs sm:text-sm font-medium">
+                        Soit une enveloppe annuelle d'environ <strong className="text-cyan-700 font-bold">{(totalMonthly * 12).toLocaleString('fr-FR')}€</strong>
                       </p>
                     </div>
                   </BorderGlow>
@@ -827,49 +827,49 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                   {/* Detailed breakdown list */}
                   <div className="space-y-3">
                     {ifse1Amount > 0 && (
-                      <div className="p-4 rounded-xl sm:rounded-2xl bg-blue-500/10 border border-blue-500/30 flex justify-between items-center">
+                      <div className="p-4 rounded-xl sm:rounded-2xl bg-blue-50 border border-blue-200 flex justify-between items-center">
                         <div>
-                          <span className="text-xs font-bold text-blue-300 uppercase tracking-wider font-mono block">IFSE 1 - Socle Fixe</span>
-                          <span className="text-sm font-bold text-white">{ifse1Data[selectedFunctionIndex!].function}</span>
+                          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider font-mono block">IFSE 1 - Socle Fixe</span>
+                          <span className="text-sm font-bold text-slate-900">{ifse1Data[selectedFunctionIndex!].function}</span>
                         </div>
-                        <span className="text-xl font-black text-blue-400 font-mono">+{ifse1Amount}€</span>
+                        <span className="text-xl font-black text-blue-700 font-mono">+{ifse1Amount}€</span>
                       </div>
                     )}
 
                     {ifse2Amount > 0 && (
-                      <div className="p-4 rounded-xl sm:rounded-2xl bg-teal-500/10 border border-teal-500/30 flex justify-between items-center">
+                      <div className="p-4 rounded-xl sm:rounded-2xl bg-teal-50 border border-teal-200 flex justify-between items-center">
                         <div>
-                          <span className="text-xs font-bold text-teal-300 uppercase tracking-wider font-mono block">IFSE 2 - Primes de Sujétion</span>
-                          <span className="text-xs text-slate-300">{selectedIFSE2.size} prime(s) active(s) sur {selectedJob}</span>
+                          <span className="text-xs font-bold text-teal-700 uppercase tracking-wider font-mono block">IFSE 2 - Primes de Sujétion</span>
+                          <span className="text-xs text-slate-600">{selectedIFSE2.size} prime(s) active(s) sur {selectedJob}</span>
                         </div>
-                        <span className="text-xl font-black text-teal-400 font-mono">+{ifse2Amount}€</span>
+                        <span className="text-xl font-black text-teal-700 font-mono">+{ifse2Amount}€</span>
                       </div>
                     )}
 
                     {ifse3Total > 0 && (
-                      <div className="p-4 rounded-xl sm:rounded-2xl bg-purple-500/10 border border-purple-500/30 flex justify-between items-center">
+                      <div className="p-4 rounded-xl sm:rounded-2xl bg-purple-50 border border-purple-200 flex justify-between items-center">
                         <div>
-                          <span className="text-xs font-bold text-purple-300 uppercase tracking-wider font-mono block">IFSE 3 - Week-ends</span>
-                          <span className="text-xs text-slate-300">{weekendSaturdays} samedi(s) + {weekendSundays} dimanche(s)</span>
+                          <span className="text-xs font-bold text-purple-700 uppercase tracking-wider font-mono block">IFSE 3 - Week-ends</span>
+                          <span className="text-xs text-slate-600">{weekendSaturdays} samedi(s) + {weekendSundays} dimanche(s)</span>
                         </div>
-                        <span className="text-xl font-black text-purple-400 font-mono">+{ifse3Total}€</span>
+                        <span className="text-xl font-black text-purple-700 font-mono">+{ifse3Total}€</span>
                       </div>
                     )}
 
                     {specialPrimesAmount > 0 && (
-                      <div className="p-4 rounded-xl sm:rounded-2xl bg-amber-500/10 border border-amber-500/30 flex justify-between items-center">
+                      <div className="p-4 rounded-xl sm:rounded-2xl bg-amber-50 border border-amber-200 flex justify-between items-center">
                         <div>
-                          <span className="text-xs font-bold text-amber-300 uppercase tracking-wider font-mono block">Primes Spéciales</span>
-                          <span className="text-xs text-slate-300">{selectedSpecialPrimes.size} prime(s) sélectionnée(s)</span>
+                          <span className="text-xs font-bold text-amber-700 uppercase tracking-wider font-mono block">Primes Spéciales</span>
+                          <span className="text-xs text-slate-600">{selectedSpecialPrimes.size} prime(s) sélectionnée(s)</span>
                         </div>
-                        <span className="text-xl font-black text-amber-400 font-mono">+{specialPrimesAmount}€</span>
+                        <span className="text-xl font-black text-amber-700 font-mono">+{specialPrimesAmount}€</span>
                       </div>
                     )}
                   </div>
 
                   {/* Warning */}
-                  <div className="p-4 rounded-xl sm:rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-start gap-3 text-amber-300 text-xs">
-                    <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <div className="p-4 rounded-xl sm:rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3 text-amber-900 text-xs">
+                    <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                     <div>
                       <b>Remarque :</b> Si votre montant réel sur fiche de paie est supérieur, vous bénéficiez sans doute d'une garantie d'avantage acquis (IFSE 4 / négociation historique).
                     </div>
@@ -877,7 +877,7 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
 
                   <button
                     onClick={resetCalculator}
-                    className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl sm:rounded-2xl transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold rounded-xl sm:rounded-2xl transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <RotateCcw className="w-4 h-4" /> Recommencer un calcul
                   </button>
@@ -895,8 +895,8 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                   disabled={!canGoPrev()}
                   className={`px-6 py-3.5 rounded-xl sm:rounded-2xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all ${
                     canGoPrev()
-                      ? 'bg-slate-800 hover:bg-slate-700 text-white shadow-sm'
-                      : 'opacity-40 cursor-not-allowed bg-slate-900 text-slate-500 border border-slate-800'
+                      ? 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 shadow-xs cursor-pointer'
+                      : 'opacity-40 cursor-not-allowed bg-slate-100 text-slate-400 border border-slate-200'
                   }`}
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -908,8 +908,8 @@ export default function CalculateurPrimesV2({ onClose }: CalculateurPrimesProps)
                   disabled={!canGoNext()}
                   className={`px-8 py-3.5 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-wider flex items-center gap-2 transition-all ${
                     canGoNext()
-                      ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:scale-105 active:scale-95'
-                      : 'opacity-40 cursor-not-allowed bg-slate-900 text-slate-500 border border-slate-800'
+                      ? 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-md shadow-cyan-500/25 hover:scale-105 active:scale-95 cursor-pointer'
+                      : 'opacity-40 cursor-not-allowed bg-slate-100 text-slate-400 border border-slate-200'
                   }`}
                 >
                   {currentStep === 5 ? 'Résultat' : 'Suivant'}

@@ -138,7 +138,7 @@ export default function MacMenuBar({
                     <span className="text-[10px] opacity-40">⌘,</span>
                   </button>
                   <div className="h-px bg-slate-200 dark:bg-slate-800 my-1" />
-                  <button onClick={() => selectView('menu')} className="w-full text-left px-3 py-1.5 hover:bg-blue-600 hover:text-white rounded-md">Retour à l'accueil</button>
+                  <button onClick={() => selectView('menu')} className="w-full text-left px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition-colors">Retour à l'accueil</button>
                 </motion.div>
               )}
             </AnimatePresence>

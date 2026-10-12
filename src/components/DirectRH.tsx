@@ -603,8 +603,8 @@ const DirectRH: React.FC<DirectRHProps> = ({ onClose }) => {
             <button onClick={startGame} className="px-6 py-3 bg-teal-500 hover:bg-teal-400 text-white font-bold rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 uppercase tracking-wide">
               <RotateCcw className="w-4 h-4 inline mr-2" /> Rejouer
             </button>
-            <button onClick={onClose} className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-full border border-white/30 transition-all active:scale-95">
-              Quitter
+            <button onClick={onClose} className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full border border-red-500/30 shadow-md transition-all hover:scale-105 active:scale-95">
+              Retour
             </button>
           </div>
         </div>
@@ -644,9 +644,10 @@ const DirectRH: React.FC<DirectRHProps> = ({ onClose }) => {
         <div className="flex justify-between items-center w-full px-4 mb-4">
           <button
             onClick={onClose}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white shadow-md hover:scale-105 active:scale-95 border border-white/30 backdrop-blur-md transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span>Retour</span>
           </button>
           
           <div className="text-center">

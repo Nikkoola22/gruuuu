@@ -270,7 +270,7 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
                 </button>
                 <button
                   onClick={onDeclineSearch}
-                  className="px-3.5 py-2 rounded-xl bg-slate-600 hover:bg-slate-700 text-white text-xs font-bold transition-all active:scale-95"
+                  className="px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-md transition-all active:scale-95"
                 >
                   Non, retour au menu
                 </button>

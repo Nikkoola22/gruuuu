@@ -1322,9 +1322,9 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
             setExplanationMode('simple');
             setTimeout(() => synthesisSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
           }}
-          className="px-3.5 py-1.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold shrink-0 cursor-pointer shadow-xs"
+          className="px-3.5 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold shrink-0 cursor-pointer shadow-sm transition-all"
         >
-          ← Voir la fiche Ciril RH avec calques
+          ← Retour à la fiche Ciril RH avec calques
         </button>
       </div>
     </div>

@@ -12,32 +12,54 @@ import { OrangeGeometricBackground } from "./components/ui/OrangeGeometricBackgr
 import { useNewsFeeds, type RssItem } from "./hooks/useNewsFeeds.ts"
 
 
-const CalculateurCIAV2 = lazy(() => import("./components/CalculateurCIAV2.tsx"))
-const CalculateurPrimesV2 = lazy(() => import("./components/CalculateurPrimesV2.tsx"))
-const Calculateur13emeV2 = lazy(() => import("./components/Calculateur13emeV2.tsx"))
-const CalculateurSFTV2 = lazy(() => import("./components/CalculateurSFTV2.tsx"))
-const CalculateurNavigo = lazy(() => import("./components/CalculateurNavigo.tsx"))
-const CourriersAgentModule = lazy(() => import("./components/CourriersAgentModule.tsx"))
-const FichePaieExplainer = lazy(() => import("./components/FichePaieExplainer.tsx"))
-const SimulateurImpotRevenu = lazy(() => import("./components/SimulateurImpotRevenu.tsx"))
-const CalculateurBudgetM57 = lazy(() => import("./components/CalculateurBudgetM57.tsx"))
-const Metiers = lazy(() => import("./components/Metiers.tsx"))
-const FAQ = lazy(() => import("./components/FAQ.tsx"))
-const EspaceJeux = lazy(() => import("./components/EspaceJeux.tsx"))
-const Actualites = lazy(() => import("./components/Actualites.tsx"))
-const VeilleJuridique = lazy(() => import("./components/VeilleJuridique.tsx"))
-const VeilleCdgPage = lazy(() => import("./components/VeilleCdgPage.tsx"))
-const EspacePodcastsFigurines = lazy(() => import("./components/EspacePodcastsFigurines.tsx"))
-const DessineMoiLeStatut = lazy(() => import("./components/DessineMoiLeStatut.tsx"))
-const DocuthequeRAG = lazy(() => import("./components/DocuthequeRAG").then(m => ({ default: m.DocuthequeRAG })))
-const CoinRH = lazy(() => import("./components/CoinRH.tsx"))
-const MemoireJuridiqueGenerator = lazy(() => import("./components/MemoireJuridiqueGenerator").then(m => ({ default: m.MemoireJuridiqueGenerator })))
-const HomeMenu = lazy(() => import("./components/HomeMenu.tsx"))
+// Wrapper autour de React.lazy pour gérer automatiquement les erreurs 404 de chunks après un redéploiement Vercel
+function lazyWithRetry<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>
+): React.LazyExoticComponent<T> {
+  return lazy(async () => {
+    const storageKey = "lazy_chunk_retry_ts";
+    try {
+      return await factory();
+    } catch (error) {
+      const lastRetry = Number(sessionStorage.getItem(storageKey) || "0");
+      const now = Date.now();
+      if (now - lastRetry > 15000) {
+        sessionStorage.setItem(storageKey, String(now));
+        window.location.reload();
+        // Retourner une promesse en attente pendant le rechargement de la page pour éviter un crash React
+        return new Promise<{ default: T }>(() => {});
+      }
+      throw error;
+    }
+  });
+}
+
+const CalculateurCIAV2 = lazyWithRetry(() => import("./components/CalculateurCIAV2.tsx"))
+const CalculateurPrimesV2 = lazyWithRetry(() => import("./components/CalculateurPrimesV2.tsx"))
+const Calculateur13emeV2 = lazyWithRetry(() => import("./components/Calculateur13emeV2.tsx"))
+const CalculateurSFTV2 = lazyWithRetry(() => import("./components/CalculateurSFTV2.tsx"))
+const CalculateurNavigo = lazyWithRetry(() => import("./components/CalculateurNavigo.tsx"))
+const CourriersAgentModule = lazyWithRetry(() => import("./components/CourriersAgentModule.tsx"))
+const FichePaieExplainer = lazyWithRetry(() => import("./components/FichePaieExplainer.tsx"))
+const SimulateurImpotRevenu = lazyWithRetry(() => import("./components/SimulateurImpotRevenu.tsx"))
+const CalculateurBudgetM57 = lazyWithRetry(() => import("./components/CalculateurBudgetM57.tsx"))
+const Metiers = lazyWithRetry(() => import("./components/Metiers.tsx"))
+const FAQ = lazyWithRetry(() => import("./components/FAQ.tsx"))
+const EspaceJeux = lazyWithRetry(() => import("./components/EspaceJeux.tsx"))
+const Actualites = lazyWithRetry(() => import("./components/Actualites.tsx"))
+const VeilleJuridique = lazyWithRetry(() => import("./components/VeilleJuridique.tsx"))
+const VeilleCdgPage = lazyWithRetry(() => import("./components/VeilleCdgPage.tsx"))
+const EspacePodcastsFigurines = lazyWithRetry(() => import("./components/EspacePodcastsFigurines.tsx"))
+const DessineMoiLeStatut = lazyWithRetry(() => import("./components/DessineMoiLeStatut.tsx"))
+const DocuthequeRAG = lazyWithRetry(() => import("./components/DocuthequeRAG").then(m => ({ default: m.DocuthequeRAG })))
+const CoinRH = lazyWithRetry(() => import("./components/CoinRH.tsx"))
+const MemoireJuridiqueGenerator = lazyWithRetry(() => import("./components/MemoireJuridiqueGenerator").then(m => ({ default: m.MemoireJuridiqueGenerator })))
+const HomeMenu = lazyWithRetry(() => import("./components/HomeMenu.tsx"))
 // Modules rarity chargés à la demande (admin, chat) pour alléger le bundle initial
-const LuxuryChat = lazy(() => import("./components/ui/LuxuryChat.tsx").then(m => ({ default: m.LuxuryChat })))
-const AdminPanel = lazy(() => import("./components/AdminPanel.tsx"))
-const AdminLogin = lazy(() => import("./components/AdminLogin.tsx"))
-const BreezyWeatherApp = lazy(() => import("./components/BreezyWeatherApp.tsx"))
+const LuxuryChat = lazyWithRetry(() => import("./components/ui/LuxuryChat.tsx").then(m => ({ default: m.LuxuryChat })))
+const AdminPanel = lazyWithRetry(() => import("./components/AdminPanel.tsx"))
+const AdminLogin = lazyWithRetry(() => import("./components/AdminLogin.tsx"))
+const BreezyWeatherApp = lazyWithRetry(() => import("./components/BreezyWeatherApp.tsx"))
 import SimulateurCarriere from "./components/SimulateurCarriere.tsx"
 import { NetPaySimulator } from "./components/calculators/NetPaySimulator"
 import { IhtsCalculator } from "./components/calculators/IhtsCalculator"

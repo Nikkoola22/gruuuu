@@ -858,10 +858,10 @@ const GeoguessrGennevilliers: React.FC<GeoguessrGennevilliersProps> = ({ onClose
 
               <button
                 onClick={onClose}
-                className="flex-1 flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-black rounded-xl transition-all shadow-lg text-xs sm:text-sm"
+                className="flex-1 flex items-center justify-center gap-2 py-3 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl border border-red-500/30 transition-all shadow-lg text-xs sm:text-sm"
               >
+                <ArrowLeft className="w-4 h-4" />
                 <span>Retour aux jeux</span>
-                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>

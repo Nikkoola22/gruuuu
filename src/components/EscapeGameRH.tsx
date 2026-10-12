@@ -660,7 +660,7 @@ const EscapeGameRH: React.FC<EscapeGameRHProps> = ({ onClose }) => {
                   <button
                     type="button"
                     onClick={onClose}
-                    className="px-8 py-5 bg-rose-500 text-white rounded-2xl font-black text-base uppercase shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 border-4 border-slate-900 transition-colors duration-150 flex items-center justify-center gap-3 cursor-pointer"
+                    className="px-8 py-5 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-black text-base uppercase shadow-[6px_6px_0px_#000] active:shadow-none active:translate-y-1.5 active:translate-x-1.5 border-4 border-slate-900 transition-colors duration-150 flex items-center justify-center gap-3 cursor-pointer"
                   >
                     <ArrowLeft className="w-6 h-6" />
                     Retour aux jeux

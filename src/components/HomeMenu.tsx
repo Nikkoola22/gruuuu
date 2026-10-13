@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react"
-import { CloudSun, Bot, ArrowRight, Rss, Radio, Calculator, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, BookOpen, Scale, Landmark, GraduationCap, Gamepad2, FileText, Clock, Briefcase, ExternalLink as ExternalLinkIcon, PlayCircle, Sparkles, Laptop, Palette, FileSignature, Award, TrendingUp, Download, Eye, Mail, Headphones, FileSearch } from "lucide-react"
+import { CloudSun, Bot, ArrowRight, Rss, Radio, Calculator, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, BookOpen, Scale, Landmark, GraduationCap, Gamepad2, FileText, Clock, Briefcase, ExternalLink as ExternalLinkIcon, PlayCircle, Sparkles, Laptop, Palette, FileSignature, Award, TrendingUp, Download, Eye, Mail, Headphones, FileSearch, Layers } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { BorderBeam } from "./ui/BorderBeam.tsx"
 import type { ChatbotState } from "../App.tsx"
 import type { IntercoNewsItem } from "../hooks/useNewsFeeds.ts"
+import { CFDT_JOURNAUX, type CFDTJournal, CFDT_JOURNAUX_BASE_URL } from "../data/cfdtJournaux.ts"
+import { KiosqueJournauxModal } from "./KiosqueJournauxModal.tsx"
 
 // --- TYPES ---
 // Lien utile affiché dans la fenêtre « Liens Utiles » du menu d'accueil
@@ -63,6 +65,10 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
   const quickActionsScrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+
+  // État du Kiosque Multi-Journaux CFDT
+  const [showJournauxModal, setShowJournauxModal] = useState(false)
+  const [selectedJournal, setSelectedJournal] = useState<CFDTJournal>(CFDT_JOURNAUX[0])
 
   const [canScrollIntercoLeft, setCanScrollIntercoLeft] = useState(false)
   const [canScrollIntercoRight, setCanScrollIntercoRight] = useState(true)
@@ -593,7 +599,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
           {/* Grille des 3 cartes Vedettes (Kiosque, Schémas, Podcasts) */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7">
 
-            {/* CARTE 1 : À LIRE - LE JOURNAL CFDT GENNEVILLIERS */}
+            {/* CARTE 1 : À LIRE - LE JOURNAL CFDT GENNEVILLIERS & KIOSQUE MULTI-ÉDITIONS */}
             <div className="relative bg-gradient-to-br from-white via-orange-50/40 to-amber-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-orange-950/25 rounded-3xl p-5 sm:p-6 border-2 border-orange-200/90 dark:border-orange-500/30 shadow-xl shadow-orange-500/10 dark:shadow-orange-950/30 transition-all duration-300 hover:border-orange-400 dark:hover:border-orange-400/60 overflow-hidden group flex flex-col justify-between">
               <BorderBeam size={200} duration={12} delay={0} colorFrom="#f97316" colorTo="#fbbf24" />
               
@@ -601,80 +607,130 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
               <div className="absolute -top-20 -right-20 w-48 h-48 bg-gradient-to-br from-orange-400/20 to-amber-400/10 dark:from-orange-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
 
               <div className="relative z-10 flex flex-col flex-1">
-                {/* En-tête de carte */}
-                <div className="flex items-center justify-between gap-3 mb-3.5 pb-3 border-b border-orange-100/80 dark:border-slate-800">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="p-2 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-xl shadow-md shadow-orange-500/20 flex items-center justify-center shrink-0">
+                {/* En-tête de carte avec bouton d'ouverture du Kiosque */}
+                <div className="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-orange-100/80 dark:border-slate-800">
+                  <div
+                    onClick={() => setShowJournauxModal(true)}
+                    className="flex items-center gap-2.5 min-w-0 cursor-pointer group/title"
+                  >
+                    <div className="p-2 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-xl shadow-md shadow-orange-500/20 flex items-center justify-center shrink-0 group-hover/title:scale-105 transition-transform">
                       <BookOpen className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="text-[10px] font-black uppercase tracking-wider text-orange-600 dark:text-orange-400">
                         Kiosque Syndical
                       </span>
-                      <h4 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                        À lire · Journal CFDT
+                      <h4 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-tight group-hover/title:text-orange-600 dark:group-hover/title:text-orange-400 transition-colors">
+                        À lire
                       </h4>
                     </div>
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-orange-700 dark:text-orange-300 bg-orange-100/80 dark:bg-orange-950/60 px-2.5 py-0.5 rounded-full border border-orange-300/70 dark:border-orange-800/70 shrink-0">
-                    Rentrée 2026
-                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowJournauxModal(true)}
+                    className="text-[10px] font-black uppercase tracking-wider text-orange-700 dark:text-orange-300 bg-orange-100/80 hover:bg-orange-200/80 dark:bg-orange-950/60 dark:hover:bg-orange-900/80 px-2.5 py-1 rounded-full border border-orange-300/70 dark:border-orange-800/70 shrink-0 flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
+                    title="Ouvrir le kiosque complet avec toutes les parutions"
+                  >
+                    <Layers className="w-3 h-3 text-orange-500" />
+                    <span>Tous les journaux</span>
+                  </button>
                 </div>
 
-                {/* Corps de carte : disposition Image + Contenu compact */}
-                <div className="flex gap-4 items-center mb-3.5 flex-1">
+                {/* Sélecteur d'éditions rapides (Pills cliquables) */}
+                <div className="mb-3">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 flex items-center justify-between">
+                    <span>Choisir une édition :</span>
+                    <span className="text-orange-600 dark:text-orange-400 font-extrabold">{selectedJournal.badge}</span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 p-1 bg-orange-100/40 dark:bg-slate-800/60 rounded-xl border border-orange-200/60 dark:border-slate-700/60">
+                    {CFDT_JOURNAUX.map((journal) => {
+                      const isActive = selectedJournal.id === journal.id;
+                      return (
+                        <button
+                          key={journal.id}
+                          type="button"
+                          onClick={() => setSelectedJournal(journal)}
+                          className={`text-[10px] sm:text-[11px] font-bold py-1 px-1.5 rounded-lg transition-all text-center truncate cursor-pointer ${
+                            isActive
+                              ? 'bg-orange-500 text-white shadow-xs font-black'
+                              : 'text-slate-600 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-700/60 hover:text-orange-600'
+                          }`}
+                          title={`${journal.title} - ${journal.badge}`}
+                        >
+                          {journal.tabLabel || journal.badge}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Corps de carte : disposition Image + Contenu compact de l'édition sélectionnée */}
+                <div className="flex gap-4 items-center mb-3 flex-1">
                   {/* Aperçu Couverture Magazine */}
                   <a
-                    href="https://intranet.ville-gennevilliers.fr/Statics/media/syndicats/cfdt/journaux/Journal-Gennevilliers-rentree-2026.pdf"
+                    href={selectedJournal.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="relative shrink-0 w-24 sm:w-28 h-32 sm:h-36 rounded-xl overflow-hidden bg-slate-900 border-2 border-orange-300/80 dark:border-orange-600/40 shadow-md group-hover:scale-[1.03] transition-all duration-300 cursor-pointer block group/cover"
+                    title={`Ouvrir le PDF de ${selectedJournal.badge}`}
                   >
                     <img
-                      src={`${BASE_URL}journal-rentree-2026.png`}
-                      alt="Journal CFDT Rentrée 2026"
+                      key={selectedJournal.id}
+                      src={`${BASE_URL}${selectedJournal.coverImage}`}
+                      alt={`${selectedJournal.title} - ${selectedJournal.badge}`}
                       className="w-full h-full object-cover object-top group-hover/cover:scale-105 transition-transform duration-500"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
-                        target.src = `${BASE_URL}journal-2026.png`;
+                        target.src = `${BASE_URL}journal-rentree-2026.png`;
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-1.5">
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end justify-between p-1.5">
                       <span className="text-[9px] font-black text-white bg-orange-600/90 backdrop-blur-xs px-1.5 py-0.5 rounded shadow-xs flex items-center gap-0.5">
                         <Eye className="w-2.5 h-2.5" />
                         PDF
                       </span>
+                      <span className="text-[8px] font-bold text-white/90 bg-black/60 px-1 py-0.5 rounded">
+                        {selectedJournal.fileSize}
+                      </span>
                     </div>
                   </a>
 
-                  {/* Titre et détails compacts */}
+                  {/* Titre et détails compacts de l'édition sélectionnée */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch py-0.5">
                     <div>
                       <h5 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-snug group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                         Écho de la CFDT Gennevilliers
                       </h5>
+                      <p className="text-xs text-orange-700 dark:text-orange-300 font-semibold mt-0.5 line-clamp-2 leading-tight">
+                        {selectedJournal.subtitle}
+                      </p>
                     </div>
 
-                    <div className="pt-2 border-t border-orange-100/80 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                      <FileText className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-                      <span className="truncate">Édition spéciale · 32 pages</span>
+                    <div className="pt-2 border-t border-orange-100/80 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <FileText className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                        <span className="truncate">{selectedJournal.badge} · Format PDF</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Bouton d'action principal */}
-              <a
-                href="https://intranet.ville-gennevilliers.fr/Statics/media/syndicats/cfdt/journaux/Journal-Gennevilliers-rentree-2026.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative z-10 flex items-center justify-center gap-2 w-full bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-black py-2.5 px-3.5 rounded-xl shadow-md shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.01] active:scale-[0.99] transition-all text-xs cursor-pointer mt-auto"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>Télécharger le journal (PDF)</span>
-                <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
-              </a>
+              {/* Bouton d'action Kiosque */}
+              <div className="relative z-10 mt-auto">
+                <button
+                  type="button"
+                  onClick={() => setShowJournauxModal(true)}
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-black py-2.5 px-3.5 rounded-xl shadow-md shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.01] active:scale-[0.99] transition-all text-xs cursor-pointer text-center"
+                  title="Consulter le kiosque complet avec toutes les éditions"
+                >
+                  <Layers className="w-4 h-4" />
+                  <span>Kiosque des journaux</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-0.5 shrink-0" />
+                </button>
+              </div>
             </div>
 
             {/* CARTE 2 : DESSINE-MOI LE STATUT */}
@@ -1701,6 +1757,15 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
           </div>
 
         </div>
+
+        {/* KIOSQUE MODAL DES JOURNAUX CFDT GENNEVILLIERS */}
+        <KiosqueJournauxModal
+          isOpen={showJournauxModal}
+          onClose={() => setShowJournauxModal(false)}
+          baseUrl={BASE_URL}
+          selectedJournalId={selectedJournal.id}
+          onSelectJournal={(j) => setSelectedJournal(j)}
+        />
 
       </div>
     </>

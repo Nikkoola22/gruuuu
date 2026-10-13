@@ -1,7 +1,9 @@
-import React from "react";
-import { ArrowLeft, Newspaper, ArrowRight, Rss, BookOpen, FileText, Sparkles } from "lucide-react";
+import React, { useState } from "react";
+import { ArrowLeft, Newspaper, ArrowRight, Rss, BookOpen, FileText, Sparkles, Layers, Eye } from "lucide-react";
 import { SpotlightCard } from "./ui/SpotlightCard.tsx";
 import { BorderGlow } from "./ui/BorderGlow.tsx";
+import { CFDT_JOURNAUX, type CFDTJournal } from "../data/cfdtJournaux.ts";
+import { KiosqueJournauxModal } from "./KiosqueJournauxModal.tsx";
 
 interface IntercoNewsItem {
   title: string;
@@ -20,6 +22,9 @@ interface ActualitesProps {
 }
 
 const Actualites: React.FC<ActualitesProps> = ({ news, onClose, baseUrl, onNavigateToVeille }) => {
+  const [showJournauxModal, setShowJournauxModal] = useState(false);
+  const [selectedJournal, setSelectedJournal] = useState<CFDTJournal>(CFDT_JOURNAUX[0]);
+
   return (
     <div className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden overscroll-contain bg-[#F8F9FA] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-700">
       {/* Top Header Banner */}
@@ -217,44 +222,110 @@ const Actualites: React.FC<ActualitesProps> = ({ news, onClose, baseUrl, onNavig
           {/* Right Column: Publications & Journal */}
           <div className="lg:col-span-1 double-bezel-outer">
             <div className="double-bezel-inner p-6 flex flex-col h-full">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 bg-indigo-50 rounded-xl border border-indigo-200">
-                  <BookOpen className="w-6 h-6 text-indigo-600" />
+              <div className="flex items-center justify-between gap-3 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-indigo-50 rounded-xl border border-indigo-200">
+                    <BookOpen className="w-6 h-6 text-indigo-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-slate-900 tracking-wide">
+                      À Télécharger
+                    </h3>
+                    <p className="text-xs text-slate-500 font-medium">
+                      Kiosque municipal CFDT
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 tracking-wide">
-                  À Télécharger
-                </h3>
+
+                <button
+                  type="button"
+                  onClick={() => setShowJournauxModal(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-100 hover:bg-orange-200 text-orange-700 font-bold text-xs border border-orange-200 transition-colors cursor-pointer"
+                  title="Voir toutes les éditions"
+                >
+                  <Layers className="w-3.5 h-3.5 text-orange-500" />
+                  <span>Kiosque</span>
+                </button>
+              </div>
+
+              {/* Sélecteur rapide des éditions */}
+              <div className="grid grid-cols-2 gap-1.5 mb-4 p-1.5 bg-slate-100 rounded-xl border border-slate-200">
+                {CFDT_JOURNAUX.map((journal) => {
+                  const isActive = selectedJournal.id === journal.id;
+                  return (
+                    <button
+                      key={journal.id}
+                      type="button"
+                      onClick={() => setSelectedJournal(journal)}
+                      className={`text-xs font-bold py-1.5 px-2 rounded-lg transition-all text-center truncate cursor-pointer ${
+                        isActive
+                          ? 'bg-orange-500 text-white shadow-xs font-extrabold'
+                          : 'text-slate-600 hover:bg-white hover:text-orange-600'
+                      }`}
+                    >
+                      {journal.tabLabel || journal.badge}
+                    </button>
+                  );
+                })}
               </div>
 
               <div className="flex flex-col gap-6 flex-grow">
                 <SpotlightCard spotlightColor="rgba(249, 115, 22, 0.15)" className="bg-white border border-slate-200 rounded-2xl p-5 shadow-md flex flex-col">
-                  <a
-                    href="https://intranet.ville-gennevilliers.fr/Statics/media/syndicats/cfdt/journaux/Journal-Gennevilliers-rentree-2026.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col h-full"
-                  >
-                    <div className="overflow-hidden rounded-xl shadow-xs mb-4 relative min-h-[11rem] max-h-[13rem] border border-slate-100 bg-slate-50 flex items-center justify-center">
+                  <div className="flex flex-col h-full">
+                    <div
+                      onClick={() => setShowJournauxModal(true)}
+                      className="overflow-hidden rounded-xl shadow-xs mb-4 relative min-h-[11rem] max-h-[13rem] border border-slate-100 bg-slate-50 flex items-center justify-center cursor-pointer group"
+                      title="Cliquez pour ouvrir le kiosque des journaux"
+                    >
                       <img
-                        src={`${baseUrl}journal-rentree-2026.png`}
-                        alt="Journal CFDT Rentrée 2026"
-                        className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-300"
+                        key={selectedJournal.id}
+                        src={`${baseUrl}${selectedJournal.coverImage}`}
+                        alt={`${selectedJournal.title} - ${selectedJournal.badge}`}
+                        className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = `${baseUrl}journal-rentree-2026.png`;
+                        }}
                       />
-                    </div>
-                    <div className="flex flex-col shrink-0">
-                      <h4 className="text-slate-900 text-base font-bold mb-1 flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-orange-500 shrink-0" />
-                        Journal - Rentrée 2026
-                      </h4>
-                      <p className="text-slate-600 text-xs mb-4 leading-relaxed font-medium">
-                        Écho et dossier d'actualité de la CFDT Gennevilliers.
-                      </p>
-                      <div className="flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all text-xs">
-                        Télécharger (PDF)
-                        <ArrowRight className="w-4 h-4" />
+                      <div className="absolute top-2 right-2 bg-orange-600 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-xs">
+                        {selectedJournal.badge}
+                      </div>
+                      <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span className="bg-white/95 text-slate-900 font-bold text-xs px-3 py-1.5 rounded-xl shadow-md flex items-center gap-1.5">
+                          <Eye className="w-3.5 h-3.5 text-orange-500" />
+                          Consulter les éditions
+                        </span>
                       </div>
                     </div>
-                  </a>
+
+                    <div className="flex flex-col shrink-0">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <h4 className="text-slate-900 text-base font-bold flex items-center gap-2">
+                          <FileText className="w-4 h-4 text-orange-500 shrink-0" />
+                          Journal · {selectedJournal.tabLabel || selectedJournal.badge}
+                        </h4>
+                        <span className="text-[11px] font-semibold text-slate-500">
+                          {selectedJournal.fileSize}
+                        </span>
+                      </div>
+
+                      <p className="text-slate-600 text-xs mb-4 leading-relaxed font-medium">
+                        {selectedJournal.subtitle}
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={() => setShowJournauxModal(true)}
+                        className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-3 rounded-xl shadow-md transition-all text-xs text-center cursor-pointer"
+                        title="Consulter le kiosque complet avec toutes les éditions"
+                      >
+                        <Layers className="w-4 h-4" />
+                        <span>Kiosque des journaux</span>
+                        <ArrowRight className="w-4 h-4 ml-0.5 shrink-0" />
+                      </button>
+                    </div>
+                  </div>
                 </SpotlightCard>
               </div>
             </div>
@@ -262,6 +333,15 @@ const Actualites: React.FC<ActualitesProps> = ({ news, onClose, baseUrl, onNavig
 
         </div>
       </section>
+
+      {/* MODAL DU KIOSQUE MULTI-JOURNAUX */}
+      <KiosqueJournauxModal
+        isOpen={showJournauxModal}
+        onClose={() => setShowJournauxModal(false)}
+        baseUrl={baseUrl}
+        selectedJournalId={selectedJournal.id}
+        onSelectJournal={(j) => setSelectedJournal(j)}
+      />
     </div>
   );
 };

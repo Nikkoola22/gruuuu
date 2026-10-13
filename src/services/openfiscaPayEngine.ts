@@ -439,6 +439,50 @@ export const OPENFISCA_VARIABLES_DICTIONARY: Record<string, OpenFiscaVariableInf
     formule: "cotisation_mensuelle_adherent",
     categorie: "cotisation_sociale",
     nature: "retenue"
+  },
+  prime_13eme_mois: {
+    id: "prime_13eme_mois",
+    nom: "13ème Mois Communal (Complément & Prime Semestrielle)",
+    description: "Avantage collectif territorial historique versé semestriellement (en juin et novembre) selon les délibérations de la Ville de Gennevilliers.",
+    openfiscaModule: "openfisca_france/model/prestations/fonctions_publiques/primes.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/fonctions_publiques/primes.py`,
+    legalReference: "Délibérations du Conseil Municipal de Gennevilliers relatives au régime indemnitaire et au 13ème mois",
+    formule: "montant_semestriel_verse_selon_presence",
+    categorie: "primes",
+    nature: "gain"
+  },
+  indemnite_differentielle: {
+    id: "indemnite_differentielle",
+    nom: "Indemnité Différentielle (Garantie SMIC)",
+    description: "Complément statutaire versé lorsque la grille indiciaire est inférieure au SMIC pour garantir la rémunération minimale légale.",
+    openfiscaModule: "openfisca_france/model/prestations/fonctions_publiques/primes.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/fonctions_publiques/primes.py`,
+    legalReference: "Art. L. 712-1 CGFP & Art. L. 2410-1 Code du travail",
+    formule: "max(0, montant_smic_mensuel - remuneration_indiciaire)",
+    categorie: "primes",
+    nature: "gain"
+  },
+  montant_net_social: {
+    id: "montant_net_social",
+    nom: "Montant Net Social",
+    description: "Montant de référence réglementaire transmis en DSN servant de base pour le calcul des aides de la CAF (Prime d'activité, RSA).",
+    openfiscaModule: "openfisca_france/model/prestations/sociales/net_social.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/sociales/net_social.py`,
+    legalReference: "Arrêté du 31 janvier 2023 fixant les mentions obligatoires du bulletin de paie",
+    formule: "remuneration_brute - cotisations_sociales_legales_obligatoires",
+    categorie: "fiscalite",
+    nature: "information"
+  },
+  rappel_salaire: {
+    id: "rappel_salaire",
+    nom: "Rappel de Salaire (Régularisation rétroactive)",
+    description: "Régularisation rétroactive d'une somme due ou d'une retenue sur une période de paie antérieure (avancement d'échelon différé, prime recalculée).",
+    openfiscaModule: "openfisca_france/model/prestations/fonctions_publiques/remuneration.py",
+    githubUrl: `${OPENFISCA_REPO_URL}/blob/master/openfisca_france/model/prestations/fonctions_publiques/remuneration.py`,
+    legalReference: "Art. L. 3242-1 du Code du travail & Règles de prescription quadriennale des créances publiques",
+    formule: "montant_du_retroactif - montant_deja_verse",
+    categorie: "traitement",
+    nature: "gain"
   }
 };
 
@@ -464,6 +508,18 @@ export interface FichePaieLigne {
   ecart?: number;
   explicationLigne: string;
   conseilAgent?: string;
+  /** Nature détaillée de la ligne (Gain statutaire, Régime indemnitaire, Cotisation obligatoire, etc.) */
+  natureDetaillee?: string;
+  /** Impact fiscal : Imposable à l'IR, Exonéré, Déductible, Non déductible */
+  impactFiscal?: string;
+  /** Droits retraite : Cotise CNRACL, RAFP, IRCANTEC, Non cotisant */
+  impactRetraite?: string;
+  /** Assiette de cotisation sociale (CSG 98,25%, TIB, etc.) */
+  assietteSociale?: string;
+  /** Points de contrôle concrets à vérifier par l'agent sur son bulletin */
+  aVerifier?: string;
+  /** Points de vigilance et pièges statutaires fréquents */
+  attention?: string;
 }
 
 export interface MontantsReelsFiche {
@@ -845,6 +901,727 @@ export interface CalculParams {
 
   // Montants réels extraits ou saisis sur la vraie fiche pour réconciliation
   montantsReels?: MontantsReelsFiche;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REGISTRE EXHAUSTIF DES MÉTADONNÉES ENRICHIES POUR CHAQUE RUBRIQUE DE PAIE
+// (Explications complètes, impacts fiscaux et retraite, vérifications, conseils CFDT)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface RubriqueMetadataItem {
+  titre: string;
+  explicationLigne: string;
+  natureDetaillee: string;
+  impactFiscal: string;
+  impactRetraite: string;
+  assietteSociale: string;
+  aVerifier: string;
+  attention?: string;
+  conseilAgent: string;
+  openFiscaKey?: string;
+}
+
+export const RUBRIQUES_METADATA_REGISTRY: Record<string, RubriqueMetadataItem> = {
+  tib: {
+    titre: "Traitement Indiciaire Brut (TIB)",
+    explicationLigne: "Rémunération indiciaire statutaire de base liée à votre grade et à votre ancienneté. Calculée en multipliant votre Indice Majoré (IM) par la valeur mensuelle du point d'indice (59,0734 € / 12 = 4,92278 €), au prorata de votre quotité de travail. Inaliénable et protégée par le statut de la fonction publique.",
+    natureDetaillee: "Gain statutaire obligatoire (Traitement de base)",
+    impactFiscal: "100 % imposable à l'impôt sur le revenu (intégré dans le Net Fiscal)",
+    impactRetraite: "Cotise à la pension CNRACL (ou CNAV/IRCANTEC). Ouvre des droits à trimestres et sert de base exclusive au calcul de votre pension (règle des 75 % de l'indice des 6 derniers mois).",
+    assietteSociale: "Soumis à retenue CNRACL (11,10%), CSG/CRDS (9,20% sur 98,25%) et part patronale CNRACL (37,65%).",
+    aVerifier: "Contrôlez que votre Indice Majoré (IM) correspond exactement à votre échelon actuel figurant sur votre dernier arrêté individuel de nomination ou d'avancement d'échelon.",
+    attention: "En cas d'avancement d'échelon, un retard de traitement RH peut priver temporairement l'agent de son nouvel indice. La Ville doit régulariser rétroactivement via un rappel de salaire à la date d'effet de l'arrêté.",
+    conseilAgent: "Vérifiez vos arrêtés de carrière tous les ans. En cas de promotion ou avancement non appliqué après 2 mois, adressez une demande écrite à la DRH et saisissez votre délégué CFDT pour obtenir le rappel financier intégral.",
+    openFiscaKey: "traitement_indiciaire_brut"
+  },
+  nbi: {
+    titre: "Nouvelle Bonification Indiciaire (NBI)",
+    explicationLigne: "Points d'indice supplémentaires accordés aux agents exerçant des fonctions comportant des responsabilités particulières, de l'encadrement de proximité, de l'accueil permanent du public (notamment en quartier prioritaire) ou une technicité reconnue.",
+    natureDetaillee: "Gain statutaire indiciaire (Brut soumis à pension)",
+    impactFiscal: "100 % imposable à l'impôt sur le revenu",
+    impactRetraite: "Avantage majeur : cotise à la CNRACL (11,10%) et donne droit à un supplément de pension de retraite viager calculé au prorata de la durée de perception de la NBI.",
+    assietteSociale: "Soumis aux cotisations CNRACL pension (11,10%) et à la CSG/CRDS (98,25%).",
+    aVerifier: "Si vous exercez des fonctions d'accueil en quartier prioritaire de la politique de la ville (QPV), de régisseur ou d'encadrement de proximité, vérifiez l'arrêté d'attribution de la NBI.",
+    attention: "La NBI est liée aux fonctions exercées et non au grade : elle cesse d'être versée en cas de changement de poste vers des missions non éligibles.",
+    conseilAgent: "Consultez la fiche de poste de votre affectation. Si vos fonctions réelles relèvent de la NBI mais qu'elle n'est pas versée, la section CFDT peut vous aider à déposer un recours pour attribution rétroactive.",
+    openFiscaKey: "nouvelle_bonification_indiciaire"
+  },
+  residence: {
+    titre: "Indemnité de Résidence Zone 1 (3%)",
+    explicationLigne: "Majoration obligatoire destinée à compenser le coût de la vie plus élevé en Île-de-France. La commune de Gennevilliers est classée en Zone 1 (taux maximal de 3 %). Elle est assise sur le traitement indiciaire brut (+ NBI).",
+    natureDetaillee: "Complément statutaire de résidence (Gain brut obligatoire)",
+    impactFiscal: "100 % imposable à l'impôt sur le revenu",
+    impactRetraite: "Ne cotise pas à la pension CNRACL, mais cotise au régime RAFP (dans la limite des 20% du TIB).",
+    assietteSociale: "Soumis à la CSG/CRDS (98,25%) et à la RAFP (5%).",
+    aVerifier: "Vérifiez que la ligne figure sur tous vos bulletins avec un taux de 3% (ou que le montant correspond exactement à 3% de votre TIB + NBI).",
+    attention: "En cas de mutation hors Île-de-France (en zone 2 à 1% ou zone 3 à 0%), le montant sera réduit ou supprimé conformément au zonage territorial.",
+    conseilAgent: "L'indemnité de résidence est un droit statutaire strict pour tout agent en poste à Gennevilliers, titulaire, stagiaire ou contractuel. Signalez immédiatement toute omission aux RH.",
+    openFiscaKey: "indemnite_residence"
+  },
+  sft: {
+    titre: "Supplément Familial de Traitement (SFT)",
+    explicationLigne: "Prestation familiale statutaire versée aux agents ayant au moins un enfant à charge au sens des prestations familiales de la CAF. Comprend une part fixe et une part proportionnelle au traitement brut soumise à planchers et plafonds légaux.",
+    natureDetaillee: "Prestation statutaire familiale (Gain brut)",
+    impactFiscal: "Imposable à l'impôt sur le revenu",
+    impactRetraite: "Non cotisant CNRACL, cotise à la RAFP (dans le plafond de 20% du TIB).",
+    assietteSociale: "Soumis à la CSG/CRDS (98,25%) et à la RAFP (5%).",
+    aVerifier: "Fournissez chaque année avant la rentrée le certificat de scolarité pour les enfants de 16 à 20 ans et l'attestation CAF de non-cumul.",
+    attention: "Si les deux parents sont agents publics, le SFT ne peut être attribué qu'à un seul parent. Il est impératif de le rattacher au parent ayant le traitement indiciaire le plus élevé pour maximiser la part proportionnelle !",
+    conseilAgent: "Faites une simulation en comparant les indices des deux conjoints. Le rattachement au conjoint le mieux rémunéré peut rapporter plusieurs centaines d'euros supplémentaires par an.",
+    openFiscaKey: "supplement_familial_traitement"
+  },
+  ppcr: {
+    titre: "Abattement PPCR / Transfert Primes-Points",
+    explicationLigne: "Retenue mensuelle sur les primes statutaires issue des accords PPCR. En échange d'une revalorisation des grilles indiciaires (+4 à +9 points d'indice qui cotisent pour votre retraite viagère), un abattement forfaitaire est déduit des primes.",
+    natureDetaillee: "Retenue statutaire sur primes (Transfert primes-points)",
+    impactFiscal: "Déduit de votre brut imposable (diminue votre Net Fiscal et votre impôt sur le revenu)",
+    impactRetraite: "Opération hautement bénéfique pour la pension : les points d'indice gagnés augmentent définitivement votre retraite CNRACL, compensant très largement l'abattement sur les primes.",
+    assietteSociale: "Déduit de l'assiette brute soumise à CSG/CRDS et RAFP.",
+    aVerifier: "Le montant prélevé doit correspondre rigoureusement à votre catégorie hiérarchique statutaire : Cat A (32,42 €), Cat B (23,17 €), Cat C (13,92 €).",
+    attention: "L'abattement ne peut pas excéder le montant des primes perçues. Si vous n'avez pas de primes, il ne peut en aucun cas être déduit de votre traitement indiciaire de base.",
+    conseilAgent: "En cas de travail à temps partiel ou de demi-traitement en congé maladie, l'abattement PPCR doit être réduit dans la même proportion. Vérifiez cette minoration sur votre bulletin.",
+    openFiscaKey: "abattement_ppcr"
+  },
+  ifse: {
+    titre: "RIFSEEP - IFSE Titulaire (4 volets cumulatifs)",
+    explicationLigne: "Indemnité de Fonctions, de Sujétions et d'Expertise (rubrique Ciril 1591/2591). À Gennevilliers, l'IFSE est l'addition obligatoire de 4 composantes : IFSE 1 (Fonctions/responsabilité), IFSE 2 (Contraintes/pénibilité de poste), IFSE 3 (Samedis, dimanches & astreintes) et IFSE 4 (Maintien des avantages acquis historiques).",
+    natureDetaillee: "Régime indemnitaire mensuel statutaire (Primes RIFSEEP)",
+    impactFiscal: "100 % imposable à l'impôt sur le revenu",
+    impactRetraite: "Ne cotise pas à la pension CNRACL, mais cotise au RAFP (5% salarié + 5% employeur dans la limite de 20% du TIB).",
+    assietteSociale: "Soumis à CSG/CRDS (98,25%) et cotisation RAFP (5%).",
+    aVerifier: "Demandez votre arrêté individuel RIFSEEP : il doit préciser la ventilation chiffrée de chacun des 4 volets d'IFSE qui composent votre montant global.",
+    attention: "L'IFSE 4 (avantages acquis) est sanctuarisée à titre individuel. Lors d'une mobilité ou d'une réorganisation, l'administration ne peut pas la supprimer.",
+    conseilAgent: "Votre IFSE doit être réexaminée au minimum tous les 4 ans, en cas de changement de poste ou d'évolution significative de vos sujétions. La CFDT vous accompagne pour faire revaloriser votre groupe RIFSEEP.",
+    openFiscaKey: "rifseep_ifse"
+  },
+  cia: {
+    titre: "RIFSEEP - Complément Indemnitaire Annuel (CIA Tit.)",
+    explicationLigne: "Complément Indemnitaire Annuel (rubrique Ciril 1592 ou 7610). Calculé sur la base de 10 % de votre IFSE mensuelle × 12 mois (équivalent à 1,2 mois d'IFSE). Attribué selon deux critères à parité stricte : 50 % sur la manière de servir (évaluation CREP) et 50 % selon le nombre de jours d'absence.",
+    natureDetaillee: "Régime indemnitaire annuel modulable (RIFSEEP)",
+    impactFiscal: "100 % imposable à l'impôt sur le revenu sur le mois de versement",
+    impactRetraite: "Cotise à la retraite additionnelle RAFP (5% dans le plafond de 20% du TIB).",
+    assietteSociale: "Soumis à CSG/CRDS (98,25%) et RAFP (5%).",
+    aVerifier: "Vérifiez que l'assiette correspond à 10% de votre IFSE mensuelle × 12, et comparez la part 'manière de servir' avec l'appréciation portée sur votre compte-rendu d'entretien professionnel (CREP).",
+    attention: "Les absences protégées par la loi (congés maternité, paternité, adoption, accident de service et maladie professionnelle) NE DOIVENT EN AUCUN CAS entraîner d'abattement sur la part assiduité !",
+    conseilAgent: "Si vous constatez une baisse injustifiée de votre CIA ou si un arrêt de travail pour accident de service a été décompté dans vos absences, contactez sans tarder la CFDT pour engager un recours gracieux.",
+    openFiscaKey: "rifseep_cia"
+  },
+  prime_13eme: {
+    titre: "13ème Mois Communal (Juin & Novembre)",
+    explicationLigne: "Avantage extra-statutaire historique à Gennevilliers, versé en deux fractions semestrielles (en juin et en novembre). Apparaît sous deux libellés complémentaires : 'Complément de rémunération' (code 7443/7444) et 'Prime semestrielle' (code 8443/8444).",
+    natureDetaillee: "Prime semestrielle conventionnelle (Avantage collectif communal)",
+    impactFiscal: "100 % imposable à l'impôt sur le revenu",
+    impactRetraite: "Soumis à RAFP dans la limite du plafond des primes.",
+    assietteSociale: "Soumis à CSG/CRDS (98,25%) et RAFP (5%).",
+    aVerifier: "Vérifiez que le montant versé correspond à vos droits en tenant compte de votre quotité (temps complet ou partiel) et de votre période d'activité.",
+    attention: "En cas d'arrivée ou de départ de la collectivité en cours de semestre, le versement doit être proratisé au nombre de jours travaillés.",
+    conseilAgent: "Le 13ème mois est un acquis social historique défendu par vos organisations syndicales. Conservez précieusement vos bulletins de juin et novembre.",
+    openFiscaKey: "prime_13eme_mois"
+  },
+  transport: {
+    titre: "Remboursement Transport Public (Navigo 75%)",
+    explicationLigne: "Prise en charge obligatoire par l'employeur public de 75 % du coût des titres d'abonnement de transport en commun pour les trajets domicile-travail (revalorisé de 50% à 75% au 1er septembre 2023).",
+    natureDetaillee: "Remboursement de frais professionnels (Avantage net direct)",
+    impactFiscal: "100 % EXONÉRÉ d'impôt sur le revenu (n'augmente pas votre net fiscal ni votre impôt)",
+    impactRetraite: "Non cotisant (aucun impact sur la retraite)",
+    assietteSociale: "EXONÉRÉ de toutes cotisations sociales et exonéré de CSG/CRDS : c'est un gain net direct sur votre compte bancaire !",
+    aVerifier: "Contrôlez que le montant correspond à 75% du pass Navigo (64,80 €/mois en 2024, 66,60 €/mois en 2025 pour un pass toutes zones).",
+    attention: "Pensez à renouveler votre justificatif d'abonnement chaque année auprès des RH pour éviter l'interruption des versements.",
+    conseilAgent: "Vous pouvez cumuler sous certaines conditions le remboursement Navigo avec le Forfait Mobilités Durables (si vous utilisez aussi le vélo ou le covoiturage). Renseignez-vous auprès de votre section CFDT.",
+    openFiscaKey: "prise_en_charge_transport"
+  },
+  comp_csg: {
+    titre: "Indemnité Compensatrice de la CSG",
+    explicationLigne: "Indemnité mensuelle instituée en 2018 lors de la suppression de la cotisation maladie pour les salariés du privé et de la hausse de 1,7 % de la CSG, afin de garantir qu'aucun agent public ne subisse de perte de salaire net.",
+    natureDetaillee: "Indemnité compensatrice de pouvoir d'achat (Gain brut)",
+    impactFiscal: "Imposable à l'impôt sur le revenu",
+    impactRetraite: "Soumis à RAFP dans la limite des 20% du TIB.",
+    assietteSociale: "Soumis à CSG/CRDS (98,25%) et RAFP (5%).",
+    aVerifier: "Si vous étiez agent avant le 1er janvier 2018, cette indemnité doit figurer de façon pérenne sur vos bulletins.",
+    attention: "En cas de promotion ou d'avancement d'échelon, un décret de réévaluation annuelle encadre le maintien ou la dégressivité de cette indemnité.",
+    conseilAgent: "Si votre indemnité disparaît brutalement sans changement de situation, contestez-la immédiatement auprès du bureau de paie.",
+    openFiscaKey: "indemnite_compensatrice_csg"
+  },
+  cnracl: {
+    titre: "Retraite CNRACL (Part Salariée 11,10%)",
+    explicationLigne: "Cotisation vieillesse obligatoire finançant la pension de retraite des fonctionnaires territoriaux et hospitaliers. Prélevée au taux légal de 11,10 % sur le traitement indiciaire brut (+ NBI). La Ville de Gennevilliers verse en complément 37,65 % de cotisation patronale.",
+    natureDetaillee: "Cotisation sociale retraite obligatoire déductible",
+    impactFiscal: "DÉDUCTIBLE du revenu imposable (réduit automatiquement votre Net Fiscal et votre impôt sur le revenu)",
+    impactRetraite: "C'est la cotisation essentielle qui valide vos trimestres de pension et garantit votre retraite de base et complémentaire statutaire (règle des 75 % du traitement indiciaire des 6 derniers mois).",
+    assietteSociale: "Assise sur le traitement indiciaire brut et la NBI (exclut les primes RIFSEEP qui cotisent à la RAFP).",
+    aVerifier: "L'assiette doit correspondre au centime près à TIB + NBI. Aucune prime ne doit y être incorporée.",
+    attention: "Consultez tous les 5 ans votre Relevé Individuel de Situation (RIS) sur le portail public info-retraite.fr pour vous assurer qu'aucun trimestre n'a été égaré.",
+    conseilAgent: "Les régularisations de trimestres non validés sont beaucoup plus faciles à corriger en cours de carrière qu'à la veille du départ en retraite. La CFDT vous accompagne pour auditer votre carrière.",
+    openFiscaKey: "cotisation_retraite_cnracl_salarie"
+  },
+  rafp: {
+    titre: "Retraite Additionnelle RAFP (Part Salariée 5%)",
+    explicationLigne: "Régime de retraite obligatoire par points assis sur les primes et indemnités non soumises à la CNRACL (IFSE, CIA, SFT, indemnité de résidence). Prélèvement salarié de 5,00 % doublé d'une cotisation patronale employeur identique de 5,00 %, dans la limite d'un plafond de 20 % du traitement indiciaire brut.",
+    natureDetaillee: "Cotisation retraite additionnelle par points",
+    impactFiscal: "DÉDUCTIBLE du revenu imposable",
+    impactRetraite: "Chaque euro cotisé (part salariée + part employeur) est converti en points RAFP viagers versés à la retraite en rente ou capital.",
+    assietteSociale: "Assise sur les primes avec un plafond strict de 20 % du traitement brut indiciaire annuel.",
+    aVerifier: "Vérifiez que la cotisation figure bien si vous percevez de l'IFSE ou d'autres primes, et que la part employeur (5%) est également créditée.",
+    attention: "Au-delà du plafond de 20 % du traitement indiciaire brut, vos primes ne génèrent plus de droits à pension RAFP.",
+    conseilAgent: "Consultez votre compte de points RAFP sur rafp.fr pour vérifier l'historique de vos points accumulés depuis 2005.",
+    openFiscaKey: "cotisation_retraite_rafp_salarie"
+  },
+  ircantec: {
+    titre: "Retraite Complémentaire IRCANTEC (Contractuels)",
+    explicationLigne: "Régime de retraite complémentaire par points obligatoire pour les agents contractuels territoriaux de droit public. Cotisation de 2,80 % sous le Plafond Mensuel de la Sécurité Sociale (Tranche A) et de 6,95 % au-delà (Tranche B).",
+    natureDetaillee: "Cotisation retraite complémentaire obligatoire des contractuels",
+    impactFiscal: "DÉDUCTIBLE du revenu imposable",
+    impactRetraite: "Chaque euro cotisé accumule des points IRCANTEC qui détermineront votre future pension complémentaire.",
+    assietteSociale: "Assise sur la totalité du salaire brut soumis.",
+    aVerifier: "Vérifiez que vos cotisations IRCANTEC sont bien déclarées sur votre relevé de carrière info-retraite.fr.",
+    attention: "En cas de titularisation ultérieure, vos droits IRCANTEC peuvent être validés auprès de la CNRACL sous certaines conditions de délais.",
+    conseilAgent: "Si vous passez du statut de contractuel à titulaire, demandez conseil à la CFDT pour étudier l'opportunité d'une validation des services antérieurs.",
+    openFiscaKey: "cotisation_retraite_ircantec_salarie"
+  },
+  maladie: {
+    titre: "Cotisation Maladie Salariée (Contractuels 0,75%)",
+    explicationLigne: "Cotisation d'assurance maladie du Régime Général applicable aux agents contractuels territoriaux. Taux réduit de 0,75 % (au lieu du taux de droit commun) plafonné à 5 fois le Plafond Mensuel de la Sécurité Sociale.",
+    natureDetaillee: "Cotisation sociale maladie à taux réduit",
+    impactFiscal: "Déductible du revenu imposable",
+    impactRetraite: "Non cotisant retraite (finance la branche maladie de la Sécurité Sociale)",
+    assietteSociale: "Rémunération brute soumise",
+    aVerifier: "Le taux ne doit pas excéder 0,75 % sur votre bulletin.",
+    attention: "Les fonctionnaires titulaires ne paient pas cette cotisation (leur maladie est entièrement financée par la cotisation patronale de la Ville).",
+    conseilAgent: "Vérifiez que votre bulletin applique bien le taux FPT réduit de 0,75% et non le taux du secteur privé.",
+    openFiscaKey: "cotisation_maladie_contractuel_salarie"
+  },
+  vieillesse_plaf: {
+    titre: "Assurance Vieillesse Plafonnée (Contractuels 6,90%)",
+    explicationLigne: "Cotisation d'assurance vieillesse du Régime Général de la Sécurité Sociale (CNAV) prélevée sur la part de salaire située sous le Plafond Mensuel de la Sécurité Sociale (PMSS = 3 864 € en 2024, 3 925 € en 2025).",
+    natureDetaillee: "Cotisation retraite de base Sécurité Sociale",
+    impactFiscal: "Déductible du revenu imposable",
+    impactRetraite: "Valide vos trimestres de retraite de base du Régime Général (CNAV).",
+    assietteSociale: "Salaire brut plafonné au PMSS",
+    aVerifier: "L'assiette ne doit jamais dépasser le plafond mensuel de la sécurité sociale en vigueur.",
+    attention: "Pour valider 4 trimestres par an, il faut avoir cotisé sur un salaire annuel minimal équivalent à 600 fois le SMIC horaire.",
+    conseilAgent: "Consultez votre relevé de carrière CNAV sur lassuranceretraite.fr pour vous assurer de la validation annuelle de vos 4 trimestres.",
+    openFiscaKey: "cotisation_vieillesse_plafonnee_salarie"
+  },
+  vieillesse_deplaf: {
+    titre: "Assurance Vieillesse Déplafonnée (Contractuels 0,40%)",
+    explicationLigne: "Cotisation vieillesse de solidarité du Régime Général prélevée sur l'intégralité de la rémunération brute de l'agent contractuel, sans aucun plafond.",
+    natureDetaillee: "Cotisation de solidarité retraite sans plafond",
+    impactFiscal: "Déductible du revenu imposable",
+    impactRetraite: "Contribue au financement global du Régime Général des retraites.",
+    assietteSociale: "Totalité du salaire brut",
+    aVerifier: "Le taux appliqué doit être exactement 0,40 % sur la totalité du brut.",
+    attention: "Cette retenue s'ajoute à la vieillesse plafonnée pour financer la CNAV.",
+    conseilAgent: "Cette cotisation est systématique sur les bulletins des agents contractuels de droit public.",
+    openFiscaKey: "cotisation_vieillesse_deplafonnee_salarie"
+  },
+  csg_ded: {
+    titre: "CSG Déductible (6,80%)",
+    explicationLigne: "Contribution Sociale Généralisée finançant la Sécurité Sociale et le Fonds de Solidarité Vieillesse. Taux de 6,80 % prélevé sur 98,25 % de l'ensemble de votre rémunération brute (après abattement forfaitaire de 1,75 % pour frais professionnels), majorée de la participation mutuelle employeur.",
+    natureDetaillee: "Contribution sociale obligatoire déductible",
+    impactFiscal: "DÉDUCTIBLE fiscalement : cette part est déduite de votre revenu imposable DGFiP, ce qui diminue votre impôt sur le revenu.",
+    impactRetraite: "Ne génère pas de droits directs à retraite (finance la protection sociale universelle).",
+    assietteSociale: "Assiette abattue de 98,25 % (abattement de 1,75 % dans la limite de 4 plafonds de la sécurité sociale).",
+    aVerifier: "L'assiette correspond à 98,25 % du brut total augmenté des contributions employeur à la mutuelle.",
+    attention: "L'abattement de 1,75% s'applique jusqu'à 4 fois le plafond annuel de la sécurité sociale.",
+    conseilAgent: "Cette cotisation finance votre couverture santé et familiale collective. Sa part déductible allège directement votre impôt à la source.",
+    openFiscaKey: "csg_deductible_salaire"
+  },
+  csg_nonded: {
+    titre: "CSG Non Déductible (2,40%)",
+    explicationLigne: "Fraction de la CSG qui ne peut pas être déduite de votre assiette d'impôt sur le revenu. Elle est prélevée sur votre salaire net et réintégrée dans votre revenu fiscal de référence (Net Fiscal).",
+    natureDetaillee: "Contribution sociale obligatoire non déductible",
+    impactFiscal: "NON DÉDUCTIBLE : cette somme est rajoutée à votre net pour calculer le Net Fiscal servant d'assiette au Prélèvement à la Source.",
+    impactRetraite: "Aucun droit direct à pension",
+    assietteSociale: "Même assiette abattue de 98,25 % que la CSG déductible.",
+    aVerifier: "Le ratio entre CSG déductible (6,80%) et CSG non déductible (2,40%) est constant.",
+    attention: "C'est en partie à cause de cette ligne que votre Net Fiscal est systématiquement plus élevé que votre Net Avant Impôt.",
+    conseilAgent: "Cette réintégration fiscale est normale et prévue par la loi : elle est automatiquement prise en compte par le fisc.",
+    openFiscaKey: "csg_non_deductible_salaire"
+  },
+  crds: {
+    titre: "CRDS Dette Sociale (0,50%)",
+    explicationLigne: "Contribution au Remboursement de la Dette Sociale instituée en 1996 pour financer la CADES (Caisse d'Amortissement de la Dette Sociale). Prélevée au taux de 0,50 % sur la même assiette abattue que la CSG.",
+    natureDetaillee: "Prélèvement social non déductible de désendettement",
+    impactFiscal: "Non déductible du revenu imposable (réintégrée dans le Net Fiscal)",
+    impactRetraite: "Aucun droit direct à retraite",
+    assietteSociale: "Assiette abattue de 98,25 %",
+    aVerifier: "Le montant correspond exactement à 0,50 % de l'assiette CSG.",
+    attention: "La CRDS s'applique à tous les revenus d'activité sans exception.",
+    conseilAgent: "La CADES devait s'éteindre initialement, mais sa durée a été prolongée pour absorber la dette liée aux crises sanitaires successives.",
+    openFiscaKey: "crds_salaire"
+  },
+  part_mutuelle: {
+    titre: "Participation Employeur Santé (PSC)",
+    explicationLigne: "Aide financière obligatoire versée par la Ville de Gennevilliers au titre de la Protection Sociale Complémentaire (PSC) pour participer au coût de votre mutuelle santé labellisée.",
+    natureDetaillee: "Avantage social employeur (Participation PSC santé)",
+    impactFiscal: "Soumise à CSG/CRDS et intégrée au net fiscal (avantage financier accordé par l'employeur)",
+    impactRetraite: "Non cotisant retraite",
+    assietteSociale: "Intégrée dans l'assiette de CSG/CRDS",
+    aVerifier: "Si vous adhérez à une mutuelle labellisée, vérifiez que l'employeur vous verse bien sa participation forfaitaire mensuelle.",
+    attention: "Vous devez justifier de votre adhésion auprès du service RH pour déclencher le versement de l'aide.",
+    conseilAgent: "L'adhésion à un contrat labellisé vous donne droit à cette aide de la collectivité. La CFDT négocie l'augmentation régulière des montants de prise en charge.",
+    openFiscaKey: "participation_mutuelle_employeur"
+  },
+  part_prevoyance: {
+    titre: "Participation Employeur Prévoyance (PSC)",
+    explicationLigne: "Participation financière de la Ville de Gennevilliers pour inciter les agents à souscrire un contrat de prévoyance labellisé garantissant le maintien de leur rémunération en cas de longue maladie ou d'invalidité.",
+    natureDetaillee: "Avantage social employeur (Participation PSC prévoyance)",
+    impactFiscal: "Soumis à CSG/CRDS et intégré dans le revenu imposable",
+    impactRetraite: "Non cotisant retraite",
+    assietteSociale: "Intégrée dans l'assiette brute de CSG/CRDS",
+    aVerifier: "Vérifiez que la ligne apparaît sur votre bulletin si vous avez souscrit un contrat de prévoyance éligible (ex: Territoria).",
+    attention: "Cette participation compense la retenue pour prévoyance figurant dans vos retenues sur le net.",
+    conseilAgent: "La prévoyance est indispensable : après 3 mois de maladie, le statut ne garantit plus que 50% du traitement indiciaire. Cette aide municipale réduit votre coût d'assurance.",
+    openFiscaKey: "participation_mutuelle_employeur"
+  },
+  cotis_mutuelle: {
+    titre: "Retenue Mutuelle Santé (Part Salariée sur Net)",
+    explicationLigne: "Prélèvement facultatif direct sur votre salaire net de votre cotisation d'adhésion à votre organisme de mutuelle santé ou à votre caisse de retraite complémentaire facultative (ex: Préfon, MNT).",
+    natureDetaillee: "Retenue volontaire sur le salaire net",
+    impactFiscal: "Prélevée après calcul du Net Fiscal (sur le net à payer en banque)",
+    impactRetraite: "Aucun impact sur la retraite statutaire",
+    assietteSociale: "Déduite directement du virement net",
+    aVerifier: "Vérifiez que le montant prélevé correspond fidèlement à votre échéancier d'adhésion mutualiste.",
+    attention: "En cas de changement de mutuelle ou de résiliation, signalez-le sans attendre au bureau de paie pour éviter les doubles prélèvements.",
+    conseilAgent: "Vérifiez périodiquement si votre contrat mutualiste reste compétitif par rapport aux offres labellisées du secteur territorial.",
+    openFiscaKey: "retenue_mutuelle_salarie"
+  },
+  prevoyance_territoria: {
+    titre: "Retenue Prévoyance Territoria (Maintien de salaire)",
+    explicationLigne: "Cotisation d'adhésion au pack prévoyance Territoria. Cette garantie assure le maintien de votre salaire (traitement et primes) en cas de passage à demi-traitement lors d'un congé de maladie ordinaire, longue maladie ou invalidité.",
+    natureDetaillee: "Retenue facultative pour garantie maintien de salaire",
+    impactFiscal: "Prélevée sur le net à payer",
+    impactRetraite: "Assurance individuelle de prévoyance",
+    assietteSociale: "Déduite directement du net en banque",
+    aVerifier: "Contrôlez que la Ville vous verse parallèlement sa participation employeur pour compenser ce coût.",
+    attention: "Sans prévoyance, tout agent territorial en arrêt maladie de plus de 90 jours voit son salaire de base réduit de moitié et ses primes généralement suspendues.",
+    conseilAgent: "La souscription à la prévoyance est l'une des protections les plus capitales pour les agents de la fonction publique territoriale. Adhérez-y dès votre prise de fonctions !",
+    openFiscaKey: "retenue_mutuelle_salarie"
+  },
+  pas: {
+    titre: "Impôt sur le Revenu Prélevé à la Source (PAS)",
+    explicationLigne: "Impôt sur le revenu retenu directement chaque mois sur votre salaire par la Ville de Gennevilliers pour le compte du Trésor Public (DGFiP), selon votre taux personnalisé de foyer fiscal.",
+    natureDetaillee: "Impôt d'État prélevé à la source (Retenue fiscale)",
+    impactFiscal: "Acompte d'impôt imputé sur votre impôt sur le revenu définitif de l'année",
+    impactRetraite: "Aucun impact retraite",
+    assietteSociale: "Calculé sur le Net Fiscal (salaire imposable), pas sur le salaire brut ni sur le net en poche !",
+    aVerifier: "Comparez le taux appliqué sur le bulletin avec celui indiqué sur votre compte personnel sur impots.gouv.fr.",
+    attention: "En cas de mariage, naissance, séparation ou variation de revenus, vous pouvez modifier votre taux en temps réel sur impots.gouv.fr pour qu'il soit transmis à la mairie le mois suivant.",
+    conseilAgent: "Si vous ne souhaitez pas que votre employeur connaisse votre taux réel de foyer, vous pouvez opter pour le 'taux non personnalisé' (taux neutre) sur votre espace fiscal.",
+    openFiscaKey: "prelevement_a_la_source"
+  },
+  montant_net_social: {
+    titre: "Montant Net Social (Obligation DSN)",
+    explicationLigne: "Montant de référence légal affiché obligatoirement sur les bulletins de paie depuis juillet 2023. Il sert de base de calcul directe pour vos demandes de prestations sociales auprès de la CAF (Prime d'activité, RSA).",
+    natureDetaillee: "Mention d'information réglementaire obligatoire (Revenu de référence CAF)",
+    impactFiscal: "Information sociale (utilisée pour les aides CAF, distincte du Net Fiscal)",
+    impactRetraite: "Information réglementaire",
+    assietteSociale: "Ne subit aucune retenue : montant purement informatif",
+    aVerifier: "C'est exactement ce montant qu'il faut reporter dans vos déclarations trimestrielles de ressources CAF pour la Prime d'activité.",
+    attention: "Le Montant Net Social est souvent différent du 'Net à payer' car il ne déduit pas le PAS ni les cotisations de mutuelle facultatives.",
+    conseilAgent: "Même avec un salaire de fonctionnaire, vous pouvez être éligible à la Prime d'activité de la CAF si vos revenus se situent sous les seuils. Testez votre éligibilité sur caf.fr !",
+    openFiscaKey: "montant_net_social"
+  },
+  rappel: {
+    titre: "Rappel de Salaire (Régularisation rétroactive)",
+    explicationLigne: "Régularisation d'une somme due (ou d'une retenue indue) afférente à un ou plusieurs mois passés. Le marqueur 'R' dans le code signale un rappel rétroactif, souvent lié à un avancement d'échelon différé, une prime recalculée ou un ajustement d'absence.",
+    natureDetaillee: "Régularisation statutaire rétroactive",
+    impactFiscal: "Imposable sur le mois de son versement effectif (intègre le Net Fiscal du mois en cours)",
+    impactRetraite: "Les rappels sur le TIB ouvrent des droits à pension rétroactifs pour la CNRACL.",
+    assietteSociale: "Soumis aux cotisations selon la nature des rubriques régularisées.",
+    aVerifier: "Vérifiez que le mois mentionné dans le libellé correspond bien à la période de l'erreur et demandez le détail du calcul si nécessaire.",
+    attention: "Un rappel important augmente mécaniquement le Net Fiscal du mois et donc le prélèvement à la source (PAS) prélevé ce mois-ci. L'ajustement fiscal se régularise à la déclaration annuelle.",
+    conseilAgent: "Les créances de salaire dans la fonction publique se prescrivent par 4 ans (règle de la prescription quadriennale). Vous avez 4 ans pour réclamer un rappel non perçu avec l'aide de la CFDT !",
+    openFiscaKey: "rappel_salaire"
+  },
+  fraction_t: {
+    titre: "Fraction de Traitement (Congé de Maladie)",
+    explicationLigne: "Pourcentage du traitement indiciaire de base maintenu pendant un arrêt de travail pour raison de santé. En maladie ordinaire : plein traitement (100%) pendant 3 mois, puis demi-traitement (50%) pendant les 9 mois suivants.",
+    natureDetaillee: "Taux de maintien de traitement statutaire",
+    impactFiscal: "Le traitement maintenu reste imposable à l'impôt sur le revenu.",
+    impactRetraite: "Pendant le demi-traitement, les trimestres CNRACL continuent de se valider à taux plein !",
+    assietteSociale: "Cotisations calculées au prorata du traitement maintenu.",
+    aVerifier: "Vérifiez les dates d'arrêt de travail et le respect des 90 jours à plein traitement sur l'année glissante.",
+    attention: "Lors du passage à demi-traitement, l'IFSE peut être réduite ou suspendue selon la délibération cadre de la collectivité.",
+    conseilAgent: "Si vous passez à demi-traitement et adhérez au contrat de prévoyance Territoria, transmettez immédiatement votre dossier pour percevoir l'indemnisation complémentaire de maintien de salaire !",
+    openFiscaKey: "traitement_indiciaire_brut"
+  },
+  demi_traitement: {
+    titre: "Demi-Traitement (Congé de Maladie)",
+    explicationLigne: "Versement de 50 % du traitement indiciaire brut suite au dépassement des 90 premiers jours de congé de maladie ordinaire sur une période de 12 mois glissants.",
+    natureDetaillee: "Maintien partiel de traitement statutaire (50%)",
+    impactFiscal: "Imposable sur le montant effectivement perçu",
+    impactRetraite: "Valide vos trimestres de pension CNRACL à taux plein (100% des droits à durée d'assurance) !",
+    assietteSociale: "Calculé sur la moitié du traitement indiciaire brut",
+    aVerifier: "Activez votre indemnisation complémentaire de prévoyance Territoria sans attendre.",
+    attention: "Vérifiez que le passage à demi-traitement respecte bien le décompte des jours d'arrêt sur les 12 mois précédant la maladie.",
+    conseilAgent: "La CFDT vous assiste pour vérifier le calcul de vos 90 jours sur l'année glissante et faire valoir votre dossier prévoyance.",
+    openFiscaKey: "traitement_indiciaire_brut"
+  },
+  sans_traitement: {
+    titre: "Période Sans Traitement",
+    explicationLigne: "Suspension temporaire du traitement indiciaire lors d'une absence non rémunérée (congé sans solde, disponibilité, journée de carence ou grève).",
+    natureDetaillee: "Retenue pour absence de service fait",
+    impactFiscal: "Diminue le revenu imposable",
+    impactRetraite: "Les journées sans traitement ne valident pas de trimestres de retraite.",
+    assietteSociale: "Déduit de l'assiette brute soumise",
+    aVerifier: "Vérifiez que le nombre de 30èmes retenus correspond exactement à la durée de l'absence constatée.",
+    attention: "Dans la fonction publique, la retenue pour grève est d'un 30ème indivisible par jour de grève.",
+    conseilAgent: "En cas d'erreur de pointage ou d'absence justifiée imputée à tort, contactez vos délégués CFDT pour rétablir votre paie.",
+    openFiscaKey: "traitement_indiciaire_brut"
+  },
+  indem_differentielle: {
+    titre: "Indemnité Différentielle (Garantie SMIC)",
+    explicationLigne: "Complément de rémunération versé lorsque la somme du traitement indiciaire brut et des primes obligatoires est inférieure au SMIC légal, garantissant qu'aucun agent public ne perçoive une rémunération inférieure au salaire minimum.",
+    natureDetaillee: "Garantie légale du salaire minimum (Complément SMIC)",
+    impactFiscal: "100 % imposable à l'impôt sur le revenu",
+    impactRetraite: "Soumis à RAFP",
+    assietteSociale: "Soumis à CSG/CRDS (98,25%) et cotisations sociales",
+    aVerifier: "Cette ligne doit disparaître lors d'un avancement d'échelon qui positionne votre traitement au-dessus du SMIC.",
+    attention: "Cette indemnité suit l'évolution du SMIC horaire national.",
+    conseilAgent: "La CFDT réclame la refonte globale des grilles indiciaires pour que les premiers échelons débutent durablement au-dessus du SMIC sans avoir recours à des rustines indemnitaires.",
+    openFiscaKey: "indemnite_differentielle"
+  },
+  vacations: {
+    titre: "Vacations (Rémunération ponctuelle)",
+    explicationLigne: "Rémunération horaire d'interventions ponctuelles ou spécifiques (surveillance de cantine, études surveillées, animations, jurys, expertises) payées à la vacation.",
+    natureDetaillee: "Rémunération accessoire horaire (Vacations)",
+    impactFiscal: "Imposable à l'impôt sur le revenu",
+    impactRetraite: "Soumis à RAFP ou IRCANTEC selon le statut",
+    assietteSociale: "Soumis à cotisations sociales selon le régime applicable",
+    aVerifier: "Contrôlez le nombre d'heures ou de séances payées par rapport à votre relevé d'activité réel.",
+    attention: "Les vacations doivent être réglées sans retard injustifié sur le mois suivant leur réalisation.",
+    conseilAgent: "Conservez vos feuilles d'émargement et fiches de présence pour faire valoir vos heures en cas d'oubli sur la paie.",
+    openFiscaKey: "primes_fonction_publique"
+  },
+  traitement_detache: {
+    titre: "Traitement de Base Détaché",
+    explicationLigne: "Traitement indiciaire versé à un fonctionnaire détaché auprès d'une autre collectivité ou administration, calculé sur la grille de son grade d'origine ou d'accueil.",
+    natureDetaillee: "Traitement indiciaire en position de détachement",
+    impactFiscal: "100 % imposable à l'impôt sur le revenu",
+    impactRetraite: "Maintient l'avancement et les droits à pension dans le corps d'origine",
+    assietteSociale: "Assise sur le traitement indiciaire détaché",
+    aVerifier: "Vérifiez que votre échelon correspond à votre progression dans votre cadre d'emplois d'origine.",
+    conseilAgent: "En détachement, vous continuez de cotiser à votre caisse d'origine (CNRACL) : surveillez vos relevés de carrière annuels.",
+    openFiscaKey: "traitement_indiciaire_brut"
+  },
+  nbi_detache: {
+    titre: "NBI Détachée",
+    explicationLigne: "Points de Nouvelle Bonification Indiciaire conservés ou attribués dans le cadre d'un stage ou d'un détachement statutaire.",
+    natureDetaillee: "NBI en position de détachement",
+    impactFiscal: "Imposable à l'impôt sur le revenu",
+    impactRetraite: "Cotise à la CNRACL et ouvre droit au supplément de pension viager",
+    assietteSociale: "Soumis aux cotisations CNRACL pension",
+    aVerifier: "Vérifiez que la NBI est bien prise en compte dans votre base pension.",
+    conseilAgent: "La NBI détachée vous assure le maintien de vos droits à pension acquis antérieurement.",
+    openFiscaKey: "nouvelle_bonification_indiciaire"
+  },
+  cnracl_detache: {
+    titre: "CNRACL en Détachement",
+    explicationLigne: "Cotisation de pension de retraite prélevée pour le compte de votre caisse de retraite d'origine (CNRACL) pendant votre période de détachement.",
+    natureDetaillee: "Cotisation retraite statutaire en détachement",
+    impactFiscal: "Déductible du revenu imposable",
+    impactRetraite: "Poursuit la validation des trimestres de pension statutaire",
+    assietteSociale: "Assise sur le traitement soumis à pension détaché",
+    aVerifier: "Contrôlez que les cotisations sont bien reversées à la CNRACL par la collectivité d'accueil.",
+    conseilAgent: "Consultez votre relevé de situation individuelle pour vous assurer que les années de détachement sont bien enregistrées.",
+    openFiscaKey: "cotisation_retraite_cnracl_salarie"
+  },
+  autres_primes: {
+    titre: "Primes & Indemnités Diverses FPT",
+    explicationLigne: "Ensemble des primes statutaires complémentaires, astreintes techniques, indemnités horaires pour travaux supplémentaires (IHTS) ou sujétions particulières propres à vos missions.",
+    natureDetaillee: "Régime indemnitaire accessoire",
+    impactFiscal: "Imposable à l'impôt sur le revenu",
+    impactRetraite: "Soumis à cotisation RAFP dans la limite du plafond légal de 20% du TIB.",
+    assietteSociale: "Soumis à CSG/CRDS (98,25%) et RAFP (5%).",
+    aVerifier: "Consultez vos relevés d'heures ou d'astreintes pour vérifier l'exactitude des montants versés.",
+    attention: "Les heures supplémentaires font l'objet d'un régime fiscal d'exonération partielle sous conditions légales.",
+    conseilAgent: "Notez systématiquement vos heures supplémentaires et astreintes sur un carnet de bord personnel.",
+    openFiscaKey: "primes_fonction_publique"
+  },
+  p_maladie: {
+    titre: "Cotisation Patronale URSSAF : Maladie (9,88%)",
+    explicationLigne: "Cotisation versée entièrement par la Ville de Gennevilliers à l'URSSAF (9,88% du traitement). C'est du salaire différé : cet argent finance les remboursements de soins, les arrêts maladie et les congés maternité de l'ensemble des agents.",
+    natureDetaillee: "Salaire différé (Cotisation patronale santé)",
+    impactFiscal: "Non imposable pour l'agent (prise en charge par l'employeur)",
+    impactRetraite: "Finance la branche maladie de la Sécurité Sociale",
+    assietteSociale: "Traitement indiciaire brut soumis à pension (TIB + NBI)",
+    aVerifier: "Aucun prélèvement sur votre salaire net : cette cotisation est 100% prise en charge par la mairie.",
+    attention: "En collectivité territoriale, les fonctionnaires bénéficient de la protection sociale financée par l'employeur.",
+    conseilAgent: "Ces cotisations constituent la part invisible de votre rémunération globale : le 'salaire différé' qui garantit vos droits sociaux.",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_alloc_fam: {
+    titre: "Cotisation Patronale URSSAF : Allocations Familiales Principale (3,45%)",
+    explicationLigne: "Part principale de la contribution patronale finançant la branche famille de la Sécurité Sociale (CAF). Avec le code complémentaire 4082 (1,80%), elle totalise 5,25% du traitement.",
+    natureDetaillee: "Salaire différé (Financement patronal des prestations familiales)",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Finance la CNAF et les prestations familiales",
+    assietteSociale: "Traitement soumis à pension",
+    aVerifier: "Les deux lignes famille (codes 44 et 4082) totalisent 5,25% de votre traitement.",
+    conseilAgent: "Cet argent finance les allocations familiales et les aides de la CAF pour tous les foyers.",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_alloc_fam_comp: {
+    titre: "Cotisation Patronale URSSAF : Allocations Familiales Complémentaire (1,80%)",
+    explicationLigne: "Part complémentaire de la contribution patronale famille (1,80%). Ajoutée à la part principale de 3,45%, elle assure le financement complet de 5,25% de la branche famille.",
+    natureDetaillee: "Salaire différé (Financement complémentaire famille)",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Finance la CNAF",
+    assietteSociale: "Traitement soumis à pension",
+    aVerifier: "La somme des deux cotisations famille s'élève à 5,25%.",
+    conseilAgent: "Partie intégrante du salaire différé de la fonction publique.",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_fnal: {
+    titre: "Cotisation Patronale URSSAF : FNAL Logement (0,50%)",
+    explicationLigne: "Contribution patronale au Fonds National d'Aide au Logement (0,50% sur la totalité de la rémunération). Finance les aides personnelles au logement (APL) pour l'ensemble de la population.",
+    natureDetaillee: "Salaire différé (Financement patronal des APL)",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Finance le logement social et les APL",
+    assietteSociale: "Totalité de la rémunération brute (mention 'totalité')",
+    aVerifier: "Taux de 0,50% applicable aux employeurs publics de plus de 50 agents.",
+    conseilAgent: "Cotisation entièrement patronale finançant la solidarité logement.",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_mobilite: {
+    titre: "Cotisation Patronale : Versement Mobilité Île-de-France (3,20%)",
+    explicationLigne: "Contribution patronale de 3,20 % versée à Île-de-France Mobilités (IDFM) pour développer et financer les réseaux de transports en commun franciliens (métro, bus, RER, tramways).",
+    natureDetaillee: "Salaire différé (Financement patronal des transports publics)",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Financement des transports collectifs régionaux",
+    assietteSociale: "Traitement indiciaire",
+    aVerifier: "Entièrement payée par la Ville, aucun impact négatif sur votre net.",
+    conseilAgent: "C'est grâce à cette taxe sur la masse salariale que les transports régionaux sont financés et que votre pass Navigo est remboursé à 75% !",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_autonomie: {
+    titre: "Cotisation Patronale : Solidarité Autonomie CNSA (0,30%)",
+    explicationLigne: "Contribution Solidarité Autonomie versée à la Caisse Nationale de Solidarité pour l'Autonomie (CNSA) pour financer la prise en charge des personnes âgées dépendantes (EHPAD, APA) et des personnes en situation de handicap.",
+    natureDetaillee: "Salaire différé (Solidarité grand âge & handicap)",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Finance la 5e branche de la Sécurité Sociale (Autonomie)",
+    assietteSociale: "Traitement indiciaire",
+    aVerifier: "Cotisation entièrement patronale (0,30%).",
+    conseilAgent: "Issue de la journée de solidarité instaurée en 2004, cette contribution est acquittée par l'employeur.",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_atiacl: {
+    titre: "Cotisation Patronale : CNRACL ATIACL (0,40%)",
+    explicationLigne: "Cotisation patronale versée à la Caisse des Dépôts pour le régime de l'Allocation Temporaire d'Invalidité des Agents des Collectivités Locales. Taux de 0,40 % assis sur le seul traitement indiciaire brut (hors NBI).",
+    natureDetaillee: "Salaire différé (Assurance invalidité et accident de service)",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Ouvre droit à l'ATI en cas d'accident de service ou maladie professionnelle",
+    assietteSociale: "Traitement indiciaire brut (TIB seul)",
+    aVerifier: "Cette cotisation finance votre rente d'invalidité viagère si vous êtes victime d'un accident du travail.",
+    conseilAgent: "En cas d'accident de service vous laissant des séquelles permanentes, la reconnaissance d'un taux d'invalidité ouvre droit à l'ATI cumulable avec votre traitement !",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_centre_gestion: {
+    titre: "Cotisation Patronale : Centre de Gestion CIG Petite Couronne (0,50%)",
+    explicationLigne: "Cotisation versée par la Ville au Centre Interdépartemental de Gestion (CIG) pour mutualiser la gestion des ressources humaines territoriales : organisation des concours et examens professionnels, bourses de l'emploi, médecine préventive, conseils statutaires.",
+    natureDetaillee: "Contribution patronale de mutualisation RH",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Finance les services mutualisés de la fonction publique",
+    assietteSociale: "Traitement soumis à pension",
+    aVerifier: "Cotisation obligatoire pour les collectivités territoriales.",
+    conseilAgent: "Le CIG organise les concours territoriaux et gère les listes d'aptitude pour vos promotions et changements de grade.",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_cnfpt: {
+    titre: "Cotisation Patronale : Formation Professionnelle CNFPT (0,90%)",
+    explicationLigne: "Contribution patronale obligatoire finançant le Centre National de la Fonction Publique Territoriale (CNFPT) pour la formation professionnelle continue de tous les agents territoriaux.",
+    natureDetaillee: "Salaire différé (Financement de la formation professionnelle)",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Finance le droit individuel à la formation tout au long de la vie",
+    assietteSociale: "Traitement soumis à pension",
+    aVerifier: "La mairie verse près de 1 % de sa masse salariale pour vous permettre de vous former gratuitement.",
+    conseilAgent: "Chaque agent a droit à des jours de formation professionnelle par an (préparation aux concours, formations métiers, perfectionnement). Utilisez vos droits à formation au CNFPT !",
+    openFiscaKey: "cotisations_employeur"
+  },
+  p_cnfpt_maj: {
+    titre: "Cotisation Patronale : CNFPT Majoration Alternance (0,10%)",
+    explicationLigne: "Majoration de 0,10 % de la cotisation CNFPT instaurée en 2022 pour financer spécifiquement la formation des apprentis (alternants) accueillis dans les collectivités territoriales.",
+    natureDetaillee: "Salaire différé (Financement de l'apprentissage territorial)",
+    impactFiscal: "Non imposable pour l'agent",
+    impactRetraite: "Finance l'apprentissage dans les services publics",
+    assietteSociale: "Traitement soumis à pension",
+    aVerifier: "S'ajoute aux 0,90% du code 52 pour former 1,00% de contribution CNFPT.",
+    conseilAgent: "Cette contribution aide à former et intégrer les jeunes apprentis dans nos services communaux.",
+    openFiscaKey: "cotisations_employeur"
+  }
+};
+
+/**
+ * Enrichit une ligne de fiche de paie avec toutes les métadonnées détaillées
+ * (explication, formule, statut fiscal, droits retraite, assiette, contrôles RH, conseils CFDT).
+ */
+export function enrichirLigneFichePaie(
+  ligne: FichePaieLigne,
+  explKey?: string,
+  context?: {
+    code?: string;
+    libelle?: string;
+    moisRappel?: string;
+    cat?: "gain" | "retenue" | "patronale" | "retenue_net" | "info";
+    fractionT?: string;
+    estIfse?: boolean;
+    estCia?: boolean;
+    estTreizieme?: boolean;
+  }
+): FichePaieLigne {
+  let resolvedKey = explKey;
+
+  if (context?.moisRappel || ligne.moisRappel) {
+    resolvedKey = "rappel";
+  } else if (context?.fractionT) {
+    resolvedKey = "fraction_t";
+  } else if (context?.estCia) {
+    resolvedKey = "cia";
+  } else if (context?.estIfse) {
+    resolvedKey = "ifse";
+  } else if (context?.estTreizieme) {
+    resolvedKey = "prime_13eme";
+  } else if (!resolvedKey || !RUBRIQUES_METADATA_REGISTRY[resolvedKey]) {
+    const code = (ligne.code || context?.code || "").trim();
+    const libNorm = (ligne.libelle || context?.libelle || "").toLowerCase();
+
+    if (["8", "100", "101", "13", "2008"].includes(code)) resolvedKey = "tib";
+    else if (["9", "102", "2009"].includes(code)) resolvedKey = "nbi";
+    else if (["12", "103", "105", "17", "213", "2012"].includes(code)) resolvedKey = "residence";
+    else if (["10", "11", "16", "104", "0110"].includes(code)) resolvedKey = "sft";
+    else if (["0095", "095", "1735", "1737"].includes(code)) resolvedKey = "ppcr";
+    else if (["1591", "2591", "201"].includes(code)) resolvedKey = "ifse";
+    else if (["1592", "7610", "202"].includes(code)) resolvedKey = "cia";
+    else if (["7443", "7444", "8443", "8444"].includes(code)) resolvedKey = "prime_13eme";
+    else if (["1510", "0400", "400"].includes(code)) resolvedKey = "transport";
+    else if (["1860", "2860", "0230", "230"].includes(code)) resolvedKey = "comp_csg";
+    else if (["47", "0500", "500"].includes(code)) resolvedKey = "cnracl";
+    else if (["1028", "0510", "510"].includes(code)) resolvedKey = "rafp";
+    else if (["472", "67", "69"].includes(code)) resolvedKey = "ircantec";
+    else if (["501", "0501"].includes(code)) resolvedKey = "maladie";
+    else if (["61", "502", "0502"].includes(code)) resolvedKey = "vieillesse_plaf";
+    else if (["18", "299", "503", "0503"].includes(code)) resolvedKey = "vieillesse_deplaf";
+    else if (["41", "55", "0600", "600"].includes(code)) resolvedKey = "csg_ded";
+    else if (["40", "56", "0610", "610"].includes(code)) resolvedKey = "csg_nonded";
+    else if (["42", "57", "0620", "620"].includes(code)) resolvedKey = "crds";
+    else if (["7376", "0700", "700"].includes(code)) resolvedKey = "part_mutuelle";
+    else if (["7716"].includes(code)) resolvedKey = "part_prevoyance";
+    else if (["572", "7628", "0710", "710"].includes(code)) resolvedKey = "cotis_mutuelle";
+    else if (["7625"].includes(code)) resolvedKey = "prevoyance_territoria";
+    else if (["995", "0950", "950"].includes(code)) resolvedKey = "pas";
+    else if (["1584"].includes(code)) resolvedKey = "montant_net_social";
+    else if (["1620", "1679"].includes(code)) resolvedKey = "fraction_t";
+    else if (["617", "618"].includes(code)) resolvedKey = "indem_differentielle";
+    else if (["7201"].includes(code)) resolvedKey = "vacations";
+    else if (["43", "59", "4050", "66"].includes(code)) resolvedKey = "p_maladie";
+    else if (["44", "64"].includes(code)) resolvedKey = "p_alloc_fam";
+    else if (["4082", "1525"].includes(code)) resolvedKey = "p_alloc_fam_comp";
+    else if (["1250", "1251"].includes(code)) resolvedKey = "p_fnal";
+    else if (["46", "75"].includes(code)) resolvedKey = "p_mobilite";
+    else if (["389", "332"].includes(code)) resolvedKey = "p_autonomie";
+    else if (["49"].includes(code)) resolvedKey = "p_atiacl";
+    else if (["50", "73"].includes(code)) resolvedKey = "p_centre_gestion";
+    else if (["52", "74"].includes(code)) resolvedKey = "p_cnfpt";
+    else if (["1965", "1966"].includes(code)) resolvedKey = "p_cnfpt_maj";
+    else if (["193"].includes(code)) resolvedKey = "traitement_detache";
+    else if (["194"].includes(code)) resolvedKey = "nbi_detache";
+    else if (["1033"].includes(code)) resolvedKey = "cnracl_detache";
+    else if (["21"].includes(code)) resolvedKey = "demi_traitement";
+    else if (["28"].includes(code)) resolvedKey = "sans_traitement";
+    else if (/rappel/i.test(libNorm)) resolvedKey = "rappel";
+    else if (/13.*mois|prime semestrielle|compl.*remuneration/i.test(libNorm)) resolvedKey = "prime_13eme";
+    else if (/navigo|transport/i.test(libNorm)) resolvedKey = "transport";
+    else if (/territo|pack prev/i.test(libNorm)) resolvedKey = "prevoyance_territoria";
+    else if (/mutuelle|prefon|obseques/i.test(libNorm)) resolvedKey = "cotis_mutuelle";
+    else if (/net social/i.test(libNorm)) resolvedKey = "montant_net_social";
+    else if (/csg.*ded/i.test(libNorm)) resolvedKey = "csg_ded";
+    else if (/csg.*non/i.test(libNorm)) resolvedKey = "csg_nonded";
+    else if (/crds/i.test(libNorm)) resolvedKey = "crds";
+    else if (/cnracl.*detache/i.test(libNorm)) resolvedKey = "cnracl_detache";
+    else if (/cnracl/i.test(libNorm)) resolvedKey = "cnracl";
+    else if (/rafp/i.test(libNorm)) resolvedKey = "rafp";
+    else if (/ircantec/i.test(libNorm)) resolvedKey = "ircantec";
+    else if (/residence/i.test(libNorm)) resolvedKey = "residence";
+    else if (/supplement familial|sft/i.test(libNorm)) resolvedKey = "sft";
+    else if (/nbi.*detache/i.test(libNorm)) resolvedKey = "nbi_detache";
+    else if (/nbi|bonification/i.test(libNorm)) resolvedKey = "nbi";
+    else if (/ppcr|transfert primes/i.test(libNorm)) resolvedKey = "ppcr";
+    else if (/ifse/i.test(libNorm)) resolvedKey = "ifse";
+    else if (/cia\b|compl.*indemnitaire.*annuel/i.test(libNorm)) resolvedKey = "cia";
+    else if (/compens.*csg/i.test(libNorm)) resolvedKey = "comp_csg";
+    else if (/differentielle/i.test(libNorm)) resolvedKey = "indem_differentielle";
+    else if (/vacation/i.test(libNorm)) resolvedKey = "vacations";
+    else if (/fraction/i.test(libNorm)) resolvedKey = "fraction_t";
+    else if (/demi.*traitement/i.test(libNorm)) resolvedKey = "demi_traitement";
+    else if (/sans.*traitement/i.test(libNorm)) resolvedKey = "sans_traitement";
+    else if (/prelevement.*source|impot/i.test(libNorm)) resolvedKey = "pas";
+  }
+
+  const meta = resolvedKey ? RUBRIQUES_METADATA_REGISTRY[resolvedKey] : undefined;
+
+  if (meta) {
+    if (meta.openFiscaKey && OPENFISCA_VARIABLES_DICTIONARY[meta.openFiscaKey]) {
+      ligne.openFiscaVar = OPENFISCA_VARIABLES_DICTIONARY[meta.openFiscaKey];
+    }
+    if (!ligne.explicationLigne || ligne.explicationLigne.includes("copiée telle quelle") || ligne.explicationLigne.length < 30) {
+      ligne.explicationLigne = meta.explicationLigne;
+    }
+    ligne.natureDetaillee = meta.natureDetaillee;
+    ligne.impactFiscal = meta.impactFiscal;
+    ligne.impactRetraite = meta.impactRetraite;
+    ligne.assietteSociale = meta.assietteSociale;
+    ligne.aVerifier = meta.aVerifier;
+    ligne.attention = meta.attention;
+    ligne.conseilAgent = ligne.conseilAgent || meta.conseilAgent;
+  } else {
+    const isGain = ligne.montantGain !== undefined || context?.cat === "gain";
+    const isRetenue = ligne.montantRetenue !== undefined || context?.cat === "retenue" || context?.cat === "retenue_net";
+    const isPatronale = ligne.partPatronale !== undefined || context?.cat === "patronale";
+
+    if (isPatronale) {
+      ligne.natureDetaillee = "Salaire différé (Cotisation patronale Ville)";
+      ligne.impactFiscal = "Non imposable pour l'agent (prise en charge employeur)";
+      ligne.impactRetraite = "Financement mutualisé de la protection sociale publique";
+      ligne.assietteSociale = ligne.base ? `Assise sur la base de ${ligne.base.toFixed(2)} €` : "Assise sur le traitement brut";
+      ligne.aVerifier = "Cette cotisation est intégralement acquittée par la Ville de Gennevilliers sans prélèvement sur votre net.";
+      ligne.conseilAgent = "Cette contribution patronale fait partie du coût global employeur finançant votre protection collective.";
+    } else if (isRetenue) {
+      ligne.natureDetaillee = context?.cat === "retenue_net" ? "Retenue sur salaire net (Facultative)" : "Cotisation salariale obligatoire";
+      ligne.impactFiscal = context?.cat === "retenue_net" ? "Prélevée sur le net à payer (après net fiscal)" : "Déductible ou réintégrée selon le régime fiscal";
+      ligne.impactRetraite = "Participe au financement des régimes de solidarité ou de retraite";
+      ligne.assietteSociale = ligne.base ? `Calculée sur une base de ${ligne.base.toFixed(2)} €` : "Prélevée sur le bulletin";
+      ligne.aVerifier = "Contrôlez que la retenue appliquée correspond à votre situation administrative ou à votre contrat d'adhésion.";
+      ligne.conseilAgent = "En cas de doute sur la base ou le taux appliqué, sollicitez l'avis de votre section syndicale CFDT.";
+    } else if (isGain) {
+      ligne.natureDetaillee = "Gain brut statutaire (Indemnité ou prime)";
+      ligne.impactFiscal = "Imposable à l'impôt sur le revenu (intégré dans le net fiscal)";
+      ligne.impactRetraite = "Soumis à cotisation RAFP ou retraite selon la nature indemnitaire";
+      ligne.assietteSociale = "Soumis aux cotisations sociales statutaires et à la CSG/CRDS (98,25%)";
+      ligne.aVerifier = "Vérifiez que ce montant correspond bien à vos fonctions effectives ou à votre arrêté individuel.";
+      ligne.conseilAgent = "Conservez toujours les justificatifs et arrêtés liés à cette attribution pour vos dossiers de carrière.";
+    } else {
+      ligne.natureDetaillee = "Mention statutaire d'information";
+      ligne.impactFiscal = "Non imposable (montant informatif)";
+      ligne.impactRetraite = "Information réglementaire";
+      ligne.assietteSociale = "Ne subit aucune retenue";
+      ligne.aVerifier = "Ce montant figure à titre indicatif sur le bulletin et n'a pas d'impact arithmétique sur le net versé.";
+      ligne.conseilAgent = "Ce montant informatif est souvent destiné aux transmissions réglementaires DSN ou CAF.";
+    }
+
+    if (!ligne.explicationLigne || ligne.explicationLigne.includes("copiée telle quelle")) {
+      ligne.explicationLigne = `Rubrique Ciril ${ligne.code || ''} (${ligne.libelle}) : élément de ${isGain ? 'rémunération brute' : isRetenue ? 'retenue statutaire' : isPatronale ? 'cotisation patronale' : 'paie informative'} appliqué selon la doctrine de gestion de la Ville de Gennevilliers.`;
+    }
+  }
+
+  if (ligne.moisRappel) {
+    ligne.attention = `Régularisation rétroactive portant sur le mois de ${ligne.moisRappel}. Cette somme est rattachée fiscalement au mois de son paiement effectif.`;
+    if (!ligne.explicationLigne.includes("Régularisation")) {
+      ligne.explicationLigne += ` (Régularisation rétroactive afférente au mois de ${ligne.moisRappel}).`;
+    }
+  }
+
+  return ligne;
 }
 
 /**
@@ -1383,6 +2160,11 @@ export function computeOpenFiscaPay(params: CalculParams, metadata?: ParseMetada
       estConforme: true,
       explicationLigne: `Impôt sur le revenu collecté directement sur votre salaire net imposable (${netFiscal.toFixed(2)} €) pour le compte de la DGFiP.`
     });
+  }
+
+  // Enrichissement systématique de toutes les lignes avec les métadonnées complètes
+  for (let i = 0; i < lignes.length; i++) {
+    lignes[i] = enrichirLigneFichePaie(lignes[i], lignes[i].id);
   }
 
   // 13. Comparaison simple avec la vraie fiche (3 règles, tolérance 5 centimes)
@@ -2123,8 +2905,9 @@ const VAR_PAR_EXPL: Record<string, string> = {
   cia: "rifseep_cia",
   comp_csg: "indemnite_compensatrice_csg",
   autres_primes: "primes_fonction_publique",
-  prime_13eme: "primes_fonction_publique",
-  indem_differentielle: "primes_fonction_publique",
+  prime_13eme: "prime_13eme_mois",
+  indem_differentielle: "indemnite_differentielle",
+  montant_net_social: "montant_net_social",
   transport: "prise_en_charge_transport",
   cnracl: "cotisation_retraite_cnracl_salarie",
   rafp: "cotisation_retraite_rafp_salarie",
@@ -2136,7 +2919,22 @@ const VAR_PAR_EXPL: Record<string, string> = {
   csg_nonded: "csg_non_deductible_salaire",
   crds: "crds_salaire",
   part_mutuelle: "participation_mutuelle_employeur",
+  part_prevoyance: "participation_mutuelle_employeur",
   cotis_mutuelle: "retenue_mutuelle_salarie",
+  prevoyance_territoria: "retenue_mutuelle_salarie",
+  p_maladie: "cotisations_employeur",
+  p_alloc_fam: "cotisations_employeur",
+  p_alloc_fam_comp: "cotisations_employeur",
+  p_fnal: "cotisations_employeur",
+  p_mobilite: "cotisations_employeur",
+  p_autonomie: "cotisations_employeur",
+  p_atiacl: "cotisations_employeur",
+  p_centre_gestion: "cotisations_employeur",
+  p_cnfpt: "cotisations_employeur",
+  p_cnfpt_maj: "cotisations_employeur",
+  traitement_detache: "traitement_indiciaire_brut",
+  nbi_detache: "nouvelle_bonification_indiciaire",
+  cnracl_detache: "cotisation_retraite_cnracl_salarie",
   pas: "prelevement_a_la_source"
 };
 
@@ -2246,7 +3044,7 @@ function computeOpenFiscaPayDepuisLignesReelles(
     const estCia = known?.expl === "cia" || lr.code === "1592" || lr.code === "7610" || /cia\b/i.test(lr.libelle) || /compl.*indemnitaire\s*annuel/i.test(lr.libelle);
     const estIfse = !estCia && (known?.expl === "ifse" || lr.code === "1591" || lr.code === "2591" || /ifse/i.test(lr.libelle));
 
-    lignes.push({
+    const ligneBrute: FichePaieLigne = {
       id: idLigne,
       code: lr.code,
       libelle: lr.moisRappel
@@ -2269,13 +3067,24 @@ function computeOpenFiscaPayDepuisLignesReelles(
         ? `Indemnité de Fonctions, de Sujétions et d'Expertise (rubrique Ciril 1591/2591). Dans votre collectivité, l'IFSE Tit. est composée de 4 IFSE cumulatives : IFSE 1 (Prime de fonctions), IFSE 2 (Prime des contraintes de poste), IFSE 3 (Samedis, dimanches et astreintes) et IFSE 4 (Avantages acquis).`
         : (estCia
           ? `Complément Indemnitaire Annuel (CIA Tit., rubrique Ciril 1592/7610). Se compose de 10 % de l'IFSE mensuelle × 12 mois (soit 1,2 mois d'IFSE annuelle). Cette somme est attribuée pour 50 % sur la manière de servir (évaluation CREP) et pour 50 % selon le nombre de jours d'absence.`
-          : `Rubrique ${lr.code} du bulletin original — copiée telle quelle (aucun recalcul).`),
+          : ""),
       conseilAgent: estIfse
         ? `Consultez votre arrêté RIFSEEP individuel pour vérifier le montant précis alloué à chacune de vos 4 composantes IFSE (fonctions, contraintes, astreintes/week-ends, maintien des avantages acquis). En cas de mobilité ou de réorganisation, la part IFSE 4 (avantages acquis) reste garantie.`
         : (estCia
           ? `Le montant du CIA repose sur la base de 10 % de votre IFSE mensuelle × 12 mois. Contrôlez que la part manière de servir (50 %) reflète votre CREP et que la part assiduité (50 %) ne décompte pas des absences de droit protégées (maternité, accident de service).`
           : undefined)
-    });
+    };
+
+    lignes.push(enrichirLigneFichePaie(ligneBrute, known?.expl, {
+      code: lr.code,
+      libelle: lr.libelle,
+      moisRappel: lr.moisRappel,
+      cat,
+      fractionT: lr.fractionT,
+      estIfse,
+      estCia,
+      estTreizieme
+    }));
   }
 
   // Totaux imprimés en priorité, déduits des lignes à défaut
@@ -2289,7 +3098,7 @@ function computeOpenFiscaPayDepuisLignesReelles(
   const coutGlobalEmployeur = montantsReels?.coutEmployeurReel ?? r2(brutLu + totalCotisationsPatronales);
 
   // Ligne PAS synthétique (bloc « Impôt sur le revenu » du bulletin) — la vue l'affiche hors tableau
-  lignes.push({
+  const pasLigne: FichePaieLigne = {
     id: "pas",
     code: "995",
     libelle: "Impôt sur le revenu prélevé à la source",
@@ -2300,7 +3109,8 @@ function computeOpenFiscaPayDepuisLignesReelles(
     montantTheoriqueOpenFisca: montantPas,
     estConforme: true,
     explicationLigne: `Impôt collecté par la Mairie pour la DGFiP : ${netFiscal.toFixed(2)} € de net imposable × ${tauxPas} %.`
-  });
+  };
+  lignes.push(enrichirLigneFichePaie(pasLigne, "pas"));
 
   const phraseReconstruction = `Fiche reconstruite ligne à ligne depuis votre bulletin original (${lignesReelles.length} rubriques copiées sans recalcul).`;
 

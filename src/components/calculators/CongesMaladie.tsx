@@ -675,19 +675,24 @@ export const CongesMaladie: React.FC = () => {
                 id="select-statut-agent"
                 value={statut}
                 onChange={e => handleStatutChange(e.target.value as StatutAgent)}
-                className="w-full appearance-none bg-white dark:bg-slate-800 border-2 border-teal-500/70 dark:border-teal-600 hover:border-teal-600 focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 rounded-xl px-4 py-3 pr-10 text-sm sm:text-base font-bold text-slate-900 dark:text-white shadow-sm transition-all cursor-pointer"
+                className="w-full appearance-none bg-gradient-to-r from-teal-50 via-emerald-50/80 to-teal-100/70 dark:from-teal-950/70 dark:via-slate-900 dark:to-teal-950/70 hover:from-teal-100 hover:via-emerald-100 hover:to-teal-100 dark:hover:from-teal-900/80 dark:hover:via-slate-800 dark:hover:to-teal-900/80 border-2 border-teal-500 dark:border-teal-400 hover:border-teal-600 focus:border-teal-600 focus:ring-4 focus:ring-teal-500/25 rounded-xl px-4 py-3.5 pr-28 text-sm sm:text-base font-black text-slate-900 dark:text-white shadow-sm hover:shadow transition-all cursor-pointer"
               >
-                <option value="titulaire_cnracl">
+                <option value="titulaire_cnracl" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                   🏛️ Fonctionnaire Titulaire ou Stagiaire — Temps complet ou ≥ 28h/semaine (CNRACL)
                 </option>
-                <option value="titulaire_ircantec">
+                <option value="titulaire_ircantec" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                   🏛️ Fonctionnaire Titulaire ou Stagiaire — Temps non complet &lt; 28h/semaine (IRCANTEC)
                 </option>
-                <option value="contractuel">
+                <option value="contractuel" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                   📄 Agent Contractuel (CDD ou CDI) — Affilié au Régime Général (CPAM)
                 </option>
               </select>
-              <ChevronDown className="w-5 h-5 text-teal-600 dark:text-teal-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center gap-1.5 text-teal-700 dark:text-teal-300">
+                <span className="hidden sm:inline-flex items-center text-[11px] font-black uppercase tracking-wider bg-teal-600 text-white px-2 py-0.5 rounded-md shadow-xs">
+                  Choisir
+                </span>
+                <ChevronDown className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              </div>
             </div>
 
             {/* Encart pédagogique dynamique sur le statut choisi */}
@@ -764,14 +769,19 @@ export const CongesMaladie: React.FC = () => {
                         setDateFonction("");
                         setShowResult(true);
                       }}
-                      className="w-full appearance-none bg-white dark:bg-slate-800 border-2 border-teal-500/70 dark:border-teal-600 rounded-xl px-3.5 py-2.5 pr-9 text-xs sm:text-sm font-bold text-slate-900 dark:text-white cursor-pointer"
+                      className="w-full appearance-none bg-gradient-to-r from-teal-50 via-emerald-50/80 to-teal-100/70 dark:from-teal-950/70 dark:via-slate-900 dark:to-teal-950/70 hover:from-teal-100 hover:via-emerald-100 hover:to-teal-100 dark:hover:from-teal-900/80 dark:hover:via-slate-800 dark:hover:to-teal-900/80 border-2 border-teal-500 dark:border-teal-400 hover:border-teal-600 focus:border-teal-600 focus:ring-4 focus:ring-teal-500/25 rounded-xl px-3.5 py-3 pr-24 text-xs sm:text-sm font-black text-slate-900 dark:text-white shadow-sm hover:shadow transition-all cursor-pointer"
                     >
-                      <option value="moins_4m">⏳ Moins de 4 mois d'ancienneté (IJSS CPAM uniquement)</option>
-                      <option value="4m_2a">📅 De 4 mois à moins de 2 ans (1 mois à 90% + 1 mois à 50%)</option>
-                      <option value="2a_3a">📅 De 2 ans à moins de 3 ans (2 mois à 90% + 2 mois à 50%)</option>
-                      <option value="plus_3a">⭐ 3 ans d'ancienneté et plus (3 mois à 90% + 3 mois à 50%)</option>
+                      <option value="moins_4m" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">⏳ Moins de 4 mois d'ancienneté (IJSS CPAM uniquement)</option>
+                      <option value="4m_2a" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">📅 De 4 mois à moins de 2 ans (1 mois à 90% + 1 mois à 50%)</option>
+                      <option value="2a_3a" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">📅 De 2 ans à moins de 3 ans (2 mois à 90% + 2 mois à 50%)</option>
+                      <option value="plus_3a" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">⭐ 3 ans d'ancienneté et plus (3 mois à 90% + 3 mois à 50%)</option>
                     </select>
-                    <ChevronDown className="w-4 h-4 text-teal-600 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none flex items-center gap-1.5 text-teal-700 dark:text-teal-300">
+                      <span className="hidden sm:inline-flex items-center text-[10px] font-black uppercase tracking-wider bg-teal-600 text-white px-1.5 py-0.5 rounded shadow-xs">
+                        Choisir
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    </div>
                   </div>
                 </div>
 
@@ -867,15 +877,20 @@ export const CongesMaladie: React.FC = () => {
                 id="select-nature-arret"
                 value={typeConge}
                 onChange={e => handleInputChange(setTypeConge, e.target.value as TypeConge)}
-                className="w-full appearance-none bg-white dark:bg-slate-800 border-2 border-teal-500/70 dark:border-teal-600 hover:border-teal-600 focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 rounded-xl px-4 py-3 pr-10 text-sm sm:text-base font-bold text-slate-900 dark:text-white shadow-sm transition-all cursor-pointer"
+                className="w-full appearance-none bg-gradient-to-r from-teal-50 via-emerald-50/80 to-teal-100/70 dark:from-teal-950/70 dark:via-slate-900 dark:to-teal-950/70 hover:from-teal-100 hover:via-emerald-100 hover:to-teal-100 dark:hover:from-teal-900/80 dark:hover:via-slate-800 dark:hover:to-teal-900/80 border-2 border-teal-500 dark:border-teal-400 hover:border-teal-600 focus:border-teal-600 focus:ring-4 focus:ring-teal-500/25 rounded-xl px-4 py-3.5 pr-28 text-sm sm:text-base font-black text-slate-900 dark:text-white shadow-sm hover:shadow transition-all cursor-pointer"
               >
                 {availableConges.map(opt => (
-                  <option key={opt.value} value={opt.value}>
+                  <option key={opt.value} value={opt.value} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                     {opt.label}
                   </option>
                 ))}
               </select>
-              <ChevronDown className="w-5 h-5 text-teal-600 dark:text-teal-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center gap-1.5 text-teal-700 dark:text-teal-300">
+                <span className="hidden sm:inline-flex items-center text-[11px] font-black uppercase tracking-wider bg-teal-600 text-white px-2 py-0.5 rounded-md shadow-xs">
+                  Choisir
+                </span>
+                <ChevronDown className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              </div>
             </div>
 
             {/* Fiche didactique sur l'arrêt sélectionné */}
@@ -1024,19 +1039,53 @@ export const CongesMaladie: React.FC = () => {
               </div>
 
               {activeHelp === "glissant" && typeConge === "cmo" && (
-                <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-xs text-slate-700 dark:text-slate-200 space-y-1.5 animate-fadeIn">
-                  <div className="font-bold text-amber-900 dark:text-amber-300 flex items-center justify-between">
-                    <span>Comprendre la règle des 365 jours glissants en Maladie Ordinaire (CMO)</span>
-                    <button type="button" onClick={() => setActiveHelp(null)} className="text-slate-400 hover:text-slate-700">
-                      <X className="w-3.5 h-3.5" />
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50/60 dark:from-amber-950/50 dark:to-slate-900 border-2 border-amber-400 dark:border-amber-600 text-xs sm:text-sm text-slate-700 dark:text-slate-200 space-y-3 animate-fadeIn shadow-sm">
+                  <div className="font-extrabold text-amber-950 dark:text-amber-200 flex items-center justify-between border-b border-amber-200 dark:border-amber-800 pb-2">
+                    <span className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-amber-600" />
+                      Comprendre la règle des 365 jours glissants en Maladie Ordinaire (CMO)
+                    </span>
+                    <button type="button" onClick={() => setActiveHelp(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer">
+                      <X className="w-4 h-4" />
                     </button>
                   </div>
-                  <p>
-                    Les 90 jours à 90 % ne repartent <strong>pas</strong> à zéro le 1er janvier ! Pour chaque jour d'arrêt, la DRH regarde les <strong>365 jours qui précèdent exactement cette date</strong>.
-                  </p>
-                  <p>
-                    <em>Exemple :</em> Si vous avez déjà cumulé 60 jours d'arrêt au cours des 12 derniers mois et que vous êtes arrêté 40 jours de plus, les <strong>30 premiers jours</strong> seront payés à 90 % (pour atteindre le plafond de 90 jours) et les <strong>10 jours suivants</strong> basculeront à demi-traitement (50 %).
-                  </p>
+
+                  {/* Réponse directe et sans ambiguïté à la question statutaire */}
+                  <div className="p-3 bg-amber-100/80 dark:bg-amber-900/40 rounded-xl border border-amber-300 dark:border-amber-700 font-bold text-amber-950 dark:text-amber-100 flex items-start gap-2.5">
+                    <span className="text-base shrink-0">🎯</span>
+                    <div>
+                      <strong className="block text-amber-900 dark:text-amber-200">
+                        À quelle date commence et s'applique la période des 365 jours ?
+                      </strong>
+                      <p className="font-normal text-xs mt-1 leading-relaxed text-slate-800 dark:text-slate-200">
+                        La règle s'applique <strong>AU JOUR LE JOUR pour CHAQUE JOUR de votre nouvel arrêt</strong> (et non pas une seule fois au 1er jour, ni rétroactivement à la fin de l'arrêt) !
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 text-xs leading-relaxed">
+                    <p>
+                      <strong>1. Comment la DRH évalue-t-elle concrètement chaque journée ?</strong><br />
+                      Pour <strong>chaque jour J d'absence</strong> (du premier au dernier jour de votre arrêt), la collectivité regarde la fenêtre des <strong>365 jours calendaires qui précèdent immédiatement cette date</strong> (de <em>J - 365 jours</em> à <em>J - 1 jour</em>) :
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 pl-2 text-slate-600 dark:text-slate-300">
+                      <li>Si le cumul des arrêts sur cette période de 365 jours est <strong>inférieur à 90 jours</strong> : la journée J est indemnisée à <strong>90 %</strong> (ou 100 % selon le régime).</li>
+                      <li>Dès que le cumul de 90 jours est atteint : les journées suivantes basculent à <strong>demi-traitement (50 %)</strong>.</li>
+                      <li>Au-delà de 360 jours cumulés sur la fenêtre glissante : les droits à maintien de salaire sont épuisés.</li>
+                    </ul>
+
+                    <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-amber-200 dark:border-amber-800/80 space-y-1.5">
+                      <strong className="text-amber-900 dark:text-amber-300 font-bold flex items-center gap-1.5">
+                        💡 Pourquoi l'évaluation au jour le jour est très avantageuse pour l'agent ?
+                      </strong>
+                      <p className="text-slate-600 dark:text-slate-300">
+                        Pendant que votre arrêt se déroule, le calendrier avance : des arrêts maladie pris il y a plus d'un an (366 jours ou plus) <strong>sortent progressivement de la fenêtre glissante</strong> !
+                      </p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 italic">
+                        <strong>Exemple concret :</strong> Si vous avez eu 30 jours d'arrêt en mai de l'année précédente et que vous êtes à nouveau arrêté en mai de cette année, dès le 31 mai, vos 30 jours de l'an dernier s'effacent de la période de référence. Vous pouvez ainsi <strong>reconstituer des jours à plein traitement (ou 90 %) en cours d'arrêt sans avoir repris le travail</strong> !
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -1067,57 +1116,128 @@ export const CongesMaladie: React.FC = () => {
 
               {/* Historique des arrêts (Affiché seulement pour le CMO) */}
               {typeConge === "cmo" && (
-                <div className="p-4 bg-white/90 dark:bg-slate-800/90 border border-amber-200 dark:border-amber-800/60 rounded-2xl space-y-3">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                      <h5 className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-400 flex items-center gap-1.5">
-                        <Clock className="w-4 h-4" /> Avez-vous déjà eu d'autres arrêts maladie dans les 12 derniers mois ?
-                      </h5>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                        Ajoutez vos arrêts antérieurs pour déduire automatiquement les jours déjà consommés sur l'année glissante.
-                      </p>
+                <div className="p-5 sm:p-6 bg-gradient-to-br from-amber-50 via-orange-50/70 to-amber-100/50 dark:from-amber-950/40 dark:via-slate-900 dark:to-orange-950/30 border-2 border-amber-400 dark:border-amber-600 rounded-3xl shadow-md shadow-amber-500/10 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-start gap-3">
+                      <div className="p-3 bg-amber-500 text-white rounded-2xl shadow-md shadow-amber-500/30 shrink-0 mt-0.5">
+                        <Clock className="w-6 h-6 stroke-[2.5]" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h5 className="text-sm sm:text-base font-black text-amber-950 dark:text-amber-200">
+                            Avez-vous déjà eu d'autres arrêts maladie dans les 12 derniers mois ?
+                          </h5>
+                          <span className="px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200 rounded-full border border-amber-300 dark:border-amber-700">
+                            Règle de l'année glissante
+                          </span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium mt-1 leading-relaxed">
+                          Ajoutez vos arrêts antérieurs pour déduire automatiquement les jours déjà consommés sur l'année glissante (en l'espèce, <strong>jusqu'à 365 jours à la date du dernier jour du dernier arrêt</strong>).
+                        </p>
+                      </div>
                     </div>
+
                     <button
                       type="button"
                       onClick={addArretHistorique}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-900/30 hover:bg-amber-100 dark:hover:bg-amber-900/50 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs sm:text-sm font-extrabold rounded-2xl shadow-md shadow-amber-500/30 hover:shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0"
                     >
-                      <Plus className="w-3.5 h-3.5" /> Ajouter un arrêt précédent
+                      <Plus className="w-4 h-4 stroke-[3]" />
+                      <span>Ajouter un arrêt précédent</span>
                     </button>
                   </div>
 
-                  {historique.length > 0 && (
-                    <div className="space-y-2.5 pt-1">
+                  {/* Précision expresse de la date : jusqu'à 365 jours à la date du dernier jour de l'arrêt */}
+                  <div className="p-3.5 bg-white/95 dark:bg-slate-900/95 rounded-2xl border-2 border-amber-300 dark:border-amber-700/80 text-xs text-slate-800 dark:text-slate-200 space-y-1.5 shadow-xs">
+                    <div className="flex items-center gap-2 font-bold text-amber-950 dark:text-amber-200">
+                      <CalendarIcon className="w-4 h-4 text-amber-600 shrink-0" />
+                      <span>Périmètre des dates à déclarer (jusqu'à 365 jours à la date du dernier jour du dernier arrêt) :</span>
+                    </div>
+                    {dateArret && dateFin ? (
+                      <p className="leading-relaxed">
+                        Pour votre arrêt du <strong>{new Date(dateArret).toLocaleDateString("fr-FR")}</strong> au <strong>{new Date(dateFin).toLocaleDateString("fr-FR")}</strong>, 
+                        vous devez renseigner tous vos arrêts survenus <strong>jusqu'à 365 jours à la date du dernier jour de cet arrêt</strong> (soit du{" "}
+                        <strong className="text-amber-700 dark:text-amber-400">
+                          {(() => {
+                            const d = parseDateUTC(dateFin);
+                            if (!d) return "...";
+                            d.setUTCFullYear(d.getUTCFullYear() - 1);
+                            return d.toLocaleDateString("fr-FR");
+                          })()}
+                        </strong>{" "}
+                        au{" "}
+                        <strong className="text-amber-700 dark:text-amber-400">
+                          {new Date(dateFin).toLocaleDateString("fr-FR")}
+                        </strong>
+                        ). Chaque jour de votre arrêt est examiné individuellement au regard des 365 jours qui le précèdent.
+                      </p>
+                    ) : dateArret ? (
+                      <p className="leading-relaxed">
+                        Pour votre arrêt débutant le <strong>{new Date(dateArret).toLocaleDateString("fr-FR")}</strong>, 
+                        renseignez tous vos arrêts survenus depuis le{" "}
+                        <strong className="text-amber-700 dark:text-amber-400">
+                          {(() => {
+                            const d = parseDateUTC(dateArret);
+                            if (!d) return "...";
+                            d.setUTCFullYear(d.getUTCFullYear() - 1);
+                            return d.toLocaleDateString("fr-FR");
+                          })()}
+                        </strong>{" "}
+                        et jusqu'à 365 jours à la date du dernier jour de votre arrêt (en cas de prolongation).
+                      </p>
+                    ) : (
+                      <p className="leading-relaxed text-slate-600 dark:text-slate-300">
+                        Indiquez tous vos arrêts maladie intervenus <strong>jusqu'à 365 jours à la date du dernier jour de votre dernier arrêt</strong>. 
+                        <em>(Renseignez les dates de début et de fin de votre arrêt ci-dessus pour afficher la période calendaire exacte).</em>
+                      </p>
+                    )}
+                  </div>
+
+                  {historique.length > 0 ? (
+                    <div className="space-y-3 pt-2 border-t border-amber-200/80 dark:border-amber-800/60">
+                      <div className="text-xs font-bold text-amber-900 dark:text-amber-300 flex items-center justify-between">
+                        <span>Arrêts précédents déclarés ({historique.length}) :</span>
+                        <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
+                          Les dates servent à calculer vos droits restants à plein / demi-traitement
+                        </span>
+                      </div>
+
                       {historique.map((arret, index) => (
                         <div
                           key={arret.id}
-                          className="flex items-center gap-3 p-2.5 bg-slate-50 dark:bg-slate-900 border border-amber-200/80 dark:border-amber-800/40 rounded-xl"
+                          className="flex items-center gap-3 p-3 bg-white dark:bg-slate-900 border-2 border-amber-300/80 dark:border-amber-800/70 rounded-2xl shadow-xs"
                         >
-                          <span className="text-xs font-black text-amber-600 dark:text-amber-400 w-6">#{index + 1}</span>
-                          <div className="flex-1 grid grid-cols-2 gap-2.5">
+                          <span className="text-xs font-black text-amber-700 dark:text-amber-400 px-2 py-1 bg-amber-100 dark:bg-amber-950/80 rounded-lg">
+                            #{index + 1}
+                          </span>
+                          <div className="flex-1 grid grid-cols-2 gap-3">
                             <div>
-                              <label className="block text-[10px] uppercase font-bold text-slate-500 mb-0.5">Du</label>
+                              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">
+                                Date de début
+                              </label>
                               <input
                                 type="date"
                                 value={arret.debut}
                                 onChange={e => updateArretHistorique(arret.id, "debut", e.target.value)}
-                                className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg px-2.5 py-1 text-xs text-slate-900 dark:text-white"
+                                className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 focus:border-amber-500 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 dark:text-white"
                               />
                             </div>
                             <div>
-                              <label className="block text-[10px] uppercase font-bold text-slate-500 mb-0.5">Au</label>
+                              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">
+                                Date de fin
+                              </label>
                               <input
                                 type="date"
                                 value={arret.fin}
                                 onChange={e => updateArretHistorique(arret.id, "fin", e.target.value)}
-                                className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg px-2.5 py-1 text-xs text-slate-900 dark:text-white"
+                                className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 focus:border-amber-500 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 dark:text-white"
                               />
                             </div>
                           </div>
                           <button
                             type="button"
                             onClick={() => removeArretHistorique(arret.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors mt-3"
+                            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-xl transition-colors cursor-pointer mt-3"
                             title="Supprimer cet arrêt"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -1126,15 +1246,22 @@ export const CongesMaladie: React.FC = () => {
                       ))}
 
                       {dateArret && (
-                        <div className="p-2.5 rounded-lg bg-amber-50/80 dark:bg-amber-950/40 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
-                          <Info className="w-4 h-4 shrink-0 text-amber-600" />
-                          <span>
+                        <div className="p-3.5 rounded-2xl bg-amber-100/80 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-xs sm:text-sm text-amber-950 dark:text-amber-100 flex items-center gap-3">
+                          <Info className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400" />
+                          <div className="leading-snug">
                             Jours d'arrêt déjà consommés sur les 12 mois précédant le{" "}
-                            {new Date(dateArret).toLocaleDateString("fr-FR")} :{" "}
-                            <strong>{droits?.cmoConsomme ?? 0} jour(s)</strong>.
-                          </span>
+                            <strong>{new Date(dateArret).toLocaleDateString("fr-FR")}</strong> :{" "}
+                            <span className="font-black text-amber-700 dark:text-amber-300 text-sm">
+                              {droits?.cmoConsomme ?? 0} jour(s)
+                            </span>.
+                          </div>
                         </div>
                       )}
+                    </div>
+                  ) : (
+                    <div className="p-3 rounded-xl bg-amber-100/40 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-900/40 text-xs text-amber-900 dark:text-amber-300 flex items-center justify-between">
+                      <span>💡 Si vous n'avez pas eu d'arrêt dans l'année écoulée, vos droits sont intacts (0 jour déduit).</span>
+                      <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400">0 jour consommé</span>
                     </div>
                   )}
                 </div>

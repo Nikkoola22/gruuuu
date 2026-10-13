@@ -597,139 +597,115 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
           </div>
 
           {/* Grille des 3 cartes Vedettes (Kiosque, Schémas, Podcasts) */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
 
             {/* CARTE 1 : À LIRE - LE JOURNAL CFDT GENNEVILLIERS & KIOSQUE MULTI-ÉDITIONS */}
-            <div className="relative bg-gradient-to-br from-white via-orange-50/40 to-amber-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-orange-950/25 rounded-3xl p-5 sm:p-6 border-2 border-orange-200/90 dark:border-orange-500/30 shadow-xl shadow-orange-500/10 dark:shadow-orange-950/30 transition-all duration-300 hover:border-orange-400 dark:hover:border-orange-400/60 overflow-hidden group flex flex-col justify-between">
-              <BorderBeam size={200} duration={12} delay={0} colorFrom="#f97316" colorTo="#fbbf24" />
+            <div className="relative bg-gradient-to-br from-white via-orange-50/40 to-amber-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-orange-950/25 rounded-2xl p-3.5 sm:p-4 border-2 border-orange-200/90 dark:border-orange-500/30 shadow-xl shadow-orange-500/10 dark:shadow-orange-950/30 transition-all duration-300 hover:border-orange-400 dark:hover:border-orange-400/60 overflow-hidden group flex flex-col justify-between">
+              <BorderBeam size={180} duration={12} delay={0} colorFrom="#f97316" colorTo="#fbbf24" />
               
               {/* Lueur d'ambiance */}
-              <div className="absolute -top-20 -right-20 w-48 h-48 bg-gradient-to-br from-orange-400/20 to-amber-400/10 dark:from-orange-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-orange-400/20 to-amber-400/10 dark:from-orange-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
 
-              <div className="relative z-10 flex flex-col flex-1">
-                {/* En-tête de carte avec bouton d'ouverture du Kiosque */}
-                <div className="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-orange-100/80 dark:border-slate-800">
+              <div className="relative z-10 flex flex-col h-full justify-between">
+                {/* En-tête de carte */}
+                <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-orange-100/80 dark:border-slate-800">
                   <div
                     onClick={() => setShowJournauxModal(true)}
-                    className="flex items-center gap-2.5 min-w-0 cursor-pointer group/title"
+                    className="flex items-center gap-2 min-w-0 cursor-pointer group/title"
                   >
-                    <div className="p-2 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-xl shadow-md shadow-orange-500/20 flex items-center justify-center shrink-0 group-hover/title:scale-105 transition-transform">
-                      <BookOpen className="w-4 h-4" />
+                    <div className="p-1.5 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-lg shadow-sm shadow-orange-500/20 flex items-center justify-center shrink-0 group-hover/title:scale-105 transition-transform">
+                      <BookOpen className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-orange-600 dark:text-orange-400">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-orange-600 dark:text-orange-400 block leading-tight">
                         Kiosque Syndical
                       </span>
-                      <h4 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-tight group-hover/title:text-orange-600 dark:group-hover/title:text-orange-400 transition-colors">
+                      <h4 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none group-hover/title:text-orange-600 dark:group-hover/title:text-orange-400 transition-colors">
                         À lire
                       </h4>
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setShowJournauxModal(true)}
-                    className="text-[10px] font-black uppercase tracking-wider text-orange-700 dark:text-orange-300 bg-orange-100/80 hover:bg-orange-200/80 dark:bg-orange-950/60 dark:hover:bg-orange-900/80 px-2.5 py-1 rounded-full border border-orange-300/70 dark:border-orange-800/70 shrink-0 flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
-                    title="Ouvrir le kiosque complet avec toutes les parutions"
-                  >
-                    <Layers className="w-3 h-3 text-orange-500" />
-                    <span>Tous les journaux</span>
-                  </button>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-orange-700 dark:text-orange-300 bg-orange-100/80 dark:bg-orange-950/60 px-2 py-0.5 rounded-full border border-orange-300/70 dark:border-orange-800/70 shrink-0">
+                    {selectedJournal.badge}
+                  </span>
                 </div>
 
-                {/* Sélecteur d'éditions rapides (Pills cliquables) */}
-                <div className="mb-3">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 flex items-center justify-between">
-                    <span>Choisir une édition :</span>
-                    <span className="text-orange-600 dark:text-orange-400 font-extrabold">{selectedJournal.badge}</span>
-                  </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 p-1 bg-orange-100/40 dark:bg-slate-800/60 rounded-xl border border-orange-200/60 dark:border-slate-700/60">
-                    {CFDT_JOURNAUX.map((journal) => {
-                      const isActive = selectedJournal.id === journal.id;
-                      return (
-                        <button
-                          key={journal.id}
-                          type="button"
-                          onClick={() => setSelectedJournal(journal)}
-                          className={`text-[10px] sm:text-[11px] font-bold py-1 px-1.5 rounded-lg transition-all text-center truncate cursor-pointer ${
-                            isActive
-                              ? 'bg-orange-500 text-white shadow-xs font-black'
-                              : 'text-slate-600 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-700/60 hover:text-orange-600'
-                          }`}
-                          title={`${journal.title} - ${journal.badge}`}
-                        >
-                          {journal.tabLabel || journal.badge}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Corps de carte : disposition Image + Contenu compact de l'édition sélectionnée */}
-                <div className="flex gap-4 items-center mb-3 flex-1">
+                {/* Corps de carte compact : Couverture + Infos & Sélecteur */}
+                <div className="flex gap-3 items-center my-auto py-1">
                   {/* Aperçu Couverture Magazine */}
                   <a
                     href={selectedJournal.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative shrink-0 w-24 sm:w-28 h-32 sm:h-36 rounded-xl overflow-hidden bg-slate-900 border-2 border-orange-300/80 dark:border-orange-600/40 shadow-md group-hover:scale-[1.03] transition-all duration-300 cursor-pointer block group/cover"
+                    className="relative shrink-0 w-16 sm:w-20 h-22 sm:h-24 rounded-lg overflow-hidden bg-slate-900 border border-orange-300/80 dark:border-orange-600/40 shadow-sm hover:scale-105 transition-all cursor-pointer block group/cover"
                     title={`Ouvrir le PDF de ${selectedJournal.badge}`}
                   >
                     <img
                       key={selectedJournal.id}
                       src={`${BASE_URL}${selectedJournal.coverImage}`}
                       alt={`${selectedJournal.title} - ${selectedJournal.badge}`}
-                      className="w-full h-full object-cover object-top group-hover/cover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover object-top"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
                         target.src = `${BASE_URL}journal-rentree-2026.png`;
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end justify-between p-1.5">
-                      <span className="text-[9px] font-black text-white bg-orange-600/90 backdrop-blur-xs px-1.5 py-0.5 rounded shadow-xs flex items-center gap-0.5">
-                        <Eye className="w-2.5 h-2.5" />
-                        PDF
-                      </span>
-                      <span className="text-[8px] font-bold text-white/90 bg-black/60 px-1 py-0.5 rounded">
-                        {selectedJournal.fileSize}
-                      </span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end justify-between p-1">
+                      <span className="text-[8px] font-black text-white bg-orange-600/90 px-1 py-0.2 rounded">PDF</span>
+                      <span className="text-[7px] text-white/90 bg-black/60 px-0.5 rounded">{selectedJournal.fileSize}</span>
                     </div>
                   </a>
 
                   {/* Titre et détails compacts de l'édition sélectionnée */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch py-0.5">
+                  <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <div>
-                      <h5 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-snug group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
-                        Écho de la CFDT Gennevilliers
+                      <h5 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white leading-tight truncate">
+                        Journal CFDT Gennevilliers
                       </h5>
-                      <p className="text-xs text-orange-700 dark:text-orange-300 font-semibold mt-0.5 line-clamp-2 leading-tight">
+                      <p className="text-[11px] text-orange-700 dark:text-orange-300 font-semibold mt-0.5 line-clamp-1 leading-tight">
                         {selectedJournal.subtitle}
                       </p>
                     </div>
 
-                    <div className="pt-2 border-t border-orange-100/80 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1.5 min-w-0">
-                        <FileText className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-                        <span className="truncate">{selectedJournal.badge} · Format PDF</span>
-                      </div>
+                    {/* Bouton plus petit SOUS LE TITRE Journal CFDT Gennevilliers */}
+                    <div className="mt-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowJournauxModal(true)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] shadow-sm hover:shadow-md transition-all cursor-pointer"
+                        title="Consulter le kiosque complet avec toutes les éditions"
+                      >
+                        <Layers className="w-3 h-3 shrink-0" />
+                        <span>Kiosque des journaux</span>
+                        <ArrowRight className="w-2.5 h-2.5 ml-0.5 shrink-0" />
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Bouton d'action Kiosque */}
-              <div className="relative z-10 mt-auto">
-                <button
-                  type="button"
-                  onClick={() => setShowJournauxModal(true)}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white font-black py-2.5 px-3.5 rounded-xl shadow-md shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.01] active:scale-[0.99] transition-all text-xs cursor-pointer text-center"
-                  title="Consulter le kiosque complet avec toutes les éditions"
-                >
-                  <Layers className="w-4 h-4" />
-                  <span>Kiosque des journaux</span>
-                  <ArrowRight className="w-3.5 h-3.5 ml-0.5 shrink-0" />
-                </button>
+                {/* Sélecteur d'éditions rapides intégré en bas de carte */}
+                <div className="grid grid-cols-4 gap-1 p-1 bg-orange-100/50 dark:bg-slate-800/60 rounded-lg border border-orange-200/60 dark:border-slate-700/60 mt-1">
+                  {CFDT_JOURNAUX.map((journal) => {
+                    const isActive = selectedJournal.id === journal.id;
+                    return (
+                      <button
+                        key={journal.id}
+                        type="button"
+                        onClick={() => setSelectedJournal(journal)}
+                        className={`text-[9.5px] font-bold py-0.5 px-1 rounded transition-all text-center truncate cursor-pointer ${
+                          isActive
+                            ? 'bg-orange-500 text-white shadow-xs font-black'
+                            : 'text-slate-600 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-700/60 hover:text-orange-600'
+                        }`}
+                        title={`${journal.title} - ${journal.badge}`}
+                      >
+                        {journal.tabLabel || journal.badge}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
@@ -739,78 +715,88 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 setChatState({ ...chatState, currentView: 'dessine-moi-le-statut' });
                 window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
               }}
-              className="relative bg-gradient-to-br from-white via-indigo-50/40 to-purple-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-indigo-950/25 rounded-3xl p-5 sm:p-6 border-2 border-indigo-200/90 dark:border-indigo-500/30 shadow-xl shadow-indigo-500/10 dark:shadow-indigo-950/30 transition-all duration-300 hover:border-indigo-400 dark:hover:border-indigo-400/60 overflow-hidden group cursor-pointer flex flex-col justify-between"
+              className="relative bg-gradient-to-br from-white via-indigo-50/40 to-purple-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-indigo-950/25 rounded-2xl p-3.5 sm:p-4 border-2 border-indigo-200/90 dark:border-indigo-500/30 shadow-xl shadow-indigo-500/10 dark:shadow-indigo-950/30 transition-all duration-300 hover:border-indigo-400 dark:hover:border-indigo-400/60 overflow-hidden group cursor-pointer flex flex-col justify-between"
             >
-              <BorderBeam size={200} duration={12} delay={6} colorFrom="#6366f1" colorTo="#a855f7" />
+              <BorderBeam size={180} duration={12} delay={6} colorFrom="#6366f1" colorTo="#a855f7" />
 
               {/* Lueur d'ambiance */}
-              <div className="absolute -top-20 -right-20 w-48 h-48 bg-gradient-to-br from-indigo-400/20 to-purple-400/10 dark:from-indigo-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-indigo-400/20 to-purple-400/10 dark:from-indigo-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
 
-              <div className="relative z-10 flex flex-col flex-1">
+              <div className="relative z-10 flex flex-col h-full justify-between">
                 {/* En-tête de carte */}
-                <div className="flex items-center justify-between gap-3 mb-3.5 pb-3 border-b border-indigo-100/80 dark:border-slate-800">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="p-2 bg-gradient-to-br from-indigo-600 to-purple-600 text-white rounded-xl shadow-md shadow-indigo-500/20 flex items-center justify-center shrink-0">
-                      <Palette className="w-4 h-4 animate-pulse" />
+                <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-indigo-100/80 dark:border-slate-800">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="p-1.5 bg-gradient-to-br from-indigo-600 to-purple-600 text-white rounded-lg shadow-sm shadow-indigo-500/20 flex items-center justify-center shrink-0">
+                      <Palette className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block leading-tight">
                         Bibliothèque Visuelle RH
                       </span>
-                      <h4 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-tight flex items-center gap-1.5">
+                      <h4 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-center gap-1">
                         <span>Dessine-moi le statut</span>
                         <span className="text-sm">🎨</span>
                       </h4>
                     </div>
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-indigo-700 dark:text-indigo-300 bg-indigo-100/80 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded-full border border-indigo-300/70 dark:border-indigo-800/70 shrink-0">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-700 dark:text-indigo-300 bg-indigo-100/80 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-300/70 dark:border-indigo-800/70 shrink-0">
                     +100 Schémas
                   </span>
                 </div>
 
-                {/* Corps de carte : disposition Image + Contenu compact */}
-                <div className="flex gap-4 items-center mb-3.5 flex-1">
-                  {/* Aperçu Illustration Dessine-moi */}
-                  <div className="relative shrink-0 w-24 sm:w-28 h-32 sm:h-36 rounded-xl overflow-hidden bg-slate-900 border-2 border-indigo-300/80 dark:border-indigo-600/40 shadow-md group-hover:scale-[1.03] transition-all duration-300 block group/cover">
+                {/* Corps de carte compact */}
+                <div className="flex gap-3 items-center my-auto py-1">
+                  <div className="relative shrink-0 w-16 sm:w-20 h-22 sm:h-24 rounded-lg overflow-hidden bg-slate-900 border border-indigo-300/80 dark:border-indigo-600/40 shadow-sm block">
                     <img
                       src="/images/dessine-moi-statut.jpg"
                       alt="Dessine-moi le statut"
-                      className="w-full h-full object-cover object-top group-hover/cover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover object-top"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
                         target.src = "https://www.cig929394.fr/wp-content/uploads/2025/09/info_ppr_2024_06_vf-179x252.jpg";
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-1.5">
-                      <span className="text-[9px] font-black text-white bg-indigo-600/90 backdrop-blur-xs px-1.5 py-0.5 rounded shadow-xs flex items-center gap-0.5">
-                        <Sparkles className="w-2.5 h-2.5" />
-                        Schémas
-                      </span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-1">
+                      <span className="text-[8px] font-black text-white bg-indigo-600/90 px-1 py-0.2 rounded">Schémas</span>
                     </div>
                   </div>
 
-                  {/* Titre et détails compacts */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch py-0.5">
+                  <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <div>
-                      <h5 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                        Le Statut en Infographies & Parcours
+                      <h5 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white leading-tight">
+                        Le Statut en Infographies
                       </h5>
+                      <p className="text-[11px] text-indigo-700 dark:text-indigo-300 font-medium mt-0.5 line-clamp-1 leading-tight">
+                        Fiches CIG & CDG synthétisées en schémas.
+                      </p>
                     </div>
 
-                    <div className="pt-2 border-t border-indigo-100/80 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                      <Palette className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                      <span className="truncate">Fiches CIG & CDG officielles synthétisées</span>
+                    {/* Bouton plus petit SOUS LE TITRE Le Statut en Infographies */}
+                    <div className="mt-2">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setChatState({ ...chatState, currentView: 'dessine-moi-le-statut' });
+                          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                        }}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:to-purple-700 text-white font-extrabold text-[11px] shadow-sm hover:shadow-md transition-all cursor-pointer"
+                      >
+                        <Palette className="w-3 h-3 shrink-0" />
+                        <span>Explorer les fiches</span>
+                        <ArrowRight className="w-2.5 h-2.5 ml-0.5 shrink-0" />
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Bouton d'action principal */}
-              <div className="relative z-10 flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:to-purple-700 text-white font-black py-2.5 px-3.5 rounded-xl shadow-md shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.99] transition-all text-xs mt-auto">
-                <Palette className="w-3.5 h-3.5" />
-                <span>Explorer les 100+ infographies</span>
-                <ArrowRight className="w-3.5 h-3.5 ml-0.5 group-hover:translate-x-1 transition-transform" />
+                {/* Rubriques clés d'infographies (alignement de hauteur parfait) */}
+                <div className="grid grid-cols-3 gap-1 p-1 bg-indigo-100/50 dark:bg-slate-800/60 rounded-lg border border-indigo-200/60 dark:border-slate-700/60 mt-1 text-center">
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-indigo-800 dark:text-indigo-200 truncate">Carrière & Grades</span>
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-indigo-800 dark:text-indigo-200 truncate">Congés & Temps</span>
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-indigo-800 dark:text-indigo-200 truncate">Régime Indemnitaire</span>
+                </div>
               </div>
             </div>
 
@@ -820,78 +806,88 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 setChatState({ ...chatState, currentView: 'podcasts' });
                 window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
               }}
-              className="relative bg-gradient-to-br from-white via-rose-50/40 to-purple-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-rose-950/25 rounded-3xl p-5 sm:p-6 border-2 border-rose-200/90 dark:border-rose-500/30 shadow-xl shadow-rose-500/10 dark:shadow-rose-950/30 transition-all duration-300 hover:border-rose-400 dark:hover:border-rose-400/60 overflow-hidden group cursor-pointer flex flex-col justify-between"
+              className="relative bg-gradient-to-br from-white via-rose-50/40 to-purple-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-rose-950/25 rounded-2xl p-3.5 sm:p-4 border-2 border-rose-200/90 dark:border-rose-500/30 shadow-xl shadow-rose-500/10 dark:shadow-rose-950/30 transition-all duration-300 hover:border-rose-400 dark:hover:border-rose-400/60 overflow-hidden group cursor-pointer flex flex-col justify-between"
             >
-              <BorderBeam size={200} duration={12} delay={3} colorFrom="#f43f5e" colorTo="#a855f7" />
+              <BorderBeam size={180} duration={12} delay={3} colorFrom="#f43f5e" colorTo="#a855f7" />
 
               {/* Lueur d'ambiance */}
-              <div className="absolute -top-20 -right-20 w-48 h-48 bg-gradient-to-br from-rose-400/20 to-purple-400/10 dark:from-rose-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-rose-400/20 to-purple-400/10 dark:from-rose-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
 
-              <div className="relative z-10 flex flex-col flex-1">
+              <div className="relative z-10 flex flex-col h-full justify-between">
                 {/* En-tête de carte */}
-                <div className="flex items-center justify-between gap-3 mb-3.5 pb-3 border-b border-rose-100/80 dark:border-slate-800">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="p-2 bg-gradient-to-br from-rose-500 to-purple-600 text-white rounded-xl shadow-md shadow-rose-500/20 flex items-center justify-center shrink-0">
-                      <Headphones className="w-4 h-4 animate-pulse" />
+                <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-rose-100/80 dark:border-slate-800">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="p-1.5 bg-gradient-to-br from-rose-500 to-purple-600 text-white rounded-lg shadow-sm shadow-rose-500/20 flex items-center justify-center shrink-0">
+                      <Headphones className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-rose-600 dark:text-rose-400">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-rose-600 dark:text-rose-400 block leading-tight">
                         Espace Audio & Écoute
                       </span>
-                      <h4 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-tight flex items-center gap-1.5">
+                      <h4 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-center gap-1">
                         <span>Podcasts & Émissions</span>
                         <span className="text-sm">🎧</span>
                       </h4>
                     </div>
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-rose-700 dark:text-rose-300 bg-rose-100/80 dark:bg-rose-950/60 px-2.5 py-0.5 rounded-full border border-rose-300/70 dark:border-rose-800/70 shrink-0">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-rose-700 dark:text-rose-300 bg-rose-100/80 dark:bg-rose-950/60 px-2 py-0.5 rounded-full border border-rose-300/70 dark:border-rose-800/70 shrink-0">
                     Audio & Débats
                   </span>
                 </div>
 
-                {/* Corps de carte : disposition Image + Contenu compact */}
-                <div className="flex gap-4 items-center mb-3.5 flex-1">
-                  {/* Aperçu Pochette Podcast */}
-                  <div className="relative shrink-0 w-24 sm:w-28 h-32 sm:h-36 rounded-xl overflow-hidden bg-slate-900 border-2 border-rose-300/80 dark:border-rose-600/40 shadow-md group-hover:scale-[1.03] transition-all duration-300 block group/cover">
+                {/* Corps de carte compact */}
+                <div className="flex gap-3 items-center my-auto py-1">
+                  <div className="relative shrink-0 w-16 sm:w-20 h-22 sm:h-24 rounded-lg overflow-hidden bg-slate-900 border border-rose-300/80 dark:border-rose-600/40 shadow-sm block">
                     <img
                       src="https://image.ausha.co/h7BadjwIkVqrj7OapZYNAjHrpo0LXJIDcaXkdPek_1400x1400.jpeg?t=1786459653"
                       alt="Podcasts RH Territoriaux"
-                      className="w-full h-full object-cover object-top group-hover/cover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover object-top"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
                         target.src = "https://image.ausha.co/bmX5Z3tvi17HDEvN4MfedgAelI7KkMf0cRnkdA2y_1400x1400.jpeg?t=1782040910";
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-1.5">
-                      <span className="text-[9px] font-black text-white bg-rose-600/90 backdrop-blur-xs px-1.5 py-0.5 rounded shadow-xs flex items-center gap-0.5">
-                        <Radio className="w-2.5 h-2.5" />
-                        Audio
-                      </span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-1">
+                      <span className="text-[8px] font-black text-white bg-rose-600/90 px-1 py-0.2 rounded">Audio</span>
                     </div>
                   </div>
 
-                  {/* Titre et détails compacts */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch py-0.5">
+                  <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <div>
-                      <h5 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-snug group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                      <h5 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white leading-tight">
                         L'Actualité Statutaire en Audio
                       </h5>
+                      <p className="text-[11px] text-rose-700 dark:text-rose-300 font-medium mt-0.5 line-clamp-1 leading-tight">
+                        Épisodes Naudrh & chroniques radio en direct.
+                      </p>
                     </div>
 
-                    <div className="pt-2 border-t border-rose-100/80 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                      <Radio className="w-3.5 h-3.5 text-rose-500 shrink-0" />
-                      <span className="truncate">Épisodes Naudrh & Radio France</span>
+                    {/* Bouton plus petit SOUS LE TITRE L'Actualité Statutaire en Audio */}
+                    <div className="mt-2">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setChatState({ ...chatState, currentView: 'podcasts' });
+                          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                        }}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 hover:from-rose-700 hover:to-pink-700 text-white font-extrabold text-[11px] shadow-sm hover:shadow-md transition-all cursor-pointer"
+                      >
+                        <Headphones className="w-3 h-3 shrink-0" />
+                        <span>Écouter les podcasts</span>
+                        <ArrowRight className="w-2.5 h-2.5 ml-0.5 shrink-0" />
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Bouton d'action principal */}
-              <div className="relative z-10 flex items-center justify-center gap-2 w-full bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 hover:from-rose-700 hover:to-pink-700 text-white font-black py-2.5 px-3.5 rounded-xl shadow-md shadow-rose-500/25 hover:shadow-rose-500/40 hover:scale-[1.01] active:scale-[0.99] transition-all text-xs mt-auto">
-                <Headphones className="w-3.5 h-3.5" />
-                <span>Écouter les épisodes podcasts</span>
-                <ArrowRight className="w-3.5 h-3.5 ml-0.5 group-hover:translate-x-1 transition-transform" />
+                {/* Rubriques clés audio (alignement de hauteur parfait) */}
+                <div className="grid grid-cols-3 gap-1 p-1 bg-rose-100/50 dark:bg-slate-800/60 rounded-lg border border-rose-200/60 dark:border-slate-700/60 mt-1 text-center">
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-rose-800 dark:text-rose-200 truncate">Épisodes Naudrh</span>
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-rose-800 dark:text-rose-200 truncate">Chroniques Radio</span>
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-rose-800 dark:text-rose-200 truncate">Débats RH</span>
+                </div>
               </div>
             </div>
 

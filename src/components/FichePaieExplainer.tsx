@@ -19,7 +19,8 @@ import {
   ClipboardPaste,
   Layers,
   BarChart3,
-  AlertTriangle
+  AlertTriangle,
+  Building2
 } from 'lucide-react';
 import { toast } from 'sonner';
 import CirilBulletinView from './CirilBulletinView';
@@ -341,20 +342,28 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
         {/* Colonne Gauche : Upload et Collage direct */}
         <div className="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
           <div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
-              Récupérez votre fiche de paie depuis le{' '}
+            {/* Encadré Haute Visibilité : Lien officiel Portail Agent SIRH */}
+            <div className="mb-4 p-3.5 rounded-2xl bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-cyan-500/10 border-2 border-teal-500/40 dark:border-teal-500/50 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center gap-2 mb-2.5">
+                <span className="p-1.5 rounded-lg bg-teal-600 text-white shadow-xs">
+                  <Building2 className="w-4 h-4" />
+                </span>
+                <span className="text-xs font-black uppercase tracking-wider text-teal-800 dark:text-teal-200 block">
+                  Téléchargez votre bulletin officiel
+                </span>
+              </div>
+
               <a
                 href="https://gennevilliers-sirh-portail.ciril.net/login"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-0.5 font-bold text-teal-600 dark:text-teal-400 hover:underline cursor-pointer"
+                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm hover:shadow-lg transition-all duration-200 group cursor-pointer hover:scale-[1.02] active:scale-95"
+                title="Ouvrir le portail agent CIRIL RH de la Ville de Gennevilliers"
               >
-                portail agent
-                <ExternalLink className="w-3 h-3" />
-              </a>{' '}
-              (SIRH Ville de Gennevilliers), puis glissez le PDF téléchargé ici — le texte est
-              analysé en mémoire sans quitter votre poste.
-            </p>
+                <span>Accéder au Portail Agent (Ciril RH)</span>
+                <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+            </div>
 
             <div
               onDragEnter={handleDrag}

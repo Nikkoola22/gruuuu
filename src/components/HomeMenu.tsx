@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import { CloudSun, Bot, ArrowRight, Rss, Radio, Calculator, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, BookOpen, Scale, Landmark, GraduationCap, Gamepad2, FileText, Clock, Briefcase, ExternalLink as ExternalLinkIcon, PlayCircle, Sparkles, Laptop, Palette, FileSignature, Award, TrendingUp, Download, Eye, Mail, Headphones, FileSearch, Layers } from "lucide-react"
+import { CloudSun, Bot, ArrowRight, Rss, Radio, Calculator, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, BookOpen, Scale, Landmark, GraduationCap, Gamepad2, FileText, Clock, Briefcase, ExternalLink as ExternalLinkIcon, PlayCircle, Sparkles, Laptop, Palette, FileSignature, Award, TrendingUp, Download, Eye, Mail, Headphones, FileSearch, Layers, Megaphone } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { BorderBeam } from "./ui/BorderBeam.tsx"
 import type { ChatbotState } from "../App.tsx"
@@ -596,8 +596,8 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
             </div>
           </div>
 
-          {/* Grille des 3 cartes Vedettes (Kiosque, Schémas, Podcasts) */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
+          {/* Grille des 4 cartes Vedettes (Kiosque, Schémas, Nos com, Podcasts) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
 
             {/* CARTE 1 : À LIRE - LE JOURNAL CFDT GENNEVILLIERS & KIOSQUE MULTI-ÉDITIONS */}
             <div className="relative bg-gradient-to-br from-white via-orange-50/40 to-amber-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-orange-950/25 rounded-2xl p-3.5 sm:p-4 border-2 border-orange-200/90 dark:border-orange-500/30 shadow-xl shadow-orange-500/10 dark:shadow-orange-950/30 transition-all duration-300 hover:border-orange-400 dark:hover:border-orange-400/60 overflow-hidden group flex flex-col justify-between">
@@ -796,6 +796,97 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                   <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-indigo-800 dark:text-indigo-200 truncate">Carrière & Grades</span>
                   <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-indigo-800 dark:text-indigo-200 truncate">Congés & Temps</span>
                   <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-indigo-800 dark:text-indigo-200 truncate">Régime Indemnitaire</span>
+                </div>
+              </div>
+            </div>
+
+            {/* CARTE : NOS COM - TRACTS & ALERTES SYNDICALES CFDT */}
+            <div
+              onClick={() => {
+                setChatState({ ...chatState, currentView: 'nos-com' });
+                window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+              }}
+              className="relative bg-gradient-to-br from-white via-amber-50/40 to-orange-50/30 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-amber-950/25 rounded-2xl p-3.5 sm:p-4 border-2 border-amber-200/90 dark:border-amber-500/30 shadow-xl shadow-amber-500/10 dark:shadow-amber-950/30 transition-all duration-300 hover:border-amber-400 dark:hover:border-amber-400/60 overflow-hidden group cursor-pointer flex flex-col justify-between"
+            >
+              <BorderBeam size={180} duration={12} delay={2} colorFrom="#f59e0b" colorTo="#ea580c" />
+
+              {/* Lueur d'ambiance */}
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-amber-400/20 to-orange-400/10 dark:from-amber-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative z-10 flex flex-col h-full justify-between">
+                {/* En-tête de carte */}
+                <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-amber-100/80 dark:border-slate-800">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="p-1.5 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-lg shadow-sm shadow-amber-500/20 flex items-center justify-center shrink-0">
+                      <Megaphone className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 block leading-tight">
+                        Publications & Alertes
+                      </span>
+                      <h4 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-center gap-1">
+                        <span>Nos com</span>
+                        <span className="text-sm">📢</span>
+                      </h4>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-300/70 dark:border-amber-800/70 shrink-0">
+                    5 Tracts récents
+                  </span>
+                </div>
+
+                {/* Corps de carte compact */}
+                <div className="flex gap-3 items-center my-auto py-1">
+                  <div className="relative shrink-0 w-16 sm:w-20 h-22 sm:h-24 rounded-lg overflow-hidden bg-slate-900 border border-amber-300/80 dark:border-amber-600/40 shadow-sm block">
+                    <img
+                      src={`${BASE_URL}tracts/tract-1.jpg`}
+                      alt="Tracts CFDT"
+                      className="w-full h-full object-cover object-top"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = `${BASE_URL}images/votez_cfdt.png`;
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-1">
+                      <span className="text-[8px] font-black text-white bg-amber-600/90 px-1 py-0.2 rounded">Tracts</span>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 min-w-0 flex flex-col justify-between">
+                    <div>
+                      <h5 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white leading-tight">
+                        Tracts & Dossiers CFDT
+                      </h5>
+                      <p className="text-[11px] text-amber-700 dark:text-amber-300 font-medium mt-0.5 line-clamp-1 leading-tight">
+                        Élections, SGES, SFT, EPI, SERA...
+                      </p>
+                    </div>
+
+                    {/* Bouton d'action */}
+                    <div className="mt-2">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setChatState({ ...chatState, currentView: 'nos-com' });
+                          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                        }}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 hover:from-amber-700 hover:to-orange-700 text-white font-extrabold text-[11px] shadow-sm hover:shadow-md transition-all cursor-pointer"
+                      >
+                        <Megaphone className="w-3 h-3 shrink-0" />
+                        <span>Consulter nos tracts</span>
+                        <ArrowRight className="w-2.5 h-2.5 ml-0.5 shrink-0" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rubriques clés tracts (alignement de hauteur parfait) */}
+                <div className="grid grid-cols-3 gap-1 p-1 bg-amber-100/50 dark:bg-slate-800/60 rounded-lg border border-amber-200/60 dark:border-slate-700/60 mt-1 text-center">
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-amber-800 dark:text-amber-200 truncate">Élections 2026</span>
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-amber-800 dark:text-amber-200 truncate">Victoires EPI</span>
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-amber-800 dark:text-amber-200 truncate">SGES & Salaires</span>
                 </div>
               </div>
             </div>
@@ -1057,7 +1148,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
               {/* CÔTÉ GAUCHE : Actualités Syndicales & Statutaires */}
               <div className="lg:pr-8 flex flex-col justify-between min-w-0">
                 <div className="min-w-0">
-                  <div className="flex items-center justify-between gap-4 mb-4 sm:mb-6 min-w-0">
+                  <div className="flex items-center justify-between gap-3 mb-4 sm:mb-5 min-w-0">
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="p-2.5 bg-blue-50 dark:bg-blue-900/40 rounded-xl border border-blue-200 dark:border-blue-800 shadow-xs shrink-0">
                         <Newspaper className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -1070,26 +1161,59 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
 
                   {/* Article principal Statutaire CIG */}
                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 group/card min-w-0">
-                    <div className="relative w-full sm:w-44 md:w-48 h-36 overflow-hidden rounded-2xl shrink-0 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-                      <img loading="lazy" src="https://www.cig929394.fr/wp-content/uploads/2026/08/FOCUS-BIP_Actu-aout2026.png" alt="Retraites, congés de maladie et temps partiel thérapeutique" className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300" />
+                    <div className="relative w-full sm:w-44 md:w-48 h-36 sm:h-auto overflow-hidden rounded-2xl shrink-0 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
+                      <img
+                        loading="lazy"
+                        src="https://www.cig929394.fr/wp-content/uploads/2026/08/FOCUS-BIP_Actu-aout2026.png"
+                        alt="Retraites, congés de maladie et temps partiel thérapeutique"
+                        className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
+                      />
+                      <span className="absolute top-2 left-2 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-950/85 text-blue-300 border border-blue-500/30 backdrop-blur-xs">
+                        CIG 92-93-94
+                      </span>
                     </div>
+
                     <div className="flex flex-col justify-between flex-1 min-w-0">
                       <div className="min-w-0">
-                        <h4 className="text-base sm:text-lg md:text-xl font-bold text-slate-900 dark:text-white hover:text-blue-600 transition-colors leading-snug mb-2 break-words">
-                          <a href="https://www.cig929394.fr/actualites/retraites-conges-de-maladie-et-temps-partiel-therapeutique-de-nouvelles-regles/" target="_blank" rel="noopener noreferrer">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-blue-100/80 dark:bg-blue-900/50 px-2 py-0.5 rounded-md">
+                            Statut 2026
+                          </span>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                            <Clock className="w-3 h-3" /> Focus BIP
+                          </span>
+                        </div>
+                        <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white hover:text-blue-600 transition-colors leading-snug mb-1.5 break-words">
+                          <a
+                            href="https://www.cig929394.fr/actualites/retraites-conges-de-maladie-et-temps-partiel-therapeutique-de-nouvelles-regles/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             Retraites, congés de maladie et temps partiel thérapeutique : de nouvelles règles
                           </a>
                         </h4>
+                        <p className="text-xs sm:text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                          Décryptage des décrets d'application : assouplissement de l'octroi du temps partiel thérapeutique, renforcement du contrôle des arrêts maladie et régularisation des droits à pension.
+                        </p>
                       </div>
-                      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
                         <button
                           type="button"
                           onClick={() => setChatState({ ...chatState, currentView: 'veille-cdg' })}
-                          className="inline-flex items-center gap-1.5 font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-xs sm:text-sm bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 dark:hover:bg-blue-900/60 px-3.5 py-1.5 rounded-full border border-blue-200/80 dark:border-blue-800/80 transition-all duration-200 shadow-2xs hover:scale-105 active:scale-95 group/cig cursor-pointer shrink-0"
+                          className="inline-flex items-center gap-1.5 font-bold text-blue-600 dark:text-blue-400 hover:text-white dark:hover:text-white text-xs sm:text-sm bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-600 dark:hover:bg-blue-600 px-3.5 py-1.5 rounded-full border border-blue-200/80 dark:border-blue-800/80 transition-all duration-200 shadow-2xs hover:scale-105 active:scale-95 group/cig cursor-pointer shrink-0"
                         >
                           TOUS LES CIG / CDG
-                          <ArrowRight className="w-3.5 h-3.5 text-blue-500 group-hover/cig:translate-x-0.5 transition-transform" />
+                          <ArrowRight className="w-3.5 h-3.5 text-blue-500 group-hover/cig:text-white group-hover/cig:translate-x-0.5 transition-transform" />
                         </button>
+                        <a
+                          href="https://www.cig929394.fr/actualites/retraites-conges-de-maladie-et-temps-partiel-therapeutique-de-nouvelles-regles/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-semibold text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1"
+                        >
+                          Consulter l'article <ExternalLinkIcon className="w-3 h-3" />
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -1102,8 +1226,8 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 className="lg:pl-8 pt-6 lg:pt-0 flex flex-col justify-between cursor-pointer group/veille min-w-0"
               >
                 <div className="min-w-0">
-                  <div className="flex items-center gap-3 mb-4 sm:mb-6 min-w-0">
-                    <div className="p-2.5 bg-purple-100/60 dark:bg-purple-900/40 rounded-xl border border-purple-200 dark:border-purple-800/60 shadow-sm flex items-center justify-center shrink-0">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-5 min-w-0">
+                    <div className="p-2.5 bg-purple-100/60 dark:bg-purple-900/40 rounded-xl border border-purple-200 dark:border-purple-800/60 shadow-xs flex items-center justify-center shrink-0">
                       <Scale className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                     </div>
                     <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-wide break-words">
@@ -1111,22 +1235,48 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     </h3>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 mb-4 group/card min-w-0">
-                    <div className="relative w-full sm:w-44 md:w-48 h-36 overflow-hidden rounded-2xl shrink-0 border border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/50">
-                      <img loading="lazy" src="/images/legal_news_illustration.png" alt="Veille Juridique" className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300" />
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 group/card min-w-0">
+                    <div className="relative w-full sm:w-44 md:w-48 h-36 sm:h-auto overflow-hidden rounded-2xl shrink-0 border border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/50">
+                      <img
+                        loading="lazy"
+                        src="/images/legal_news_illustration.png"
+                        alt="Veille Juridique"
+                        className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
+                      />
                       <span className="absolute top-2 left-2 inline-block text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-slate-900/80 text-purple-300 border border-purple-500/30">
                         Juridique
                       </span>
                     </div>
+
                     <div className="flex flex-col justify-between flex-1 min-w-0">
                       <div className="min-w-0">
-                        <h4 className="text-base sm:text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100 group-hover/veille:text-purple-600 dark:group-hover/veille:text-purple-400 transition-colors leading-snug mb-2 break-words">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[11px] font-bold text-purple-700 dark:text-purple-300 bg-purple-100/80 dark:bg-purple-900/50 px-2 py-0.5 rounded-md">
+                            Jurisprudence & CGFP
+                          </span>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                            <BookOpen className="w-3 h-3" /> Fiches Pratiques
+                          </span>
+                        </div>
+                        <h4 className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 group-hover/veille:text-purple-600 dark:group-hover/veille:text-purple-400 transition-colors leading-snug mb-1.5 break-words">
                           Veille Juridique & Statutaire (« Vu cette semaine »)
                         </h4>
+                        <p className="text-xs sm:text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                          Analyses concrètes des jugements récents : conditions de rémunération des contractuels, protection fonctionnelle, contestation d'évaluation professionnelle et sanctions disciplinaires.
+                        </p>
                       </div>
-                      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
-                        <span className="font-semibold bg-purple-100/70 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-full text-xs shrink-0">
+
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <button
+                          type="button"
+                          onClick={() => setChatState({ ...chatState, currentView: 'veille' })}
+                          className="inline-flex items-center gap-1.5 font-bold text-purple-600 dark:text-purple-400 hover:text-white dark:hover:text-white text-xs sm:text-sm bg-purple-50 dark:bg-purple-950/50 hover:bg-purple-600 dark:hover:bg-purple-600 px-3.5 py-1.5 rounded-full border border-purple-200/80 dark:border-purple-800/80 transition-all duration-200 shadow-2xs hover:scale-105 active:scale-95 group/btn cursor-pointer shrink-0"
+                        >
                           Veille CFDT Interactive
+                          <ArrowRight className="w-3.5 h-3.5 text-purple-500 group-hover/btn:text-white group-hover/btn:translate-x-0.5 transition-transform" />
+                        </button>
+                        <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 group-hover/veille:translate-x-0.5 transition-transform flex items-center gap-1">
+                          Accéder aux fiches →
                         </span>
                       </div>
                     </div>

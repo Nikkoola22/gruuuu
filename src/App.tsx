@@ -50,6 +50,7 @@ const Actualites = lazyWithRetry(() => import("./components/Actualites.tsx"))
 const VeilleJuridique = lazyWithRetry(() => import("./components/VeilleJuridique.tsx"))
 const VeilleCdgPage = lazyWithRetry(() => import("./components/VeilleCdgPage.tsx"))
 const EspacePodcastsFigurines = lazyWithRetry(() => import("./components/EspacePodcastsFigurines.tsx"))
+const NosComTracts = lazyWithRetry(() => import("./components/NosComTracts.tsx"))
 const DessineMoiLeStatut = lazyWithRetry(() => import("./components/DessineMoiLeStatut.tsx"))
 const DocuthequeRAG = lazyWithRetry(() => import("./components/DocuthequeRAG").then(m => ({ default: m.DocuthequeRAG })))
 const CoinRH = lazyWithRetry(() => import("./components/CoinRH.tsx"))
@@ -223,7 +224,7 @@ interface InfoItem {
   content: string
 }
 export interface ChatbotState {
-  currentView: "menu" | "chat" | "metiers" | "calculators" | "veille" | "simul-agent" | "native-calculator" | "faq" | "jeux" | "actualites" | "veille-cdg" | "memoire-juridique" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "podcasts" | "weather" | "simulateur-ir" | "budget-m57"
+  currentView: "menu" | "chat" | "metiers" | "calculators" | "veille" | "simul-agent" | "native-calculator" | "faq" | "jeux" | "actualites" | "veille-cdg" | "memoire-juridique" | "dessine-moi-le-statut" | "docutheque-rag" | "coin-rh" | "podcasts" | "nos-com" | "weather" | "simulateur-ir" | "budget-m57"
   selectedDomain: number | null
   messages: ChatMessage[]
   isProcessing: boolean
@@ -1542,6 +1543,13 @@ ${indicesFactuels}
       {chatState.currentView === 'podcasts' && (
         <Suspense fallback={<ViewLoader />}>
           <EspacePodcastsFigurines onClose={() => setChatState({ ...chatState, currentView: 'menu' })} theme={theme} />
+        </Suspense>
+      )}
+
+      {/* --- SECTION NOS COM (TRACTS SYNDICAUX) --- */}
+      {chatState.currentView === 'nos-com' && (
+        <Suspense fallback={<ViewLoader />}>
+          <NosComTracts onClose={() => setChatState({ ...chatState, currentView: 'menu' })} theme={theme} />
         </Suspense>
       )}
 

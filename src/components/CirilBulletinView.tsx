@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Sparkles } from 'lucide-react';
 import {
   CalculParams,
   FichePaieAnalyseResult
@@ -440,7 +440,12 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
       <tr
         key={ligne.id}
         onClick={() => setSelectedLigneId(prev => (prev === ligne.id ? null : ligne.id))}
-        className={`cursor-pointer transition-colors ${selected ? 'bg-slate-200/70' : 'hover:bg-slate-100'}`}
+        className={`cursor-pointer transition-all duration-150 ${
+          selected
+            ? 'bg-violet-100 font-semibold text-violet-950 ring-1 ring-inset ring-violet-500/60 shadow-xs'
+            : 'hover:bg-violet-50/80 hover:text-violet-900'
+        }`}
+        title="Cliquez pour afficher l'explication détaillée de cette rubrique"
       >
         <td className="px-1.5 py-[3px] font-mono text-slate-500">{codeAff}</td>
         <td className="px-1.5 py-[3px]">{libelleAff}</td>
@@ -468,6 +473,29 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
 
   return (
     <div className="space-y-6">
+      {/* ─────────────────────────────────────────────────────────────────────────
+          BANNIÈRE D'ORIENTATION HAUTE VISIBILITÉ INTERACTIVE
+      ───────────────────────────────────────────────────────────────────────── */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-700 text-white shadow-xl border border-violet-400/40 flex items-start sm:items-center gap-3.5">
+        <div className="p-3 rounded-xl bg-white/20 backdrop-blur-md text-white shrink-0 shadow-inner flex items-center justify-center animate-bounce">
+          <span className="text-2xl select-none">👆</span>
+        </div>
+        <div>
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 shadow-xs">
+              <Sparkles className="w-3 h-3 text-slate-950" />
+              Interactif
+            </span>
+            <h2 className="text-base sm:text-lg font-black tracking-tight text-white drop-shadow-xs">
+              Cliquez sur une ligne du bulletin pour afficher son explication
+            </h2>
+          </div>
+          <p className="text-xs sm:text-sm text-violet-100 leading-relaxed max-w-3xl">
+            Chaque rubrique (traitement de base, RIFSEEP IFSE/CIA, cotisations CNRACL/IRCANTEC, CSG, prélèvement à la source) s'affiche avec son calcul pas-à-pas, ses bases légales et les <strong>conseils syndicaux CFDT</strong>.
+          </p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* ─────────────────────────────────────────────────────────────────────────
             LE BULLETIN DE PAIE — MISE EN FORME FIDÈLE AU DOCUMENT CIRIL ORIGINAL
@@ -479,8 +507,8 @@ export default function CirilBulletinView({ params, result }: CirilBulletinViewP
             <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 pt-3 pb-2">
               <div>
                 <h1 className="text-xl font-bold tracking-tight text-slate-900 mb-1">BULLETIN DE PAIE</h1>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-[12px] uppercase tracking-widest font-black rounded-full shadow-[0_0_15px_rgba(168,85,247,0.5)] border border-white/20 cursor-default mt-1.5 animate-pulse">
-                  👆 Cliquez sur une ligne pour afficher son explication
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 text-white text-[11px] sm:text-[12px] uppercase tracking-wider font-black rounded-full shadow-[0_0_18px_rgba(168,85,247,0.6)] border-2 border-white/40 cursor-default mt-1 animate-pulse">
+                  <span>👆 Cliquez sur une ligne pour afficher son explication</span>
                 </div>
               </div>
               <div className="text-right text-[10px] leading-snug text-slate-700">

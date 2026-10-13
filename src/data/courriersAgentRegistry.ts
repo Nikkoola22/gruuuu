@@ -46,7 +46,7 @@ export interface CourrierTemplate {
 }
 
 export const DEFAULT_AGENT_PROFILE: AgentProfile = {
-  nom: "GARNIER",
+  nom: "CFDT",
   prenom: "Atlas",
   civilite: "Mme",
   grade: "Adjoint Administratif Territorial Principal de 2e classe",
@@ -56,7 +56,7 @@ export const DEFAULT_AGENT_PROFILE: AgentProfile = {
   codePostal: "92230",
   ville: "Gennevilliers",
   telephone: "06 12 34 56 78",
-  email: "atlas.garnier@email.fr",
+  email: "atlas.cfdt@email.fr",
   destinataireTitre: "À l'attention de Monsieur Patrice LECLERC, Maire de la Ville de Gennevilliers",
   destinataireSousCouvert: "Sous couvert de Madame Soraya FONTAINE KESSAR, Directrice Générale des Services\nEt de Monsieur Pierric ANNOOT, Adjoint au Maire délégué aux Ressources Humaines",
   destinataireAdresse: "Hôtel de Ville — Direction des Ressources Humaines\n177, avenue Gabriel-Péri, 92230 Gennevilliers"
@@ -81,8 +81,8 @@ export const COURRIERS_REGISTRY: CourrierTemplate[] = [
     category: "temps_travail",
     categoryLabel: "Temps de travail & Organisation",
     icon: "⏰",
-    cgfpRef: "CGFP Art. L. 612-1 & Décret n° 2004-777",
-    summary: "Demande d'exercice à temps partiel (50%, 60%, 70%, 80%) pour convenances personnelles sous réserve des nécessités de service.",
+    cgfpRef: "CGFP Art. L. 612-1, L. 612-5 & Décret n° 2004-777",
+    summary: "Demande d'exercice à temps partiel (50%, 60%, 70%, 80%, 90%) pour convenances personnelles sous réserve des nécessités de service.",
     delaiRecommande: "Au moins 2 mois avant la date de début souhaitée",
     modeEnvoiDefaut: "Voie hiérarchique avec accusé de réception",
     piecesJointesDefaut: ["Proposition de planning de travail concerté avec le chef de service"],
@@ -93,6 +93,7 @@ export const COURRIERS_REGISTRY: CourrierTemplate[] = [
         type: "select",
         defaultValue: "80%",
         options: [
+          { value: "90%", label: "90 % (31h30/semaine - payé à 91,4% / 32/35èmes)" },
           { value: "80%", label: "80 % (28h/semaine - payé à 85,7% / 6/7èmes)" },
           { value: "70%", label: "70 % (24h30/semaine - payé à 70%)" },
           { value: "60%", label: "60 % (21h/semaine - payé à 60%)" },
@@ -132,7 +133,7 @@ export const COURRIERS_REGISTRY: CourrierTemplate[] = [
     ],
     generateBody: (agent, v) => `Monsieur le Maire,
 
-Titulaire du grade de ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de solliciter par la présente votre bienveillance afin de m'accorder l'autorisation d'exercer mes fonctions à temps partiel, conformément aux dispositions des articles L. 612-1 et suivants du Code Général de la Fonction Publique et du décret n° 2004-777 du 29 juillet 2004.
+Titulaire du grade de ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de solliciter par la présente votre bienveillance afin de m'accorder l'autorisation d'exercer mes fonctions à temps partiel, conformément aux dispositions des articles L. 612-1, L. 612-5 et suivants du Code Général de la Fonction Publique et du décret n° 2004-777 du 29 juillet 2004.
 
 Je souhaiterais bénéficier d'une quotité de travail fixée à ${v.quotite || "80%"}, pour une durée de ${v.duree || "1 an"}, prenant effet à compter du ${v.dateDebut ? new Date(v.dateDebut).toLocaleDateString('fr-FR') : "[Date]"}.
 
@@ -153,9 +154,9 @@ Je vous prie d'agréer, Monsieur le Maire, l'expression de ma considération tr�
     category: "temps_travail",
     categoryLabel: "Temps de travail & Organisation",
     icon: "🍼",
-    cgfpRef: "CGFP Art. L. 612-2 & Décret n° 2004-777",
+    cgfpRef: "CGFP Art. L. 612-3, L. 612-5 & Décret n° 2004-777 Art. 5",
     summary: "Temps partiel accordé de plein droit suite à une naissance, une adoption ou pour donner des soins à un proche.",
-    delaiRecommande: "Au moins 1 mois avant la date de prise d'effet",
+    delaiRecommande: "Au moins 2 mois avant la date de prise d'effet (sauf urgence pour soins)",
     modeEnvoiDefaut: "Voie hiérarchique avec accusé de réception",
     piecesJointesDefaut: ["Copie intégrale de l'acte de naissance ou certificat médical"],
     fields: [
@@ -183,10 +184,10 @@ Je vous prie d'agréer, Monsieur le Maire, l'expression de ma considération tr�
         type: "select",
         defaultValue: "80%",
         options: [
-          { value: "80%", label: "80 % (rémunéré à 85,7% - 6/7èmes)" },
-          { value: "70%", label: "70 %" },
-          { value: "60%", label: "60 %" },
-          { value: "50%", label: "50 %" }
+          { value: "80%", label: "80 % (28h/semaine - rémunéré à 85,7% / 6/7èmes)" },
+          { value: "70%", label: "70 % (24h30/semaine - rémunéré à 70%)" },
+          { value: "60%", label: "60 % (21h/semaine - rémunéré à 60%)" },
+          { value: "50%", label: "50 % (17h30/semaine - rémunéré à 50%)" }
         ]
       },
       {
@@ -208,7 +209,7 @@ Je vous prie d'agréer, Monsieur le Maire, l'expression de ma considération tr�
     ],
     generateBody: (agent, v) => `Monsieur le Maire,
 
-Exerçant actuellement les fonctions de ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de vous informer de ma volonté de bénéficier d'une autorisation de travail à temps partiel de droit, en application des dispositions de l'article L. 612-2 du Code Général de la Fonction Publique et de l'article 2 du décret n° 2004-777 du 29 juillet 2004.
+Exerçant actuellement les fonctions de ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de vous informer de ma volonté de bénéficier d'une autorisation de travail à temps partiel de droit, en application des dispositions des articles L. 612-3 et L. 612-5 du Code Général de la Fonction Publique et de l'article 5 du décret n° 2004-777 du 29 juillet 2004.
 
 Cette demande de plein droit est formulée au titre de : ${v.motifDroit === 'naissance' ? "l'élevage d'un enfant de moins de trois ans" : v.motifDroit === 'adoption' ? "l'adoption d'un enfant" : "l'assistance à un proche nécessitant des soins constants"}, concernant ${v.enfantInfos || "[Nom du proche/enfant]"}.
 
@@ -539,7 +540,7 @@ Je joins l'ensemble des justificatifs requis (livret de famille, attestation d'a
     ],
     generateBody: (agent, v) => `Monsieur le Maire,
 
-Agent territorial titulaire au sein de la ${agent.direction} en qualité de ${agent.grade}, j'ai l'honneur de vous demander de bien vouloir m'accorder une Autorisation Spéciale d'Absence (ASA) à l'occasion de l'événement suivant : ${v.motifAsa === 'mariage' ? "mon mariage / conclusion de PACS" : v.motifAsa === 'naissance' ? "la naissance de mon enfant" : v.motifAsa === 'enfant_malade' ? "la maladie de mon enfant à charge" : "un deuil familial"}, conformément aux dispositions statutaires et au protocole communal en vigueur.
+Agent territorial titulaire au sein de la ${agent.direction} en qualité de ${agent.grade}, j'ai l'honneur de vous demander de bien vouloir m'accorder une Autorisation Spéciale d'Absence (ASA) à l'occasion de l'événement suivant : ${v.motifAsa === 'mariage' ? "mon mariage / conclusion de PACS" : v.motifAsa === 'naissance' ? "la naissance ou l'arrivée d'un enfant au foyer" : v.motifAsa === 'enfant_malade' ? "la maladie de mon enfant à charge" : v.motifAsa === 'evenement_civique' ? "une obligation civique (assesseur / juré d'assises)" : "un deuil familial"}, conformément aux dispositions statutaires (articles L. 622-1 et suivants du Code Général de la Fonction Publique) et au protocole communal en vigueur.
 
 Cette absence se déroulerait : ${v.dateAbsence || "[Dates d'absence]"}.
 
@@ -784,11 +785,11 @@ Je vous remercie de l'attention portée à ma démarche et vous prie d'agréer, 
     ],
     generateBody: (agent, v) => `Monsieur le Maire,
 
-Fonctionnaire territorial titulaire du grade de ${agent.grade} au sein de la ${agent.direction}, j'ai reçu notification le ${v.dateNotificationCrep ? new Date(v.dateNotificationCrep).toLocaleDateString('fr-FR') : "[Date]"} de mon compte-rendu d'entretien professionnel au titre de la campagne d'évaluation.
+Fonctionnaire territorial titulaire du grade de ${agent.grade} au sein de la ${agent.direction}, j'ai reçu notification le ${v.dateNotificationCrep ? new Date(v.dateNotificationCrep).toLocaleDateString('fr-FR') : "[Date]"} de mon compte-rendu d'entretien professionnel au titre de la campagne d'évaluation, conduit par ${v.nomEvaluateur || "mon supérieur hiérarchique direct"}.
 
 Par la présente, et dans le respect du délai légal de quinze (15) jours francs prescrit par l'article 6 du décret n° 2014-1526 du 16 décembre 2014, j'ai l'honneur d'exercer un recours gracieux auprès de votre haute autorité afin de solliciter la révision de mon compte-rendu d'évaluation.
 
-Ma contestation porte tout particulièrement sur : ${v.griefs === 'appreciation_litterale' ? "l'appréciation générale littérale du supérieur hiérarchique" : v.griefs === 'notation_competences' ? "la cotation de certaines compétences professionnelles" : "les conclusions portées sur l'atteinte des objectifs"}.
+Ma contestation porte tout particulièrement sur : ${v.griefs === 'appreciation_litterale' ? "l'appréciation générale littérale du supérieur hiérarchique" : v.griefs === 'notation_competences' ? "la cotation de certaines compétences professionnelles" : v.griefs === 'ensemble' ? "l'ensemble de l'évaluation et l'appréciation de ma manière de servir" : "les conclusions portées sur l'atteinte des objectifs"}.
 
 Éléments et arguments à l'appui de ma demande :
 ${v.arguments || "Les mentions figurant au compte-rendu ne rendent pas compte de mon travail effectif et des résultats obtenus."}
@@ -809,7 +810,7 @@ Je vous prie de croire, Monsieur le Maire, en l'assurance de ma considération r
     category: "sante_securite",
     categoryLabel: "Santé, Poste & Protection",
     icon: "🩹",
-    cgfpRef: "CGFP Art. L. 822-6 à L. 822-17 & Décret n° 2019-301",
+    cgfpRef: "CGFP Art. L. 822-18 à L. 822-25 & Décret n° 2019-301",
     summary: "Déclaration formelle d'un accident survenu pendant le service ou sur le trajet protégé domicile-travail pour prise en charge à 100%.",
     delaiRecommande: "Délai strict de 15 jours suivant la survenance de l'accident",
     modeEnvoiDefaut: "Lettre recommandée avec avis de réception (LRAR)",
@@ -857,7 +858,7 @@ Je vous prie de croire, Monsieur le Maire, en l'assurance de ma considération r
     ],
     generateBody: (agent, v) => `Monsieur le Maire,
 
-Employé(e) en tant que ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de vous déclarer formellement l'accident ${v.typeAccident === 'trajet' ? "de trajet" : "de service"} dont j'ai été victime, conformément aux articles L. 822-6 et suivants du Code Général de la Fonction Publique et au décret n° 2019-301 du 10 avril 2019.
+Employé(e) en tant que ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de vous déclarer formellement l'accident ${v.typeAccident === 'trajet' ? "de trajet" : v.typeAccident === 'mission' ? "de service survenu en mission extérieure commandée" : "de service"} dont j'ai été victime, conformément aux articles L. 822-18 et suivants du Code Général de la Fonction Publique et au décret n° 2019-301 du 10 avril 2019.
 
 Circonstances précises de l'accident :
 - Date et heure : ${v.dateHeure || "[Date et heure]"} ;
@@ -922,16 +923,14 @@ Je vous prie de recevoir, Monsieur le Maire, l'expression de ma considération d
 
 En fonction en qualité de ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de solliciter formellement le bénéfice de la Protection Fonctionnelle, conformément aux dispositions impératives des articles L. 134-1 à L. 134-12 du Code Général de la Fonction Publique.
 
-Dans le cadre strict de l'exercice de mes fonctions au service de la collectivité, j'ai été victime d'agissements intolérables :
+Dans le cadre strict de l'exercice de mes fonctions au service de la collectivité, j'ai fait l'objet des faits suivants :
 - Date et lieu : ${v.dateLieuFaits || "[Date et lieu]"} ;
-- Nature des faits : ${v.natureFaits === 'violences_physiques' ? "agression et violences physiques" : v.natureFaits === 'diffamation_reseaux' ? "diffamation publique et propos calomnieux" : "menaces graves et outrages répétés"} ;
+- Nature des faits : ${v.natureFaits === 'violences_physiques' ? "agression et violences physiques" : v.natureFaits === 'diffamation_reseaux' ? "diffamation publique et propos calomnieux" : v.natureFaits === 'poursuites_penales' ? "mise en cause pénale à raison de faits non détachables de l'exercice de mes fonctions" : "menaces graves et outrages répétés"} ;
 - Description : ${v.descriptionFaits || "[Exposé des faits]"}.
 
-Une plainte a été déposée auprès des autorités judiciaires compétentes (${v.plainteInfos || "dépôt de plainte"}), dont vous trouverez le récépissé ci-annexé.
+${v.natureFaits === 'poursuites_penales' ? `Aux termes de l'article L. 134-4 du CGFP, lorsque l'agent public fait l'objet de poursuites pénales à raison de faits qui n'ont pas le caractère d'une faute personnelle détachable de l'exercice de ses fonctions, la collectivité publique doit le couvrir des condamnations civiles prononcées contre lui et lui accorder sa protection juridique (${v.plainteInfos || "convocation / procédure en cours"}).` : `Une plainte a été déposée auprès des autorités judiciaires compétentes (${v.plainteInfos || "dépôt de plainte"}), dont vous trouverez le récépissé ci-annexé.\n\nAux termes de l'article L. 134-5 du CGFP, la collectivité publique est tenue de protéger les agents publics contre les atteintes volontaires à l'intégrité de leur personne, les violences, les menaces ou les injures dont ils sont l'objet dans l'exercice de leurs fonctions et de réparer le préjudice qui en résulte.`}
 
-Aux termes de l'article L. 134-5 du CGFP, la collectivité publique est tenue de protéger les agents publics contre les atteintes volontaires à l'intégrité de leur personne, les violences, les menaces ou les injures dont ils sont l'objet dans l'exercice de leurs fonctions et de réparer le préjudice qui en résulte.
-
-À ce titre, je vous demande de bien vouloir m'octroyer cette protection, d'assurer la prise en charge des frais d'avocat et de procédure indispensables à la défense de mes intérêts et à la constitution de partie civile, et de mettre en œuvre toute mesure de sécurité adaptée.
+À ce titre, je vous demande de bien vouloir m'octroyer cette protection, d'assurer la prise en charge des frais d'avocat et de procédure indispensables à la défense de mes intérêts et de mettre en œuvre toute mesure de soutien et de sécurité adaptée.
 
 Confiant(e) dans l'attention que vous portez à la sécurité des agents territoriaux de Gennevilliers, je vous prie d'agréer, Monsieur le Maire, mes respectueuses salutations.`
   },
@@ -1143,7 +1142,7 @@ Je vous prie de recevoir, Monsieur le Maire, l'expression de ma considération d
 Titulaire du grade de ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de solliciter votre autorisation bienveillante afin d'exercer une activité lucrative accessoire, conformément aux dispositions des articles L. 123-1 à L. 123-8 du Code Général de la Fonction Publique et du décret n° 2020-69 du 30 janvier 2020 relatif aux contrôles déontologiques.
 
 Caractéristiques de l'activité accessoire envisagée :
-- Nature de l'activité : ${v.natureActivite === 'enseignement_formation' ? "Enseignement et formation" : v.natureActivite === 'expertise_consultance' ? "Expertise et conseil" : v.natureActivite === 'activite_artistique' ? "Activité artistique ou littéraire" : "Activité accessoire autorisée"} ;
+- Nature de l'activité : ${v.natureActivite === 'enseignement_formation' ? "Enseignement et formation" : v.natureActivite === 'expertise_consultance' ? "Expertise et conseil" : v.natureActivite === 'activite_artistique' ? "Activité artistique, littéraire ou scientifique" : v.natureActivite === 'services_personne' ? "Services à la personne ou vente de biens fabriqués personnellement" : "Activité d'intérêt général auprès d'une personne publique ou privée à but non lucratif"} ;
 - Organisme d'accueil : ${v.employeurSecondaire || "[Nom de l'organisme]"} ;
 - Période : ${v.dateDebutFin || "[Période]"} ;
 - Volume prévisionnel : ${v.volumeHoraire || "[Volume horaire]"} ;
@@ -1199,7 +1198,7 @@ Fonctionnaire en poste en tant que ${agent.grade} au sein de la ${agent.directio
 
 Entrant dans mon troisième mois de grossesse, je sollicite le bénéfice de l'autorisation d'absence accordée aux agentes enceintes pour réduire leur durée journalière de travail d'une heure au maximum, sans retenue de traitement, conformément aux dispositions de la circulaire FP4 n° 1864 du 9 août 1995 et aux usages statutaires de la collectivité.
 
-En accord avec l'organisation de mon équipe, je souhaiterais que cette heure de franchise s'applique de la manière suivante : ${v.modaliteHeure === 'fin_journee' ? "par un départ anticipé d'une heure en fin de journée" : v.modaliteHeure === 'debut_journee' ? "par une arrivée différée d'une heure le matin" : "par un aménagement de pause"}.
+En accord avec l'organisation de mon équipe, je souhaiterais que cette heure de franchise s'applique de la manière suivante : ${v.modaliteHeure === 'fin_journee' ? "par un départ anticipé d'une heure en fin de journée" : v.modaliteHeure === 'debut_journee' ? "par une arrivée différée d'une heure le matin" : "par un allongement d'une heure de la pause méridienne"}.
 
 ${v.amenagementPoste ? `Par ailleurs, compte tenu de mon état, je sollicite l'adaptation ponctuelle de mes conditions matérielles de travail suivante : ${v.amenagementPoste}` : ""}
 
@@ -1259,9 +1258,9 @@ Je vous transmettrai dans les meilleurs délais les dates exactes de mon congé 
 
 En poste en tant que ${agent.grade} au sein de la ${agent.direction}, j'ai l'honneur de vous demander mon placement en congé de proche aidant, en application des articles L. 634-1 à L. 634-4 du Code Général de la Fonction Publique et du décret n° 2020-1557 du 8 décembre 2020.
 
-Ce congé est sollicité pour apporter un soutien indispensable à ${v.procheInfos || "un membre de ma famille proche"}, dont la situation de perte d'autonomie ou de handicap est établie par la décision ci-jointe (${v.justifAutonomie === 'apa_gir' ? "GIR 1 à 3" : "taux d'incapacité >= 80%"}).
+Ce congé est sollicité pour apporter un soutien indispensable à ${v.procheInfos || "un membre de ma famille proche"}, dont la situation de perte d'autonomie ou de handicap est établie par la décision ci-jointe (${v.justifAutonomie === 'apa_gir' ? "bénéficiaire de l'APA classé en GIR 1 à 3" : v.justifAutonomie === 'majoration_tierce' ? "bénéficiaire d'une majoration pour tierce personne / PCH" : "taux d'incapacité permanente >= 80%"}).
 
-Je souhaite bénéficier de ce congé pour une durée de ${v.dureePeriode || "3 mois"}, à compter du ${v.dateDebut ? new Date(v.dateDebut).toLocaleDateString('fr-FR') : "[Date]"}.
+Je souhaite bénéficier de ce congé selon la modalité suivante : ${v.dureePeriode === 'fractionne' ? "sous forme fractionnée par journées" : v.dureePeriode === 'temps_partiel' ? "sous la forme d'un service à temps partiel" : `pour une durée continue de ${v.dureePeriode || "3 mois"}`}, à compter du ${v.dateDebut ? new Date(v.dateDebut).toLocaleDateString('fr-FR') : "[Date]"}.
 
 Ce congé me permettra d'engager les démarches d'accompagnement auprès des organismes compétents et de percevoir l'Allocation Journalière du Proche Aidant (AJPA) versée par la Caisse d'Allocations Familiales.
 
@@ -1611,7 +1610,7 @@ Je vous prie de recevoir, Monsieur le Maire, mes respectueuses salutations.`
 
 Agent au sein de la ${agent.direction} en qualité de ${agent.grade}, j'ai l'honneur de vous demander de bien vouloir organiser une visite médicale auprès du service de médecine préventive communal, conformément aux articles 14 à 24 du décret n° 85-603 du 10 juin 1985 modifié relatif à l'hygiène, à la sécurité et à la médecine préventive dans la fonction publique territoriale.
 
-Cette consultation est sollicitée pour le motif suivant : ${v.motifVisite === 'adaptation_poste' ? "l'adaptation de mes conditions de poste" : v.motifVisite === 'visite_reprise' ? "une visite de reprise ou pré-reprise d'activité" : "des difficultés de santé en lien direct avec le travail"}.
+Cette consultation est sollicitée pour le motif suivant : ${v.motifVisite === 'adaptation_poste' ? "l'adaptation de mes conditions de poste" : v.motifVisite === 'visite_reprise' ? "une visite de reprise ou pré-reprise d'activité" : v.motifVisite === 'exposition_risques' ? "un suivi médical lié à une exposition à des risques professionnels spécifiques ou de pénibilité" : "des difficultés de santé en lien direct avec le travail"}.
 
 ${v.precisionsMotif ? `Éléments de contexte : ${v.precisionsMotif}` : ""}
 

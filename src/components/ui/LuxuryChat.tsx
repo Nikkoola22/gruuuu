@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+// import React, { useRef, useEffect, useState } from 'react';
 import { Send, ArrowLeft, Bot, Sparkles, Scale, Check, Copy, MessageSquareText, Search, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ModalAlbertDGAFP } from '../ModalAlbertDGAFP';
@@ -96,16 +96,14 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
   return (
     <div ref={chatContainerRef} className="relative max-w-4xl mx-auto w-full px-2 sm:px-6 py-1 sm:py-4 z-30 animate-chat-enter">
       {/* Luxury Chat Window adaptée à l'écran */}
-      <div className={`rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[calc(100dvh-115px)] sm:h-[calc(100vh-170px)] min-h-[350px] sm:min-h-[500px] max-h-[850px] transition-all duration-300 ${
-        isLight
+      <div className={`rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[calc(100dvh-115px)] sm:h-[calc(100vh-170px)] min-h-[350px] sm:min-h-[500px] max-h-[850px] transition-all duration-300 ${isLight
           ? 'bg-white/95 hairline-border-light shadow-slate-300/50'
           : 'bg-[#0B0E17]/95 hairline-border shadow-black/90'
-      }`}>
-        
-        {/* Header Épuré Style Luxe */}
-        <div className={`px-3 sm:px-6 py-2.5 sm:py-4 flex items-center justify-between border-b transition-colors ${
-          isLight ? 'bg-slate-50/90 border-slate-200' : 'bg-[#101422]/90 border-white/[0.08]'
         }`}>
+
+        {/* Header Épuré Style Luxe */}
+        <div className={`px-3 sm:px-6 py-2.5 sm:py-4 flex items-center justify-between border-b transition-colors ${isLight ? 'bg-slate-50/90 border-slate-200' : 'bg-[#101422]/90 border-white/[0.08]'
+          }`}>
           <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
             <button
               onClick={onReturnToMenu}
@@ -142,11 +140,10 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsAlbertModalOpen(true)}
-              className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer border ${
-                albertConfig.enabled
+              className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer border ${albertConfig.enabled
                   ? 'bg-blue-600/15 hover:bg-blue-600/25 text-blue-500 dark:text-blue-400 border-blue-500/40'
                   : 'bg-slate-500/10 hover:bg-slate-500/20 text-slate-500 dark:text-slate-400 border-slate-500/30'
-              }`}
+                }`}
               title="Configurer l'IA souveraine Albert (DINUM / DGAFP)"
             >
               <span className="text-xs">🇫🇷</span>
@@ -162,9 +159,8 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
         </div>
 
         {/* Message Thread */}
-        <div ref={messagesListRef} className={`flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-5 custom-scrollbar ${
-          isLight ? 'bg-slate-50/40' : 'bg-[#080B12]/60'
-        }`}>
+        <div ref={messagesListRef} className={`flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-5 custom-scrollbar ${isLight ? 'bg-slate-50/40' : 'bg-[#080B12]/60'
+          }`}>
           {messages.map((msg, i) => {
             const isUser = msg.type === 'user';
             return (
@@ -180,13 +176,12 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
                   </div>
                 )}
 
-                <div className={`group relative max-w-[92%] sm:max-w-[75%] rounded-2xl px-3.5 py-2.5 sm:px-5 sm:py-3.5 text-xs sm:text-sm leading-relaxed ${
-                  isUser
+                <div className={`group relative max-w-[92%] sm:max-w-[75%] rounded-2xl px-3.5 py-2.5 sm:px-5 sm:py-3.5 text-xs sm:text-sm leading-relaxed ${isUser
                     ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium shadow-md shadow-orange-500/15'
                     : isLight
                       ? 'bg-white text-slate-800 border border-slate-200 shadow-sm'
                       : 'bg-[#121624] text-slate-100 border border-white/[0.08] chat-bubble-ai'
-                }`}>
+                  }`}>
                   <div className="whitespace-pre-wrap break-words">{msg.content}</div>
 
                   {/* Message Footer & Copier */}
@@ -198,9 +193,8 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
                     {!isUser && (
                       <button
                         onClick={() => handleCopy(msg.content, i)}
-                        className={`opacity-80 group-hover:opacity-100 transition-opacity px-2 py-0.5 rounded text-xs flex items-center gap-1 ${
-                          isLight ? 'hover:bg-slate-100 text-slate-600' : 'hover:bg-white/10 text-slate-300'
-                        }`}
+                        className={`opacity-80 group-hover:opacity-100 transition-opacity px-2 py-0.5 rounded text-xs flex items-center gap-1 ${isLight ? 'hover:bg-slate-100 text-slate-600' : 'hover:bg-white/10 text-slate-300'
+                          }`}
                         title="Copier la réponse"
                       >
                         {copiedIndex === i ? (
@@ -232,9 +226,8 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white flex items-center justify-center shrink-0 shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
               </div>
-              <div className={`px-3.5 py-2 sm:px-4 sm:py-3 rounded-2xl border flex items-center gap-2 ${
-                isLight ? 'bg-white border-slate-200 text-slate-700 shadow-sm' : 'bg-[#121624] border-white/[0.08] text-slate-300'
-              }`}>
+              <div className={`px-3.5 py-2 sm:px-4 sm:py-3 rounded-2xl border flex items-center gap-2 ${isLight ? 'bg-white border-slate-200 text-slate-700 shadow-sm' : 'bg-[#121624] border-white/[0.08] text-slate-300'
+                }`}>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '0ms' }} />
                   <div className="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -250,9 +243,8 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className={`p-4 sm:p-5 rounded-2xl border text-center my-3 sm:my-4 ${
-                isLight ? 'bg-amber-50/80 border-amber-200 shadow-sm' : 'bg-amber-500/10 border-amber-500/20'
-              }`}
+              className={`p-4 sm:p-5 rounded-2xl border text-center my-3 sm:my-4 ${isLight ? 'bg-amber-50/80 border-amber-200 shadow-sm' : 'bg-amber-500/10 border-amber-500/20'
+                }`}
             >
               <Scale className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 mx-auto mb-2" />
               <h5 className={`text-xs sm:text-sm font-bold mb-1 ${isLight ? 'text-slate-900' : 'text-white'}`}>
@@ -282,9 +274,8 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
         </div>
 
         {/* Pilules de suggestions rapides en un clic */}
-        <div className={`px-3 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar border-t ${
-          isLight ? 'bg-slate-100/70 border-slate-200' : 'bg-[#0E121E] border-white/[0.06]'
-        }`}>
+        <div className={`px-3 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar border-t ${isLight ? 'bg-slate-100/70 border-slate-200' : 'bg-[#0E121E] border-white/[0.06]'
+          }`}>
           <span className={`text-[10px] sm:text-[11px] font-bold flex items-center gap-1 shrink-0 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             <MessageSquareText className="w-3.5 h-3.5 text-amber-500" />
             Suggestions :
@@ -293,11 +284,10 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
             <button
               key={idx}
               onClick={() => onInputChange(s)}
-              className={`text-[11px] sm:text-xs font-medium px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border whitespace-nowrap transition-all duration-150 hover:scale-105 active:scale-95 shrink-0 ${
-                isLight
+              className={`text-[11px] sm:text-xs font-medium px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border whitespace-nowrap transition-all duration-150 hover:scale-105 active:scale-95 shrink-0 ${isLight
                   ? 'bg-white hover:bg-amber-50 hover:border-amber-300 border-slate-200 text-slate-700 shadow-xs'
                   : 'bg-white/[0.05] hover:bg-amber-500/15 hover:border-amber-500/40 border-white/[0.08] text-slate-200'
-              }`}
+                }`}
             >
               {s}
             </button>
@@ -306,11 +296,10 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
 
         {/* Champ de prompt flottant */}
         <div className={`p-2.5 sm:p-4 border-t ${isLight ? 'bg-white border-slate-200' : 'bg-[#0B0E17] border-white/[0.08]'}`}>
-          <div className={`flex items-center gap-2 sm:gap-3 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl border-2 transition-all duration-200 ${
-            isLight
+          <div className={`flex items-center gap-2 sm:gap-3 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl border-2 transition-all duration-200 ${isLight
               ? 'bg-gradient-to-r from-orange-50/95 via-amber-50/90 to-orange-50/95 border-orange-400/90 shadow-md shadow-orange-500/10 focus-within:border-orange-500 focus-within:ring-3 focus-within:ring-orange-500/20'
               : 'bg-slate-900/95 border-orange-500/70 shadow-[0_0_20px_rgba(249,115,22,0.18)] focus-within:border-orange-400 focus-within:ring-3 focus-within:ring-orange-500/30'
-          }`}>
+            }`}>
             <Search className="w-4 h-4 text-orange-600 dark:text-orange-400 shrink-0" />
             <input
               ref={inputRef}
@@ -324,9 +313,8 @@ export const LuxuryChat: React.FC<LuxuryChatProps> = ({
                 }
               }}
               placeholder="Ex: Jours pour un mariage ? RIFSEEP ? Télétravail ?"
-              className={`flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-medium ${
-                isLight ? 'text-slate-900 placeholder-slate-500' : 'text-white placeholder-slate-400'
-              }`}
+              className={`flex-1 bg-transparent border-none outline-none text-xs sm:text-sm font-medium ${isLight ? 'text-slate-900 placeholder-slate-500' : 'text-white placeholder-slate-400'
+                }`}
               disabled={isProcessing}
             />
 

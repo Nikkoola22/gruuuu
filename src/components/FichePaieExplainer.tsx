@@ -18,7 +18,9 @@ import {
   Code,
   ClipboardPaste,
   Layers,
-  BarChart3
+  BarChart3,
+  AlertTriangle,
+  Building2
 } from 'lucide-react';
 import { toast } from 'sonner';
 import CirilBulletinView from './CirilBulletinView';
@@ -340,20 +342,28 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
         {/* Colonne Gauche : Upload et Collage direct */}
         <div className="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
           <div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
-              Récupérez votre fiche de paie depuis le{' '}
+            {/* Encadré Haute Visibilité : Lien officiel Portail Agent SIRH */}
+            <div className="mb-4 p-3.5 rounded-2xl bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-cyan-500/10 border-2 border-teal-500/40 dark:border-teal-500/50 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center gap-2 mb-2.5">
+                <span className="p-1.5 rounded-lg bg-teal-600 text-white shadow-xs">
+                  <Building2 className="w-4 h-4" />
+                </span>
+                <span className="text-xs font-black uppercase tracking-wider text-teal-800 dark:text-teal-200 block">
+                  Téléchargez votre bulletin officiel
+                </span>
+              </div>
+
               <a
                 href="https://gennevilliers-sirh-portail.ciril.net/login"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-0.5 font-bold text-teal-600 dark:text-teal-400 hover:underline cursor-pointer"
+                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm hover:shadow-lg transition-all duration-200 group cursor-pointer hover:scale-[1.02] active:scale-95"
+                title="Ouvrir le portail agent CIRIL RH de la Ville de Gennevilliers"
               >
-                portail agent
-                <ExternalLink className="w-3 h-3" />
-              </a>{' '}
-              (SIRH Ville de Gennevilliers), puis glissez le PDF téléchargé ici — le texte est
-              analysé en mémoire sans quitter votre poste.
-            </p>
+                <span>Accéder au Portail Agent (Ciril RH)</span>
+                <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+            </div>
 
             <div
               onDragEnter={handleDrag}
@@ -983,6 +993,11 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                           <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
                             {ligne.libelle}
                           </h3>
+                          {ligne.natureDetaillee && (
+                            <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                              {ligne.natureDetaillee}
+                            </span>
+                          )}
                           <a
                             href={ligne.openFiscaVar.githubUrl}
                             target="_blank"
@@ -1013,6 +1028,16 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                             -{ligne.montantRetenue?.toFixed(2)} €
                           </div>
                         )}
+                        {!isGain && !isRetenue && (
+                          <div className="font-bold text-slate-500 text-sm">
+                            Information
+                          </div>
+                        )}
+                        {ligne.partPatronale !== undefined && ligne.partPatronale > 0 && (
+                          <div className="text-[11px] font-medium text-purple-600 dark:text-purple-400">
+                            Patronal: {ligne.partPatronale.toFixed(2)} €
+                          </div>
+                        )}
                         {ligne.base !== undefined && (
                           <div className="text-[11px] text-slate-400">
                             Base: {ligne.base.toFixed(2)} {ligne.taux !== undefined ? `| Taux: ${(ligne.taux < 1 ? (ligne.taux * 100).toFixed(2) + '%' : ligne.taux)}` : ''}
@@ -1028,6 +1053,78 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                   {/* Corps dépliable d'explication pédagogique */}
                   {isExpanded && (
                     <div className="p-5 bg-slate-50/70 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 space-y-4 text-xs sm:text-sm">
+                      {/* Barrette synthétique des attributs statutaires / fiscaux / sociaux */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {/* Nature statutaire */}
+                        <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                          <span className="block text-[10px] uppercase font-bold text-slate-400">Nature</span>
+                          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                            {ligne.natureDetaillee || (ligne.nature === 'remuneration' ? 'Rémunération' : ligne.nature === 'cotisation_salariale' ? 'Cotisation salariale' : ligne.nature === 'cotisation_patronale' ? 'Cotisation patronale' : 'Rubrique statutaire')}
+                          </span>
+                        </div>
+
+                        {/* Impact Fiscal */}
+                        <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                          <span className="block text-[10px] uppercase font-bold text-slate-400">Régime Fiscal</span>
+                          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                            {ligne.impactFiscal || 'Conforme législation'}
+                          </span>
+                        </div>
+
+                        {/* Impact Retraite */}
+                        <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                          <span className="block text-[10px] uppercase font-bold text-slate-400">Droits Retraite</span>
+                          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                            {ligne.impactRetraite || 'Régime statutaire'}
+                          </span>
+                        </div>
+
+                        {/* Assiette Sociale */}
+                        <div className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                          <span className="block text-[10px] uppercase font-bold text-slate-400">Assiette Sociale</span>
+                          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                            {ligne.assietteSociale || 'Conforme barème'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Décomposition chiffrée détaillée */}
+                      {(ligne.base !== undefined || ligne.taux !== undefined || ligne.partPatronale !== undefined) && (
+                        <div className="p-3 bg-slate-100/70 dark:bg-slate-800/50 rounded-xl border border-slate-200/80 dark:border-slate-700/60 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                          <div>
+                            <div className="text-[10px] uppercase font-semibold text-slate-400">Assiette / Base</div>
+                            <div className="font-mono font-bold text-slate-800 dark:text-slate-200 text-xs sm:text-sm">
+                              {ligne.base !== undefined ? `${ligne.base.toFixed(2)} €` : 'Forfait'}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-[10px] uppercase font-semibold text-slate-400">Taux Salarié</div>
+                            <div className="font-mono font-bold text-slate-800 dark:text-slate-200 text-xs sm:text-sm">
+                              {ligne.taux !== undefined ? (ligne.taux < 1 ? `${(ligne.taux * 100).toFixed(2)} %` : `${ligne.taux} %`) : '—'}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-[10px] uppercase font-semibold text-slate-400">Part Salariale</div>
+                            <div className={`font-mono font-bold text-xs sm:text-sm ${isGain ? 'text-emerald-600 dark:text-emerald-400' : isRetenue ? 'text-rose-600 dark:text-rose-400' : 'text-slate-700 dark:text-slate-300'}`}>
+                              {isGain ? `+${ligne.montantGain?.toFixed(2)} €` : isRetenue ? `-${ligne.montantRetenue?.toFixed(2)} €` : '0,00 €'}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-[10px] uppercase font-semibold text-slate-400">Charge Employeur</div>
+                            <div className="font-mono font-bold text-purple-600 dark:text-purple-400 text-xs sm:text-sm">
+                              {ligne.partPatronale !== undefined && ligne.partPatronale > 0
+                                ? `${ligne.partPatronale.toFixed(2)} €`
+                                : '0,00 €'}
+                              {ligne.tauxPatronal !== undefined && ligne.tauxPatronal > 0 && (
+                                <span className="text-[10px] block font-normal text-purple-500">
+                                  ({ligne.tauxPatronal < 1 ? (ligne.tauxPatronal * 100).toFixed(2) + '%' : `${ligne.tauxPatronal}%`})
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Qu'est-ce que c'est ? */}
                         <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
@@ -1174,12 +1271,41 @@ export default function FichePaieExplainer({ onClose }: FichePaieExplainerProps)
                         </div>
                       )}
 
+                      {/* À vérifier sur votre bulletin */}
+                      {ligne.aVerifier && (
+                        <div className="p-3.5 bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 rounded-xl flex items-start gap-3">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                          <div className="text-xs text-emerald-900 dark:text-emerald-200 leading-relaxed">
+                            <strong className="font-bold uppercase tracking-wider text-[11px] block mb-0.5 text-emerald-800 dark:text-emerald-300">
+                              À vérifier sur votre bulletin :
+                            </strong>
+                            {ligne.aVerifier}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Points de vigilance & Pièges fréquents */}
+                      {ligne.attention && (
+                        <div className="p-3.5 bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 rounded-xl flex items-start gap-3">
+                          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                          <div className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
+                            <strong className="font-bold uppercase tracking-wider text-[11px] block mb-0.5 text-amber-800 dark:text-amber-300">
+                              Points de vigilance :
+                            </strong>
+                            {ligne.attention}
+                          </div>
+                        </div>
+                      )}
+
                       {/* Conseil de l'agent & Impact Retraite */}
                       {ligne.conseilAgent && (
                         <div className="p-3.5 bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800/50 rounded-xl flex items-start gap-3">
                           <Sparkles className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
                           <div className="text-xs text-orange-900 dark:text-orange-200 leading-relaxed">
-                            <strong>Conseil Syndical CFDT :</strong> {ligne.conseilAgent}
+                            <strong className="font-bold uppercase tracking-wider text-[11px] block mb-0.5 text-orange-800 dark:text-orange-300">
+                              Conseil Syndical CFDT :
+                            </strong>
+                            {ligne.conseilAgent}
                           </div>
                         </div>
                       )}

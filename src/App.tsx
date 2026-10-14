@@ -103,13 +103,14 @@ const MARQUEE_SPEED = 80
 
 const updateMarqueeDuration = (el: HTMLDivElement | null) => {
   if (!el) return
-  const width = el.scrollWidth / 2
+  const width = Math.round(el.scrollWidth / 2)
   if (!width || Number.isNaN(width)) return
-  const duration = Math.min(120, Math.max(20, width / MARQUEE_SPEED))
-  el.style.setProperty("--marquee-duration", `${duration}s`)
-  el.style.animation = "none"
-  void el.offsetHeight
-  el.style.animation = ""
+  const duration = Math.min(120, Math.max(20, Math.round(width / MARQUEE_SPEED)))
+  const currentDuration = el.style.getPropertyValue("--marquee-duration")
+  const newDuration = `${duration}s`
+  if (currentDuration !== newDuration) {
+    el.style.setProperty("--marquee-duration", newDuration)
+  }
 }
 
 const ViewLoader = () => (
@@ -179,7 +180,7 @@ const RssBandeau = React.memo(({ rssItems, rssLoading, marqueeRef }: { rssItems:
           href={item.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm sm:text-lg font-semibold mx-3 sm:mx-6 hover:text-orange-855 cursor-pointer text-orange-950 transition-colors duration-100 inline-block"
+          className="text-sm sm:text-lg font-semibold mx-3 sm:mx-6 hover:text-amber-900 cursor-pointer text-orange-950 transition-colors duration-150 inline-block"
         >
           {item.title}
         </a>
@@ -2208,7 +2209,7 @@ ${indicesFactuels}
                   <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
                   <button
                     onClick={() => handleInfoClick(info)}
-                    className="text-xs sm:text-base font-medium mx-2.5 sm:mx-4 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
+                    className="text-xs sm:text-base font-medium mx-2.5 sm:mx-4 hover:text-amber-200 cursor-pointer text-white transition-colors duration-150"
                   >
                     {info.title}
                   </button>
@@ -2221,7 +2222,7 @@ ${indicesFactuels}
                   <span className={`marquee-diamond${index % 3 === 0 ? ' marquee-diamond-twinkle' : ''}`} aria-hidden="true" />
                   <button
                     onClick={() => handleInfoClick(info)}
-                    className="text-xs sm:text-base font-medium mx-2.5 sm:mx-4 hover:text-amber-200 cursor-pointer hover:scale-105 text-white transition-transform duration-100"
+                    className="text-xs sm:text-base font-medium mx-2.5 sm:mx-4 hover:text-amber-200 cursor-pointer text-white transition-colors duration-150"
                   >
                     {info.title}
                   </button>

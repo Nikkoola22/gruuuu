@@ -346,7 +346,7 @@ body::before {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Animation pour le marquee - optimisé GPU */
+/* Animation pour le marquee - optimisé GPU 60fps */
 @keyframes marquee {
   0% {
     transform: translate3d(0, 0, 0);
@@ -362,20 +362,26 @@ body::before {
   animation: marquee var(--marquee-duration, 45s) linear infinite;
   will-change: transform;
   backface-visibility: hidden;
-  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
   -webkit-font-smoothing: antialiased;
-  contain: layout style;
+  contain: paint layout;
 }
 
 .marquee-track {
   display: flex;
   width: max-content;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .marquee-group {
   display: flex;
   align-items: center;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Styles responsifs pour le lecteur */
@@ -1001,13 +1007,11 @@ body::before {
 
   0%,
   100% {
-    opacity: 0.3;
-    transform: rotate(45deg) scale(0.85);
+    opacity: 0.35;
   }
 
   50% {
     opacity: 0.9;
-    transform: rotate(45deg) scale(1.2);
   }
 }
 
@@ -1016,7 +1020,7 @@ body::before {
   width: 5px;
   height: 5px;
   background: rgba(120, 53, 4, 0.65);
-  transform: rotate(45deg) scale(0.85);
+  transform: rotate(45deg);
   margin: 0 10px;
   vertical-align: middle;
   flex-shrink: 0;
@@ -1024,7 +1028,7 @@ body::before {
 
 .marquee-diamond-twinkle {
   animation: diamond-twinkle 3s ease-in-out infinite;
-  will-change: opacity, transform;
+  will-change: opacity;
 }
 
 .banner-top-streak {

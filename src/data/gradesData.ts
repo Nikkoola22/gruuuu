@@ -3394,7 +3394,1134 @@ const CADRES_EMPLOIS_RAW: CadreEmploiDefinition[] = [
         ]
       }
     ]
-  }
+  },
+
+  // =========================================================================
+  // FILIÈRE SPORTIVE
+  // =========================================================================
+  {
+  id: "operateur_aps",
+  nom: "Opérateur des activités physiques et sportives (APS)",
+  filiere: "Sportive",
+  categorie: "C",
+  decretReference: "Décret n° 92-368 du 1er avril 1992 portant statut particulier du cadre d emplois des opérateurs territoriaux des APS et Décret n° 2016-596",
+  grades: [
+    {
+      id: "operateur_aps_c1",
+      nom: "Opérateur des APS (C1)",
+      filiere: "Sportive",
+      categorie: "C",
+      descriptionGrade: "Grade d entrée sans concours en catégorie C sportive (Échelle C1). Surveillance, préparation des équipements sportifs et accueil des usagers.",
+      echelons: [
+        {
+          numero: 1,
+          dureeAnnees: 1,
+          indiceBrut: 367,
+          indiceMajore: 366,
+          description: "Minimum de traitement garanti"
+        },
+        {
+          numero: 2,
+          dureeAnnees: 1,
+          indiceBrut: 368,
+          indiceMajore: 367
+        },
+        {
+          numero: 3,
+          dureeAnnees: 1,
+          indiceBrut: 370,
+          indiceMajore: 368
+        },
+        {
+          numero: 4,
+          dureeAnnees: 1,
+          indiceBrut: 371,
+          indiceMajore: 369
+        },
+        {
+          numero: 5,
+          dureeAnnees: 1,
+          indiceBrut: 374,
+          indiceMajore: 370
+        },
+        {
+          numero: 6,
+          dureeAnnees: 1,
+          indiceBrut: 378,
+          indiceMajore: 371
+        },
+        {
+          numero: 7,
+          dureeAnnees: 3,
+          indiceBrut: 381,
+          indiceMajore: 372
+        },
+        {
+          numero: 8,
+          dureeAnnees: 3,
+          indiceBrut: 387,
+          indiceMajore: 373
+        },
+        {
+          numero: 9,
+          dureeAnnees: 3,
+          indiceBrut: 401,
+          indiceMajore: 376
+        },
+        {
+          numero: 10,
+          dureeAnnees: 4,
+          indiceBrut: 419,
+          indiceMajore: 377
+        },
+        {
+          numero: 11,
+          dureeAnnees: 0,
+          indiceBrut: 432,
+          indiceMajore: 387,
+          description: "Sommet C1"
+        }
+      ],
+      perspectives: [
+        {
+          gradeCibleId: "operateur_aps_principal_2cl",
+          nomGradeCible: "Opérateur des APS principal de 2e classe (C2)",
+          categorieCible: "C",
+          typePerspective: "avancement_grade",
+          ratioPromusPromouvablesExplication: "Taux fixé par délibération après avis du CST.",
+          modaliteReclassement: "Reclassement à échelon d indice équivalent ou immédiatement supérieur.",
+          explicationReclassement: "Accès à l échelle C2 avec déroulement jusqu à l échelon 12.",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Examen professionnel C1 -> C2",
+              echelonMinimum: 4,
+              ancienneteEchelonAnnees: 0,
+              ancienneteGradeAnnees: 3,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Attestation de réussite examen C2 délivrée par le CDG",
+                "Comptes-rendus EPA"
+              ],
+              actesAdministratifs: [
+                "Tableau annuel d avancement",
+                "Arrêté individuel"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Au choix",
+              echelonMinimum: 5,
+              ancienneteEchelonAnnees: 0,
+              ancienneteGradeAnnees: 5,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "5 ans de services effectifs accomplis en C1",
+                "Dossier professionnel"
+              ],
+              actesAdministratifs: [
+                "Inscription tableau annuel",
+                "Arrêté individuel"
+              ]
+            }
+          ]
+        },
+        {
+          gradeCibleId: "educateur_aps_classe_normale",
+          nomGradeCible: "Éducateur des APS (Catégorie B)",
+          categorieCible: "B",
+          typePerspective: "promotion_interne",
+          ratioPromusPromouvablesExplication: "Quotas promotion interne C vers B gérés par le CDG (Décret n° 95-27 art. 5).",
+          modaliteReclassement: "Reclassement en B1 avec garantie indiciaire.",
+          explicationReclassement: "Changement de catégorie C vers B (animation, enseignement et encadrement sportif).",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Promotion interne C vers B par Examen Professionnel (dès 7 ans de services)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 7,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Attestation de réussite à l examen professionnel d Éducateur des APS",
+                "Justificatif de 7 ans de services publics dont au moins 2 ans dans la filière sportive en catégorie C",
+                "Dossier professionnel EPA"
+              ],
+              actesAdministratifs: [
+                "Inscription sur liste d aptitude CDG",
+                "Arrêté de nomination stagiaire B"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "operateur_aps_principal_2cl",
+      nom: "Opérateur des APS principal de 2e classe (C2)",
+      filiere: "Sportive",
+      categorie: "C",
+      descriptionGrade: "Deuxième grade de catégorie C sportive (Échelle C2). Missions qualifiées de surveillance des installations et d appui aux activités sportives.",
+      echelons: [
+        {
+          numero: 1,
+          dureeAnnees: 1,
+          indiceBrut: 368,
+          indiceMajore: 367
+        },
+        {
+          numero: 2,
+          dureeAnnees: 1,
+          indiceBrut: 371,
+          indiceMajore: 369
+        },
+        {
+          numero: 3,
+          dureeAnnees: 1,
+          indiceBrut: 376,
+          indiceMajore: 370
+        },
+        {
+          numero: 4,
+          dureeAnnees: 1,
+          indiceBrut: 387,
+          indiceMajore: 373
+        },
+        {
+          numero: 5,
+          dureeAnnees: 1,
+          indiceBrut: 396,
+          indiceMajore: 374
+        },
+        {
+          numero: 6,
+          dureeAnnees: 1,
+          indiceBrut: 404,
+          indiceMajore: 376,
+          description: "Accès promouvabilité C3"
+        },
+        {
+          numero: 7,
+          dureeAnnees: 2,
+          indiceBrut: 416,
+          indiceMajore: 377
+        },
+        {
+          numero: 8,
+          dureeAnnees: 2,
+          indiceBrut: 430,
+          indiceMajore: 385
+        },
+        {
+          numero: 9,
+          dureeAnnees: 3,
+          indiceBrut: 446,
+          indiceMajore: 397
+        },
+        {
+          numero: 10,
+          dureeAnnees: 3,
+          indiceBrut: 461,
+          indiceMajore: 409
+        },
+        {
+          numero: 11,
+          dureeAnnees: 4,
+          indiceBrut: 473,
+          indiceMajore: 417
+        },
+        {
+          numero: 12,
+          dureeAnnees: 0,
+          indiceBrut: 486,
+          indiceMajore: 425,
+          description: "Sommet C2"
+        }
+      ],
+      perspectives: [
+        {
+          gradeCibleId: "operateur_aps_principal_1cl",
+          nomGradeCible: "Opérateur des APS principal de 1re classe (C3)",
+          categorieCible: "C",
+          typePerspective: "avancement_grade",
+          ratioPromusPromouvablesExplication: "Taux fixé par la collectivité.",
+          modaliteReclassement: "Reclassement en échelle C3 à indice égal ou immédiatement supérieur.",
+          explicationReclassement: "Grade sommital de catégorie C sportive.",
+          conditions: [
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Au choix",
+              echelonMinimum: 6,
+              ancienneteEchelonAnnees: 1,
+              ancienneteGradeAnnees: 5,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "Justificatif de 5 ans de services effectifs en C2",
+                "Comptes-rendus d entretien"
+              ],
+              actesAdministratifs: [
+                "Inscription tableau d avancement",
+                "Arrêté individuel"
+              ]
+            }
+          ]
+        },
+        {
+          gradeCibleId: "educateur_aps_classe_normale",
+          nomGradeCible: "Éducateur des APS (Catégorie B)",
+          categorieCible: "B",
+          typePerspective: "promotion_interne",
+          ratioPromusPromouvablesExplication: "Listes d aptitude établies par le CDG.",
+          modaliteReclassement: "Reclassement indiciaire en B avec clause de sauvegarde.",
+          explicationReclassement: "Passage en catégorie B sportive.",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 7,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Attestation de réussite à l examen professionnel d Éducateur des APS",
+                "Justificatif de 7 ans de services publics dont 2 ans en C sportive"
+              ],
+              actesAdministratifs: [
+                "Inscription liste aptitude CDG",
+                "Arrêté de nomination stagiaire B"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Promotion interne B au choix (dès 9 ans de services publics)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 9,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "Justificatif de 9 ans de services publics dont au moins 5 ans en C sportive",
+                "Rapport hiérarchique circonstancié",
+                "Attestations de formation CNFPT"
+              ],
+              actesAdministratifs: [
+                "Inscription liste aptitude CDG",
+                "Arrêté de nomination stagiaire B"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "operateur_aps_principal_1cl",
+      nom: "Opérateur des APS principal de 1re classe (C3)",
+      filiere: "Sportive",
+      categorie: "C",
+      descriptionGrade: "Grade sommital de la catégorie C sportive (Échelle C3). Coordination d équipes d installations sportives et responsabilités opérationnelles.",
+      echelons: [
+        {
+          numero: 1,
+          dureeAnnees: 1,
+          indiceBrut: 388,
+          indiceMajore: 373
+        },
+        {
+          numero: 2,
+          dureeAnnees: 1,
+          indiceBrut: 397,
+          indiceMajore: 375
+        },
+        {
+          numero: 3,
+          dureeAnnees: 2,
+          indiceBrut: 412,
+          indiceMajore: 376
+        },
+        {
+          numero: 4,
+          dureeAnnees: 2,
+          indiceBrut: 430,
+          indiceMajore: 385
+        },
+        {
+          numero: 5,
+          dureeAnnees: 2,
+          indiceBrut: 448,
+          indiceMajore: 398
+        },
+        {
+          numero: 6,
+          dureeAnnees: 2,
+          indiceBrut: 460,
+          indiceMajore: 408
+        },
+        {
+          numero: 7,
+          dureeAnnees: 3,
+          indiceBrut: 478,
+          indiceMajore: 420
+        },
+        {
+          numero: 8,
+          dureeAnnees: 3,
+          indiceBrut: 499,
+          indiceMajore: 435
+        },
+        {
+          numero: 9,
+          dureeAnnees: 3,
+          indiceBrut: 525,
+          indiceMajore: 455
+        },
+        {
+          numero: 10,
+          dureeAnnees: 0,
+          indiceBrut: 558,
+          indiceMajore: 478,
+          description: "Sommet C3 (IM 478)"
+        }
+      ],
+      perspectives: [
+        {
+          gradeCibleId: "educateur_aps_classe_normale",
+          nomGradeCible: "Éducateur des APS (Catégorie B)",
+          categorieCible: "B",
+          typePerspective: "promotion_interne",
+          ratioPromusPromouvablesExplication: "Listes d aptitude établies par le CDG.",
+          modaliteReclassement: "Reclassement indiciaire en B avec clause de sauvegarde.",
+          explicationReclassement: "Passage en catégorie B sportive.",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Promotion interne B par Examen Professionnel (dès 7 ans de services)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 7,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Attestation de réussite à l examen professionnel d Éducateur des APS",
+                "Justificatif de 7 ans de services publics dont 2 ans en C sportive"
+              ],
+              actesAdministratifs: [
+                "Inscription liste aptitude CDG",
+                "Arrêté de nomination stagiaire B"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Promotion interne B au choix (dès 9 ans de services publics)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 9,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "Justificatif de 9 ans de services publics dont au moins 5 ans en C sportive",
+                "Rapport circonstancié de l autorité territoriale",
+                "Dossier EPA et attestations CNFPT"
+              ],
+              actesAdministratifs: [
+                "Inscription liste aptitude CDG",
+                "Arrêté de nomination stagiaire B"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+},
+{
+  id: "educateur_aps",
+  nom: "Éducateur territorial des activités physiques et sportives (ETAPS)",
+  filiere: "Sportive",
+  categorie: "B",
+  decretReference: "Décret n° 95-27 du 10 janvier 1995 modifié portant statut particulier du cadre d emplois des éducateurs territoriaux des APS et Décrets n° 2010-329, n° 2022-1200",
+  grades: [
+    {
+      id: "educateur_aps_classe_normale",
+      nom: "Éducateur des APS (Classe normale - B1)",
+      filiere: "Sportive",
+      categorie: "B",
+      descriptionGrade: "Premier grade du cadre d éducateurs des APS (NES B1). Enseignement, encadrement d activités sportives, conduite de projets sportifs et sécurité des pratiques.",
+      echelons: [
+        {
+          numero: 1,
+          dureeAnnees: 1,
+          indiceBrut: 389,
+          indiceMajore: 373,
+          description: "Stage probatoire avant titularisation"
+        },
+        {
+          numero: 2,
+          dureeAnnees: 1,
+          indiceBrut: 395,
+          indiceMajore: 374
+        },
+        {
+          numero: 3,
+          dureeAnnees: 1,
+          indiceBrut: 397,
+          indiceMajore: 375
+        },
+        {
+          numero: 4,
+          dureeAnnees: 1,
+          indiceBrut: 401,
+          indiceMajore: 376
+        },
+        {
+          numero: 5,
+          dureeAnnees: 2,
+          indiceBrut: 415,
+          indiceMajore: 377
+        },
+        {
+          numero: 6,
+          dureeAnnees: 2,
+          indiceBrut: 431,
+          indiceMajore: 386,
+          description: "Accès examen pro Principal 2e cl."
+        },
+        {
+          numero: 7,
+          dureeAnnees: 2,
+          indiceBrut: 452,
+          indiceMajore: 401
+        },
+        {
+          numero: 8,
+          dureeAnnees: 3,
+          indiceBrut: 478,
+          indiceMajore: 420,
+          description: "Accès au choix Principal 2e cl. après 1 an"
+        },
+        {
+          numero: 9,
+          dureeAnnees: 3,
+          indiceBrut: 500,
+          indiceMajore: 436
+        },
+        {
+          numero: 10,
+          dureeAnnees: 3,
+          indiceBrut: 513,
+          indiceMajore: 446
+        },
+        {
+          numero: 11,
+          dureeAnnees: 3,
+          indiceBrut: 538,
+          indiceMajore: 462
+        },
+        {
+          numero: 12,
+          dureeAnnees: 4,
+          indiceBrut: 563,
+          indiceMajore: 482
+        },
+        {
+          numero: 13,
+          dureeAnnees: 0,
+          indiceBrut: 597,
+          indiceMajore: 508,
+          description: "Sommet B1 (IM 508)"
+        }
+      ],
+      perspectives: [
+        {
+          gradeCibleId: "educateur_aps_principal_2cl",
+          nomGradeCible: "Éducateur des APS principal de 2e classe (B2)",
+          categorieCible: "B",
+          typePerspective: "avancement_grade",
+          ratioPromusPromouvablesExplication: "Taux fixé par la collectivité après avis du CST.",
+          modaliteReclassement: "Reclassement à échelon d indice équivalent ou immédiatement supérieur.",
+          explicationReclassement: "Accès au grade B2.",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Examen professionnel B1 -> B2",
+              echelonMinimum: 6,
+              ancienneteEchelonAnnees: 0,
+              ancienneteCadreAnnees: 3,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Certificat de réussite examen pro CDG",
+                "Comptes-rendus EPA",
+                "Attestations de formation CNFPT"
+              ],
+              actesAdministratifs: [
+                "Tableau annuel d avancement",
+                "Arrêté individuel"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Au choix",
+              echelonMinimum: 8,
+              ancienneteEchelonAnnees: 1,
+              ancienneteCadreAnnees: 5,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "1 an au 8e échelon et 5 ans de services effectifs en catégorie B",
+                "Comptes-rendus d entretien"
+              ],
+              actesAdministratifs: [
+                "Inscription tableau d avancement",
+                "Arrêté individuel"
+              ]
+            }
+          ]
+        },
+        {
+          gradeCibleId: "conseiller_aps_normal",
+          nomGradeCible: "Conseiller des APS (Catégorie A)",
+          categorieCible: "A",
+          typePerspective: "promotion_interne",
+          ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 92-364 art. 5).",
+          modaliteReclassement: "Reclassement en A avec clause de sauvegarde indiciaire.",
+          explicationReclassement: "Passage en catégorie A sportive (conception de la politique sportive communale, direction des sports).",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 8,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Attestation de réussite à l examen professionnel de Conseiller des APS",
+                "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B"
+              ],
+              actesAdministratifs: [
+                "Inscription sur liste d aptitude CDG",
+                "Arrêté de nomination stagiaire A"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 10,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "Justificatif de 10 ans de services effectifs en catégorie B dont au moins 5 ans dans le cadre des éducateurs des APS",
+                "Rapport hiérarchique circonstancié",
+                "Comptes-rendus EPA récents"
+              ],
+              actesAdministratifs: [
+                "Inscription sur liste d aptitude CDG",
+                "Arrêté de nomination stagiaire A"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "educateur_aps_principal_2cl",
+      nom: "Éducateur des APS principal de 2e classe (B2)",
+      filiere: "Sportive",
+      categorie: "B",
+      descriptionGrade: "Deuxième grade du cadre d éducateurs des APS (NES B2). Coordination d équipements sportifs, encadrement d éducateurs et gestion d événements.",
+      echelons: [
+        {
+          numero: 1,
+          dureeAnnees: 1,
+          indiceBrut: 401,
+          indiceMajore: 376
+        },
+        {
+          numero: 2,
+          dureeAnnees: 1,
+          indiceBrut: 415,
+          indiceMajore: 377
+        },
+        {
+          numero: 3,
+          dureeAnnees: 2,
+          indiceBrut: 429,
+          indiceMajore: 384
+        },
+        {
+          numero: 4,
+          dureeAnnees: 2,
+          indiceBrut: 444,
+          indiceMajore: 395
+        },
+        {
+          numero: 5,
+          dureeAnnees: 2,
+          indiceBrut: 458,
+          indiceMajore: 406
+        },
+        {
+          numero: 6,
+          dureeAnnees: 2,
+          indiceBrut: 480,
+          indiceMajore: 421,
+          description: "Accès examen pro Principal 1re cl. après 1 an"
+        },
+        {
+          numero: 7,
+          dureeAnnees: 3,
+          indiceBrut: 506,
+          indiceMajore: 441,
+          description: "Accès au choix Principal 1re cl. après 1 an"
+        },
+        {
+          numero: 8,
+          dureeAnnees: 3,
+          indiceBrut: 528,
+          indiceMajore: 457
+        },
+        {
+          numero: 9,
+          dureeAnnees: 3,
+          indiceBrut: 542,
+          indiceMajore: 466
+        },
+        {
+          numero: 10,
+          dureeAnnees: 3,
+          indiceBrut: 567,
+          indiceMajore: 485
+        },
+        {
+          numero: 11,
+          dureeAnnees: 4,
+          indiceBrut: 599,
+          indiceMajore: 509
+        },
+        {
+          numero: 12,
+          dureeAnnees: 0,
+          indiceBrut: 638,
+          indiceMajore: 539,
+          description: "Sommet B2"
+        }
+      ],
+      perspectives: [
+        {
+          gradeCibleId: "educateur_aps_principal_1cl",
+          nomGradeCible: "Éducateur des APS principal de 1re classe (B3)",
+          categorieCible: "B",
+          typePerspective: "avancement_grade",
+          ratioPromusPromouvablesExplication: "Taux fixé par délibération.",
+          modaliteReclassement: "Reclassement à indice égal ou immédiatement supérieur.",
+          explicationReclassement: "Accès au grade sommital de catégorie B.",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Examen professionnel 1re classe",
+              echelonMinimum: 6,
+              ancienneteEchelonAnnees: 1,
+              ancienneteGradeAnnees: 3,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Certificat de réussite examen pro CDG",
+                "Entretiens pro",
+                "Attestation formation CNFPT"
+              ],
+              actesAdministratifs: [
+                "Tableau annuel d avancement",
+                "Arrêté individuel"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Au choix",
+              echelonMinimum: 7,
+              ancienneteEchelonAnnees: 1,
+              ancienneteGradeAnnees: 5,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "1 an au 7e échelon et 5 ans de services effectifs accomplis en B",
+                "Évaluations annuelles"
+              ],
+              actesAdministratifs: [
+                "Inscription tableau d avancement",
+                "Arrêté individuel"
+              ]
+            }
+          ]
+        },
+        {
+          gradeCibleId: "conseiller_aps_normal",
+          nomGradeCible: "Conseiller des APS (Catégorie A)",
+          categorieCible: "A",
+          typePerspective: "promotion_interne",
+          ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 92-364 art. 5).",
+          modaliteReclassement: "Reclassement en A avec garantie de traitement.",
+          explicationReclassement: "Passage vers l encadrement supérieur en catégorie A.",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 8,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Attestation de réussite à l examen professionnel de Conseiller des APS",
+                "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B"
+              ],
+              actesAdministratifs: [
+                "Inscription sur liste d aptitude CDG",
+                "Arrêté de nomination stagiaire A"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Promotion interne B -> A au choix (dès 10 ans en B)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 10,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "Justificatif de 10 ans de services effectifs en catégorie B",
+                "Dossier professionnel EPA",
+                "Rapport hiérarchique de l autorité territoriale"
+              ],
+              actesAdministratifs: [
+                "Inscription liste aptitude CDG",
+                "Arrêté de nomination stagiaire A"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "educateur_aps_principal_1cl",
+      nom: "Éducateur des APS principal de 1re classe (B3)",
+      filiere: "Sportive",
+      categorie: "B",
+      descriptionGrade: "Grade sommital du cadre d éducateurs des APS (NES B3). Direction de complexes sportifs importants, piscines, bases nautiques et coordination générale des activités.",
+      echelons: [
+        {
+          numero: 1,
+          dureeAnnees: 1,
+          indiceBrut: 446,
+          indiceMajore: 397
+        },
+        {
+          numero: 2,
+          dureeAnnees: 2,
+          indiceBrut: 461,
+          indiceMajore: 409
+        },
+        {
+          numero: 3,
+          dureeAnnees: 2,
+          indiceBrut: 484,
+          indiceMajore: 424
+        },
+        {
+          numero: 4,
+          dureeAnnees: 2,
+          indiceBrut: 513,
+          indiceMajore: 446
+        },
+        {
+          numero: 5,
+          dureeAnnees: 2,
+          indiceBrut: 547,
+          indiceMajore: 470
+        },
+        {
+          numero: 6,
+          dureeAnnees: 3,
+          indiceBrut: 573,
+          indiceMajore: 489
+        },
+        {
+          numero: 7,
+          dureeAnnees: 3,
+          indiceBrut: 604,
+          indiceMajore: 513
+        },
+        {
+          numero: 8,
+          dureeAnnees: 3,
+          indiceBrut: 638,
+          indiceMajore: 539
+        },
+        {
+          numero: 9,
+          dureeAnnees: 3,
+          indiceBrut: 660,
+          indiceMajore: 556
+        },
+        {
+          numero: 10,
+          dureeAnnees: 3,
+          indiceBrut: 684,
+          indiceMajore: 574
+        },
+        {
+          numero: 11,
+          dureeAnnees: 0,
+          indiceBrut: 707,
+          indiceMajore: 592,
+          description: "Sommet Catégorie B (IM 592)"
+        }
+      ],
+      perspectives: [
+        {
+          gradeCibleId: "conseiller_aps_normal",
+          nomGradeCible: "Conseiller des APS (Catégorie A)",
+          categorieCible: "A",
+          typePerspective: "promotion_interne",
+          ratioPromusPromouvablesExplication: "Promotion interne sur liste d aptitude CDG (Décret n° 92-364 art. 5).",
+          modaliteReclassement: "Reclassement avec reprise d indice en catégorie A.",
+          explicationReclassement: "Passage vers l encadrement supérieur en catégorie A.",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Promotion interne B -> A par Examen Professionnel (dès 8 ans en B)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 8,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Attestation de réussite à l examen professionnel de Conseiller des APS",
+                "Justificatif d au moins 8 ans de services effectifs accomplis en catégorie B"
+              ],
+              actesAdministratifs: [
+                "Inscription sur liste d aptitude CDG",
+                "Arrêté de nomination stagiaire A"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Promotion interne au choix vers Conseiller des APS (dès 10 ans en B)",
+              echelonMinimum: 1,
+              ancienneteEchelonAnnees: 0,
+              ancienneteServicesPublicsAnnees: 10,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "Justificatif de 10 ans de services effectifs dans un corps/cadre d emplois de catégorie B",
+                "Avis circonstancié de l autorité territoriale",
+                "Attestations de formation CNFPT"
+              ],
+              actesAdministratifs: [
+                "Inscription sur la liste d aptitude établie par le Président du Centre de Gestion",
+                "Arrêté de nomination en qualité de Conseiller des APS stagiaire"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+},
+{
+  id: "conseiller_aps",
+  nom: "Conseiller des activités physiques et sportives",
+  filiere: "Sportive",
+  categorie: "A",
+  decretReference: "Décret n° 92-364 du 1er avril 1992 portant statut particulier du cadre d emplois des conseillers territoriaux des APS",
+  grades: [
+    {
+      id: "conseiller_aps_normal",
+      nom: "Conseiller des APS",
+      filiere: "Sportive",
+      categorie: "A",
+      descriptionGrade: "Grade d entrée en catégorie A sportive. Définition, pilotage et mise en œuvre de la politique sportive communale ou intercommunale, direction du service des sports.",
+      echelons: [
+        {
+          numero: 1,
+          dureeAnnees: 1.5,
+          indiceBrut: 444,
+          indiceMajore: 395,
+          description: "Stage probatoire avant titularisation"
+        },
+        {
+          numero: 2,
+          dureeAnnees: 2,
+          indiceBrut: 469,
+          indiceMajore: 415
+        },
+        {
+          numero: 3,
+          dureeAnnees: 2,
+          indiceBrut: 499,
+          indiceMajore: 435
+        },
+        {
+          numero: 4,
+          dureeAnnees: 2,
+          indiceBrut: 525,
+          indiceMajore: 455
+        },
+        {
+          numero: 5,
+          dureeAnnees: 2.5,
+          indiceBrut: 567,
+          indiceMajore: 485,
+          description: "Accès examen pro Conseiller Principal"
+        },
+        {
+          numero: 6,
+          dureeAnnees: 3,
+          indiceBrut: 611,
+          indiceMajore: 518
+        },
+        {
+          numero: 7,
+          dureeAnnees: 3,
+          indiceBrut: 653,
+          indiceMajore: 550,
+          description: "Accès au choix Conseiller Principal"
+        },
+        {
+          numero: 8,
+          dureeAnnees: 3,
+          indiceBrut: 693,
+          indiceMajore: 580
+        },
+        {
+          numero: 9,
+          dureeAnnees: 3,
+          indiceBrut: 732,
+          indiceMajore: 610
+        },
+        {
+          numero: 10,
+          dureeAnnees: 4,
+          indiceBrut: 778,
+          indiceMajore: 645
+        },
+        {
+          numero: 11,
+          dureeAnnees: 0,
+          indiceBrut: 821,
+          indiceMajore: 678,
+          description: "Sommet grade Conseiller (IM 678)"
+        }
+      ],
+      perspectives: [
+        {
+          gradeCibleId: "conseiller_aps_principal",
+          nomGradeCible: "Conseiller des APS principal",
+          categorieCible: "A",
+          typePerspective: "avancement_grade",
+          ratioPromusPromouvablesExplication: "Taux fixé par la collectivité après avis du CST.",
+          modaliteReclassement: "Reclassement à indice égal ou immédiatement supérieur avec conservation de l ancienneté acquise.",
+          explicationReclassement: "Direction de grands équipements sportifs ou direction générale des sports.",
+          conditions: [
+            {
+              typeVoie: "examen_professionnel",
+              descriptionVoie: "Examen professionnel Conseiller Principal",
+              echelonMinimum: 5,
+              ancienneteEchelonAnnees: 0,
+              ancienneteCadreAnnees: 3,
+              examenProfessionnelRequis: true,
+              piecesRequises: [
+                "Réussite examen professionnel CNFPT / CDG",
+                "Dossier RAEP",
+                "Formations obligatoires validées"
+              ],
+              actesAdministratifs: [
+                "Tableau d avancement annuel",
+                "Arrêté individuel de nomination"
+              ]
+            },
+            {
+              typeVoie: "au_choix",
+              descriptionVoie: "Au choix",
+              echelonMinimum: 7,
+              ancienneteEchelonAnnees: 0,
+              ancienneteCadreAnnees: 7,
+              examenProfessionnelRequis: false,
+              piecesRequises: [
+                "Au moins le 7e échelon de conseiller",
+                "Justifier d au moins 7 ans de services effectifs dans un cadre de catégorie A",
+                "Avis très circonstancié de la Direction Générale"
+              ],
+              actesAdministratifs: [
+                "Inscription au Tableau d avancement au choix",
+                "Arrêté individuel"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "conseiller_aps_principal",
+      nom: "Conseiller des APS principal",
+      filiere: "Sportive",
+      categorie: "A",
+      descriptionGrade: "Grade sommital du cadre d emplois des conseillers territoriaux des APS. Direction des sports de grandes collectivités et coordination territoriale des politiques sportives.",
+      echelons: [
+        {
+          numero: 1,
+          dureeAnnees: 2,
+          indiceBrut: 593,
+          indiceMajore: 505
+        },
+        {
+          numero: 2,
+          dureeAnnees: 2,
+          indiceBrut: 639,
+          indiceMajore: 540
+        },
+        {
+          numero: 3,
+          dureeAnnees: 2,
+          indiceBrut: 693,
+          indiceMajore: 580
+        },
+        {
+          numero: 4,
+          dureeAnnees: 2,
+          indiceBrut: 732,
+          indiceMajore: 610
+        },
+        {
+          numero: 5,
+          dureeAnnees: 2,
+          indiceBrut: 791,
+          indiceMajore: 655
+        },
+        {
+          numero: 6,
+          dureeAnnees: 2.5,
+          indiceBrut: 843,
+          indiceMajore: 695
+        },
+        {
+          numero: 7,
+          dureeAnnees: 2.5,
+          indiceBrut: 896,
+          indiceMajore: 735
+        },
+        {
+          numero: 8,
+          dureeAnnees: 3,
+          indiceBrut: 946,
+          indiceMajore: 773
+        },
+        {
+          numero: 9,
+          dureeAnnees: 3,
+          indiceBrut: 995,
+          indiceMajore: 811
+        },
+        {
+          numero: 10,
+          dureeAnnees: 0,
+          indiceBrut: 1015,
+          indiceMajore: 826,
+          description: "Sommet Conseiller Principal (IM 826)"
+        }
+      ],
+      perspectives: []
+    }
+  ]
+},
 ];
 
 export const CADRES_EMPLOIS: CadreEmploiDefinition[] = [

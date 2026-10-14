@@ -287,7 +287,13 @@ export const ArrReintegration: React.FC = () => {
               </button>
             </div>
             
-            <div className="p-10 font-serif text-[13px] leading-relaxed text-slate-900 dark:text-slate-200 max-h-[650px] overflow-y-auto" id="arrete-content">
+            <div className="relative p-10 font-serif text-[13px] leading-relaxed text-slate-900 dark:text-slate-200 max-h-[650px] overflow-y-auto overflow-x-hidden" id="arrete-content">
+              {/* Filigrane discret diagonal "SIMULATION" */}
+              <div aria-hidden="true" className="pointer-events-none select-none absolute inset-0 flex items-center justify-center overflow-hidden z-10">
+                <span className="text-slate-900/[0.045] dark:text-white/[0.05] font-sans font-black tracking-[0.25em] text-5xl sm:text-7xl md:text-8xl uppercase -rotate-45 transform whitespace-nowrap">
+                  SIMULATION
+                </span>
+              </div>
               
               <div className="flex justify-between items-start mb-10">
                 <div className="w-1/2 text-center border-b border-slate-400 pb-2">

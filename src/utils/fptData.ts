@@ -166,7 +166,39 @@ export const fptCadres: FptCadre[] = [
       "Assistant socio-éducatif",
       "Assistant socio-éducatif de classe exceptionnelle"
     ]
-  }
+  },
+  {
+    id: "operateurs-aps",
+    nom: "Opérateurs territoriaux des activités physiques et sportives",
+    decretNum: "92-368",
+    decretDate: "1992-04-01",
+    grades: [
+      "Opérateur des APS",
+      "Opérateur des APS principal de 2e classe",
+      "Opérateur des APS principal de 1re classe"
+    ]
+  },
+  {
+    id: "educateurs-aps",
+    nom: "Éducateurs territoriaux des activités physiques et sportives",
+    decretNum: "95-27",
+    decretDate: "1995-01-10",
+    grades: [
+      "Éducateur des APS",
+      "Éducateur des APS principal de 2e classe",
+      "Éducateur des APS principal de 1re classe"
+    ]
+  },
+  {
+    id: "conseillers-aps",
+    nom: "Conseillers territoriaux des activités physiques et sportives",
+    decretNum: "92-364",
+    decretDate: "1992-04-01",
+    grades: [
+      "Conseiller des APS",
+      "Conseiller des APS principal"
+    ]
+  },
 ];
 
 import { CADRES_EMPLOIS } from "../data/gradesData";

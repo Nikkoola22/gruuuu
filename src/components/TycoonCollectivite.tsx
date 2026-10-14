@@ -757,7 +757,12 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
                   </p>
 
                   {/* Actions List */}
-                  <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3 font-mono">Options de Décision</h3>
+                  <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3 font-mono flex flex-wrap items-center gap-2">
+                    <span>Options de Décision</span>
+                    <span className="text-amber-400 font-semibold normal-case tracking-normal text-[11px]">
+                      (chaque choix impacte vos paramètres)
+                    </span>
+                  </h3>
                   <div className="grid grid-cols-1 gap-3">
                     {currentEvent.actions.map((action, idx) => (
                       <button
@@ -815,12 +820,65 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
                 </div>
               </div>
 
-              {/* Sidebar Gauges */}
-              <div className="flex-1 order-first lg:order-none grid grid-cols-2 lg:flex lg:flex-col gap-2.5 sm:gap-3.5 w-full lg:sticky lg:top-20">
-                <GaugeCard title="Budget Restant" value={budget} icon={Landmark} colorClass="text-emerald-400" borderGlow="shadow-[0_0_20px_rgba(16,185,129,0.15)]" type="currency" />
-                <GaugeCard title="Agents municipaux" value={agentsSat} icon={Users} colorClass="text-blue-400" borderGlow="shadow-[0_0_20px_rgba(59,130,246,0.15)]" type="percent" />
-                <GaugeCard title="Conseil Municipal" value={elusSat} icon={Building2} colorClass="text-purple-400" borderGlow="shadow-[0_0_20px_rgba(168,85,247,0.15)]" type="percent" />
-                <GaugeCard title="Qualité du Service" value={servicePub} icon={HeartHandshake} colorClass="text-amber-400" borderGlow="shadow-[0_0_20px_rgba(245,158,11,0.15)]" type="percent" />
+              {/* Sidebar Gauges & Monitoring Bubble */}
+              <div className="flex-1 order-first lg:order-none flex flex-col gap-3 w-full lg:sticky lg:top-20">
+
+                {/* Bulle d'alerte avec effets au-dessus des 4 éléments à surveiller */}
+                <div className="relative w-full">
+                  {/* Effet de lueur et halo pulsant en arrière-plan */}
+                  <div className={`absolute -inset-1 rounded-2xl blur-md transition-all duration-700 pointer-events-none ${
+                    budget <= 200 || agentsSat <= 20 || elusSat <= 20 || servicePub <= 20
+                      ? 'bg-gradient-to-r from-rose-600 via-red-500 to-amber-500 opacity-80 animate-pulse'
+                      : 'bg-gradient-to-r from-amber-500 via-yellow-400 to-rose-500 opacity-55 animate-pulse'
+                  }`} />
+
+                  {/* Corps de la bulle avec glassmorphism */}
+                  <div className={`relative flex items-center justify-between gap-3 px-4 py-3 rounded-2xl backdrop-blur-xl border-2 transition-all duration-300 shadow-xl ${
+                    budget <= 200 || agentsSat <= 20 || elusSat <= 20 || servicePub <= 20
+                      ? 'bg-slate-900/95 border-rose-500/80 shadow-[0_0_25px_rgba(244,63,94,0.4)]'
+                      : 'bg-slate-900/90 border-amber-400/70 shadow-[0_0_25px_rgba(245,158,11,0.3)]'
+                  }`}>
+                    {/* Icône avec effet ping radar */}
+                    <div className="relative flex items-center justify-center shrink-0">
+                      <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                      </span>
+                      <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center shadow-inner text-amber-300">
+                        <AlertTriangle className="w-5 h-5 animate-bounce" />
+                      </div>
+                    </div>
+
+                    {/* Texte de la bulle */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 font-mono">
+                          Surveillance Mandat
+                        </span>
+                        <Sparkles className="w-3 h-3 text-amber-300 animate-spin" />
+                      </div>
+                      <p className="text-xs sm:text-sm font-black text-white tracking-wide leading-tight bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 bg-clip-text text-transparent drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
+                        Attention au niveau de vos paramètres
+                      </p>
+                    </div>
+
+                    {/* Badge 4 jauges */}
+                    <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase bg-amber-500/20 text-amber-300 border border-amber-400/40 shrink-0">
+                      4 Jauges
+                    </span>
+
+                    {/* Pointe de la bulle (tail) vers le bas */}
+                    <div className="absolute -bottom-2 left-8 sm:left-12 w-3.5 h-3.5 bg-slate-900 border-r-2 border-b-2 border-amber-400/70 transform rotate-45" />
+                  </div>
+                </div>
+
+                {/* Grille des 4 éléments à surveiller */}
+                <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2.5 sm:gap-3.5 w-full">
+                  <GaugeCard title="Budget Restant" value={budget} icon={Landmark} colorClass="text-emerald-400" borderGlow="shadow-[0_0_20px_rgba(16,185,129,0.15)]" type="currency" />
+                  <GaugeCard title="Agents municipaux" value={agentsSat} icon={Users} colorClass="text-blue-400" borderGlow="shadow-[0_0_20px_rgba(59,130,246,0.15)]" type="percent" />
+                  <GaugeCard title="Conseil Municipal" value={elusSat} icon={Building2} colorClass="text-purple-400" borderGlow="shadow-[0_0_20px_rgba(168,85,247,0.15)]" type="percent" />
+                  <GaugeCard title="Qualité du Service" value={servicePub} icon={HeartHandshake} colorClass="text-amber-400" borderGlow="shadow-[0_0_20px_rgba(245,158,11,0.15)]" type="percent" />
+                </div>
               </div>
 
             </div>

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { 
   ArrowLeft, FileSignature, FileBadge, Baby, UserCheck, UserPlus, 
   RefreshCw, Briefcase, LayoutList, Award, Clock, 
-  Search, Landmark
+  Search, Landmark, TrendingUp, Sparkles, Laptop, CalendarOff,
+  ArrowRightLeft, ExternalLink, RotateCcw
 } from "lucide-react";
 import { SimulationActeModule } from "./SimulationActeModule";
 
@@ -14,28 +15,46 @@ interface ActeCardProps {
   toolId: string;
   onOpen: (id: string) => void;
   badge?: string;
+  gradient?: string;
+  shadow?: string;
+  accentColor?: string;
+  hoverBorder?: string;
+  badgeStyle?: string;
 }
 
-const ActeCard: React.FC<ActeCardProps> = ({ title, description, category, icon, toolId, onOpen, badge }) => {
+const ActeCard: React.FC<ActeCardProps> = ({ 
+  title, 
+  description, 
+  category, 
+  icon, 
+  toolId, 
+  onOpen, 
+  badge,
+  gradient = "from-purple-500 to-indigo-600",
+  shadow = "shadow-purple-500/20",
+  accentColor = "text-purple-600 dark:text-purple-400",
+  hoverBorder = "hover:border-purple-400 dark:hover:border-purple-500",
+  badgeStyle = "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 border-purple-200 dark:border-purple-700"
+}) => {
   return (
     <div 
-      className="group bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border-2 border-transparent hover:border-purple-400 dark:hover:border-purple-500 cursor-pointer flex flex-col h-full relative"
+      className={`group bg-white dark:bg-slate-800 rounded-xl sm:rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border-2 border-slate-200/80 dark:border-slate-700/80 ${hoverBorder} cursor-pointer flex flex-col h-full relative`}
       onClick={() => onOpen(toolId)}
     >
       {badge && (
-        <span className="absolute top-4 right-4 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 border border-purple-200 dark:border-purple-700">
+        <span className={`absolute top-4 right-4 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${badgeStyle}`}>
           {badge}
         </span>
       )}
-      <div className="text-4xl mb-4 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform shadow-md shadow-purple-500/20">
+      <div className={`mb-4 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${gradient} rounded-2xl flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-1 transition-all duration-300 shadow-md ${shadow}`}>
         {icon}
       </div>
-      <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-purple-600 dark:text-purple-400">
+      <div className={`mb-1 text-[11px] font-bold uppercase tracking-wider ${accentColor}`}>
         {category}
       </div>
       <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-2 leading-snug">{title}</h3>
       <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">{description}</p>
-      <button className="inline-flex items-center gap-2 text-xs sm:text-sm text-purple-600 dark:text-purple-400 font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mt-auto">
+      <button className={`inline-flex items-center gap-2 text-xs sm:text-sm font-semibold ${accentColor} transition-all mt-auto group-hover:translate-x-1`}>
         <span>Générer l'arrêté</span>
         <ArrowLeft className="w-4 h-4 rotate-180" />
       </button>
@@ -51,6 +70,11 @@ interface ActeItem {
   categoryLabel: string;
   icon: React.ReactNode;
   badge?: string;
+  gradient: string;
+  shadow: string;
+  accentColor: string;
+  hoverBorder: string;
+  badgeStyle?: string;
 }
 
 const ACTES_CATALOG: ActeItem[] = [
@@ -62,6 +86,11 @@ const ACTES_CATALOG: ActeItem[] = [
     category: "carriere",
     categoryLabel: "Carrière & Progression",
     icon: <UserPlus className="w-6 h-6" />,
+    gradient: "from-blue-500 to-cyan-500",
+    shadow: "shadow-blue-500/25",
+    accentColor: "text-blue-600 dark:text-blue-400",
+    hoverBorder: "hover:border-blue-400 dark:hover:border-blue-500",
+    badgeStyle: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200",
   },
   {
     id: "arr-titularisation",
@@ -70,6 +99,11 @@ const ACTES_CATALOG: ActeItem[] = [
     category: "carriere",
     categoryLabel: "Carrière & Progression",
     icon: <FileBadge className="w-6 h-6" />,
+    gradient: "from-emerald-500 to-teal-600",
+    shadow: "shadow-emerald-500/25",
+    accentColor: "text-emerald-600 dark:text-emerald-400",
+    hoverBorder: "hover:border-emerald-400 dark:hover:border-emerald-500",
+    badgeStyle: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border-emerald-200",
   },
   {
     id: "arr-echelon",
@@ -77,7 +111,12 @@ const ACTES_CATALOG: ActeItem[] = [
     description: "Arrêté d'avancement d'échelon à l'ancienneté avec indices IB/IM",
     category: "carriere",
     categoryLabel: "Carrière & Progression",
-    icon: <ArrowLeft className="w-6 h-6 rotate-90" />,
+    icon: <TrendingUp className="w-6 h-6" />,
+    gradient: "from-violet-600 to-indigo-600",
+    shadow: "shadow-violet-500/25",
+    accentColor: "text-violet-600 dark:text-violet-400",
+    hoverBorder: "hover:border-violet-400 dark:hover:border-violet-500",
+    badgeStyle: "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 border-violet-200",
   },
   {
     id: "arr-grade",
@@ -87,6 +126,11 @@ const ACTES_CATALOG: ActeItem[] = [
     categoryLabel: "Carrière & Progression",
     icon: <Award className="w-6 h-6" />,
     badge: "Essentiel",
+    gradient: "from-amber-500 to-orange-500",
+    shadow: "shadow-amber-500/25",
+    accentColor: "text-amber-600 dark:text-amber-400",
+    hoverBorder: "hover:border-amber-400 dark:hover:border-amber-500",
+    badgeStyle: "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200",
   },
 
   // 2. TEMPS DE TRAVAIL & ABSENCES
@@ -96,7 +140,12 @@ const ACTES_CATALOG: ActeItem[] = [
     description: "Arrêté portant autorisation d'exercice en télétravail",
     category: "temps",
     categoryLabel: "Temps de travail & Absences",
-    icon: <Briefcase className="w-6 h-6" />,
+    icon: <Laptop className="w-6 h-6" />,
+    gradient: "from-sky-500 to-blue-600",
+    shadow: "shadow-sky-500/25",
+    accentColor: "text-sky-600 dark:text-sky-400",
+    hoverBorder: "hover:border-sky-400 dark:hover:border-sky-500",
+    badgeStyle: "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300 border-sky-200",
   },
   {
     id: "arr-temps-partiel",
@@ -106,6 +155,11 @@ const ACTES_CATALOG: ActeItem[] = [
     categoryLabel: "Temps de travail & Absences",
     icon: <Clock className="w-6 h-6" />,
     badge: "Essentiel",
+    gradient: "from-teal-500 to-emerald-600",
+    shadow: "shadow-teal-500/25",
+    accentColor: "text-teal-600 dark:text-teal-400",
+    hoverBorder: "hover:border-teal-400 dark:hover:border-teal-500",
+    badgeStyle: "bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 border-teal-200",
   },
   {
     id: "arr-conge-parental",
@@ -114,6 +168,11 @@ const ACTES_CATALOG: ActeItem[] = [
     category: "temps",
     categoryLabel: "Temps de travail & Absences",
     icon: <Baby className="w-6 h-6" />,
+    gradient: "from-pink-500 to-rose-500",
+    shadow: "shadow-pink-500/25",
+    accentColor: "text-pink-600 dark:text-pink-400",
+    hoverBorder: "hover:border-pink-400 dark:hover:border-pink-500",
+    badgeStyle: "bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300 border-pink-200",
   },
   {
     id: "arr-disponibilite",
@@ -121,8 +180,13 @@ const ACTES_CATALOG: ActeItem[] = [
     description: "Arrêté portant mise en disponibilité ou renouvellement (CGFP & décret 86-68)",
     category: "temps",
     categoryLabel: "Temps de travail & Absences",
-    icon: <Clock className="w-6 h-6" />,
+    icon: <CalendarOff className="w-6 h-6" />,
     badge: "Essentiel",
+    gradient: "from-fuchsia-600 to-purple-600",
+    shadow: "shadow-fuchsia-500/25",
+    accentColor: "text-fuchsia-600 dark:text-fuchsia-400",
+    hoverBorder: "hover:border-fuchsia-400 dark:hover:border-fuchsia-500",
+    badgeStyle: "bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900/40 dark:text-fuchsia-300 border-fuchsia-200",
   },
 
   // 3. MOBILITÉS & MOUVEMENTS
@@ -132,7 +196,12 @@ const ACTES_CATALOG: ActeItem[] = [
     description: "Arrêté de changement d'affectation interne au sein de la collectivité",
     category: "mobilite",
     categoryLabel: "Mobilités & Affectations",
-    icon: <RefreshCw className="w-6 h-6" />,
+    icon: <ArrowRightLeft className="w-6 h-6" />,
+    gradient: "from-indigo-600 to-violet-700",
+    shadow: "shadow-indigo-500/25",
+    accentColor: "text-indigo-600 dark:text-indigo-400",
+    hoverBorder: "hover:border-indigo-400 dark:hover:border-indigo-500",
+    badgeStyle: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 border-indigo-200",
   },
   {
     id: "arr-mutation-externe",
@@ -140,7 +209,12 @@ const ACTES_CATALOG: ActeItem[] = [
     description: "Arrêté de mutation externe (entrant ou sortant d'une autre collectivité)",
     category: "mobilite",
     categoryLabel: "Mobilités & Affectations",
-    icon: <RefreshCw className="w-6 h-6" />,
+    icon: <ExternalLink className="w-6 h-6" />,
+    gradient: "from-orange-500 to-red-600",
+    shadow: "shadow-orange-500/25",
+    accentColor: "text-orange-600 dark:text-orange-400",
+    hoverBorder: "hover:border-orange-400 dark:hover:border-orange-500",
+    badgeStyle: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300 border-orange-200",
   },
   {
     id: "arr-detachement",
@@ -148,7 +222,12 @@ const ACTES_CATALOG: ActeItem[] = [
     description: "Arrêté de détachement entrant ou sortant (autre fonction publique / corps)",
     category: "mobilite",
     categoryLabel: "Mobilités & Affectations",
-    icon: <RefreshCw className="w-6 h-6" />,
+    icon: <Briefcase className="w-6 h-6" />,
+    gradient: "from-lime-600 to-emerald-600",
+    shadow: "shadow-lime-500/25",
+    accentColor: "text-lime-700 dark:text-lime-400",
+    hoverBorder: "hover:border-lime-400 dark:hover:border-lime-500",
+    badgeStyle: "bg-lime-100 text-lime-800 dark:bg-lime-900/40 dark:text-lime-300 border-lime-200",
   },
   {
     id: "arr-integration",
@@ -157,6 +236,11 @@ const ACTES_CATALOG: ActeItem[] = [
     category: "mobilite",
     categoryLabel: "Mobilités & Affectations",
     icon: <UserCheck className="w-6 h-6" />,
+    gradient: "from-emerald-600 to-cyan-600",
+    shadow: "shadow-emerald-600/25",
+    accentColor: "text-emerald-700 dark:text-emerald-400",
+    hoverBorder: "hover:border-emerald-400 dark:hover:border-emerald-500",
+    badgeStyle: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 border-emerald-200",
   },
   {
     id: "arr-reintegration",
@@ -164,8 +248,13 @@ const ACTES_CATALOG: ActeItem[] = [
     description: "Arrêté de réintégration après disponibilité, congé parental ou détachement",
     category: "mobilite",
     categoryLabel: "Mobilités & Affectations",
-    icon: <RefreshCw className="w-6 h-6" />,
+    icon: <RotateCcw className="w-6 h-6" />,
     badge: "Essentiel",
+    gradient: "from-yellow-500 to-amber-600",
+    shadow: "shadow-yellow-500/25",
+    accentColor: "text-amber-700 dark:text-amber-400",
+    hoverBorder: "hover:border-amber-400 dark:hover:border-amber-500",
+    badgeStyle: "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200",
   },
 ];
 
@@ -302,6 +391,11 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
                   toolId={acte.id}
                   onOpen={onOpenCalculator}
                   badge={acte.badge}
+                  gradient={acte.gradient}
+                  shadow={acte.shadow}
+                  accentColor={acte.accentColor}
+                  hoverBorder={acte.hoverBorder}
+                  badgeStyle={acte.badgeStyle}
                 />
               ))}
             </div>

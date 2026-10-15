@@ -5,8 +5,7 @@ export const IhtsCalculator: React.FC = () => {
   const [im, setIm] = useState<number | "">("");
   const [nbi, setNbi] = useState<number | "">("");
   const zoneIr = 3; // Bloqué en Zone 1 (3% - Gennevilliers / Île-de-France)
-  const [heures1a14, setHeures1a14] = useState<number>(0);
-  const [heures15plus, setHeures15plus] = useState<number>(0);
+  const [totalHeures, setTotalHeures] = useState<number | "">("");
   const [heuresDimanche, setHeuresDimanche] = useState<number>(0);
   const [heuresNuit, setHeuresNuit] = useState<number>(0);
 
@@ -54,17 +53,28 @@ export const IhtsCalculator: React.FC = () => {
     const taux15plus = tauxDeBase * 1.27;
 
     // Majoration nuit (+100% du taux horaire = taux de base x 2)
-    // Note: l'indemnité horaire pour travail de nuit normale est fixée différemment, 
-    // mais ici on simule les heures SUP de nuit
     const tauxNuit = tauxDeBase * 2;
     
     // Majoration dimanche et férié (+66% = taux de base x 1.66)
     const tauxDimanche = tauxDeBase * 1.66;
 
-    const declared1a14 = Number(heures1a14) || 0;
-    const declared15plus = Number(heures15plus) || 0;
-    const hDimanche = Number(heuresDimanche) || 0;
-    const hNuit = Number(heuresNuit) || 0;
+    const declaredTotal = Number(totalHeures) || 0;
+    const declared1a14 = Math.min(declaredTotal, 14);
+    const declared15plus = Math.max(0, declaredTotal - 14);
+    const rawHDimanche = Number(heuresDimanche) || 0;
+    const rawHNuit = Number(heuresNuit) || 0;
+
+    // Plafonner les heures spéciales au total déclaré si nécessaire
+    let hDimanche = rawHDimanche;
+    let hNuit = rawHNuit;
+    if (declaredTotal > 0 && (hDimanche + hNuit) > declaredTotal) {
+      if (hDimanche > declaredTotal) {
+        hDimanche = declaredTotal;
+        hNuit = 0;
+      } else {
+        hNuit = declaredTotal - hDimanche;
+      }
+    }
 
     const totalSpecial = hDimanche + hNuit;
     let normal1a14 = declared1a14;
@@ -101,11 +111,12 @@ export const IhtsCalculator: React.FC = () => {
       total,
       hDimanche,
       hNuit,
-      declaredTotal: declared1a14 + declared15plus
+      declaredTotal
     };
   };
 
   const resultat = calculateIhts();
+  const declaredTotal = Number(totalHeures) || 0;
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-4 animate-fadeIn pb-6">
@@ -251,35 +262,47 @@ export const IhtsCalculator: React.FC = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                Heures (1 à 14 / mois)
+          {/* Saisie unifiée : Combien d'heures effectuées ce mois-ci */}
+          <div className="bg-slate-50/80 dark:bg-slate-900/50 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+              <label className="block text-sm sm:text-base font-bold text-slate-800 dark:text-slate-200">
+                Combien d'heures effectuées ce mois-ci ?
               </label>
+              <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/70 px-2.5 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-700 self-start sm:self-auto">
+                Calcul & ventilation automatiques (1-14h & 15h+)
+              </span>
+            </div>
+            <div className="relative">
               <input
                 type="number"
                 min="0"
-                max="14"
-                value={heures1a14 || ""}
-                onChange={(e) => setHeures1a14(Number(e.target.value))}
-                placeholder="0"
-                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-lg font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                max="50"
+                value={totalHeures === "" ? "" : totalHeures}
+                onChange={(e) => setTotalHeures(e.target.value === "" ? "" : Math.max(0, Number(e.target.value)))}
+                placeholder="Ex: 8, 14, 20..."
+                className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-lg font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 pr-20"
               />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider pointer-events-none">
+                heures
+              </span>
             </div>
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                Heures (15 et plus)
-              </label>
-              <input
-                type="number"
-                min="0"
-                max="11"
-                value={heures15plus || ""}
-                onChange={(e) => setHeures15plus(Number(e.target.value))}
-                placeholder="0"
-                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-lg font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
-              />
-            </div>
+
+            {declaredTotal > 0 && (
+              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-400">
+                <span className="font-medium">Ventilation automatique :</span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded-md font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">
+                  {Math.min(declaredTotal, 14)}h à +25% (1 à 14h)
+                </span>
+                {declaredTotal > 14 && (
+                  <>
+                    <span>+</span>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md font-bold bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300">
+                      {declaredTotal - 14}h à +27% (dès la 15e)
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-slate-200 dark:border-slate-700">
@@ -292,7 +315,7 @@ export const IhtsCalculator: React.FC = () => {
                 type="number"
                 min="0"
                 value={heuresDimanche || ""}
-                onChange={(e) => setHeuresDimanche(Number(e.target.value))}
+                onChange={(e) => setHeuresDimanche(e.target.value === "" ? 0 : Number(e.target.value))}
                 placeholder="0"
                 className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-lg font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50"
               />
@@ -306,7 +329,7 @@ export const IhtsCalculator: React.FC = () => {
                 type="number"
                 min="0"
                 value={heuresNuit || ""}
-                onChange={(e) => setHeuresNuit(Number(e.target.value))}
+                onChange={(e) => setHeuresNuit(e.target.value === "" ? 0 : Number(e.target.value))}
                 placeholder="0"
                 className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-lg font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
               />
@@ -317,17 +340,17 @@ export const IhtsCalculator: React.FC = () => {
           <div className="pt-2">
             <div className="flex justify-between items-center mb-2 text-xs font-bold uppercase tracking-wider">
               <span className="text-slate-500">Volume total déclaré</span>
-              <span className={(heures1a14 + heures15plus) > 25 ? "text-rose-500" : "text-emerald-600"}>
-                {heures1a14 + heures15plus} / 25h
+              <span className={declaredTotal > 25 ? "text-rose-500" : "text-emerald-600"}>
+                {declaredTotal} / 25h
               </span>
             </div>
             <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <div 
-                className={`h-full rounded-full transition-all duration-500 ${(heures1a14 + heures15plus) > 25 ? 'bg-rose-500' : 'bg-emerald-500'}`}
-                style={{ width: `${Math.min(100, ((heures1a14 + heures15plus) / 25) * 100)}%` }}
+                className={`h-full rounded-full transition-all duration-500 ${declaredTotal > 25 ? 'bg-rose-500' : 'bg-emerald-500'}`}
+                style={{ width: `${Math.min(100, (declaredTotal / 25) * 100)}%` }}
               />
             </div>
-            {(heures1a14 + heures15plus) > 25 && (
+            {declaredTotal > 25 && (
               <div className="mt-2 flex items-start gap-1.5 text-xs text-rose-500">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <p>Le plafond réglementaire est généralement fixé à 25 heures supplémentaires par mois maximum.</p>

@@ -34,6 +34,63 @@ interface CourriersAgentModuleProps {
 
 const STORAGE_KEY_PROFILE = 'agent_profile_gennevilliers_v3';
 
+// Styles de fond pastel selon le type / catégorie de courrier
+const getPastelCategoryStyle = (category: string, isSelected: boolean) => {
+  switch (category) {
+    case 'temps_travail':
+      return {
+        card: isSelected
+          ? 'bg-gradient-to-r from-sky-100 via-blue-50 to-sky-100 dark:from-sky-950/80 dark:to-slate-800 border-2 border-sky-500 dark:border-sky-400 text-sky-950 dark:text-white shadow-md ring-2 ring-sky-400/30'
+          : 'bg-sky-50/70 hover:bg-sky-100/80 dark:bg-sky-950/25 dark:hover:bg-sky-900/40 border border-sky-200/80 dark:border-sky-800/50 text-slate-800 dark:text-slate-200',
+        iconBox: 'bg-sky-100/90 dark:bg-sky-900/60 border border-sky-200/90 dark:border-sky-700/60 shadow-xs',
+        badge: 'bg-sky-100/90 dark:bg-sky-900/60 text-sky-800 dark:text-sky-300 border-sky-200 dark:border-sky-700/60',
+        accentText: 'text-sky-700 dark:text-sky-300',
+        chevron: 'text-sky-600 dark:text-sky-400'
+      };
+    case 'famille_conges':
+      return {
+        card: isSelected
+          ? 'bg-gradient-to-r from-rose-100 via-pink-50 to-rose-100 dark:from-rose-950/80 dark:to-slate-800 border-2 border-rose-500 dark:border-rose-400 text-rose-950 dark:text-white shadow-md ring-2 ring-rose-400/30'
+          : 'bg-rose-50/70 hover:bg-rose-100/80 dark:bg-rose-950/25 dark:hover:bg-rose-900/40 border border-rose-200/80 dark:border-rose-800/50 text-slate-800 dark:text-slate-200',
+        iconBox: 'bg-rose-100/90 dark:bg-rose-900/60 border border-rose-200/90 dark:border-rose-700/60 shadow-xs',
+        badge: 'bg-rose-100/90 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-700/60',
+        accentText: 'text-rose-700 dark:text-rose-300',
+        chevron: 'text-rose-600 dark:text-rose-400'
+      };
+    case 'carriere_formation':
+      return {
+        card: isSelected
+          ? 'bg-gradient-to-r from-purple-100 via-violet-50 to-purple-100 dark:from-purple-950/80 dark:to-slate-800 border-2 border-purple-500 dark:border-purple-400 text-purple-950 dark:text-white shadow-md ring-2 ring-purple-400/30'
+          : 'bg-purple-50/70 hover:bg-purple-100/80 dark:bg-purple-950/25 dark:hover:bg-purple-900/40 border border-purple-200/80 dark:border-purple-800/50 text-slate-800 dark:text-slate-200',
+        iconBox: 'bg-purple-100/90 dark:bg-purple-900/60 border border-purple-200/90 dark:border-purple-700/60 shadow-xs',
+        badge: 'bg-purple-100/90 dark:bg-purple-900/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-700/60',
+        accentText: 'text-purple-700 dark:text-purple-300',
+        chevron: 'text-purple-600 dark:text-purple-400'
+      };
+    case 'sante_securite':
+      return {
+        card: isSelected
+          ? 'bg-gradient-to-r from-emerald-100 via-teal-50 to-emerald-100 dark:from-emerald-950/80 dark:to-slate-800 border-2 border-emerald-500 dark:border-emerald-400 text-emerald-950 dark:text-white shadow-md ring-2 ring-emerald-400/30'
+          : 'bg-emerald-50/70 hover:bg-emerald-100/80 dark:bg-emerald-950/25 dark:hover:bg-emerald-900/40 border border-emerald-200/80 dark:border-emerald-800/50 text-slate-800 dark:text-slate-200',
+        iconBox: 'bg-emerald-100/90 dark:bg-emerald-900/60 border border-emerald-200/90 dark:border-emerald-700/60 shadow-xs',
+        badge: 'bg-emerald-100/90 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700/60',
+        accentText: 'text-emerald-700 dark:text-emerald-300',
+        chevron: 'text-emerald-600 dark:text-emerald-400'
+      };
+    case 'departs_retraite':
+    default:
+      return {
+        card: isSelected
+          ? 'bg-gradient-to-r from-amber-100 via-orange-50 to-amber-100 dark:from-amber-950/80 dark:to-slate-800 border-2 border-amber-500 dark:border-amber-400 text-amber-950 dark:text-white shadow-md ring-2 ring-amber-400/30'
+          : 'bg-amber-50/70 hover:bg-amber-100/80 dark:bg-amber-950/25 dark:hover:bg-amber-900/40 border border-amber-200/80 dark:border-amber-800/50 text-slate-800 dark:text-slate-200',
+        iconBox: 'bg-amber-100/90 dark:bg-amber-900/60 border border-amber-200/90 dark:border-amber-700/60 shadow-xs',
+        badge: 'bg-amber-100/90 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-700/60',
+        accentText: 'text-amber-700 dark:text-amber-300',
+        chevron: 'text-amber-600 dark:text-amber-400'
+      };
+  }
+};
+
 export default function CourriersAgentModule({ onClose }: CourriersAgentModuleProps) {
   // Profil de l'agent persistant en LocalStorage
   const [profile, setProfile] = useState<AgentProfile>(() => {
@@ -441,36 +498,40 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
               </span>
             </div>
 
-            <div className="max-h-64 overflow-y-auto space-y-1.5 pr-1 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
+            <div className="max-h-64 overflow-y-auto space-y-2 pr-1 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
               {filteredTemplates.map((tpl) => {
                 const isSelected = tpl.id === selectedTemplateId;
+                const style = getPastelCategoryStyle(tpl.category, isSelected);
                 return (
                   <button
                     key={tpl.id}
                     onClick={() => handleSelectTemplate(tpl.id)}
-                    className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 cursor-pointer ${
-                      isSelected
-                        ? 'bg-gradient-to-r from-indigo-500/15 via-blue-500/10 to-indigo-500/20 dark:from-indigo-950 dark:to-slate-800 border-2 border-indigo-500 dark:border-indigo-400 text-indigo-950 dark:text-white shadow-sm'
-                        : 'bg-white/80 dark:bg-slate-800/80 hover:bg-indigo-50/50 dark:hover:bg-slate-700/60 border border-slate-200/80 dark:border-slate-700 text-slate-700 dark:text-slate-300'
-                    }`}
+                    className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 cursor-pointer ${style.card}`}
                   >
-                    <span className="text-xl shrink-0 mt-0.5">{tpl.icon}</span>
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xl shrink-0 mt-0.5 ${style.iconBox}`}>
+                      {tpl.icon}
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-bold truncate leading-tight">
-                        {tpl.title}
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="text-sm font-bold truncate leading-tight">
+                          {tpl.title}
+                        </span>
+                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${style.badge}`}>
+                          {tpl.categoryLabel.split(' ')[0]}
+                        </span>
                       </div>
-                      <div className="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                      <div className={`text-[11px] font-medium truncate mt-0.5 ${style.accentText}`}>
                         {tpl.cgfpRef}
                       </div>
                       {tpl.delaiRecommande && (
-                        <div className="inline-flex items-center gap-1 text-[10px] text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded mt-1 font-medium">
+                        <div className="inline-flex items-center gap-1 text-[10px] text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded mt-1 font-medium border border-amber-200/60 dark:border-amber-800/40">
                           <Clock className="w-2.5 h-2.5" />
                           <span>{tpl.delaiRecommande}</span>
                         </div>
                       )}
                     </div>
                     {isSelected && (
-                      <ChevronRight className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 mt-1" />
+                      <ChevronRight className={`w-4 h-4 shrink-0 mt-1 ${style.chevron}`} />
                     )}
                   </button>
                 );
@@ -480,21 +541,26 @@ export default function CourriersAgentModule({ onClose }: CourriersAgentModulePr
 
           {/* Formulaire des paramètres du modèle actif */}
           <div className="bg-gradient-to-br from-blue-50/60 via-white to-indigo-50/50 dark:from-slate-800/95 dark:via-slate-800 dark:to-blue-950/30 rounded-2xl p-6 shadow-md border-2 border-blue-200/90 dark:border-blue-700/70 space-y-5">
-            <div className="p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-violet-500/10 dark:from-indigo-950/60 dark:via-slate-900/80 dark:to-blue-950/40 border border-blue-200/80 dark:border-indigo-800/70">
+            <div className={`p-4 rounded-xl border transition-all ${getPastelCategoryStyle(currentTemplate.category, false).card}`}>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-xl shadow-sm shrink-0">
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl shadow-sm shrink-0 ${getPastelCategoryStyle(currentTemplate.category, false).iconBox}`}>
                   {currentTemplate.icon}
                 </div>
                 <div>
-                  <h2 className="text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
-                    {currentTemplate.title}
-                  </h2>
-                  <p className="text-xs text-indigo-700 dark:text-indigo-300 font-mono mt-0.5 font-bold">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
+                      {currentTemplate.title}
+                    </h2>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPastelCategoryStyle(currentTemplate.category, false).badge}`}>
+                      {currentTemplate.categoryLabel}
+                    </span>
+                  </div>
+                  <p className={`text-xs font-mono mt-0.5 font-bold ${getPastelCategoryStyle(currentTemplate.category, false).accentText}`}>
                     {currentTemplate.cgfpRef}
                   </p>
                 </div>
               </div>
-              <p className="text-xs text-slate-700 dark:text-slate-300 mt-3 bg-white/90 dark:bg-slate-800/90 p-2.5 rounded-lg border border-indigo-100 dark:border-slate-700 leading-relaxed">
+              <p className="text-xs text-slate-700 dark:text-slate-300 mt-3 bg-white/90 dark:bg-slate-800/90 p-2.5 rounded-lg border border-slate-200/60 dark:border-slate-700 leading-relaxed shadow-2xs">
                 {currentTemplate.summary}
               </p>
             </div>

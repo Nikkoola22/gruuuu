@@ -258,14 +258,21 @@ export const RttCalculator: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('annuel')}
-            className={`flex-1 py-2 sm:py-2.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            className={`flex-1 py-2 sm:py-2.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer relative overflow-hidden ${
               activeTab === 'annuel'
-                ? "bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm border border-slate-200 dark:border-slate-700"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg shadow-emerald-600/30 border border-emerald-300 ring-2 ring-emerald-400/40"
+                : "bg-gradient-to-r from-emerald-500/15 via-teal-500/20 to-cyan-500/15 text-emerald-800 dark:text-emerald-300 border-2 border-emerald-400/50 dark:border-emerald-500/40 hover:from-emerald-500/25 hover:to-cyan-500/25 shadow-xs"
             }`}
           >
-            <Calendar className="w-4 h-4" />
+            <Calendar className={`w-4 h-4 shrink-0 ${activeTab === 'annuel' ? 'text-amber-300' : 'text-emerald-600 dark:text-emerald-400'}`} />
             <span>Calcul sur l'année (Multi-périodes & quotités variables)</span>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider shrink-0 transition-transform ${
+              activeTab === 'annuel'
+                ? "bg-amber-400 text-slate-900 shadow-sm"
+                : "bg-emerald-600 text-white shadow-xs animate-pulse"
+            }`}>
+              Multi-périodes
+            </span>
           </button>
         </div>
 
@@ -646,10 +653,38 @@ export const RttCalculator: React.FC = () => {
         {/* VUE 2 : CALCUL SUR L'ANNÉE (MULTI-PÉRIODES & QUOTITÉS VARIABLES)      */}
         {/* ═══════════════════════════════════════════════════════════════════════ */}
         {activeTab === 'annuel' && (
-          <div className="space-y-6 animate-fadeIn">
-            
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-gradient-to-br from-emerald-500/15 via-teal-500/15 to-cyan-500/10 dark:from-emerald-950/50 dark:via-teal-950/40 dark:to-slate-900/90 border-2 border-emerald-400/60 dark:border-emerald-500/50 shadow-xl shadow-emerald-500/10 space-y-6 animate-fadeIn">
+            {/* Effets de lueur et halos lumineux d'arrière-plan */}
+            <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br from-emerald-400/25 via-teal-400/20 to-transparent rounded-full blur-3xl pointer-events-none animate-pulse" />
+            <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-gradient-to-tr from-cyan-400/20 via-indigo-400/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+            {/* Bannière d'en-tête dynamique avec effet visuel coloré */}
+            <div className="relative z-10 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg shadow-emerald-600/25 border border-emerald-300/40 overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none" />
+              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-white/20 backdrop-blur-md rounded-xl text-white shadow-inner shrink-0">
+                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-amber-300" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-base sm:text-lg font-black tracking-tight">
+                        Calcul sur l'année • Multi-périodes &amp; Quotités variables
+                      </h3>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-900 shadow-xs">
+                        Prorata temporis
+                      </span>
+                    </div>
+                    <p className="text-xs text-emerald-100 mt-0.5">
+                      Idéal pour les passages à temps partiel, changements de cycle ou reprises à temps plein sur les {totalDaysInYear} jours de l'année {selectedYear}.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Paramètres de base de l'année */}
-            <div className="p-5 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-4">
+            <div className="relative z-10 p-4 sm:p-5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border border-emerald-200/80 dark:border-emerald-700/60 shadow-md space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
                 <div>
                   <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -684,15 +719,15 @@ export const RttCalculator: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleLoadExemple}
-                  className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-950/70 dark:hover:bg-emerald-900 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 transition-colors cursor-pointer flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-950/70 dark:hover:bg-emerald-900 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs"
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   Exemple type (100% Jan-Août → 50% Sept-Nov → 100% Déc)
                 </button>
                 <button
                   type="button"
                   onClick={handleResetPleinTemps}
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 transition-colors cursor-pointer flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   100% toute l'année
@@ -701,7 +736,7 @@ export const RttCalculator: React.FC = () => {
             </div>
 
             {/* Saisie des périodes successives */}
-            <div className="space-y-4">
+            <div className="relative z-10 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -727,7 +762,7 @@ export const RttCalculator: React.FC = () => {
                   return (
                     <div 
                       key={p.id}
-                      className="p-4 sm:p-5 bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs hover:border-emerald-300 dark:hover:border-emerald-600/50 transition-all space-y-4"
+                      className="p-4 sm:p-5 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl border-2 border-emerald-200/80 dark:border-emerald-700/70 shadow-sm hover:border-emerald-400 dark:hover:border-emerald-500 hover:shadow-md transition-all space-y-4"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700/60 pb-3">
                         <div className="flex items-center gap-2.5">
@@ -803,7 +838,7 @@ export const RttCalculator: React.FC = () => {
                       </div>
 
                       {/* Sous-total de la période */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs bg-slate-50 dark:bg-slate-900/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs bg-emerald-50/70 dark:bg-emerald-950/40 p-3 rounded-xl border border-emerald-200/60 dark:border-emerald-800/50">
                         <div className="text-slate-500 dark:text-slate-400">
                           Base annuelle : <strong>{p.caBase} j CA</strong> &amp; <strong>{p.rttBase} j RTT</strong>
                         </div>
@@ -822,7 +857,7 @@ export const RttCalculator: React.FC = () => {
               </div>
 
               {/* Indicateur de couverture de l'année */}
-              <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
+              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border border-emerald-200/80 dark:border-emerald-700/60 shadow-sm space-y-2">
                 <div className="flex items-center justify-between text-xs font-bold">
                   <span className="text-slate-600 dark:text-slate-300">Couverture de l'année civile {selectedYear} :</span>
                   <span className={totalJoursCouverts === totalDaysInYear ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600"}>
@@ -851,7 +886,7 @@ export const RttCalculator: React.FC = () => {
             </div>
 
             {/* Fractionnement annuel */}
-            <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <div className="relative z-10 p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border border-emerald-200/80 dark:border-emerald-700/60 shadow-sm">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
                   <Award className="w-4 h-4 text-amber-500" />
@@ -872,7 +907,7 @@ export const RttCalculator: React.FC = () => {
             {/* ═══════════════════════════════════════════════════════════════════ */}
             {/* SYNTHÈSE DES RÉSULTATS ANNUELS                                    */}
             {/* ═══════════════════════════════════════════════════════════════════ */}
-            <div className="mt-8 bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-50 dark:from-emerald-950/40 dark:via-slate-900/60 dark:to-slate-900/80 border-2 border-emerald-300/80 dark:border-emerald-700/60 rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="relative z-10 mt-8 bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-50 dark:from-emerald-950/60 dark:via-teal-950/40 dark:to-slate-900/90 border-2 border-emerald-400/90 dark:border-emerald-600/80 rounded-3xl p-6 sm:p-8 shadow-xl shadow-emerald-500/10">
               <div className="text-center mb-6">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 mb-2">
                   <Sparkles className="w-3.5 h-3.5" /> Résultat consolidé sur l'année {selectedYear}
@@ -1019,7 +1054,7 @@ export const RttCalculator: React.FC = () => {
             </div>
 
             {/* Note informative Gennevilliers */}
-            <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 flex items-start gap-2.5">
+            <div className="relative z-10 mt-4 p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border border-emerald-200/80 dark:border-emerald-700/60 text-xs text-slate-600 dark:text-slate-400 flex items-start gap-2.5 shadow-sm">
               <Info className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <div className="space-y-1.5">
                 <p>

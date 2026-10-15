@@ -24,7 +24,8 @@ import {
   Award,
   Hash,
   ArrowRight,
-  Check
+  Check,
+  BarChart3
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -40,6 +41,7 @@ import {
   type ChapitreMouvement,
   type ChapitreComparatifRow
 } from '../services/budgetM57Engine';
+import { BudgetM57Graphiques } from './BudgetM57Graphiques';
 
 interface CalculateurBudgetM57Props {
   onClose?: () => void;
@@ -74,8 +76,8 @@ const PIECES_CRC_INITIAL: PieceCheckItem[] = [
 ];
 
 export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onClose }) => {
-  // Onglet actif : 'deliberations' | 'ratios' | 'pieces' | 'rapport' | 'note'
-  const [activeTab, setActiveTab] = useState<'deliberations' | 'ratios' | 'pieces' | 'rapport' | 'note'>('deliberations');
+  // Onglet actif : 'deliberations' | 'graphiques' | 'ratios' | 'pieces' | 'rapport' | 'note'
+  const [activeTab, setActiveTab] = useState<'deliberations' | 'graphiques' | 'ratios' | 'pieces' | 'rapport' | 'note'>('deliberations');
 
   // Budget de délibération sélectionné (BP 2026, BP 2025, BS 2026 Principal, Restauration, Cinéma)
   const [selectedDelibKey, setSelectedDelibKey] = useState<'bp_2026' | 'bp_2025' | 'principal' | 'restauration' | 'cinema'>('bp_2026');
@@ -202,6 +204,17 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
               <span>Délibérations & CFU (PDFs 2026)</span>
             </button>
             <button
+              onClick={() => setActiveTab('graphiques')}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                activeTab === 'graphiques'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <PieChart className="w-3.5 h-3.5 text-emerald-400" />
+              <span>📊 Graphiques & Camemberts</span>
+            </button>
+            <button
               onClick={() => setActiveTab('ratios')}
               className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
                 activeTab === 'ratios'
@@ -209,7 +222,7 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
                   : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
-              <PieChart className="w-3.5 h-3.5" />
+              <Scale className="w-3.5 h-3.5" />
               <span>Ratios & Diagnostics M57</span>
             </button>
             <button
@@ -946,6 +959,16 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
 
             </div>
           </div>
+        )}
+
+        {/* ─────────────────────────────────────────────────────────────────── */}
+        {/* ONGLET GRAPHIQUES & CAMEMBERTS M57 (RESSOURCES, DÉPENSES, COMPARATIF)*/}
+        {/* ─────────────────────────────────────────────────────────────────── */}
+        {activeTab === 'graphiques' && (
+          <BudgetM57Graphiques
+            onInjectIntoRatios={(delibKey) => injecterDeliberationDansRatios(delibKey)}
+            onNavigateToTab={(tab) => setActiveTab(tab)}
+          />
         )}
 
         {/* ─────────────────────────────────────────────────────────────────── */}

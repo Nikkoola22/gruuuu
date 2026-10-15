@@ -421,54 +421,6 @@ const Metiers: React.FC<{ onClose: () => void; onOpenCalculator: (id: string) =>
           </div>
           <SimulationActeModule theme={theme} />
         </section>
-
-        {/* Module 3 : Finances & Stratégie Territoriale - Santé Financière M57 — Thème Ambre / Or */}
-        <section className="rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-amber-50/80 via-orange-50/40 to-yellow-50/50 dark:from-amber-950/25 dark:via-slate-900 dark:to-orange-950/20 border-2 border-amber-300/80 dark:border-amber-700/60 shadow-sm">
-          <div className="flex items-center gap-3.5 mb-6">
-            <div className="p-3 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl text-white shadow-md shadow-amber-500/20">
-              <Landmark className="w-6 h-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-600 text-white">
-                  Bloc 3 • Pilotage Budgétaire & Audit CRC
-                </span>
-              </div>
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">Finances Locales & Ratios M57</h2>
-              <p className="text-slate-600 dark:text-slate-400 text-sm">Contrôle interne, seuils d'alerte CRC (Chambres Régionales des Comptes) et prospective budgétaire</p>
-            </div>
-          </div>
-
-          <div
-            onClick={() => onOpenM57 ? onOpenM57() : onOpenCalculator("budget-m57")}
-            className="group relative bg-white dark:bg-slate-800/95 border-2 border-amber-400/60 hover:border-amber-500 dark:border-amber-600/50 dark:hover:border-amber-400 rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-xl dark:hover:shadow-amber-500/15 transition-all duration-300 cursor-pointer bg-gradient-to-br from-white via-amber-50/30 to-orange-50/40 dark:from-slate-800/95 dark:via-slate-800/80 dark:to-amber-950/30"
-          >
-            <div className="absolute top-4 right-4 flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-sm">
-                🏛️ M57 • Contrôles CRC
-              </span>
-            </div>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-              <div className="p-5 sm:p-6 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-lg shadow-amber-500/25 text-white shrink-0 group-hover:scale-105 transition-transform">
-                <Landmark className="w-12 h-12 sm:w-16 sm:h-16" />
-              </div>
-              <div className="space-y-2">
-                <div className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">
-                  Outil d'Aide à la Décision & Contrôle Financier
-                </div>
-                <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
-                  Santé Financière & Ratios M57 de la Collectivité
-                </h3>
-                <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed max-w-3xl">
-                  Analysez l'épargne brute, l'épargne nette, la capacité de désendettement (seuils CRC 10 et 12 ans), le poids des charges de personnel (chapitre 012). Comprend également la <strong>checklist interactive des pièces à réunir pour la CRC</strong> et les <strong>générateurs de notes d'arbitrage M57</strong>.
-                </p>
-                <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-xs sm:text-sm pt-2 group-hover:translate-x-1 transition-transform">
-                  <span>Accéder à l'analyse M57 & Kit d'Audit CRC →</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
         
       </div>
     </div>

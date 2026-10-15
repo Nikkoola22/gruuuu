@@ -376,6 +376,36 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 <span className="relative z-10 text-[11px] sm:text-xs xl:text-sm font-extrabold text-center tracking-tight leading-tight min-h-[1.75rem] sm:min-h-[2.2rem] flex items-center justify-center">Aides aux<br />Gestionnaires</span>
               </button>
 
+              {/* Spotlight Budget M57 Button */}
+              <button
+                onClick={() => {
+                  setChatState({ ...chatState, currentView: 'budget-m57' });
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                }}
+                title="Finances Locales & Ratios M57 — Budget Ville, Ratios DGCL & Contrôles CRC"
+                className="relative flex flex-col items-center justify-start gap-1 sm:gap-1.5 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 transition-all duration-200 group min-w-[92px] sm:min-w-[105px] xl:min-w-[96px] xl:flex-1 p-1.5 sm:p-2 xl:p-2 rounded-xl xl:rounded-2xl hover:-translate-y-0.5 shrink-0 snap-center"
+                onMouseEnter={() => setHoveredQuickAccessIndex(57)}
+                onMouseLeave={() => setHoveredQuickAccessIndex(null)}
+              >
+                <AnimatePresence>
+                  {hoveredQuickAccessIndex === 57 && (
+                    <motion.span
+                      className="absolute inset-0 h-full w-full bg-amber-500/10 dark:bg-amber-500/15 block rounded-xl xl:rounded-2xl z-0 border border-amber-500/25 shadow-sm pointer-events-none"
+                      layoutId="quickAccessHover"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1, transition: { duration: 0.15 } }}
+                      exit={{ opacity: 0, transition: { duration: 0.15, delay: 0.1 } }}
+                    />
+                  )}
+                </AnimatePresence>
+                <div className="relative z-10 p-2 sm:p-3 rounded-xl xl:rounded-2xl bg-gradient-to-br from-amber-500/15 via-orange-500/15 to-yellow-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-amber-500/25 transition-all duration-200">
+                  <Landmark className="w-6 h-6 sm:w-8 sm:h-8" />
+                </div>
+                <span className="relative z-10 text-[11px] sm:text-xs xl:text-sm font-extrabold text-center tracking-tight leading-tight min-h-[1.75rem] sm:min-h-[2.2rem] flex items-center justify-center">
+                  BUDGET
+                </span>
+              </button>
+
               {/* 5. Spotlight FAQ Button */}
               <button
                 onClick={() => setChatState({ ...chatState, currentView: 'faq' })}

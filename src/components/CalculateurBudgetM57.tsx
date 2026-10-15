@@ -17,6 +17,8 @@ import {
   ClipboardList,
   FileCheck,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   BookOpen,
   Calendar,
   Layers,
@@ -76,11 +78,11 @@ const PIECES_CRC_INITIAL: PieceCheckItem[] = [
 ];
 
 export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onClose }) => {
-  // Onglet actif : 'deliberations' | 'graphiques' | 'ratios' | 'pieces' | 'rapport' | 'note'
-  const [activeTab, setActiveTab] = useState<'deliberations' | 'graphiques' | 'ratios' | 'pieces' | 'rapport' | 'note'>('deliberations');
+  // Onglet actif : 'graphiques' par défaut, 'deliberations' | 'ratios' | 'pieces' | 'rapport' | 'note'
+  const [activeTab, setActiveTab] = useState<'deliberations' | 'graphiques' | 'ratios' | 'pieces' | 'rapport' | 'note'>('graphiques');
 
-  // Budget de délibération sélectionné (BP 2026, BP 2025, BS 2026 Principal, Restauration, Cinéma)
-  const [selectedDelibKey, setSelectedDelibKey] = useState<'bp_2026' | 'bp_2025' | 'principal' | 'restauration' | 'cinema'>('bp_2026');
+  // Budget de délibération sélectionné (BP 2026, BP 2025, BS 2026, Restauration, Cinéma, DM1 2024, CFU 2024 Ville, CFU 2024 Vigo)
+  const [selectedDelibKey, setSelectedDelibKey] = useState<'bp_2026' | 'bp_2025' | 'principal' | 'restauration' | 'cinema' | 'dm1_2024' | 'cfu_2024_commune' | 'cfu_2024_cinema'>('bp_2026');
   const deliberationActive: DeliberationBudgetInfo = DELIBERATIONS_GENNEVILLIERS_2026[selectedDelibKey];
 
   // Calcul comparatif pluriannuel BP 2025 vs BP 2026
@@ -102,6 +104,9 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
   const resultat: BudgetM57Result = useMemo(() => {
     return analyserBudgetM57(formData);
   }, [formData]);
+
+  // État d'affichage repliable du bloc "Données budgétaires officielles certifiées" (fermé par défaut)
+  const [showProfilsOfficiels, setShowProfilsOfficiels] = useState<boolean>(false);
 
   // Remplacement par un preset
   const chargerPreset = (key: string) => {
@@ -261,70 +266,84 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
           </div>
         </div>
 
-        {/* Barre de profils officiels M57 */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-300 dark:border-slate-800 shadow-sm">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-              Données budgétaires officielles certifiées :
+        {/* Barre de profils officiels M57 — Cachée par défaut, s'ouvre au clic sur le titre */}
+        <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-300 dark:border-slate-800 overflow-hidden transition-all">
+          <button
+            type="button"
+            onClick={() => setShowProfilsOfficiels(!showProfilsOfficiels)}
+            className="w-full p-3.5 flex items-center justify-between text-left hover:bg-slate-100/70 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          >
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-indigo-500" />
+              <span>Données budgétaires officielles certifiées :</span>
+              <span className="text-[10px] font-normal normal-case text-slate-500">
+                (cliquez pour {showProfilsOfficiels ? 'replier' : 'afficher les profils certifiés'})
+              </span>
             </span>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-            <button
-              onClick={() => chargerPreset('gennevilliers_bp_2026')}
-              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
-            >
-              <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                BP 2026 Primitif
-              </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400">250,67 M€ • Délib. 2026/S1/001</div>
-            </button>
-            <button
-              onClick={() => chargerPreset('gennevilliers_bp_2025')}
-              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
-            >
-              <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                BP 2025 Primitif
-              </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400">238,28 M€ • Délib. 12/02/2025</div>
-            </button>
-            <button
-              onClick={() => chargerPreset('gennevilliers_principal_delib_2026')}
-              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
-            >
-              <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                BS 2026 Principal
-              </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400">27,29 M€ • Délib. 2026/S6/004</div>
-            </button>
-            <button
-              onClick={() => chargerPreset('gennevilliers_cfu_2025')}
-              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
-            >
-              <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                CFU 2025 Exécution
-              </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400">Excédent +17,39 M€ • Compte 1068</div>
-            </button>
-            <button
-              onClick={() => chargerPreset('gennevilliers_restauration_2026')}
-              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
-            >
-              <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                Annexe Restauration
-              </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400">36,19 k€ • Unanimité</div>
-            </button>
-            <button
-              onClick={() => chargerPreset('gennevilliers_cinema_2026')}
-              className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-slate-50 dark:bg-slate-800/90 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group"
-            >
-              <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                Annexe Cinéma Vigo
-              </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400">24,58 k€ • Unanimité</div>
-            </button>
-          </div>
+            <div className="flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 font-bold">
+              <span>{showProfilsOfficiels ? 'Masquer' : 'Afficher'}</span>
+              {showProfilsOfficiels ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </div>
+          </button>
+
+          {showProfilsOfficiels && (
+            <div className="p-4 pt-1 border-t border-slate-200 dark:border-slate-700/60 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+              <button
+                onClick={() => chargerPreset('gennevilliers_bp_2026')}
+                className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-white dark:bg-slate-900 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  BP 2026 Primitif
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">250,67 M€ • Délib. 2026/S1/001</div>
+              </button>
+              <button
+                onClick={() => chargerPreset('gennevilliers_bp_2025')}
+                className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-white dark:bg-slate-900 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  BP 2025 Primitif
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">238,28 M€ • Délib. 12/02/2025</div>
+              </button>
+              <button
+                onClick={() => chargerPreset('gennevilliers_principal_delib_2026')}
+                className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-white dark:bg-slate-900 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  BS 2026 Principal
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">27,29 M€ • Délib. 2026/S6/004</div>
+              </button>
+              <button
+                onClick={() => chargerPreset('gennevilliers_cfu_2025')}
+                className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-white dark:bg-slate-900 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  CFU 2025 Exécution
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">Excédent +17,39 M€ • Compte 1068</div>
+              </button>
+              <button
+                onClick={() => chargerPreset('gennevilliers_restauration_2026')}
+                className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-white dark:bg-slate-900 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  Annexe Restauration
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">36,19 k€ • Unanimité</div>
+              </button>
+              <button
+                onClick={() => chargerPreset('gennevilliers_cinema_2026')}
+                className="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 bg-white dark:bg-slate-900 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-left transition-all group cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  Annexe Cinéma Vigo
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">24,58 k€ • Unanimité</div>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* ─────────────────────────────────────────────────────────────────── */}
@@ -369,6 +388,26 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
                     BP 2025 (238,28 M€)
                   </button>
                   <button
+                    onClick={() => setSelectedDelibKey('cfu_2024_commune')}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                      selectedDelibKey === 'cfu_2024_commune'
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    CFU 2024 Ville (20,55 M€)
+                  </button>
+                  <button
+                    onClick={() => setSelectedDelibKey('dm1_2024')}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                      selectedDelibKey === 'dm1_2024'
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    DM1 2024 (-17,34 M€)
+                  </button>
+                  <button
                     onClick={() => setSelectedDelibKey('principal')}
                     className={`px-2.5 py-1.5 rounded-lg transition-all ${
                       selectedDelibKey === 'principal'
@@ -397,6 +436,16 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
                     }`}
                   >
                     Annexe Cinéma Vigo
+                  </button>
+                  <button
+                    onClick={() => setSelectedDelibKey('cfu_2024_cinema')}
+                    className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                      selectedDelibKey === 'cfu_2024_cinema'
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    CFU 2024 Vigo
                   </button>
                 </div>
               </div>

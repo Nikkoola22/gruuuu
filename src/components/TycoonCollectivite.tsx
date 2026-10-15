@@ -939,59 +939,67 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
                 Vous disposez de <strong>24 mois (2 ans)</strong> pour équilibrer les finances publiques, apaiser les revendications syndicales, satisfaire l'équipe municipale et maintenir la continuité du service public !
               </p>
 
-              {/* Saisie obligatoire du nom et titre du DGS */}
+              {/* Saisie du nom et de la direction sur la même ligne */}
               <div className="bg-slate-950/80 border-2 border-slate-800 rounded-2xl p-4 sm:p-5 mb-6 text-left shadow-inner">
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-xs font-bold text-amber-300 uppercase tracking-wider font-mono flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Identification du / de la DGS <span className="text-rose-400">*</span> :</span>
-                  </label>
-                  <span className="text-[10px] text-slate-400 font-mono">Pour le tableau des scores</span>
-                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+                  {/* Colonne 1 : Identification du DGS */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold text-amber-300 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                        <User className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                        <span>Identification <span className="text-rose-400">*</span> :</span>
+                      </label>
+                    </div>
 
-                <div className="relative mb-3">
-                  <input
-                    type="text"
-                    value={playerName}
-                    onChange={(e) => {
-                      setPlayerName(e.target.value);
-                      if (nameError) setNameError(false);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleStartGame();
-                    }}
-                    placeholder="Entrez votre Nom ou Prénom (ex: Nadia, Marc, Alex...)"
-                    maxLength={28}
-                    className={`w-full px-4 py-3 rounded-xl bg-slate-900 border-2 ${nameError ? 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.3)]' : 'border-slate-700 focus:border-amber-400'} text-white placeholder-slate-500 font-bold text-sm outline-none transition-all shadow-inner`}
-                  />
-                  {nameError && (
-                    <p className="text-[11px] text-rose-400 font-semibold mt-1 flex items-center gap-1">
-                      <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                      Veuillez inscrire votre nom ou prénom pour débuter le mandat et enregistrer votre score !
-                    </p>
-                  )}
-                </div>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={playerName}
+                        onChange={(e) => {
+                          setPlayerName(e.target.value);
+                          if (nameError) setNameError(false);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleStartGame();
+                        }}
+                        placeholder="Nom ou Prénom (ex: Nadia, Marc, Alex...)"
+                        maxLength={28}
+                        className={`w-full px-4 py-2.5 rounded-xl bg-slate-900 border-2 ${nameError ? 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.3)]' : 'border-slate-700 focus:border-amber-400'} text-white placeholder-slate-500 font-bold text-xs sm:text-sm outline-none transition-all shadow-inner`}
+                      />
+                    </div>
+                    {nameError ? (
+                      <p className="text-[10px] text-rose-400 font-semibold mt-1 flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3 shrink-0" />
+                        Nom requis pour débuter le mandat !
+                      </p>
+                    ) : (
+                      <span className="text-[10px] text-slate-400 font-mono mt-1 block">
+                        Pour le tableau des scores
+                      </span>
+                    )}
+                  </div>
 
-                {/* Saisie libre de la direction / service */}
-                <div>
-                  <label className="block text-xs font-bold text-amber-300 uppercase tracking-wider font-mono flex items-center gap-1.5 mb-1.5">
-                    <Building2 className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Votre Direction ou Service municipal :</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={playerRole}
-                    onChange={(e) => setPlayerRole(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleStartGame();
-                    }}
-                    placeholder="Entrez votre direction (ex: Espaces Verts, Petite Enfance, CTM, Finances, DSI...)"
-                    maxLength={45}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border-2 border-slate-700 focus:border-amber-400 text-white placeholder-slate-500 font-bold text-xs sm:text-sm outline-none transition-all shadow-inner"
-                  />
-                  <span className="text-[10px] text-slate-400 font-mono mt-1 block">
-                    Votre direction figurera aux côtés de votre nom dans le palmarès des meilleurs scores.
-                  </span>
+                  {/* Colonne 2 : Direction ou Service municipal */}
+                  <div>
+                    <label className="block text-xs font-bold text-amber-300 uppercase tracking-wider font-mono flex items-center gap-1.5 mb-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Direction ou Service municipal :</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={playerRole}
+                      onChange={(e) => setPlayerRole(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleStartGame();
+                      }}
+                      placeholder="Direction (ex: Espaces Verts, Petite Enfance, CTM...)"
+                      maxLength={45}
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border-2 border-slate-700 focus:border-amber-400 text-white placeholder-slate-500 font-bold text-xs sm:text-sm outline-none transition-all shadow-inner"
+                    />
+                    <span className="text-[10px] text-slate-400 font-mono mt-1 block">
+                      Affiché dans le palmarès des scores
+                    </span>
+                  </div>
                 </div>
               </div>
 

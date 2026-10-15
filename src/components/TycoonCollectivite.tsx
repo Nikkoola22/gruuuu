@@ -547,7 +547,7 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
     return localStorage.getItem("gennevilliers_city_player_name") || "";
   });
   const [playerRole, setPlayerRole] = useState<string>(() => {
-    return localStorage.getItem("gennevilliers_city_player_role") || "Directeur/trice Général(e) des Services (DGS)";
+    return localStorage.getItem("gennevilliers_city_player_role") || "";
   });
   const [nameError, setNameError] = useState(false);
 
@@ -636,8 +636,9 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
       return;
     }
     setNameError(false);
+    const finalRole = playerRole.trim() || "Direction Municipale";
     localStorage.setItem("gennevilliers_city_player_name", trimmed);
-    localStorage.setItem("gennevilliers_city_player_role", playerRole);
+    localStorage.setItem("gennevilliers_city_player_role", finalRole);
     initGame();
   };
 
@@ -891,6 +892,12 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
               </h1>
               <p className="text-[11px] font-semibold text-slate-400 font-mono tracking-widest uppercase flex items-center gap-1.5 flex-wrap">
                 <span>DGS : <span className="text-amber-300 font-bold">{playerName.trim() || "Direction Générale"}</span></span>
+                {playerRole.trim() && (
+                  <>
+                    <span>•</span>
+                    <span className="text-amber-200/90 font-medium">{playerRole.trim()}</span>
+                  </>
+                )}
                 <span>•</span>
                 <span>Mandat 24 Mois</span>
               </p>
@@ -965,33 +972,26 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
                   )}
                 </div>
 
-                {/* Sélecteur de rôle/direction */}
+                {/* Saisie libre de la direction / service */}
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1.5 font-mono">
-                    Titre & Direction municipale :
+                  <label className="block text-xs font-bold text-amber-300 uppercase tracking-wider font-mono flex items-center gap-1.5 mb-1.5">
+                    <Building2 className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Votre Direction ou Service municipal :</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={playerRole}
+                    onChange={(e) => setPlayerRole(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleStartGame();
+                    }}
+                    placeholder="Entrez votre direction (ex: Espaces Verts, Petite Enfance, CTM, Finances, DSI...)"
+                    maxLength={45}
+                    className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border-2 border-slate-700 focus:border-amber-400 text-white placeholder-slate-500 font-bold text-xs sm:text-sm outline-none transition-all shadow-inner"
+                  />
+                  <span className="text-[10px] text-slate-400 font-mono mt-1 block">
+                    Votre direction figurera aux côtés de votre nom dans le palmarès des meilleurs scores.
                   </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {[
-                      "Directeur/trice Général(e) des Services (DGS)",
-                      "DRH & Dialogue Social",
-                      "Directeur/trice des Finances",
-                      "DGA Services Techniques",
-                      "Cabinet du Maire"
-                    ].map((role) => (
-                      <button
-                        key={role}
-                        type="button"
-                        onClick={() => setPlayerRole(role)}
-                        className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
-                          playerRole === role
-                            ? 'bg-amber-500 text-slate-950 font-bold shadow-[0_0_10px_rgba(245,158,11,0.4)]'
-                            : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
-                        }`}
-                      >
-                        {role}
-                      </button>
-                    ))}
-                  </div>
                 </div>
               </div>
 

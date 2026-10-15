@@ -2,12 +2,209 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   ArrowLeft, Building2, Users, Landmark, HeartHandshake,
   TrendingUp, TrendingDown, Play, AlertTriangle, Trophy,
-  FileText, XCircle, RotateCcw, Briefcase, Gavel, Newspaper, Megaphone, Clock, Droplets, Bug, Sparkles, ShieldAlert, Coins, type LucideIcon
+  FileText, XCircle, RotateCcw, Briefcase, Gavel, Newspaper, Megaphone, Clock, Droplets, Bug, Sparkles, ShieldAlert, Coins,
+  User, Medal, Crown, X, Trash2, Award, Calendar, CheckCircle2, type LucideIcon
 } from 'lucide-react';
 
 interface TycoonProps {
   onClose: () => void;
 }
+
+export interface LeaderboardEntry {
+  id: string;
+  name: string;
+  role: string;
+  score: number;
+  monthsSurvived: number;
+  budget: number;
+  satisfactionAvg: number;
+  isVictory: boolean;
+  date: string;
+  badge: string;
+  isHardcoded?: boolean;
+}
+
+// ============================================================
+// TABLEAU DES MEILLEURS SCORES ÉCRIT EN DUR (BENCHMARK OFFICIEL)
+// Garanti identique sur tous les postes même sans serveur centralisé
+// ============================================================
+export const HARDCODED_HIGH_SCORES: LeaderboardEntry[] = [
+  {
+    id: "hard-1",
+    name: "Valérie D.",
+    role: "Directrice Générale des Services (DGS)",
+    score: 27450,
+    monthsSurvived: 24,
+    budget: 1150,
+    satisfactionAvg: 88,
+    isVictory: true,
+    date: "12/10/2026",
+    badge: "Légende Territoriale 👑",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-2",
+    name: "Marc L.",
+    role: "Directeur des Finances & Budget",
+    score: 25820,
+    monthsSurvived: 24,
+    budget: 1380,
+    satisfactionAvg: 81,
+    isVictory: true,
+    date: "10/10/2026",
+    badge: "Gestionnaire Émérite 💰",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-3",
+    name: "Nadia B.",
+    role: "DRH & Dialogue Social",
+    score: 24960,
+    monthsSurvived: 24,
+    budget: 920,
+    satisfactionAvg: 92,
+    isVictory: true,
+    date: "08/10/2026",
+    badge: "Négociatrice d'Élite 🤝",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-4",
+    name: "Karim M.",
+    role: "Directeur des Services Techniques (CTM)",
+    score: 23350,
+    monthsSurvived: 24,
+    budget: 840,
+    satisfactionAvg: 84,
+    isVictory: true,
+    date: "05/10/2026",
+    badge: "Pilier Territorial 🏗️",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-5",
+    name: "Camille T.",
+    role: "Direction du Cabinet du Maire",
+    score: 22100,
+    monthsSurvived: 24,
+    budget: 710,
+    satisfactionAvg: 82,
+    isVictory: true,
+    date: "03/10/2026",
+    badge: "Stratège Communal 🏛️",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-6",
+    name: "Stéphane P.",
+    role: "Directeur Enfance, Éducation & Écoles",
+    score: 20850,
+    monthsSurvived: 24,
+    budget: 600,
+    satisfactionAvg: 78,
+    isVictory: true,
+    date: "28/09/2026",
+    badge: "Défenseur du Service Public 🏫",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-7",
+    name: "Alexandre V.",
+    role: "Directeur Général Adjoint Urbanisme",
+    score: 18400,
+    monthsSurvived: 21,
+    budget: 460,
+    satisfactionAvg: 74,
+    isVictory: false,
+    date: "24/09/2026",
+    badge: "Grand Résistant 📐",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-8",
+    name: "Sophie G.",
+    role: "Directrice Culture & Vie Associative",
+    score: 16750,
+    monthsSurvived: 19,
+    budget: 390,
+    satisfactionAvg: 70,
+    isVictory: false,
+    date: "20/09/2026",
+    badge: "Médiatrice Locale 🎭",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-9",
+    name: "Laurent B.",
+    role: "Chef de Service Police Municipale",
+    score: 14900,
+    monthsSurvived: 17,
+    budget: 310,
+    satisfactionAvg: 65,
+    isVictory: false,
+    date: "15/09/2026",
+    badge: "Gardien de la Cité 🛡️",
+    isHardcoded: true,
+  },
+  {
+    id: "hard-10",
+    name: "Élodie R.",
+    role: "Responsable CCAS & Action Sociale",
+    score: 13150,
+    monthsSurvived: 15,
+    budget: 280,
+    satisfactionAvg: 63,
+    isVictory: false,
+    date: "10/09/2026",
+    badge: "Cœur Solidaire 💙",
+    isHardcoded: true,
+  }
+];
+
+export const calculateScoreBreakdown = (
+  finalMonth: number,
+  finalBudget: number,
+  finalAgents: number,
+  finalElus: number,
+  finalService: number,
+  isVictory: boolean
+) => {
+  const monthsCompleted = isVictory ? 24 : Math.max(0, finalMonth - 1);
+  const monthPoints = monthsCompleted * 500;
+  const victoryBonus = isVictory ? 5000 : 0;
+  const budgetPoints = Math.max(0, Math.round(finalBudget * 2));
+  const satisfactionAverage = Math.round((Math.max(0, finalAgents) + Math.max(0, finalElus) + Math.max(0, finalService)) / 3);
+  const satisfactionPoints = Math.round(
+    (Math.max(0, finalAgents) * 30) + 
+    (Math.max(0, finalElus) * 30) + 
+    (Math.max(0, finalService) * 40)
+  );
+  const total = Math.max(0, monthPoints + victoryBonus + budgetPoints + satisfactionPoints);
+  return {
+    total,
+    monthsCompleted,
+    monthPoints,
+    victoryBonus,
+    budgetPoints,
+    satisfactionAverage,
+    satisfactionPoints,
+    isVictory
+  };
+};
+
+export const getMergedLeaderboard = (): LeaderboardEntry[] => {
+  let customScores: LeaderboardEntry[] = [];
+  try {
+    const raw = localStorage.getItem("gennevilliers_city_custom_scores");
+    if (raw) {
+      customScores = JSON.parse(raw);
+    }
+  } catch (e) {
+    console.error("Erreur lecture scores locaux:", e);
+  }
+  const combined = [...customScores, ...HARDCODED_HIGH_SCORES];
+  return combined.sort((a, b) => b.score - a.score);
+};
 
 interface Action {
   text: string;
@@ -345,6 +542,20 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
   // Game State
   const [gameState, setGameState] = useState<"menu" | "playing" | "gameover" | "victory">("menu");
 
+  // Player Identity
+  const [playerName, setPlayerName] = useState<string>(() => {
+    return localStorage.getItem("gennevilliers_city_player_name") || "";
+  });
+  const [playerRole, setPlayerRole] = useState<string>(() => {
+    return localStorage.getItem("gennevilliers_city_player_role") || "Directeur/trice Général(e) des Services (DGS)";
+  });
+  const [nameError, setNameError] = useState(false);
+
+  // High Scores & Leaderboard
+  const [showScoresModal, setShowScoresModal] = useState(false);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(() => getMergedLeaderboard());
+  const [lastScore, setLastScore] = useState<LeaderboardEntry | null>(null);
+
   // Gauges
   const [budget, setBudget] = useState(1000); // k€
   const [agentsSat, setAgentsSat] = useState(60); // %
@@ -364,6 +575,81 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
       containerRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
   }, [currentEvent, gameState]);
+
+  const savePlayerScore = (
+    name: string,
+    role: string,
+    finalMonth: number,
+    finalBudget: number,
+    finalAgents: number,
+    finalElus: number,
+    finalService: number,
+    isVictory: boolean
+  ): LeaderboardEntry => {
+    const scoreData = calculateScoreBreakdown(finalMonth, finalBudget, finalAgents, finalElus, finalService, isVictory);
+    const now = new Date();
+    const dateFormatted = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+
+    let badge = "Mandat Mouvementé ⚡";
+    if (isVictory) {
+      if (scoreData.total >= 25000) badge = "Légende Territoriale 👑";
+      else if (scoreData.total >= 22000) badge = "DGS d'Élite ⭐";
+      else if (scoreData.total >= 20000) badge = "Gestionnaire Émérite 🏛️";
+      else badge = "Bâtisseur Communal 🏅";
+    } else {
+      if (scoreData.monthsCompleted >= 18) badge = "Grand Résistant 🛡️";
+      else if (scoreData.monthsCompleted >= 12) badge = "Auditeur Courageux 📊";
+    }
+
+    const newEntry: LeaderboardEntry = {
+      id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      name: name.trim() || "DGS Anonyme",
+      role: role.trim() || "DGS",
+      score: scoreData.total,
+      monthsSurvived: scoreData.monthsCompleted,
+      budget: Math.max(0, finalBudget),
+      satisfactionAvg: scoreData.satisfactionAverage,
+      isVictory,
+      date: dateFormatted,
+      badge,
+      isHardcoded: false,
+    };
+
+    try {
+      const raw = localStorage.getItem("gennevilliers_city_custom_scores");
+      const existing: LeaderboardEntry[] = raw ? JSON.parse(raw) : [];
+      const updated = [newEntry, ...existing].slice(0, 50);
+      localStorage.setItem("gennevilliers_city_custom_scores", JSON.stringify(updated));
+    } catch (e) {
+      console.error("Erreur sauvegarde score local:", e);
+    }
+
+    const updatedLeaderboard = getMergedLeaderboard();
+    setLeaderboard(updatedLeaderboard);
+    return newEntry;
+  };
+
+  const handleStartGame = () => {
+    const trimmed = playerName.trim();
+    if (!trimmed) {
+      setNameError(true);
+      return;
+    }
+    setNameError(false);
+    localStorage.setItem("gennevilliers_city_player_name", trimmed);
+    localStorage.setItem("gennevilliers_city_player_role", playerRole);
+    initGame();
+  };
+
+  const clearLocalScores = () => {
+    if (window.confirm("Voulez-vous réinitialiser vos scores enregistrés sur ce poste ? Les scores officiels de référence resteront intacts.")) {
+      localStorage.removeItem("gennevilliers_city_custom_scores");
+      setLeaderboard(HARDCODED_HIGH_SCORES);
+      if (lastScore && !lastScore.isHardcoded) {
+        setLastScore(null);
+      }
+    }
+  };
 
   const initGame = () => {
     setBudget(1000);
@@ -413,27 +699,37 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
     // Check Game Over Conditions
     if (newBudget < 0) {
       setFailReason("Mise sous tutelle de la préfecture (Budget épuisé).");
+      const entry = savePlayerScore(playerName, playerRole, month, newBudget, newAgents, newElus, newService, false);
+      setLastScore(entry);
       setGameState("gameover");
       return;
     }
     if (newAgents <= 0) {
       setFailReason("Grève générale illimitée. Le service RH est assiégé par les agents.");
+      const entry = savePlayerScore(playerName, playerRole, month, newBudget, newAgents, newElus, newService, false);
+      setLastScore(entry);
       setGameState("gameover");
       return;
     }
     if (newElus <= 0) {
       setFailReason("Désaveu politique total du Conseil Municipal. Vous êtes révoqué(e) de vos fonctions.");
+      const entry = savePlayerScore(playerName, playerRole, month, newBudget, newAgents, newElus, newService, false);
+      setLastScore(entry);
       setGameState("gameover");
       return;
     }
     if (newService <= 0) {
       setFailReason("Rupture totale du service public. Les administrés manifestent sous les fenêtres de la Mairie.");
+      const entry = savePlayerScore(playerName, playerRole, month, newBudget, newAgents, newElus, newService, false);
+      setLastScore(entry);
       setGameState("gameover");
       return;
     }
 
     // Next Month
     if (month >= 24) {
+      const entry = savePlayerScore(playerName, playerRole, 24, newBudget, newAgents, newElus, newService, true);
+      setLastScore(entry);
       setGameState("victory");
     } else {
       const nextM = month + 1;
@@ -579,7 +875,7 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
         <div className="w-full flex justify-between items-center mb-6 z-20 flex-wrap gap-3">
           <button
             onClick={onClose}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span>Retour</span>
@@ -593,44 +889,151 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
               <h1 className="text-xl sm:text-3xl font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 via-amber-200 to-yellow-400 bg-clip-text text-transparent">
                 Gennevilliers City
               </h1>
-              <p className="text-[11px] font-semibold text-slate-400 font-mono tracking-widest uppercase">
-                Ma Collectivité • Directrice Générale des Services
+              <p className="text-[11px] font-semibold text-slate-400 font-mono tracking-widest uppercase flex items-center gap-1.5 flex-wrap">
+                <span>DGS : <span className="text-amber-300 font-bold">{playerName.trim() || "Direction Générale"}</span></span>
+                <span>•</span>
+                <span>Mandat 24 Mois</span>
               </p>
             </div>
           </div>
 
-          <div className="px-5 py-2 bg-slate-900/90 border border-amber-500/30 rounded-full font-mono font-black text-amber-400 text-xs sm:text-sm shadow-lg flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-400 animate-spin" />
-            {gameState === "playing" ? `MOIS ${month} / 24` : "BILAN MANDAT"}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowScoresModal(true)}
+              className="px-4 py-2 bg-slate-900/90 hover:bg-slate-800 border border-amber-500/40 hover:border-amber-400 rounded-full font-mono font-bold text-amber-300 text-xs sm:text-sm shadow-lg flex items-center gap-2 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <Trophy className="w-4 h-4 text-amber-400" />
+              <span>Palmarès</span>
+            </button>
+            <div className="px-5 py-2 bg-slate-900/90 border border-amber-500/30 rounded-full font-mono font-black text-amber-400 text-xs sm:text-sm shadow-lg flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-400 animate-spin" />
+              {gameState === "playing" ? `MOIS ${month} / 24` : "BILAN MANDAT"}
+            </div>
           </div>
         </div>
 
         {/* Menu Screen */}
         {gameState === "menu" && (
-          <div className="flex-1 flex items-center justify-center min-h-[65vh]">
-            <div className="bg-slate-900/90 backdrop-blur-2xl border-2 border-amber-500/30 p-8 sm:p-12 rounded-3xl text-center max-w-2xl shadow-[0_0_60px_rgba(245,158,11,0.2)] animate-fade-in relative overflow-hidden">
-              <div className="w-24 h-24 bg-amber-500/20 border border-amber-400/50 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-[0_0_40px_rgba(245,158,11,0.4)] transform -rotate-3 hover:rotate-0 transition-transform">
-                <Landmark className="w-12 h-12 text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
+          <div className="flex-1 flex items-center justify-center min-h-[65vh] py-6">
+            <div className="bg-slate-900/90 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-10 rounded-3xl text-center max-w-2xl shadow-[0_0_60px_rgba(245,158,11,0.2)] animate-fade-in relative overflow-hidden w-full">
+              <div className="w-20 h-20 bg-amber-500/20 border border-amber-400/50 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-[0_0_40px_rgba(245,158,11,0.4)] transform -rotate-3 hover:rotate-0 transition-transform">
+                <Landmark className="w-10 h-10 text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
               </div>
 
-              <span className="inline-block bg-amber-500/20 border border-amber-400/40 text-amber-300 font-mono text-xs uppercase px-4 py-1.5 rounded-full font-bold mb-4">
+              <span className="inline-block bg-amber-500/20 border border-amber-400/40 text-amber-300 font-mono text-xs uppercase px-4 py-1.5 rounded-full font-bold mb-3">
                 SIMULATION DE GESTION MUNICIPALE 🏛️
               </span>
 
-              <h2 className="text-3xl sm:text-5xl font-black mb-4 text-white uppercase tracking-tight">
+              <h2 className="text-2xl sm:text-4xl font-black mb-3 text-white uppercase tracking-tight">
                 Prenez les commandes de la Ville
               </h2>
 
-              <p className="text-slate-300 text-sm sm:text-base mb-8 font-medium leading-relaxed max-w-xl mx-auto">
+              <p className="text-slate-300 text-xs sm:text-sm mb-6 font-medium leading-relaxed max-w-xl mx-auto">
                 Vous disposez de <strong>24 mois (2 ans)</strong> pour équilibrer les finances publiques, apaiser les revendications syndicales, satisfaire l'équipe municipale et maintenir la continuité du service public !
               </p>
 
-              <button
-                onClick={initGame}
-                className="px-10 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-full text-base sm:text-lg shadow-[0_0_35px_rgba(245,158,11,0.5)] transition-all hover:scale-105 active:scale-95 flex items-center gap-3 mx-auto uppercase tracking-wider"
-              >
-                <Play className="w-6 h-6 fill-current" /> Prendre ses fonctions
-              </button>
+              {/* Saisie obligatoire du nom et titre du DGS */}
+              <div className="bg-slate-950/80 border-2 border-slate-800 rounded-2xl p-4 sm:p-5 mb-6 text-left shadow-inner">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold text-amber-300 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Identification du / de la DGS <span className="text-rose-400">*</span> :</span>
+                  </label>
+                  <span className="text-[10px] text-slate-400 font-mono">Pour le tableau des scores</span>
+                </div>
+
+                <div className="relative mb-3">
+                  <input
+                    type="text"
+                    value={playerName}
+                    onChange={(e) => {
+                      setPlayerName(e.target.value);
+                      if (nameError) setNameError(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleStartGame();
+                    }}
+                    placeholder="Entrez votre Nom ou Prénom (ex: Nadia, Marc, Alex...)"
+                    maxLength={28}
+                    className={`w-full px-4 py-3 rounded-xl bg-slate-900 border-2 ${nameError ? 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.3)]' : 'border-slate-700 focus:border-amber-400'} text-white placeholder-slate-500 font-bold text-sm outline-none transition-all shadow-inner`}
+                  />
+                  {nameError && (
+                    <p className="text-[11px] text-rose-400 font-semibold mt-1 flex items-center gap-1">
+                      <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                      Veuillez inscrire votre nom ou prénom pour débuter le mandat et enregistrer votre score !
+                    </p>
+                  )}
+                </div>
+
+                {/* Sélecteur de rôle/direction */}
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1.5 font-mono">
+                    Titre & Direction municipale :
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      "Directeur/trice Général(e) des Services (DGS)",
+                      "DRH & Dialogue Social",
+                      "Directeur/trice des Finances",
+                      "DGA Services Techniques",
+                      "Cabinet du Maire"
+                    ].map((role) => (
+                      <button
+                        key={role}
+                        type="button"
+                        onClick={() => setPlayerRole(role)}
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
+                          playerRole === role
+                            ? 'bg-amber-500 text-slate-950 font-bold shadow-[0_0_10px_rgba(245,158,11,0.4)]'
+                            : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                        }`}
+                      >
+                        {role}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Boutons d'action */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+                <button
+                  onClick={handleStartGame}
+                  className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-2xl text-sm sm:text-base shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer"
+                >
+                  <Play className="w-5 h-5 fill-current" />
+                  <span>Prendre ses fonctions</span>
+                </button>
+
+                <button
+                  onClick={() => setShowScoresModal(true)}
+                  className="w-full sm:w-auto px-6 py-3.5 bg-slate-950 hover:bg-slate-800 border-2 border-amber-500/40 hover:border-amber-400 text-amber-300 font-bold rounded-2xl text-sm transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+                >
+                  <Trophy className="w-4 h-4 text-amber-400" />
+                  <span>Palmarès des Scores</span>
+                </button>
+              </div>
+
+              {/* Bannière de teasing du record */}
+              <div className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800 flex items-center justify-between text-xs text-left">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 shrink-0 font-bold">
+                    👑
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 uppercase font-mono block">Record municipal à battre</span>
+                    <span className="text-white font-bold">
+                      {leaderboard[0]?.name || "Valérie D."} ({leaderboard[0]?.score?.toLocaleString() || "27 450"} pts)
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowScoresModal(true)}
+                  className="text-amber-400 hover:text-amber-300 text-xs font-bold underline underline-offset-2 shrink-0 cursor-pointer"
+                >
+                  Voir le Top 10 →
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -649,11 +1052,62 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
                 {gameState === "victory" ? "Année Clôturée avec Succès !" : "Révocation de Poste !"}
               </h2>
 
-              <p className="text-slate-300 text-sm sm:text-base mb-6 font-medium">
+              <p className="text-slate-300 text-sm sm:text-base mb-5 font-medium">
                 {gameState === "victory" ? "Félicitations ! Vous avez traversé 24 mois de crise RH, de négociations et d'arbitrages statutaires en conservant la confiance de tous !" : failReason}
               </p>
 
-              <div className="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 mb-8 text-left">
+              {/* Carte du Score Réalisé */}
+              {lastScore && (() => {
+                const currentRank = leaderboard.findIndex(e => e.id === lastScore.id) + 1;
+                return (
+                  <div className="bg-gradient-to-r from-amber-500/15 via-yellow-500/15 to-amber-500/15 border-2 border-amber-400/60 p-4 sm:p-5 rounded-2xl mb-5 shadow-[0_0_30px_rgba(245,158,11,0.25)] text-left">
+                    <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                      <span className="text-xs font-mono font-black uppercase text-amber-400 flex items-center gap-1.5">
+                        <Trophy className="w-4 h-4 text-amber-400" />
+                        <span>Score du Mandat :</span>
+                      </span>
+                      <span className="text-xs font-extrabold px-3 py-0.5 rounded-full bg-amber-500/25 border border-amber-400/50 text-amber-300 shadow-sm">
+                        {lastScore.badge}
+                      </span>
+                    </div>
+
+                    <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
+                      <span className="text-3xl sm:text-4xl font-black text-amber-300 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.5)]">
+                        {lastScore.score.toLocaleString()} <span className="text-lg text-amber-400 font-sans">pts</span>
+                      </span>
+                      {currentRank > 0 && (
+                        <span className="text-xs font-bold text-slate-200 bg-slate-950/80 px-3 py-1 rounded-xl border border-amber-500/40 shadow-inner">
+                          Classement : <span className="text-amber-400 font-black font-mono">#{currentRank}</span> sur {leaderboard.length}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Détails du calcul */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2.5 border-t border-amber-400/25 text-left">
+                      <div className="p-2 rounded-xl bg-slate-950/80 border border-slate-800">
+                        <span className="text-[9px] uppercase text-slate-400 block font-mono font-bold">Mois gérés</span>
+                        <span className="text-xs font-black text-white font-mono">{lastScore.monthsSurvived} / 24</span>
+                      </div>
+                      <div className="p-2 rounded-xl bg-slate-950/80 border border-slate-800">
+                        <span className="text-[9px] uppercase text-slate-400 block font-mono font-bold">Bonus 24 Mois</span>
+                        <span className={`text-xs font-black font-mono ${lastScore.isVictory ? 'text-emerald-400' : 'text-slate-500'}`}>
+                          {lastScore.isVictory ? "+5 000 pts" : "0 pt"}
+                        </span>
+                      </div>
+                      <div className="p-2 rounded-xl bg-slate-950/80 border border-slate-800">
+                        <span className="text-[9px] uppercase text-slate-400 block font-mono font-bold">Trésorerie</span>
+                        <span className="text-xs font-black text-emerald-400 font-mono">{lastScore.budget} k€</span>
+                      </div>
+                      <div className="p-2 rounded-xl bg-slate-950/80 border border-slate-800">
+                        <span className="text-[9px] uppercase text-slate-400 block font-mono font-bold">Satisfaction</span>
+                        <span className="text-xs font-black text-blue-400 font-mono">{lastScore.satisfactionAvg}%</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              <div className="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 mb-6 text-left">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 text-center border-b border-slate-800 pb-2 font-mono">
                   Bilan Officiel du Mandat
                 </h3>
@@ -685,12 +1139,24 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
                 )}
               </div>
 
-              <button
-                onClick={initGame}
-                className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-full shadow-xl transition-all flex items-center gap-2 mx-auto uppercase text-xs tracking-wider"
-              >
-                <RotateCcw className="w-4 h-4" /> Solliciter un nouveau mandat
-              </button>
+              {/* Boutons d'action fin de partie */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  onClick={() => setShowScoresModal(true)}
+                  className="w-full sm:w-auto px-6 py-3 bg-slate-950 hover:bg-slate-800 border-2 border-amber-400/50 hover:border-amber-400 text-amber-300 font-bold rounded-full shadow-lg transition-all flex items-center justify-center gap-2 uppercase text-xs tracking-wider cursor-pointer active:scale-95"
+                >
+                  <Trophy className="w-4 h-4 text-amber-400" />
+                  <span>Voir le Palmarès Complet</span>
+                </button>
+
+                <button
+                  onClick={handleStartGame}
+                  className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-full shadow-xl transition-all flex items-center justify-center gap-2 uppercase text-xs tracking-wider cursor-pointer active:scale-95"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Solliciter un nouveau mandat</span>
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -886,6 +1352,201 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
         )}
 
       </div>
+
+      {/* Modal du Tableau des Meilleurs Scores (Hall of Fame) */}
+      {showScoresModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/85 backdrop-blur-md animate-fade-in">
+          <div className="bg-slate-900 border-2 border-amber-500/60 rounded-3xl p-5 sm:p-7 max-w-4xl w-full shadow-[0_0_60px_rgba(245,158,11,0.3)] relative overflow-hidden flex flex-col max-h-[90vh]">
+
+            {/* Ambient glows */}
+            <div className="absolute -top-20 -left-20 w-44 h-44 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -right-20 w-44 h-44 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800 relative z-10 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-amber-500/20 border-2 border-amber-400/50 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.35)]">
+                  <Trophy className="w-6 h-6 text-amber-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-2">
+                    <span>Palmarès des Meilleurs Scores</span>
+                    <span className="text-amber-400 text-xs px-2.5 py-0.5 rounded-full border border-amber-500/40 bg-amber-500/15 font-mono">
+                      Top 10+
+                    </span>
+                  </h3>
+                  <p className="text-xs text-slate-400 font-mono">
+                    Gennevilliers City • Tableau officiel de référence municipal
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowScoresModal(false)}
+                className="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all cursor-pointer border border-slate-700 shadow"
+                aria-label="Fermer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Note Benchmark / Multi-Postes */}
+            <div className="my-3.5 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs flex items-center justify-between gap-3 shrink-0">
+              <div className="flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>
+                  <strong>Configuration multi-postes :</strong> Tableau écrit en dur avec benchmarks officiels partagés sur tous les postes communaux. Vos parties jouées localement sont intégrées automatiquement au classement.
+                </span>
+              </div>
+            </div>
+
+            {/* Podium Top 3 Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-4 shrink-0">
+              {leaderboard.slice(0, 3).map((item, idx) => {
+                const medals = ["🥇", "🥈", "🥉"];
+                const borders = [
+                  "border-amber-400/80 bg-gradient-to-b from-amber-500/20 to-slate-900 shadow-[0_0_20px_rgba(245,158,11,0.3)]",
+                  "border-slate-400/60 bg-gradient-to-b from-slate-400/15 to-slate-900 shadow-[0_0_15px_rgba(148,163,184,0.2)]",
+                  "border-amber-700/60 bg-gradient-to-b from-amber-800/15 to-slate-900 shadow-[0_0_15px_rgba(180,83,9,0.2)]"
+                ];
+                const isSelected = lastScore?.id === item.id;
+                return (
+                  <div
+                    key={item.id}
+                    className={`p-3.5 rounded-2xl border-2 ${borders[idx]} flex flex-col justify-between relative overflow-hidden ${isSelected ? 'ring-2 ring-amber-400' : ''}`}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xl">{medals[idx]}</span>
+                      <span className="text-[10px] font-mono font-extrabold uppercase px-2 py-0.5 rounded-full bg-slate-950/80 border border-slate-700 text-slate-300">
+                        {idx === 0 ? "1er Rang" : idx === 1 ? "2e Rang" : "3e Rang"}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="font-black text-white text-sm sm:text-base truncate">{item.name}</h4>
+                      <p className="text-[11px] text-slate-400 truncate mb-2">{item.role}</p>
+                    </div>
+                    <div className="pt-2 border-t border-slate-800/80 flex items-baseline justify-between">
+                      <span className="text-lg sm:text-xl font-black font-mono text-amber-300">
+                        {item.score.toLocaleString()} <span className="text-xs text-amber-400 font-sans">pts</span>
+                      </span>
+                      <span className="text-[10px] font-bold text-slate-300 font-mono">
+                        {item.monthsSurvived}m • {item.budget}k€
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Scrollable Table */}
+            <div className="flex-1 overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950/80 shadow-inner">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-900/90 sticky top-0 z-10 text-[10px] font-mono font-bold uppercase text-slate-400 border-b border-slate-800">
+                  <tr>
+                    <th className="py-2.5 px-3 text-center">Rang</th>
+                    <th className="py-2.5 px-3">Gestionnaire & Titre</th>
+                    <th className="py-2.5 px-3 text-right">Score</th>
+                    <th className="py-2.5 px-3 text-center">Mandat</th>
+                    <th className="py-2.5 px-3 text-right">Trésorerie</th>
+                    <th className="py-2.5 px-3 text-center">Satisfaction</th>
+                    <th className="py-2.5 px-3 text-center">Date</th>
+                    <th className="py-2.5 px-3 text-center">Origine</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 font-medium">
+                  {leaderboard.map((entry, index) => {
+                    const isCurrent = lastScore?.id === entry.id;
+                    const rankMedal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`;
+                    return (
+                      <tr
+                        key={entry.id}
+                        className={`transition-colors ${
+                          isCurrent
+                            ? 'bg-amber-500/20 border-l-4 border-l-amber-400 font-bold'
+                            : index % 2 === 0 ? 'bg-slate-950/40 hover:bg-slate-900/60' : 'bg-slate-900/30 hover:bg-slate-900/60'
+                        }`}
+                      >
+                        <td className="py-3 px-3 text-center font-mono font-black text-sm text-slate-300">
+                          {rankMedal}
+                        </td>
+                        <td className="py-3 px-3">
+                          <div className="flex items-center gap-2">
+                            <span className="font-black text-white text-sm">
+                              {entry.name}
+                            </span>
+                            {isCurrent && (
+                              <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-black font-mono">
+                                Vous
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
+                            <span>{entry.role}</span>
+                            <span>•</span>
+                            <span className="text-amber-300/90 font-semibold">{entry.badge}</span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono font-black text-base text-amber-300 whitespace-nowrap">
+                          {entry.score.toLocaleString()} <span className="text-xs text-amber-400 font-sans">pts</span>
+                        </td>
+                        <td className="py-3 px-3 text-center whitespace-nowrap">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${
+                            entry.isVictory
+                              ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                              : 'bg-slate-800 border-slate-700 text-slate-300'
+                          }`}>
+                            {entry.monthsSurvived} mois {entry.isVictory ? '🏆' : ''}
+                          </span>
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono text-emerald-400 font-bold whitespace-nowrap">
+                          {entry.budget} k€
+                        </td>
+                        <td className="py-3 px-3 text-center font-mono text-blue-400 font-bold whitespace-nowrap">
+                          {entry.satisfactionAvg}%
+                        </td>
+                        <td className="py-3 px-3 text-center font-mono text-slate-400 text-[11px] whitespace-nowrap">
+                          {entry.date}
+                        </td>
+                        <td className="py-3 px-3 text-center whitespace-nowrap">
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-mono font-bold border ${
+                            entry.isHardcoded
+                              ? 'bg-blue-500/15 border-blue-500/30 text-blue-300'
+                              : 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
+                          }`}>
+                            {entry.isHardcoded ? "🏛️ Officiel" : "💻 Poste local"}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="pt-4 border-t border-slate-800 flex items-center justify-between flex-wrap gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={clearLocalScores}
+                className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Effacer mes parties locales</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowScoresModal(false)}
+                className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-xl text-xs sm:text-sm uppercase tracking-wider transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
+              >
+                Fermer
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

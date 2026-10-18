@@ -290,7 +290,7 @@ export default function CalculateurSFTV2({ onClose }: CalculateurSFTProps) {
 
               {result.details && (
                 <div className="p-3 bg-white/60 dark:bg-slate-900/60 rounded-lg text-sm text-slate-700 dark:text-slate-300 mt-4 border border-blue-100/50 dark:border-blue-800/50">
-                  <p dangerouslySetInnerHTML={{ __html: result.details }}></p>
+                  <p>{result.details}</p>
                 </div>
               )}
 

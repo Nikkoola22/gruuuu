@@ -156,13 +156,24 @@ export const ModalAlbertDGAFP: React.FC<ModalAlbertDGAFPProps> = ({
                 <Key className="w-3.5 h-3.5 text-indigo-500" />
                 Clé d'accès API Albert (DINUM / Etalab)
               </label>
-              <button
-                type="button"
-                onClick={() => setShowKey(!showKey)}
-                className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
-              >
-                {showKey ? 'Masquer' : 'Afficher'}
-              </button>
+              <div className="flex items-center gap-2">
+                {config.apiKey && (
+                  <button
+                    type="button"
+                    onClick={() => setConfig({ ...config, apiKey: '' })}
+                    className="text-[10px] text-red-600 dark:text-red-400 font-semibold hover:underline cursor-pointer"
+                  >
+                    Effacer
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setShowKey(!showKey)}
+                  className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold hover:underline cursor-pointer"
+                >
+                  {showKey ? 'Masquer' : 'Afficher'}
+                </button>
+              </div>
             </div>
             <div className="relative">
               <input
@@ -174,7 +185,7 @@ export const ModalAlbertDGAFP: React.FC<ModalAlbertDGAFPProps> = ({
               />
             </div>
             <p className="text-[10px] text-slate-500 dark:text-slate-400">
-              Délivrée aux administrations et agents publics par la DINUM (albert.api.etalab.gouv.fr). Si vous n'avez pas de clé, le mode simulation souverain avec triangulation CGFP reste actif en local.
+              🔒 <strong>Sécurité</strong> : Stockée exclusivement dans le profil local de votre navigateur. Délivrée aux administrations par la DINUM. En l'absence de clé, le mode simulation souverain CGFP reste actif en local.
             </p>
           </div>
 

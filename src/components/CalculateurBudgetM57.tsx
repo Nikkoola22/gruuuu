@@ -44,6 +44,8 @@ import {
   type ChapitreComparatifRow
 } from '../services/budgetM57Engine';
 import { BudgetM57Graphiques } from './BudgetM57Graphiques';
+import { ForeverGooeyToggle } from './ui/ForeverGooeyToggle';
+import { ForeverMagneticButton } from './ui/ForeverMagneticButton';
 
 interface CalculateurBudgetM57Props {
   onClose?: () => void;
@@ -168,101 +170,81 @@ export const CalculateurBudgetM57: React.FC<CalculateurBudgetM57Props> = ({ onCl
 
       <div className="max-w-6xl mx-auto space-y-6">
         
-        {/* En-tête principal */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-300 dark:border-slate-800">
-          <div className="flex items-center gap-3">
-            {onClose && (
-              <button
-                onClick={onClose}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 border border-red-500/30 transition-all duration-200 group shrink-0 cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                <span>Retour</span>
-              </button>
-            )}
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded-lg bg-indigo-600 text-white shadow-xs">
-                  <Landmark className="w-5 h-5" />
+        {/* En-tête principal compact et parfaitement équilibré */}
+        <div className="space-y-3 pb-3 border-b border-slate-300 dark:border-slate-800">
+          {/* Ligne 1 : Navigation retour, Titre principal & Badges réglementaires */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              {onClose && (
+                <ForeverMagneticButton
+                  onClick={onClose}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm hover:shadow-md border border-red-500/30 transition-all duration-200 group shrink-0"
+                  glowColor="rgba(239, 68, 68, 0.45)"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+                  <span>Retour</span>
+                </ForeverMagneticButton>
+              )}
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="p-1.5 rounded-lg bg-indigo-600 text-white shadow-xs shrink-0">
+                  <Landmark className="w-4 h-4 sm:w-5 h-5" />
                 </span>
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-                  Finances Locales & Ratios M57 — Ville de Gennevilliers
+                <h1 className="text-base sm:text-xl font-black tracking-tight text-slate-900 dark:text-white truncate">
+                  Finances Locales & Ratios M57 <span className="font-semibold text-slate-500 dark:text-slate-400">— Ville de Gennevilliers</span>
                 </h1>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-                Instruction budgétaire M57 (DGCL) • Analyse certifiée des Délibérations du 23 Septembre 2026 (CFU 2025 & BS 2026)
-              </p>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                Instruction M57 (DGCL)
+              </span>
+              <span className="hidden md:inline-block text-[11px] text-slate-500 dark:text-slate-400">
+                CFU 2025 & BS 2026 n°2026/S6/004
+              </span>
             </div>
           </div>
 
-          {/* Onglets de navigation */}
-          <div className="inline-flex flex-wrap rounded-xl p-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-sm text-xs font-bold">
-            <button
-              onClick={() => setActiveTab('deliberations')}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                activeTab === 'deliberations'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <Stamp className="w-3.5 h-3.5 text-amber-300" />
-              <span>Délibérations & CFU (PDFs 2026)</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('graphiques')}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                activeTab === 'graphiques'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <PieChart className="w-3.5 h-3.5 text-emerald-400" />
-              <span>📊 Graphiques & Camemberts</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('ratios')}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                activeTab === 'ratios'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <Scale className="w-3.5 h-3.5" />
-              <span>Ratios & Diagnostics M57</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('pieces')}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                activeTab === 'pieces'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <ClipboardList className="w-3.5 h-3.5" />
-              <span>Pièces CRC ({piecesCRC.filter(p => p.statut === 'recu').length}/{piecesCRC.length})</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('rapport')}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                activeTab === 'rapport'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <FileCheck className="w-3.5 h-3.5" />
-              <span>Rapport d'Audit</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('note')}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                activeTab === 'note'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>Note d'Arbitrage</span>
-            </button>
+          {/* Ligne 2 : Barre d'onglets ForeverGooeyToggle étalée et défilable horizontalement */}
+          <div className="w-full overflow-x-auto no-scrollbar pt-1">
+            <ForeverGooeyToggle<'deliberations' | 'graphiques' | 'ratios' | 'pieces' | 'rapport' | 'note'>
+              size="sm"
+              value={activeTab}
+              onChange={setActiveTab}
+              options={[
+                {
+                  value: 'deliberations',
+                  label: 'Délibérations & CFU (PDFs 2026)',
+                  icon: <Stamp className="w-3.5 h-3.5 text-amber-300" />
+                },
+                {
+                  value: 'graphiques',
+                  label: '📊 Graphiques & Camemberts',
+                  icon: <PieChart className="w-3.5 h-3.5 text-emerald-400" />
+                },
+                {
+                  value: 'ratios',
+                  label: 'Ratios & Diagnostics M57',
+                  icon: <Scale className="w-3.5 h-3.5" />
+                },
+                {
+                  value: 'pieces',
+                  label: 'Pièces CRC',
+                  icon: <ClipboardList className="w-3.5 h-3.5" />,
+                  badge: `${piecesCRC.filter(p => p.statut === 'recu').length}/${piecesCRC.length}`
+                },
+                {
+                  value: 'rapport',
+                  label: "Rapport d'Audit",
+                  icon: <FileCheck className="w-3.5 h-3.5" />
+                },
+                {
+                  value: 'note',
+                  label: "Note d'Arbitrage",
+                  icon: <FileText className="w-3.5 h-3.5" />
+                }
+              ]}
+            />
           </div>
         </div>
 

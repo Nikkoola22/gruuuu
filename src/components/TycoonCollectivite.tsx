@@ -3,163 +3,24 @@ import {
   ArrowLeft, Building2, Users, Landmark, HeartHandshake,
   TrendingUp, TrendingDown, Play, AlertTriangle, Trophy,
   FileText, XCircle, RotateCcw, Briefcase, Gavel, Newspaper, Megaphone, Clock, Droplets, Bug, Sparkles, ShieldAlert, Coins,
-  User, Medal, Crown, X, Trash2, Award, Calendar, CheckCircle2, type LucideIcon
+  User, Medal, Crown, X, Trash2, Award, Calendar, CheckCircle2, RefreshCw, Wifi, WifiOff, type LucideIcon
 } from 'lucide-react';
+import {
+  type LeaderboardEntry,
+  BENCHMARK_SCORES,
+  getLocalScores,
+  fetchOnlineLeaderboard,
+  submitOnlineScore,
+  resetOnlineLeaderboard
+} from '../services/leaderboardService';
+
+export type { LeaderboardEntry };
+export const HARDCODED_HIGH_SCORES = BENCHMARK_SCORES;
+export const getMergedLeaderboard = getLocalScores;
 
 interface TycoonProps {
   onClose: () => void;
 }
-
-export interface LeaderboardEntry {
-  id: string;
-  name: string;
-  role: string;
-  score: number;
-  monthsSurvived: number;
-  budget: number;
-  satisfactionAvg: number;
-  isVictory: boolean;
-  date: string;
-  badge: string;
-  isHardcoded?: boolean;
-}
-
-// ============================================================
-// TABLEAU DES MEILLEURS SCORES ÉCRIT EN DUR (BENCHMARK OFFICIEL)
-// Garanti identique sur tous les postes même sans serveur centralisé
-// ============================================================
-export const HARDCODED_HIGH_SCORES: LeaderboardEntry[] = [
-  {
-    id: "hard-1",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 6500,
-    monthsSurvived: 14,
-    budget: 280,
-    satisfactionAvg: 62,
-    isVictory: false,
-    date: "15/10/2026",
-    badge: "Pionnier du Mandat 👑",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-2",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 5300,
-    monthsSurvived: 12,
-    budget: 250,
-    satisfactionAvg: 58,
-    isVictory: false,
-    date: "14/10/2026",
-    badge: "Gestionnaire Santé 🏥",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-3",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 4400,
-    monthsSurvived: 10,
-    budget: 220,
-    satisfactionAvg: 55,
-    isVictory: false,
-    date: "13/10/2026",
-    badge: "Négociateur Municipal 💉",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-4",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 3500,
-    monthsSurvived: 8,
-    budget: 190,
-    satisfactionAvg: 52,
-    isVictory: false,
-    date: "12/10/2026",
-    badge: "Cadre de Santé 🩺",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-5",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 2700,
-    monthsSurvived: 6,
-    budget: 170,
-    satisfactionAvg: 48,
-    isVictory: false,
-    date: "11/10/2026",
-    badge: "Soignant Dévoué 📋",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-6",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 2000,
-    monthsSurvived: 5,
-    budget: 150,
-    satisfactionAvg: 45,
-    isVictory: false,
-    date: "10/10/2026",
-    badge: "Responsable Médical 🏥",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-7",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 1400,
-    monthsSurvived: 4,
-    budget: 130,
-    satisfactionAvg: 42,
-    isVictory: false,
-    date: "09/10/2026",
-    badge: "Praticien Territorial 🌿",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-8",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 900,
-    monthsSurvived: 3,
-    budget: 110,
-    satisfactionAvg: 38,
-    isVictory: false,
-    date: "08/10/2026",
-    badge: "Agent Hospitalier ⚕️",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-9",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 500,
-    monthsSurvived: 2,
-    budget: 90,
-    satisfactionAvg: 35,
-    isVictory: false,
-    date: "07/10/2026",
-    badge: "Stagiaire Santé 💊",
-    isHardcoded: true,
-  },
-  {
-    id: "hard-10",
-    name: "nikkoola G",
-    role: "Centre de Santé",
-    score: 250,
-    monthsSurvived: 1,
-    budget: 70,
-    satisfactionAvg: 30,
-    isVictory: false,
-    date: "06/10/2026",
-    badge: "Premiers Pas CMS 🏥",
-    isHardcoded: true,
-  }
-];
 
 export const calculateScoreBreakdown = (
   finalMonth: number,
@@ -190,20 +51,6 @@ export const calculateScoreBreakdown = (
     satisfactionPoints,
     isVictory
   };
-};
-
-export const getMergedLeaderboard = (): LeaderboardEntry[] => {
-  let customScores: LeaderboardEntry[] = [];
-  try {
-    const raw = localStorage.getItem("gennevilliers_city_custom_scores");
-    if (raw) {
-      customScores = JSON.parse(raw);
-    }
-  } catch (e) {
-    console.error("Erreur lecture scores locaux:", e);
-  }
-  const combined = [...customScores, ...HARDCODED_HIGH_SCORES];
-  return combined.sort((a, b) => b.score - a.score);
 };
 
 interface Action {
@@ -553,8 +400,24 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
 
   // High Scores & Leaderboard
   const [showScoresModal, setShowScoresModal] = useState(false);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(() => getMergedLeaderboard());
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(() => getLocalScores());
   const [lastScore, setLastScore] = useState<LeaderboardEntry | null>(null);
+  const [isOnlineSync, setIsOnlineSync] = useState(false);
+  const [isLoadingLeaderboard, setIsLoadingLeaderboard] = useState(false);
+
+  // Synchronisation en ligne au chargement du composant
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoadingLeaderboard(true);
+    fetchOnlineLeaderboard().then(({ entries, isOnline }) => {
+      if (isMounted) {
+        setLeaderboard(entries);
+        setIsOnlineSync(isOnline);
+        setIsLoadingLeaderboard(false);
+      }
+    });
+    return () => { isMounted = false; };
+  }, []);
 
   // Gauges
   const [budget, setBudget] = useState(1000); // k€
@@ -602,9 +465,9 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
     }
 
     const newEntry: LeaderboardEntry = {
-      id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      id: `score-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       name: name.trim() || "DGS Anonyme",
-      role: role.trim() || "DGS",
+      role: role.trim() || "Direction Municipale",
       score: scoreData.total,
       monthsSurvived: scoreData.monthsCompleted,
       budget: Math.max(0, finalBudget),
@@ -615,18 +478,41 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
       isHardcoded: false,
     };
 
-    try {
-      const raw = localStorage.getItem("gennevilliers_city_custom_scores");
-      const existing: LeaderboardEntry[] = raw ? JSON.parse(raw) : [];
-      const updated = [newEntry, ...existing].slice(0, 50);
-      localStorage.setItem("gennevilliers_city_custom_scores", JSON.stringify(updated));
-    } catch (e) {
-      console.error("Erreur sauvegarde score local:", e);
-    }
+    // Mise à jour optimiste et affichage immédiat
+    setLastScore(newEntry);
+    setLeaderboard((prev) => {
+      const filtered = prev.filter(e => e.id !== newEntry.id);
+      return [newEntry, ...filtered].sort((a, b) => b.score - a.score).slice(0, 50);
+    });
 
-    const updatedLeaderboard = getMergedLeaderboard();
-    setLeaderboard(updatedLeaderboard);
+    // Synchronisation avec l'API en ligne partagée
+    submitOnlineScore(newEntry).then(({ entries, isOnline }) => {
+      setLeaderboard(entries);
+      setIsOnlineSync(isOnline);
+    });
+
     return newEntry;
+  };
+
+  const handleRefreshLeaderboard = async () => {
+    setIsLoadingLeaderboard(true);
+    const { entries, isOnline } = await fetchOnlineLeaderboard();
+    setLeaderboard(entries);
+    setIsOnlineSync(isOnline);
+    setIsLoadingLeaderboard(false);
+  };
+
+  const handleResetLeaderboard = async () => {
+    if (window.confirm("Voulez-vous réinitialiser le classement partagé vers les scores de référence officiels de Gennevilliers ?")) {
+      setIsLoadingLeaderboard(true);
+      const { entries, isOnline } = await resetOnlineLeaderboard();
+      setLeaderboard(entries);
+      setIsOnlineSync(isOnline);
+      if (lastScore && !lastScore.isHardcoded) {
+        setLastScore(null);
+      }
+      setIsLoadingLeaderboard(false);
+    }
   };
 
   const handleStartGame = () => {
@@ -1398,14 +1284,34 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
               </button>
             </div>
 
-            {/* Note Benchmark / Multi-Postes */}
-            <div className="my-3.5 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs flex items-center justify-between gap-3 shrink-0">
+            {/* Statut de Synchronisation en Temps Réel & Actualisation */}
+            <div className="my-3.5 p-3 rounded-2xl bg-slate-950/80 border border-slate-800 text-xs flex flex-wrap items-center justify-between gap-3 shrink-0">
               <div className="flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>
-                  <strong>Configuration multi-postes :</strong> Tableau écrit en dur avec benchmarks officiels partagés sur tous les postes communaux. Vos parties jouées localement sont intégrées automatiquement au classement.
+                {isOnlineSync ? (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold font-mono">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Top 10 En Ligne Partagé (Temps Réel)
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold font-mono">
+                    <WifiOff className="w-3.5 h-3.5" />
+                    Mode Local Résilient
+                  </span>
+                )}
+                <span className="text-slate-300 hidden sm:inline text-[11px]">
+                  Toutes vos parties terminées sont automatiquement enregistrées et partagées entre les joueurs.
                 </span>
               </div>
+
+              <button
+                type="button"
+                onClick={handleRefreshLeaderboard}
+                disabled={isLoadingLeaderboard}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 cursor-pointer disabled:opacity-50 ml-auto"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 text-amber-400 ${isLoadingLeaderboard ? 'animate-spin' : ''}`} />
+                <span>{isLoadingLeaderboard ? 'Actualisation...' : 'Actualiser'}</span>
+              </button>
             </div>
 
             {/* Podium Top 3 Cards */}
@@ -1521,7 +1427,7 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
                               ? 'bg-blue-500/15 border-blue-500/30 text-blue-300'
                               : 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
                           }`}>
-                            {entry.isHardcoded ? "🏛️ Officiel" : "💻 Poste local"}
+                            {entry.isHardcoded ? "🏛️ Réf. Ville" : "🌐 Partagé en ligne"}
                           </span>
                         </td>
                       </tr>
@@ -1535,11 +1441,11 @@ const TycoonCollectivite: React.FC<TycoonProps> = ({ onClose }) => {
             <div className="pt-4 border-t border-slate-800 flex items-center justify-between flex-wrap gap-3 shrink-0">
               <button
                 type="button"
-                onClick={clearLocalScores}
+                onClick={handleResetLeaderboard}
                 className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
               >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Effacer mes parties locales</span>
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Réinitialiser aux benchmarks officiels</span>
               </button>
 
               <button

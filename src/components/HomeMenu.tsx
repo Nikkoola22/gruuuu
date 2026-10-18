@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react"
 import { CloudSun, Bot, ArrowRight, Rss, Radio, Calculator, LayoutGrid, HelpCircle, ChevronLeft, ChevronRight, Newspaper, Link2, BookOpen, Scale, Landmark, GraduationCap, Gamepad2, FileText, Clock, Briefcase, ExternalLink as ExternalLinkIcon, PlayCircle, Sparkles, Laptop, Palette, FileSignature, Award, TrendingUp, Download, Eye, Mail, Headphones, FileSearch, Layers, Megaphone } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { BorderBeam } from "./ui/BorderBeam.tsx"
+import { ForeverMagneticButton } from "./ui/ForeverMagneticButton.tsx"
+import { ForeverTiltCard } from "./ui/ForeverTiltCard.tsx"
 import type { ChatbotState } from "../App.tsx"
 import type { IntercoNewsItem } from "../hooks/useNewsFeeds.ts"
 import { CFDT_JOURNAUX, type CFDTJournal, CFDT_JOURNAUX_BASE_URL } from "../data/cfdtJournaux.ts"
@@ -1050,30 +1052,33 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 </div>
               </div>
 
-              {/* Bouton d'accès direct */}
-              <button
+              {/* Bouton d'accès direct avec ForeverMagneticButton */}
+              <ForeverMagneticButton
                 type="button"
                 onClick={() => {
                   setChatState(prev => ({ ...prev, currentView: 'simul-agent' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
-                className="cursor-pointer self-start lg:self-center inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white text-xs sm:text-sm font-extrabold shadow-md shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shrink-0"
+                glowColor="rgba(249, 115, 22, 0.45)"
+                className="cursor-pointer self-start lg:self-center inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-white text-xs sm:text-sm font-extrabold shadow-md shadow-orange-500/20 hover:shadow-orange-500/30 transition-all duration-200 shrink-0"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Lancer le simulateur</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </ForeverMagneticButton>
             </div>
 
             {/* Grille des 4 questions clés - 2 colonnes spacieuses pour une lisibilité optimale */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5 mb-6">
-              {/* Question 1 : Échelon */}
-              <div
+              {/* Question 1 : Échelon avec ForeverTiltCard */}
+              <ForeverTiltCard
+                maxTilt={4}
+                shineOpacity={0.15}
                 onClick={() => {
                   setChatState(prev => ({ ...prev, currentView: 'simul-agent', simulTool: 'frise' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
-                className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-amber-200/70 hover:border-amber-400 dark:border-slate-700/80 dark:hover:border-amber-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+                className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-amber-200/70 hover:border-amber-400 dark:border-slate-700/80 dark:hover:border-amber-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center group-hover/card:bg-amber-500 group-hover/card:text-white transition-all duration-200 shrink-0 shadow-xs">
@@ -1090,15 +1095,17 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     </h4>
                   </div>
                 </div>
-              </div>
+              </ForeverTiltCard>
 
-              {/* Question 2 : Grade */}
-              <div
+              {/* Question 2 : Grade avec ForeverTiltCard */}
+              <ForeverTiltCard
+                maxTilt={4}
+                shineOpacity={0.15}
                 onClick={() => {
                   setChatState(prev => ({ ...prev, currentView: 'simul-agent', simulTool: 'frise' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
-                className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-emerald-200/70 hover:border-emerald-400 dark:border-slate-700/80 dark:hover:border-emerald-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+                className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-emerald-200/70 hover:border-emerald-400 dark:border-slate-700/80 dark:hover:border-emerald-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center group-hover/card:bg-emerald-500 group-hover/card:text-white transition-all duration-200 shrink-0 shadow-xs">
@@ -1115,15 +1122,17 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     </h4>
                   </div>
                 </div>
-              </div>
+              </ForeverTiltCard>
 
-              {/* Question 3 : Promotion Interne LDG */}
-              <div
+              {/* Question 3 : Promotion Interne LDG avec ForeverTiltCard */}
+              <ForeverTiltCard
+                maxTilt={4}
+                shineOpacity={0.15}
                 onClick={() => {
                   setChatState(prev => ({ ...prev, currentView: 'simul-agent', simulTool: 'ldg' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
-                className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-blue-200/70 hover:border-blue-400 dark:border-slate-700/80 dark:hover:border-blue-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+                className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-blue-200/70 hover:border-blue-400 dark:border-slate-700/80 dark:hover:border-blue-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center group-hover/card:bg-blue-500 group-hover/card:text-white transition-all duration-200 shrink-0 shadow-xs">
@@ -1140,15 +1149,17 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     </h4>
                   </div>
                 </div>
-              </div>
+              </ForeverTiltCard>
 
-              {/* Question 4 : Concours & Examens Pro */}
-              <div
+              {/* Question 4 : Concours & Examens Pro avec ForeverTiltCard */}
+              <ForeverTiltCard
+                maxTilt={4}
+                shineOpacity={0.15}
                 onClick={() => {
                   setChatState(prev => ({ ...prev, currentView: 'simul-agent', simulTool: 'frise' }))
                   window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
-                className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-purple-200/70 hover:border-purple-400 dark:border-slate-700/80 dark:hover:border-purple-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+                className="group/card cursor-pointer relative bg-white/95 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border-2 border-purple-200/70 hover:border-purple-400 dark:border-slate-700/80 dark:hover:border-purple-500/80 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 flex items-center justify-center group-hover/card:bg-purple-500 group-hover/card:text-white transition-all duration-200 shrink-0 shadow-xs">
@@ -1165,7 +1176,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     </h4>
                   </div>
                 </div>
-              </div>
+              </ForeverTiltCard>
             </div>
           </div>
         </div>

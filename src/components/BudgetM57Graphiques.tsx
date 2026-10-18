@@ -44,6 +44,9 @@ import {
   type DeliberationBudgetInfo,
   type ChapitreMouvement
 } from '../services/budgetM57Engine';
+import { ForeverTiltCard } from './ui/ForeverTiltCard';
+import { ForeverMagneticButton } from './ui/ForeverMagneticButton';
+import { ForeverGooeyToggle } from './ui/ForeverGooeyToggle';
 
 interface BudgetM57GraphiquesProps {
   onInjectIntoRatios?: (delibKey: 'bp_2026' | 'bp_2025' | 'principal' | 'restauration' | 'cinema') => void;
@@ -479,38 +482,25 @@ export const BudgetM57Graphiques: React.FC<BudgetM57GraphiquesProps> = ({
               </div>
 
               <div className="flex flex-wrap items-center gap-2 shrink-0">
-                {/* Bascule unité millions / euros */}
-                <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">
-                  <button
-                    onClick={() => setUniteAffichage('millions')}
-                    className={`px-3 py-1.5 rounded-lg transition-all ${
-                      uniteAffichage === 'millions'
-                        ? 'bg-indigo-600 text-white shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                  >
-                    En Millions (€)
-                  </button>
-                  <button
-                    onClick={() => setUniteAffichage('euros')}
-                    className={`px-3 py-1.5 rounded-lg transition-all ${
-                      uniteAffichage === 'euros'
-                        ? 'bg-indigo-600 text-white shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                  >
-                    En Euros précis (€)
-                  </button>
-                </div>
+                {/* Bascule unité millions / euros avec ForeverGooeyToggle */}
+                <ForeverGooeyToggle<'millions' | 'euros'>
+                  size="sm"
+                  value={uniteAffichage}
+                  onChange={setUniteAffichage}
+                  options={[
+                    { value: 'millions', label: 'En Millions (€)' },
+                    { value: 'euros', label: 'En Euros précis (€)' }
+                  ]}
+                />
 
-                {/* Bouton de copie rapide */}
-                <button
+                {/* Bouton de copie rapide avec ForeverMagneticButton */}
+                <ForeverMagneticButton
                   onClick={copierSynthese}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all shadow-xs"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300" />}
                   <span>{copied ? 'Copié !' : 'Copier chiffres'}</span>
-                </button>
+                </ForeverMagneticButton>
               </div>
             </div>
 
@@ -565,46 +555,28 @@ export const BudgetM57Graphiques: React.FC<BudgetM57GraphiquesProps> = ({
             </p>
           </div>
 
-          {/* Filtre de section pour les camemberts */}
-          <div className="inline-flex rounded-xl p-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-xs font-bold shadow-xs">
-            <button
-              onClick={() => setSectionCamembert('fonctionnement')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                sectionCamembert === 'fonctionnement'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              Fonctionnement (Gestion)
-            </button>
-            <button
-              onClick={() => setSectionCamembert('investissement')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                sectionCamembert === 'investissement'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              Investissement (Équipement)
-            </button>
-            <button
-              onClick={() => setSectionCamembert('consolide')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                sectionCamembert === 'consolide'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              Total Consolidé
-            </button>
-          </div>
+          {/* Filtre de section pour les camemberts avec ForeverGooeyToggle */}
+          <ForeverGooeyToggle<'fonctionnement' | 'investissement' | 'consolide'>
+            size="sm"
+            value={sectionCamembert}
+            onChange={setSectionCamembert}
+            options={[
+              { value: 'fonctionnement', label: 'Fonctionnement (Gestion)' },
+              { value: 'investissement', label: 'Investissement (Équipement)' },
+              { value: 'consolide', label: 'Total Consolidé' }
+            ]}
+          />
         </div>
 
         {/* Double grille de camemberts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           {/* ──── CAMEMBERT 1 : RESSOURCES (RECETTES) ──── */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <ForeverTiltCard
+            maxTilt={5}
+            shineOpacity={0.16}
+            className="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between"
+          >
             <div>
               <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-2">
@@ -746,10 +718,14 @@ export const BudgetM57Graphiques: React.FC<BudgetM57GraphiquesProps> = ({
                 La fiscalité directe et indirecte (chapitres 73 & 731) représente le socle prépondérant des recettes avec plus de 123,6 M€, conférant une forte autonomie fiscale territoriale à Gennevilliers.
               </div>
             </div>
-          </div>
+          </ForeverTiltCard>
 
           {/* ──── CAMEMBERT 2 : DÉPENSES (EMPLOIS) ──── */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <ForeverTiltCard
+            maxTilt={5}
+            shineOpacity={0.16}
+            className="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-col justify-between"
+          >
             <div>
               <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-2">
@@ -891,7 +867,7 @@ export const BudgetM57Graphiques: React.FC<BudgetM57GraphiquesProps> = ({
                 Avec 96,06 M€ (62,05% des dépenses réelles de fonctionnement), elle illustre l'effort territorial constant dédié aux services municipaux, aux crèches, aux écoles et à la solidarité locale.
               </div>
             </div>
-          </div>
+          </ForeverTiltCard>
         </div>
       </div>
 
@@ -1136,38 +1112,17 @@ export const BudgetM57Graphiques: React.FC<BudgetM57GraphiquesProps> = ({
           </div>
 
           {/* Filtres de la vue comparative */}
-          <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold self-start sm:self-auto">
-            <button
-              onClick={() => setComparatifFiltre('agregats')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                comparatifFiltre === 'agregats'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              Grands Agrégats
-            </button>
-            <button
-              onClick={() => setComparatifFiltre('fonctionnement')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                comparatifFiltre === 'fonctionnement'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              Dépenses Gestion
-            </button>
-            <button
-              onClick={() => setComparatifFiltre('investissement')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                comparatifFiltre === 'investissement'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              Investissement & PPI
-            </button>
-          </div>
+          {/* Filtres de la vue comparative avec ForeverGooeyToggle */}
+          <ForeverGooeyToggle<'agregats' | 'fonctionnement' | 'investissement'>
+            size="sm"
+            value={comparatifFiltre === 'tous' ? 'agregats' : comparatifFiltre}
+            onChange={(val) => setComparatifFiltre(val)}
+            options={[
+              { value: 'agregats', label: 'Grands Agrégats' },
+              { value: 'fonctionnement', label: 'Dépenses Gestion' },
+              { value: 'investissement', label: 'Investissement & PPI' }
+            ]}
+          />
         </div>
 
         {/* 3 Cartes de totaux comparatifs triennaux */}
@@ -2241,24 +2196,25 @@ export const BudgetM57Graphiques: React.FC<BudgetM57GraphiquesProps> = ({
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           {onNavigateToTab && (
             <>
-              <button
+              <ForeverMagneticButton
                 onClick={() => onNavigateToTab('deliberations')}
-                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition-all border border-slate-700 cursor-pointer"
+                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition-all border border-slate-700 shadow-xs"
               >
                 📜 Actes & Délibérations
-              </button>
-              <button
+              </ForeverMagneticButton>
+              <ForeverMagneticButton
                 onClick={() => onNavigateToTab('ratios')}
-                className="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition-all shadow-xs cursor-pointer"
+                className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition-all shadow-md shadow-indigo-500/25"
+                glowColor="rgba(99, 102, 241, 0.6)"
               >
                 🧮 Simulateur M57
-              </button>
-              <button
+              </ForeverMagneticButton>
+              <ForeverMagneticButton
                 onClick={() => onNavigateToTab('pieces')}
-                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition-all border border-slate-700 cursor-pointer"
+                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition-all border border-slate-700 shadow-xs"
               >
                 📑 Pièces CRC
-              </button>
+              </ForeverMagneticButton>
             </>
           )}
         </div>

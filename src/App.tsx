@@ -56,10 +56,8 @@ const DocuthequeRAG = lazyWithRetry(() => import("./components/DocuthequeRAG").t
 const CoinRH = lazyWithRetry(() => import("./components/CoinRH.tsx"))
 const MemoireJuridiqueGenerator = lazyWithRetry(() => import("./components/MemoireJuridiqueGenerator").then(m => ({ default: m.MemoireJuridiqueGenerator })))
 const HomeMenu = lazyWithRetry(() => import("./components/HomeMenu.tsx"))
-// Modules rarity chargés à la demande (admin, chat) pour alléger le bundle initial
+// Modules rarity chargés à la demande (chat) pour alléger le bundle initial
 const LuxuryChat = lazyWithRetry(() => import("./components/ui/LuxuryChat.tsx").then(m => ({ default: m.LuxuryChat })))
-const AdminPanel = lazyWithRetry(() => import("./components/AdminPanel.tsx"))
-const AdminLogin = lazyWithRetry(() => import("./components/AdminLogin.tsx"))
 const BreezyWeatherApp = lazyWithRetry(() => import("./components/BreezyWeatherApp.tsx"))
 import SimulateurCarriere from "./components/SimulateurCarriere.tsx"
 import { NetPaySimulator } from "./components/calculators/NetPaySimulator"
@@ -313,8 +311,6 @@ function App() {
   const { rssItems, rssLoading, intercoNews, intercoLoading, fpNews, fpLoading } = useNewsFeeds()
 
   const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | 'sft' | 'courriers' | 'fiche-paie' | 'navigo' | 'simulateur-ir' | 'budget-m57' | null>(null)
-  const [showAdminPanel, setShowAdminPanel] = useState(false)
-  const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [logoLoadError, setLogoLoadError] = useState(false)
   const [showExpandSearch, setShowExpandSearch] = useState(false)
   const [lastQuestion, setLastQuestion] = useState<string>("")
@@ -2283,45 +2279,8 @@ ${indicesFactuels}
           <p className="text-sm text-slate-300 font-medium leading-tight">
             92237 Gennevilliers Cedex
           </p>
-
-          {/* Bouton Admin */}
-          <div className="mt-4 pt-4 border-t border-orange-500/20">
-            <button
-              onClick={() => {
-                const isAuth = localStorage.getItem('admin_authenticated') === 'true';
-                if (isAuth) {
-                  setShowAdminPanel(true);
-                } else {
-                  setShowAdminLogin(true);
-                }
-              }}
-              className="px-4 py-2 bg-orange-600/30 hover:bg-orange-600/50 border border-orange-500/40 text-slate-200 hover:text-white rounded-lg transition-all duration-200 font-semibold text-xs glass-pill"
-            >
-              Accès Administrateur
-            </button>
-          </div>
         </div>
       </footer>
-
-      {/* Admin Login Modal */}
-      {showAdminLogin && (
-        <Suspense fallback={null}>
-          <AdminLogin
-            onClose={() => setShowAdminLogin(false)}
-            onSuccess={() => {
-              setShowAdminLogin(false);
-              setShowAdminPanel(true);
-            }}
-          />
-        </Suspense>
-      )}
-
-      {/* Admin Panel Modal */}
-      {showAdminPanel && (
-        <Suspense fallback={null}>
-          <AdminPanel onClose={() => setShowAdminPanel(false)} />
-        </Suspense>
-      )}
     </div>
   );
 }

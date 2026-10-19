@@ -127,6 +127,18 @@
     "officialUrl": "http://www.cdg04.fr",
     "news": [
       {
+        "title": "Handicap : DuoDay 2026",
+        "link": "https://cdg04.fr/handicap-duoday-2025-2/",
+        "pubDate": "Fri, 16 Oct 2026 08:24:20 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Le CDG04 présent au Congrès des Maires des Alpes-de-Haute-Provence 2026",
+        "link": "https://cdg04.fr/le-cdg04-present-au-congres-des-maires-des-alpes-de-haute-provence-2026/",
+        "pubDate": "Mon, 12 Oct 2026 09:21:24 GMT",
+        "source": "RSS"
+      },
+      {
         "title": "Formulaire de collecte des coordonnées des élus – 2026",
         "link": "https://cdg04.fr/formulaire-de-collecte-des-coordonnees-des-elus-2026/",
         "pubDate": "Wed, 05 Aug 2026 15:00:49 GMT",
@@ -161,18 +173,6 @@
         "link": "https://cdg04.fr/concours-dassistant-de-conservation-du-patrimoine-et-des-bibliotheques-principal-de-2eme-classe-session-2027/",
         "pubDate": "Wed, 05 Aug 2026 09:17:12 GMT",
         "source": "RSS"
-      },
-      {
-        "title": "Concours d’assistant de conservation du patrimoine et des bibliothèques – session 2027",
-        "link": "https://cdg04.fr/concours-dassistant-de-conservation-du-patrimoine-et-des-bibliotheques-session-2027/",
-        "pubDate": "Wed, 05 Aug 2026 08:45:25 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Elections professionnelles – formulaire envoi matériel de vote",
-        "link": "https://cdg04.fr/elections-professionnelles-formulaire-envoi-materiel-de-vote/",
-        "pubDate": "Wed, 05 Aug 2026 08:07:59 GMT",
-        "source": "RSS"
       }
     ]
   },
@@ -181,6 +181,27 @@
     "dept": "05",
     "officialUrl": "http://www.cdg05.fr",
     "news": [
+      {
+        "title": "Agent polyvalent des espaces verts",
+        "link": "https://www.cdg05.com/emploi/agent-polyvalent-espaces-verts",
+        "pubDate": "Tue, 13 Oct 2026 12:51:32 GMT",
+        "description": "<div class=\"field field--name-field-contenus field--type-entity-reference-revisions field--label-visually_hidden\"> <div class=\"field__label visually-hidden\">Contenus</div> <div class=\"field__items\"> <div class=\"field__item\"> <div class=\"paragraph paragraph--type--basic-content paragraph--view-mode--",
+        "source": "RSS"
+      },
+      {
+        "title": "Auxiliaires de puériculture",
+        "link": "https://www.cdg05.com/emploi/auxiliaires-puericulture",
+        "pubDate": "Tue, 13 Oct 2026 12:41:00 GMT",
+        "description": "<div class=\"field field--name-field-contenus field--type-entity-reference-revisions field--label-visually_hidden\"> <div class=\"field__label visually-hidden\">Contenus</div> <div class=\"field__items\"> <div class=\"field__item\"> <div class=\"paragraph paragraph--type--basic-content paragraph--view-mode--",
+        "source": "RSS"
+      },
+      {
+        "title": "Mécanicien",
+        "link": "https://www.cdg05.com/emploi/mecanicien",
+        "pubDate": "Tue, 13 Oct 2026 12:25:01 GMT",
+        "description": "<div class=\"field field--name-field-contenus field--type-entity-reference-revisions field--label-visually_hidden\"> <div class=\"field__label visually-hidden\">Contenus</div> <div class=\"field__items\"> <div class=\"field__item\"> <div class=\"paragraph paragraph--type--basic-content paragraph--view-mode--",
+        "source": "RSS"
+      },
       {
         "title": "Café RH : Actualités statutaires",
         "link": "https://www.cdg05.com/agenda/cafe-rh-actualites-statutaires",
@@ -214,27 +235,6 @@
         "link": "https://www.cdg05.com/agenda/cst-14",
         "pubDate": "Fri, 09 Jan 2026 08:32:25 GMT",
         "description": "<div class=\"field field--name-title field--type-string field--label-hidden field__item\"><h2><a href=\"https://www.cdg05.com/agenda/cst-14\" hreflang=\"fr\">CST</a></h2></div> <div class=\"field field--name-field-categorie-event field--type-entity-reference field--label-inline clearfix\"> <div class=\"field",
-        "source": "RSS"
-      },
-      {
-        "title": "CST",
-        "link": "https://www.cdg05.com/agenda/cst-13",
-        "pubDate": "Fri, 09 Jan 2026 08:32:10 GMT",
-        "description": "<div class=\"field field--name-title field--type-string field--label-hidden field__item\"><h2><a href=\"https://www.cdg05.com/agenda/cst-13\" hreflang=\"fr\">CST</a></h2></div> <div class=\"field field--name-field-categorie-event field--type-entity-reference field--label-inline clearfix\"> <div class=\"field",
-        "source": "RSS"
-      },
-      {
-        "title": "CST",
-        "link": "https://www.cdg05.com/agenda/cst-12",
-        "pubDate": "Fri, 09 Jan 2026 08:31:51 GMT",
-        "description": "<div class=\"field field--name-title field--type-string field--label-hidden field__item\"><h2><a href=\"https://www.cdg05.com/agenda/cst-12\" hreflang=\"fr\">CST</a></h2></div> <div class=\"field field--name-field-categorie-event field--type-entity-reference field--label-inline clearfix\"> <div class=\"field",
-        "source": "RSS"
-      },
-      {
-        "title": "CST",
-        "link": "https://www.cdg05.com/agenda/cst-11",
-        "pubDate": "Fri, 09 Jan 2026 08:31:29 GMT",
-        "description": "<div class=\"field field--name-title field--type-string field--label-hidden field__item\"><h2><a href=\"https://www.cdg05.com/agenda/cst-11\" hreflang=\"fr\">CST</a></h2></div> <div class=\"field field--name-field-categorie-event field--type-entity-reference field--label-inline clearfix\"> <div class=\"field",
         "source": "RSS"
       }
     ]
@@ -347,6 +347,13 @@
     "officialUrl": "http://www.cdg08.fr",
     "news": [
       {
+        "title": "CS - ACTUALITE - RETRAITE - 10-2026 : Atelier sur la réglementation retraite",
+        "link": "https://cdg08.fr/widgetkit/actualites-cs/retraite/457-cs-actualite-retraite-10-2026-atelier-sur-la-reglementation-retraite",
+        "pubDate": "Thu, 15 Oct 2026 12:52:15 GMT",
+        "description": "]]>",
+        "source": "RSS"
+      },
+      {
         "title": "CS - ACTUALITE - ELECTION PROFESSIONNELLES 01-2026",
         "link": "https://cdg08.fr/widgetkit/actualites-cs/carriere/456-cs-actualite-election-professionnelles-01-2026",
         "pubDate": "Fri, 02 Oct 2026 14:30:49 GMT",
@@ -393,13 +400,6 @@
         "link": "https://cdg08.fr/features/actualites-aet/448-aet-actualite-25-2026-forum-de-lemploi-handijob",
         "pubDate": "Mon, 14 Sep 2026 14:36:44 GMT",
         "description": "💼 HANDI’JOB : une première édition couronnée de succès ! Le Centre de Gestion de la Fonction Publique Territoriale des Ardennes, en partenariat avec Cap emploi Ardennes, a organisé ce mardi 8 septembre 2026 🎯 Une journée entièrement dédiée à l’emploi des personnes en situation de handicap, avec un",
-        "source": "RSS"
-      },
-      {
-        "title": "CS - ACTUALITE - RETRAITE - 09_2-2026 : Flash info retraite - NOUVEAUTE APPLICABLE AU 01/09/2026",
-        "link": "https://cdg08.fr/widgetkit/actualites-cs/retraite/446-cs-actualite-retraite-09-2-2026-flash-info-retraite-nouveaute-applicable-au-01-09-2026",
-        "pubDate": "Mon, 14 Sep 2026 09:30:10 GMT",
-        "description": "]]>",
         "source": "RSS"
       }
     ]
@@ -473,6 +473,12 @@
     "officialUrl": "http://www.cdg10.fr",
     "news": [
       {
+        "title": "DuoDay 2026 : Emploi et handicap, et si on commençait par un duo ?",
+        "link": "https://www.cdg10.fr/general/emploi-et-handicap-et-si-on-commencait-par-un-duo/",
+        "pubDate": "Mon, 12 Oct 2026 08:00:34 GMT",
+        "source": "RSS"
+      },
+      {
         "title": "Pixels de suivi dans les mails : ce qu’il faut savoir",
         "link": "https://www.cdg10.fr/general/pixels-de-suivi-dans-les-mails-ce-quil-faut-savoir/",
         "pubDate": "Thu, 08 Oct 2026 08:42:07 GMT",
@@ -513,12 +519,6 @@
         "link": "https://www.cdg10.fr/general/le-service-rgpd-evolue-merci-christine-bienvenue-sarah/",
         "pubDate": "Fri, 25 Sep 2026 10:43:00 GMT",
         "source": "RSS"
-      },
-      {
-        "title": "Campagne RSU 2025 : plus que quelques semaines pour valider votre saisie !",
-        "link": "https://www.cdg10.fr/general/campagne-rsu-2025-plus-que-quelques-semaines-pour-valider-votre-saisie/",
-        "pubDate": "Thu, 24 Sep 2026 07:57:07 GMT",
-        "source": "RSS"
       }
     ]
   },
@@ -527,6 +527,20 @@
     "dept": "11",
     "officialUrl": "http://www.cdg11.fr",
     "news": [
+      {
+        "title": "Examen professionnel d’Animateur territorial principal de 1ère classe 2026: liste des candidats autorisés à passer l’épreuve orale.",
+        "link": "https://www.cdg11.fr/examen-professionnel-danimateur-territorial-principal-de-1ere-classe-2026-liste-des-candidats-autorises-a-passer-lepreuve-orale/",
+        "pubDate": "Thu, 15 Oct 2026 14:36:48 GMT",
+        "description": "Le jury de l’examen professionnel d’Animateur territorial principal de 1ère classe, réuni le 15 octobre 2026, a fixé la liste des candidats autorisés à passer l’épreuve orale ainsi qu’il suit : Liste des candidats autorisés à passer l’épreuve orale (pour les candidats n’ayant pas autorisé... L’artic",
+        "source": "RSS"
+      },
+      {
+        "title": "Cybermois 2026 : « Se Cyber Protéger, ce n’est pas si bête »",
+        "link": "https://www.cdg11.fr/cybermois-2026-se-cyber-proteger-ce-nest-pas-si-bete/",
+        "pubDate": "Thu, 15 Oct 2026 12:54:56 GMT",
+        "description": "Cybermois 2026 : « Se Cyber Protéger, ce n’est pas si bête » Nous avons tous entendu parler de cybersécurité. Nous savons qu’il faut faire attention et pourtant, les bons réflexes ne sont pas toujours appliqués. C’est de ce constat qu’est née la campagne 2026... L’article Cybermois 2026 : « Se Cyber",
+        "source": "RSS"
+      },
       {
         "title": "Elections professionnelles 2026 – bien se préparer",
         "link": "https://www.cdg11.fr/elections-professionnelles-2026-bien-se-preparer/",
@@ -567,20 +581,6 @@
         "link": "https://www.cdg11.fr/resultats-admission-concours-technicien-territorial-2026-specialite-reseaux-voirie-et-infrastructures/",
         "pubDate": "Wed, 01 Jul 2026 14:51:57 GMT",
         "description": "La liste des candidats admis au concours de Technicien Territorial (RVI), par le jury réuni le 01 juillet 2026, est accessible en cliquant ici : Candidats admis EXTERNE /INTERNE/3éme VOIE . Pour les candidats n’ayant pas autorisé la diffusion de leur identité : seul votre numéro de... L’article RÉSU",
-        "source": "RSS"
-      },
-      {
-        "title": "Deuxième campagne promotion interne : agent de maîtrise et rédacteur (PI dérogatoire secrétaire de mairie)",
-        "link": "https://www.cdg11.fr/deuxieme-campagne-promotion-interne-agent-de-maitrise-et-redacteur-pi-derogatoire-secretaire-de-mairie/",
-        "pubDate": "Mon, 15 Jun 2026 07:20:06 GMT",
-        "description": "Une deuxième campagne de promotion interne pour les agents de maîtrise et les rédacteurs (PI dérogatoire secrétaire général de mairie) est ouverte. Les dossiers sont accessibles et téléchargeables sur notre site internet via le lien suivant https://www.cdg11.fr/gestion-du-personnel/carrieres/avancem",
-        "source": "RSS"
-      },
-      {
-        "title": "RÉSULTATS ADMISSIBILITÉ CONCOURS TECHNICIEN TERRITORIAL 2026, SPÉCIALITÉ « RÉSEAUX, VOIRIE ET INFRASTRUCTURES »",
-        "link": "https://www.cdg11.fr/resultats-admissibilite-concours-technicien-territorial-2026-specialite-reseaux-voirie-et-infrastructures/",
-        "pubDate": "Wed, 27 May 2026 10:20:57 GMT",
-        "description": "La liste des candidats admissibles au concours externe de Technicien Territorial (RVI), par le jury réuni le 26 mai 2026, est accessible en cliquant ici : Candidats admissibles EXTERNE . Pour les candidats n’ayant pas autorisé la diffusion de leur identité : seul votre numéro... L’article RÉSULTATS ",
         "source": "RSS"
       }
     ]
@@ -1162,51 +1162,51 @@
     "officialUrl": "http://www.cdg25.org",
     "news": [
       {
+        "title": "Elections professionnelles 2026 : réception du matériel de vote",
+        "link": "https://www.cdg25.org/vient-de-paraitre/elections-professionnelles-2026-reception-du-materiel-de-vote/",
+        "pubDate": "Fri, 16 Oct 2026 11:22:23 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Supplément familial de traitement : pensez à vérifier les droits de vos agents",
+        "link": "https://www.cdg25.org/vient-de-paraitre/supplement-familial-de-traitement-pensez-a-verifier-les-droits-de-vos-agents/",
+        "pubDate": "Fri, 16 Oct 2026 07:59:36 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Webinaire : le vote électronique",
+        "link": "https://www.cdg25.org/webinaire/webinaire-le-vote-electronique/",
+        "pubDate": "Thu, 15 Oct 2026 15:05:26 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Covoiturage domicile-travail : encouragez vos agents à partager leurs trajets !",
+        "link": "https://www.cdg25.org/vient-de-paraitre/covoiturage-domicile-travail-encouragez-vos-agents-a-partager-leurs-trajets/",
+        "pubDate": "Thu, 15 Oct 2026 09:13:45 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Modification des taux de cotisations IRCANTEC",
+        "link": "https://www.cdg25.org/vient-de-paraitre/modification-des-taux-de-cotisations-ircantec/",
+        "pubDate": "Wed, 14 Oct 2026 12:44:43 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Un nouveau plan santé au travail dans la fonction publique",
+        "link": "https://www.cdg25.org/vient-de-paraitre/un-nouveau-plan-sante-au-travail-dans-la-fonction-publique/",
+        "pubDate": "Wed, 14 Oct 2026 07:52:36 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Promotion interne 2027 : dossiers à retourner du 19 octobre 2026 au 4 décembre 2026",
+        "link": "https://www.cdg25.org/evenement/promotion-interne-2027-dossiers-a-retourner-du-19-octobre-2026-au-4-decembre-2026/",
+        "pubDate": "Tue, 13 Oct 2026 12:22:25 GMT",
+        "source": "RSS"
+      },
+      {
         "title": "Elections professionnelles 2026 : affichez les listes électorales avant le 4 octobre",
         "link": "https://www.cdg25.org/vient-de-paraitre/elections-professionnelles-2026-affichez-les-listes-electorales-avant-le-4-octobre/",
         "pubDate": "Fri, 25 Sep 2026 16:22:42 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Nouveau contrat groupe d’assurance statutaire : des réunions d’information pour tout savoir",
-        "link": "https://www.cdg25.org/evenement/nouveau-contrat-groupe-dassurance-statutaire-des-reunions-dinformation-pour-tout-savoir/",
-        "pubDate": "Tue, 22 Sep 2026 15:33:50 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Réseau des secrétaires généraux de mairie : 1ère rencontre départementale",
-        "link": "https://www.cdg25.org/evenement/reseau-des-secretaires-generaux-de-mairie-1ere-rencontre-departementale/",
-        "pubDate": "Tue, 22 Sep 2026 15:31:54 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Préparez l’avancement de vos agents pour 2027",
-        "link": "https://www.cdg25.org/vient-de-paraitre/preparez-lavancement-de-vos-agents-pour-2027/",
-        "pubDate": "Tue, 22 Sep 2026 15:30:56 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "(Re)visionner le webinaire : La rupture conventionnelle pérennisée dans la fonction publique",
-        "link": "https://www.cdg25.org/webinaire/webinaire-la-rupture-conventionnelle-perennisee-dans-la-fonction-publique/",
-        "pubDate": "Thu, 17 Sep 2026 09:01:32 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Formation des élus locaux : le DIF renforcé à compter du 1er décembre 2026",
-        "link": "https://www.cdg25.org/vient-de-paraitre/formation-des-elus-locaux-le-dif-renforce-a-compter-du-1er-decembre-2026/",
-        "pubDate": "Wed, 16 Sep 2026 05:06:55 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Avancements d’échelon du 4ème trimestre : téléchargez les arrêtés",
-        "link": "https://www.cdg25.org/vient-de-paraitre/avancements-dechelon-du-4eme-trimestre-telechargez-les-arretes-2/",
-        "pubDate": "Mon, 14 Sep 2026 06:56:07 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Venez rencontrer le centre de gestion sur le carrefour des collectivités locales",
-        "link": "https://www.cdg25.org/evenement/venez-rencontrer-le-centre-de-gestion-sur-le-carrefour-des-collectivites-locales/",
-        "pubDate": "Mon, 14 Sep 2026 06:53:43 GMT",
         "source": "RSS"
       }
     ]
@@ -1280,6 +1280,13 @@
     "officialUrl": "http://www.cdg27.fr",
     "news": [
       {
+        "title": "DuoDay – le 19 novembre 2026",
+        "link": "https://www.cdg27.fr/duoday-le-19-novembre-2026/",
+        "pubDate": "Fri, 16 Oct 2026 11:44:07 GMT",
+        "description": "Le DuoDay est un évènement qui permet à une personne en situation de handicap de faire une immersion professionnelle non rémunérée sur une journée. En 2026, le DuoDay se tiendra le 19 novembre. L’opération est pilotée par l’ALGEEI en […] L’article DuoDay – le 19 novembre 2026 est apparu en premier s",
+        "source": "RSS"
+      },
+      {
         "title": "ELECTIONS PROFESSIONNELLES DU 10 Décembre 2026 :",
         "link": "https://www.cdg27.fr/elections-professionnelles-du-10-decembre-2026/",
         "pubDate": "Fri, 02 Oct 2026 13:14:38 GMT",
@@ -1294,10 +1301,10 @@
         "source": "RSS"
       },
       {
-        "title": "Webinaire 1h pour en parler",
+        "title": "Support disponible",
         "link": "https://www.cdg27.fr/webinaire-1h-pour-en-parler/",
         "pubDate": "Tue, 04 Aug 2026 06:25:15 GMT",
-        "description": "Nous avons le plaisir de vous convier à un webinaire organisé par les CDG Normands « 1h pour en parler » sur les cas de recours aux agents contractuels de droit public. Détails de l’événement Date : Le 15/10/2026 Heure : […] L’article Webinaire 1h pour en parler est apparu en premier sur Centre de G",
+        "description": "Le webinaire organisé par les CDG Normands « 1h pour en parler » sur les cas de recours aux agents contractuels de droit public s’est tenu le 15 octobre 2026. Retrouvez le support de cette réunion en cliquant sur l’image ci-dessous. L’article Support disponible est apparu en premier sur Centre de Ge",
         "source": "RSS"
       },
       {
@@ -1327,13 +1334,6 @@
         "pubDate": "Tue, 07 Apr 2026 09:08:49 GMT",
         "description": "Outil de dialogue social, le Rapport Social Unique est un document qui a pour objectif d’aider à la décision et au pilotage des ressources humaines de la collectivité. Toutes les collectivités territoriales et leurs établissements publics affiliés et non affiliés sont […] L’article Enquête RSU 2025 ",
         "source": "RSS"
-      },
-      {
-        "title": "Tutoriel – incompatibilité ou inaptitude",
-        "link": "https://www.cdg27.fr/tutoriel-incompatibilite-ou-inaptitude/",
-        "pubDate": "Fri, 27 Mar 2026 13:35:18 GMT",
-        "description": "L’article Tutoriel – incompatibilité ou inaptitude est apparu en premier sur Centre de Gestion de la fonction publique territoriale de l'Eure - Centre De Gestion 27 . ]]>",
-        "source": "RSS"
       }
     ]
   },
@@ -1342,6 +1342,12 @@
     "dept": "28",
     "officialUrl": "http://www.cdg28.fr",
     "news": [
+      {
+        "title": "Nouvelle version du guide relatif au droit syndical",
+        "link": "https://www.cdg28.fr/nouvelle-version-du-guide-relatif-au-droit-syndical/",
+        "pubDate": "Thu, 15 Oct 2026 14:22:51 GMT",
+        "source": "RSS"
+      },
       {
         "title": "Retour sur la matinée portes ouvertes",
         "link": "https://www.cdg28.fr/retour-sur-la-matinee-portes-ouvertes/",
@@ -1352,12 +1358,6 @@
         "title": "Nouvelles dispositions relatives aux congés pour raisons de santé et au temps partiel thérapeutique",
         "link": "https://www.cdg28.fr/nouvelles-dispositions-relatives-aux-conges-pour-raisons-de-sante-et-au-temps-partiel-therapeutique/",
         "pubDate": "Wed, 26 Aug 2026 11:50:13 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Contactez nos services",
-        "link": "https://www.cdg28.fr/contactez-nos-services/",
-        "pubDate": "Sat, 01 Aug 2026 06:14:53 GMT",
         "source": "RSS"
       },
       {
@@ -1398,10 +1398,52 @@
     "officialUrl": "http://www.cdg29.fr",
     "news": [
       {
+        "title": "Désignation d’un DPD par les communes : état des lieux 2025",
+        "link": "https://www.cdg29.bzh/actualite/designation-dun-dpd-par-les-communes-etat-des-lieux-2025/",
+        "pubDate": "Wed, 14 Oct 2026 13:59:06 GMT",
+        "description": "Selon l’étude de l’association Déclic (Association de délégués à la protection des données) réalisée en octobre 2025, 8216 communes ont désigné un DPD et cela représente au total 45% des communes qui ont fait le choix de la mutualisation dans la désignation de leur conseiller via un Opérateur public",
+        "source": "RSS"
+      },
+      {
+        "title": "Sanctions CNIL : retour sur le bilan 2025",
+        "link": "https://www.cdg29.bzh/actualite/sanctions-cnil-retour-sur-le-bilan-2025/",
+        "pubDate": "Wed, 14 Oct 2026 09:40:40 GMT",
+        "description": "Dans son bilan à date du 9 février 2026, elle attire l’attention des responsables de traitements sur deux points en particulier, qui ont fait l’objet de mise en demeure, voire de sanctions. Le premier est celui de la conformité des sites web avec un non-respect des règles constaté dans certaines str",
+        "source": "RSS"
+      },
+      {
+        "title": "Vidéoprotection et caméras augmentées dans les écoles communales : Mises en garde de la CNIL et du Conseil d’Etat",
+        "link": "https://www.cdg29.bzh/actualite/videoprotection-et-cameras-augmentees-dans-les-ecoles-communales-mises-en-garde-de-la-cnil-et-du-conseil-detat/",
+        "pubDate": "Wed, 14 Oct 2026 09:38:36 GMT",
+        "description": "La CNIL considère que leur installation sur la voie publique à des fins de protection d’un établissement scolaire n’est pas possible en l’absence d’une loi pour l’autoriser. Les caméras disposant d’un système d’IA sont proscrites et le Conseil d’Etat l’a récemment rappelé dans une décision en date d",
+        "source": "RSS"
+      },
+      {
+        "title": "Un cap pour la nouvelle mandature : premier conseil d’administration du CDG29 !",
+        "link": "https://www.cdg29.bzh/actualite/un-cap-pour-la-nouvelle-mandature-du-cdg29/",
+        "pubDate": "Mon, 12 Oct 2026 10:49:26 GMT",
+        "description": "Renforcer la proximité avec les élus, être à l’écoute des besoins des collectivités et garantir la maîtrise financière de l’établissement : des priorités au service d’un pacte de confiance, avec l’ambition de faire du Centre de Gestion une véritable maison commune pour les collectivités finistérienn",
+        "source": "RSS"
+      },
+      {
+        "title": "Octobre Rose : les agents du CDG29 unis contre le cancer du sein !",
+        "link": "https://www.cdg29.bzh/actualite/octobre-rose-les-agents-du-cdg29-unis-contre-le-cancer-du-sein/",
+        "pubDate": "Fri, 09 Oct 2026 07:26:33 GMT",
+        "description": "Avec près de 12 000 participants mobilisés, que ce soit en courant, en marchant ou en vélo, nos agents ont relevé le défi vêtus du célèbre t-shirt rose et de serre-têtes flamboyants ! 🦩 Ils ont parcouru ensemble les 6,5 kilomètres avec enthousiasme pour soutenir la lutte contre le cancer du sein 💪",
+        "source": "RSS"
+      },
+      {
+        "title": "Fin de carrière : anticiper pour rester acteur de son parcours",
+        "link": "https://www.cdg29.bzh/actualite/derniere-partie-de-carriere-anticiper-pour-rester-acteur-de-son-parcours/",
+        "pubDate": "Wed, 07 Oct 2026 13:50:08 GMT",
+        "description": "Plutôt que d’attendre une difficulté ou la proximité de la retraite, prendre le temps de se questionner permet de rester acteur de son parcours et de construire progressivement la suite. Voici trois pistes de réflexion : Faire le point sur sa situation et ses envies Qu’est-ce que j’apprécie encore d",
+        "source": "RSS"
+      },
+      {
         "title": "Titres-restaurant : des réunions pour préparer le nouveau contrat-groupe 2027",
         "link": "https://www.cdg29.bzh/actualite/titres-restaurant-des-reunions-pour-preparer-le-nouveau-contrat-groupe-2027/",
         "pubDate": "Mon, 05 Oct 2026 13:10:20 GMT",
-        "description": "Ces rendez-vous s’adressent aux gestionnaires RH des collectivités qui souhaitent rejoindre le nouveau contrat-groupe ou poursuivre leur adhésion. Ils permettront notamment de présenter les modalités du nouveau marché et de répondre aux questions concernant : Quatre rendez-vous proposés Une réunion ",
+        "description": "Ces rendez-vous s’adressent aux gestionnaires RH des collectivités qui souhaitent rejoindre le nouveau contrat-groupe ou poursuivre leur adhésion. Ils permettront notamment de présenter les modalités du nouveau marché et de répondre aux questions concernant : 3 rendez-vous proposés Trois webinaires ",
         "source": "RSS"
       },
       {
@@ -1409,48 +1451,6 @@
         "link": "https://www.cdg29.bzh/actualite/2026-le-centenaire-du-cadre-de-classement-de-1926-des-archives-communales/",
         "pubDate": "Mon, 05 Oct 2026 12:45:31 GMT",
         "description": "En France, le cadre de classement de 1926 a marqué une étape décisive dans l’organisation et la gestion de ces archives. Ce système, toujours utilisé aujourd’hui, a permis de structurer de manière cohérente les documents produits par les communes, facilitant ainsi leur conservation, leur accès et le",
-        "source": "RSS"
-      },
-      {
-        "title": "Le CDG29 au Carrefour des communes du Finistère : deux journées au service des collectivités",
-        "link": "https://www.cdg29.bzh/actualite/le-cdg29-au-carrefour-des-communes-du-finistere-deux-journees-au-service-des-collectivites/",
-        "pubDate": "Mon, 05 Oct 2026 08:40:12 GMT",
-        "description": "Un rendez-vous privilégié avec les collectivités finistériennes Installées au stand n°18, dans l’espace « Institutions – partenaires territoriaux », les équipes du CDG29 ont accueilli élus et agents territoriaux tout au long de l’événement. Ces échanges ont permis de présenter les missions du Centre",
-        "source": "RSS"
-      },
-      {
-        "title": "Élections professionnelles 2026",
-        "link": "https://www.cdg29.bzh/actualite/elections-professionnelles-2026/",
-        "pubDate": "Mon, 05 Oct 2026 07:23:45 GMT",
-        "description": "Les élections professionnelles des représentants du personnel, qui se dérouleront par vote électronique pour les instances placées auprès du Centre de Gestion du Finistère (CAP A, CAP B, CAP C, CCP et CST Départemental), auront lieu entre le jeudi 3 décembre 2026 – 9h00 et le jeudi 10 décembre 2026 ",
-        "source": "RSS"
-      },
-      {
-        "title": "Webinaire RSU : le support de présentation est disponible",
-        "link": "https://www.cdg29.bzh/actualite/webinaire-rsu-le-support-de-presentation-est-disponible/",
-        "pubDate": "Tue, 29 Sep 2026 09:33:50 GMT",
-        "description": "C’est dans cette optique que les Centres de Gestion bretons vous ont proposé un webinaire régional sur la valorisation de vos données RSU le 22 septembre dernier. Pour revoir la présentation, téléchargez le document ci-dessous : L’article Webinaire RSU : le support de présentation est disponible est",
-        "source": "RSS"
-      },
-      {
-        "title": "Le CDG29 au Carrefour des communes du Finistère : deux journées au service des collectivités",
-        "link": "https://www.cdg29.bzh/actualite/retrouvez-le-cdg29-au-carrefour-des-communes-a-brest/",
-        "pubDate": "Mon, 28 Sep 2026 14:07:45 GMT",
-        "description": "Un rendez-vous privilégié avec les collectivités finistériennes Installées au stand n°18, dans l’espace « Institutions – partenaires territoriaux », les équipes du CDG29 ont accueilli élus et agents territoriaux tout au long de l’événement. Ces échanges ont permis de présenter les missions du Centre",
-        "source": "RSS"
-      },
-      {
-        "title": "Lignes directrices de gestion : anticipons l’échéance du 31 décembre 2026 !",
-        "link": "https://www.cdg29.bzh/actualite/lignes-directrices-de-gestion-anticipons-lecheance-du-31-decembre-2026/",
-        "pubDate": "Mon, 28 Sep 2026 14:04:09 GMT",
-        "description": "Votre collectivité est-elle concernée ? Si votre collectivité arrive au terme de ses LDG et que vous n’avez pas encore eu l’occasion de définir le contenu de celles à venir avec votre nouvelle gouvernance, nous vous invitons à anticiper cette échéance. Dans ce contexte, le CDG préconise de : Pourquo",
-        "source": "RSS"
-      },
-      {
-        "title": "Club RH “action disciplinaire” du 15 septembre",
-        "link": "https://www.cdg29.bzh/actualite/club-rh-action-disciplinaire-le-support-est-disponible/",
-        "pubDate": "Mon, 28 Sep 2026 14:02:46 GMT",
-        "description": "À la suite de ce Club RH consacré à l’action disciplinaire, nous mettons à votre disposition le support de présentation ainsi que les modèles de jeux. L’article Club RH “action disciplinaire” du 15 septembre est apparu en premier sur Centre de Gestion du Finistère . ]]>",
         "source": "RSS"
       }
     ]
@@ -1483,15 +1483,8 @@
     "officialUrl": "http://www.cdg31.fr",
     "news": [
       {
-        "title": "Les plans de prévention : mieux prévenir les risques liés aux interventions",
-        "link": "https://www.cdg31.fr/content/les-plans-de-prevention-mieux-prevenir-les-risques-lies-aux-interventions-0",
-        "pubDate": "Tue, 29 Sep 2026 14:28:35 GMT",
-        "description": "<div class=\"field field-name-field-news-image field-type-image field-label-hidden\"><div class=\"field-items\"><div class=\"field-item even\"><a href=\"/content/les-plans-de-prevention-mieux-prevenir-les-risques-lies-aux-interventions-0\"><img src=\"https://www.cdg31.fr/sites/default/files/styles/node_diapo",
-        "source": "RSS"
-      },
-      {
-        "title": "Lettre d'information du CDG31 - n°240 - Septembre 2026",
-        "link": "https://www.cdg31.fr/content/lettre-dinformation-du-cdg31-ndeg240-septembre-2026",
+        "title": "Lettre d'information du CDG31 - n°240 - Octobre 2026",
+        "link": "https://www.cdg31.fr/content/lettre-dinformation-du-cdg31-ndeg240-octobre-2026",
         "pubDate": "Mon, 28 Sep 2026 16:39:48 GMT",
         "description": "<div class=\"field field-name-field-couleur-de-fond field-type-text field-label-above\"><div class=\"field-label\">Couleur de fond:&nbsp;</div><div class=\"field-items\"><div class=\"field-item even\">#e1ae13</div></div></div><div class=\"field field-name-field-logo field-type-image field-label-above\"><div c",
         "source": "RSS"
@@ -1537,6 +1530,13 @@
         "pubDate": "Mon, 18 May 2026 08:59:19 GMT",
         "description": "<div class=\"field field-name-field-couleur-de-fond field-type-text field-label-above\"><div class=\"field-label\">Couleur de fond:&nbsp;</div><div class=\"field-items\"><div class=\"field-item even\">#e1ae13</div></div></div><div class=\"field field-name-field-logo field-type-image field-label-above\"><div c",
         "source": "RSS"
+      },
+      {
+        "title": "Flash spécial du CDG31 - n°235 - Élections du Conseil d’Administration du CDG31 2026",
+        "link": "https://www.cdg31.fr/content/flash-special-du-cdg31-ndeg235-elections-du-conseil-dadministration-du-cdg31-2026",
+        "pubDate": "Mon, 04 May 2026 12:39:27 GMT",
+        "description": "<div class=\"field field-name-field-couleur-de-fond field-type-text field-label-above\"><div class=\"field-label\">Couleur de fond:&nbsp;</div><div class=\"field-items\"><div class=\"field-item even\">#e1ae13</div></div></div><div class=\"field field-name-field-logo field-type-image field-label-above\"><div c",
+        "source": "RSS"
       }
     ]
   },
@@ -1546,44 +1546,60 @@
     "officialUrl": "http://www.cdg32.fr",
     "news": [
       {
-        "title": "Devenir agent public",
-        "link": "https://cdg32.fr/emploi/devenir-agent-public/",
-        "source": "HTML"
+        "title": "Nouvelle convention de participation prévoyance",
+        "link": "https://cdg32.fr/actualites/nouvelle-convention-de-participation-prevoyance-2027/",
+        "pubDate": "Thu, 15 Oct 2026 07:06:17 GMT",
+        "description": "The post Nouvelle convention de participation prévoyance appeared first on Centre de Gestion du Gers . ]]>",
+        "source": "RSS"
       },
       {
-        "title": "Publications et outils",
-        "link": "https://cdg32.fr/publications-et-outils/",
-        "source": "HTML"
-      },
-      {
-        "title": "Je suis grand public",
-        "link": "https://cdg32.fr/je-suis-grand-public/",
-        "source": "HTML"
-      },
-      {
-        "title": "A LA UNE 19/12/25 Installation du nouveau conseil d’administration au CDG 32 ! Le CDG Installation du conseil d’administration au CDG 32...",
-        "link": "https://cdg32.fr/actualites/installation-du-nouveau-conseil-dadministration-au-cdg-32/",
-        "source": "HTML"
-      },
-      {
-        "title": "Bien Vivre au Travail 08/10/26 L'association une sur cinq Une sur Cinq est une association qui a pour objet la prévention et la lutte contre les violences sexistes et sexuelles a...",
+        "title": "L’association une sur cinq",
         "link": "https://cdg32.fr/actualites/lassociation-une-sur-cinq/",
-        "source": "HTML"
+        "pubDate": "Thu, 08 Oct 2026 15:06:42 GMT",
+        "description": "Sorry, but you do not have permission to view this content. The post L’association une sur cinq appeared first on Centre de Gestion du Gers . ]]>",
+        "source": "RSS"
       },
       {
-        "title": "Statut 06/10/26 Secrétaires généraux de mairie - Promotion interne... Retrouvez ici les modalités de mise en œuvre de la promotion interne dérogatoire",
+        "title": "Secrétaires généraux de mairie – Promotion interne 2026",
         "link": "https://cdg32.fr/actualites/secretaires-generaux-de-mairie-promotion-interne-2026/",
-        "source": "HTML"
+        "pubDate": "Tue, 06 Oct 2026 10:05:06 GMT",
+        "description": "The post Secrétaires généraux de mairie – Promotion interne 2026 appeared first on Centre de Gestion du Gers . ]]>",
+        "source": "RSS"
       },
       {
-        "title": "Statut 18/09/26 Élections professionnelles 2026 Etape 3 : Publicité des listes électorales",
+        "title": "Élections professionnelles 2026",
         "link": "https://cdg32.fr/actualites/elections-professionnelles-2026-3/",
-        "source": "HTML"
+        "pubDate": "Fri, 18 Sep 2026 12:44:55 GMT",
+        "description": "The post Élections professionnelles 2026 appeared first on Centre de Gestion du Gers . ]]>",
+        "source": "RSS"
       },
       {
-        "title": "Emploi 02/09/26 Campagne RSU 2025 Plus qu’un mois pour finaliser votre Rapport Social Unique.",
+        "title": "Campagne RSU 2025",
         "link": "https://cdg32.fr/actualites/campagne-rsu-2025/",
-        "source": "HTML"
+        "pubDate": "Wed, 02 Sep 2026 08:13:26 GMT",
+        "description": "The post Campagne RSU 2025 appeared first on Centre de Gestion du Gers . ]]>",
+        "source": "RSS"
+      },
+      {
+        "title": "Les autorisations spéciales d’absence (ASA)",
+        "link": "https://cdg32.fr/actualites/les-autorisations-speciales-dabsence-asa/",
+        "pubDate": "Tue, 01 Sep 2026 14:14:13 GMT",
+        "description": "The post Les autorisations spéciales d’absence (ASA) appeared first on Centre de Gestion du Gers . ]]>",
+        "source": "RSS"
+      },
+      {
+        "title": "Congés pour raisons de santé : de nouvelles règles",
+        "link": "https://cdg32.fr/actualites/conges-pour-raisons-de-sante-de-nouvelles-regles/",
+        "pubDate": "Tue, 01 Sep 2026 13:34:07 GMT",
+        "description": "The post Congés pour raisons de santé : de nouvelles règles appeared first on Centre de Gestion du Gers . ]]>",
+        "source": "RSS"
+      },
+      {
+        "title": "Régime indemnitaire de l’encadrement supérieur",
+        "link": "https://cdg32.fr/actualites/regime-indemnitaire-de-lencadrement-superieur/",
+        "pubDate": "Tue, 01 Sep 2026 09:04:47 GMT",
+        "description": "The post Régime indemnitaire de l’encadrement supérieur appeared first on Centre de Gestion du Gers . ]]>",
+        "source": "RSS"
       }
     ]
   },
@@ -1592,6 +1608,12 @@
     "dept": "33",
     "officialUrl": "http://www.cdg33.fr",
     "news": [
+      {
+        "title": "Sobriété énergétique",
+        "link": "https://www.cdg33.fr/cdg-33/actualites/sobriete-energetique/",
+        "pubDate": "Sun, 18 Oct 2026 06:25:06 GMT",
+        "source": "RSS"
+      },
       {
         "title": "IRCANTEC : Evolution progressive des taux de 2027 à 2029",
         "link": "https://www.cdg33.fr/cdg-33/actualites/ircantec-evolution-progressive-des-taux-de-2027-a-2029/",
@@ -1632,12 +1654,6 @@
         "title": "Retraites – des vidéos pour vous aider",
         "link": "https://www.cdg33.fr/cdg-33/actualites/retraites-des-videos-pour-vous-aider/",
         "pubDate": "Mon, 21 Sep 2026 09:45:28 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Pensions : de nouveaux droits liés aux enfants",
-        "link": "https://www.cdg33.fr/cdg-33/actualites/pensions-de-nouveaux-droits-lies-aux-enfants/",
-        "pubDate": "Wed, 02 Sep 2026 13:08:19 GMT",
         "source": "RSS"
       }
     ]
@@ -1796,6 +1812,13 @@
     "officialUrl": "http://www.cdg37.fr",
     "news": [
       {
+        "title": "CNRACL – Accès à la plateforme PEP’S temporairement indisponible",
+        "link": "https://www.cdg37.fr/cnracl-acces-a-la-plateforme-peps-temporairement-indisponible/",
+        "pubDate": "Thu, 15 Oct 2026 05:55:40 GMT",
+        "description": "Pour des raisons de sécurité, PEP’S est temporairement indisponible. La ligne téléphonique est également suspendue, les conseillers ne pouvant pas accéder aux dossiers. Les services de la CNRACL mettent tout en œuvre pour rétablir l’accès dans les meilleurs délais. Une communication officielle sera ",
+        "source": "RSS"
+      },
+      {
         "title": "l’actu du CDG 37 #15",
         "link": "https://www.cdg37.fr/lactu-du-cdg-37-13/",
         "pubDate": "Tue, 22 Sep 2026 08:47:20 GMT",
@@ -1843,13 +1866,6 @@
         "pubDate": "Mon, 19 Jan 2026 08:59:25 GMT",
         "description": "Les horaires d’accueil du public évoluent. Le Centre de Gestion d’Indre-et-Loire vous accueille : du lundi au jeudi de 9h00 à 12h00 et de 14h00 à 16h00 le vendredi de 9h00 à 12h00 et de 14h00 à 15h00 L’accueil téléphonique est assuré pendant les mêmes horaires. The post Changement des horaires d’acc",
         "source": "RSS"
-      },
-      {
-        "title": "Collectivités adhérentes au contrat groupe : il est temps de procéder à votre déclaration !",
-        "link": "https://www.cdg37.fr/collectivites-adherentes-au-contrat-groupe-il-est-temps-de-proceder-a-votre-declaration/",
-        "pubDate": "Fri, 12 Dec 2025 14:17:06 GMT",
-        "description": "Pensez à déclarer vos bases d’assurance pour le calcul de la complémentaire 2025. Pour les collectivités ayant déjà accès à la plateforme Relyens Connectez-vous à votre espace client de Relyens avec votre identifiant et mot de passe habituel puis dans la rubrique “Bases de l’assurance”, cliquez sur ",
-        "source": "RSS"
       }
     ]
   },
@@ -1877,6 +1893,20 @@
     "dept": "39",
     "officialUrl": "http://www.cdgjura.fr/",
     "news": [
+      {
+        "title": "Offres d’emploi au Centre de gestion du Jura",
+        "link": "https://www.cdgjura.fr/offres-demploi-au-centre-de-gestion-du-jura/",
+        "pubDate": "Thu, 15 Oct 2026 09:33:07 GMT",
+        "description": "Le CDG39 recherche des candidats afin d’honorer les postes cités ci-dessous. Le détail des offres peut être consulté en cliquant sur ces emplois. The post Offres d’emploi au Centre de gestion du Jura appeared first on Centre de Gestion du Jura . ]]>",
+        "source": "RSS"
+      },
+      {
+        "title": "Comité social territorial",
+        "link": "https://www.cdgjura.fr/comite-social-territorial-3/",
+        "pubDate": "Wed, 14 Oct 2026 08:52:03 GMT",
+        "description": "La réunion du prochain CST se tiendra le 10 novembre 2026. The post Comité social territorial appeared first on Centre de Gestion du Jura . ]]>",
+        "source": "RSS"
+      },
       {
         "title": "Réunion du Conseil médical",
         "link": "https://www.cdgjura.fr/reunion-du-conseil-medical-6/",
@@ -1917,20 +1947,6 @@
         "link": "https://www.cdgjura.fr/fermeture-du-centre-de-gestion/",
         "pubDate": "Mon, 06 Jul 2026 05:44:24 GMT",
         "description": "Le Centre de gestion du Jura sera exceptionnellement fermé le lundi 13 juillet 2026. The post Fermeture du Centre de gestion appeared first on Centre de Gestion du Jura . ]]>",
-        "source": "RSS"
-      },
-      {
-        "title": "Séance du Conseil médical",
-        "link": "https://www.cdgjura.fr/seance-du-conseil-medical/",
-        "pubDate": "Fri, 03 Jul 2026 09:49:00 GMT",
-        "description": "Le prochain Conseil médical aura lieu le 3 septembre 2026. Les dossiers devront parvenir au secrétariat de cette instance pour le 13 août au plus tard. The post Séance du Conseil médical appeared first on Centre de Gestion du Jura . ]]>",
-        "source": "RSS"
-      },
-      {
-        "title": "Offre de services du CDG39 pour 2026",
-        "link": "https://www.cdgjura.fr/offre-de-services-du-cdg39-pour-2026/",
-        "pubDate": "Tue, 23 Jun 2026 09:41:33 GMT",
-        "description": "Un document répertoriant les services du Centre de gestion du Jura, a été conçu pour permettre à l’ensemble des communes et établissements publics de mieux appréhender l’étendue et la diversité des services que le Centre de Gestion propose pour l’année 2026. Ce document est consultable en cliquant I",
         "source": "RSS"
       }
     ]
@@ -1988,6 +2004,13 @@
     "officialUrl": "http://www.cdg41.org",
     "news": [
       {
+        "title": "DEMARCHE QVCT",
+        "link": "https://www.cdg-41.org/2026/10/13/demarche-qvct/",
+        "pubDate": "Tue, 13 Oct 2026 15:00:35 GMT",
+        "description": "Au terme des réunions d’information animées par notre partenaire RELYENS et en collaboration avec la CFDT INTERCO, vous trouverez ci-dessous le support. N’hésitez pas à prendre l’attache de Madame GUICHARD si vous souhaitez participer à l’aventure de co-construction d’une charte QVCT. Cliquez ici L’",
+        "source": "RSS"
+      },
+      {
         "title": "RESULTATS CONCOURS AIDE SOIGNANT DE CLASSE NORMALE",
         "link": "https://www.cdg-41.org/2026/10/08/resultats-concours-aide-soignant-de-classe-normale/",
         "pubDate": "Thu, 08 Oct 2026 14:55:45 GMT",
@@ -2034,13 +2057,6 @@
         "link": "https://www.cdg-41.org/2026/08/26/flashinfo-prevention-aout-2026/",
         "pubDate": "Wed, 26 Aug 2026 11:11:20 GMT",
         "description": "Cliquez ici L’article FLASH’INFO PREVENTION AOUT 2026 est apparu en premier sur CDG41 . ]]>",
-        "source": "RSS"
-      },
-      {
-        "title": "ESSENTIEL DE l’ACTU JUILLET 2026",
-        "link": "https://www.cdg-41.org/2026/07/20/essentiel-de-lactu-juillet-2026/",
-        "pubDate": "Mon, 20 Jul 2026 11:58:52 GMT",
-        "description": "Fiche ASA L’article ESSENTIEL DE l’ACTU JUILLET 2026 est apparu en premier sur CDG41 . ]]>",
         "source": "RSS"
       }
     ]
@@ -2207,15 +2223,15 @@
         "source": "HTML"
       },
       {
-        "title": "Conférence : \"Qu'est-ce qu'un management qui crée réellement de la valeur ?\"‌ par Ibrahima Fall Conférence Grand Témoin sur la valeur managériale et le travail avec la participation de Ibrahima Fall le mardi 6 octobre de 17h à 19h à Nantes 05 Oct 2026 voir l'actualité",
-        "link": "https://www.cdg44.fr/actualites/conference-quest-ce-quun-management-qui-cree-reellement-de-la-valeur-par-ibrahima-fall",
-        "pubDate": "Mon, 05 Oct 2026 00:00:00 GMT",
+        "title": "Assurance du risque statutaire Adhérer au contrat collectif d’assurance du risque statutaire permet le remboursement de tout ou partie du traitement versé aux agents en arrêt pour raison de santé. 15 Oct 2026 voir l'actualité",
+        "link": "https://www.cdg44.fr/actualites/assurance-du-risque-statutaire",
+        "pubDate": "Thu, 15 Oct 2026 00:00:00 GMT",
         "source": "HTML"
       },
       {
-        "title": "Campagne RSU 2025 : fin de la campagne 05 Oct 2026",
-        "link": "https://www.cdg44.fr/actualites/campagne-rsu-2025-fin-de-la-campagne",
-        "pubDate": "Mon, 05 Oct 2026 00:00:00 GMT",
+        "title": "Élections professionnelles 2026 : affichage des listes à partir du 2 octobre et vérification jusqu'au 14 octobre 12 Oct 2026",
+        "link": "https://www.cdg44.fr/actualites/elections-professionnelles-2026-affichage-des-listes-partir-du-2-octobre-et-verification-jusquau-14-octobre",
+        "pubDate": "Mon, 12 Oct 2026 00:00:00 GMT",
         "source": "HTML"
       }
     ]
@@ -2225,6 +2241,18 @@
     "dept": "45",
     "officialUrl": "http://www.cdg45.fr",
     "news": [
+      {
+        "title": "Plateforme PEPs inaccessible",
+        "link": "https://www.cdg45.fr/plateforme-peps-inaccessible/",
+        "pubDate": "Thu, 15 Oct 2026 10:13:09 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "ELECTIONS PROFESSIONNELLES – COMMENT VOTER PAR INTERNET",
+        "link": "https://www.cdg45.fr/elections-professionnelles-comment-voter-par-internet/",
+        "pubDate": "Wed, 14 Oct 2026 07:05:13 GMT",
+        "source": "RSS"
+      },
       {
         "title": "Calendriers prévisionnels des CAP – CCP – CST 2027",
         "link": "https://www.cdg45.fr/calendriers-previsionnels-des-cap-ccp-cst-2027/",
@@ -2260,18 +2288,6 @@
         "link": "https://www.cdg45.fr/arthrose-quand-les-articulations-font-leurs-crises/",
         "pubDate": "Tue, 01 Sep 2026 05:30:12 GMT",
         "source": "RSS"
-      },
-      {
-        "title": "URGENT : Lignes Directrices de Gestion",
-        "link": "https://www.cdg45.fr/urgent-lignes-directrices-de-gestion/",
-        "pubDate": "Thu, 30 Jul 2026 07:51:43 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Retraite : Traitement des dossiers des agents ayant accompli des services de sapeur-pompier volontaire.",
-        "link": "https://www.cdg45.fr/retraite-traitement-des-dossiers-des-agents-ayant-accompli-des-services-de-sapeur-pompier-volontaire/",
-        "pubDate": "Fri, 24 Jul 2026 12:57:43 GMT",
-        "source": "RSS"
       }
     ]
   },
@@ -2280,6 +2296,25 @@
     "dept": "46",
     "officialUrl": "http://www.cdg46.fr",
     "news": [
+      {
+        "title": "Bulletin d'information Octobre 2026",
+        "link": "https://www.cdg46.fr/detail/bulletin-dinformation-octobre-2026",
+        "pubDate": "Wed, 14 Oct 2026 07:05:01 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "PROTECTION SOCIALE COMPLEMENTAIRE",
+        "link": "https://www.cdg46.fr/detail/protection-sociale-complementaire",
+        "pubDate": "Mon, 12 Oct 2026 13:37:28 GMT",
+        "description": "L'impact de la loi du 22 décembre 2025 sur la prévoyance",
+        "source": "RSS"
+      },
+      {
+        "title": "Mise à jour technique de notre site internet le 20 octobre 2026",
+        "link": "https://www.cdg46.fr/detail/mise-a-jour-technique-de-notre-site-internet-le-20-octobre-2026",
+        "pubDate": "Mon, 12 Oct 2026 07:59:00 GMT",
+        "source": "RSS"
+      },
       {
         "title": "Salon de l'emploi public",
         "link": "https://www.cdg46.fr/detail/salon-de-lemploi-public",
@@ -2309,25 +2344,6 @@
         "title": "Une FAQ dédiée aux retraites à votre disposition",
         "link": "https://www.cdg46.fr/detail/une-faq-dediee-aux-retraites-a-votre-disposition",
         "pubDate": "Fri, 18 Sep 2026 06:05:04 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Et si, cette fois, vous étiez candidat ?",
-        "link": "https://www.cdg46.fr/detail/et-si-cette-fois-vous-etiez-candidat",
-        "pubDate": "Tue, 15 Sep 2026 07:00:00 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Salon régional emploi et mobilités publics en distanciel",
-        "link": "https://www.cdg46.fr/detail/salon-regional-emploi-et-mobilites-publics-en-distanciel-en-deux-dates-cles",
-        "pubDate": "Wed, 09 Sep 2026 13:09:21 GMT",
-        "description": "La PFRH Occitanie organise le salon régional emploi et mobilités publics en distanciel",
-        "source": "RSS"
-      },
-      {
-        "title": "Rupture conventionnelle : le simulateur de calcul de l’indemnité mis à jour",
-        "link": "https://www.cdg46.fr/detail/rupture-conventionnelle-le-simulateur-de-calcul-de-lindemnite-mis-a-jour",
-        "pubDate": "Wed, 09 Sep 2026 11:33:00 GMT",
         "source": "RSS"
       }
     ]
@@ -2385,6 +2401,13 @@
     "officialUrl": "http://www.cdg48.fr",
     "news": [
       {
+        "title": "Offre d’emploi – Secrétaire général(e) de mairie – Les Salces -Réf : 2026-43",
+        "link": "https://www.cdg48.fr/emploi/offre-demploi-secretaire-generale-de-mairie-les-salces-ref-2026-43/",
+        "pubDate": "Thu, 15 Oct 2026 14:37:52 GMT",
+        "description": "Les Salces recrute pour le 1er février 2027 un(e) secrétaire général(e) de mairie (H/F) Temps non complet (21 h hebdomadaires sur 3 jours. Recrutement par voie statutaire sur le grade de rédacteur (cat. B) ou à défaut par voie contractuelle. L’article Offre d’emploi – Secrétaire général(e) de mairie",
+        "source": "RSS"
+      },
+      {
         "title": "Offre d’emploi – Infirmier en santé au travail – CDG48 -Réf : 2026-42",
         "link": "https://www.cdg48.fr/emploi/offre-demploi-infirmier-en-sante-au-travail-cdg48-ref-2026-42/",
         "pubDate": "Fri, 09 Oct 2026 14:09:35 GMT",
@@ -2431,13 +2454,6 @@
         "link": "https://www.cdg48.fr/employeur-public/flash-2026-11-du-service-statut-carrieres/",
         "pubDate": "Mon, 21 Sep 2026 13:39:58 GMT",
         "description": "Ce contenu est restreint. L’article Flash 2026-11 du service Statut-Carrières est apparu en premier sur Site internet du Centre de Gestion de la Fonction Publique Territoriale de la Lozère . ]]>",
-        "source": "RSS"
-      },
-      {
-        "title": "Liste d’admission ACPBP2-AG",
-        "link": "https://www.cdg48.fr/examen-professionnel/liste-dadmission/",
-        "pubDate": "Mon, 14 Sep 2026 12:07:01 GMT",
-        "description": "Liste d'admission à l'examen professionnel d'assistant de conservation du patrimoine et des bibliothèques principal 2e classe - Avancement de grade L’article Liste d’admission ACPBP2-AG est apparu en premier sur Site internet du Centre de Gestion de la Fonction Publique Territoriale de la Lozère . ]",
         "source": "RSS"
       }
     ]
@@ -2503,6 +2519,13 @@
     "officialUrl": "http://www.cdg50.fr",
     "news": [
       {
+        "title": "Prévention des addictions : une charte et des outils pratiques pour les collectivités",
+        "link": "https://cdg50.fr/charte-prevention-addictions/",
+        "pubDate": "Tue, 13 Oct 2026 07:08:24 GMT",
+        "description": "Le CDG 50 met à disposition des collectivités et établissements publics de la Manche une charte de prévention des addictions accompagnée d’outils pratiques, afin de… L’article Prévention des addictions : une charte et des outils pratiques pour les collectivités est apparu en premier sur CDG50 . ]]>",
+        "source": "RSS"
+      },
+      {
         "title": "Publication des tableaux annuels d’avancement de grade — 3e trimestre 2026",
         "link": "https://cdg50.fr/avancement-grade-3e-trimestre-2026/",
         "pubDate": "Tue, 06 Oct 2026 11:49:48 GMT",
@@ -2549,13 +2572,6 @@
         "link": "https://cdg50.fr/decouvrez-les-webinaires-1h-pour-en-parler-du-second-semestre-2026/",
         "pubDate": "Wed, 12 Aug 2026 13:41:27 GMT",
         "description": "L’article Découvrez les webinaires « 1h pour en parler » du second semestre 2026 est apparu en premier sur CDG50 . ]]>",
-        "source": "RSS"
-      },
-      {
-        "title": "Rupture conventionnelle : de nouvelles évolutions",
-        "link": "https://cdg50.fr/rupture-conventionnelle-maj-2026/",
-        "pubDate": "Wed, 12 Aug 2026 11:49:28 GMT",
-        "description": "Deux décrets parus au Journal Officiel du 7 août 2026 apportent des modifications au dispositif de la rupture conventionnelle : Suite à ces modifications, un arrêté… L’article Rupture conventionnelle : de nouvelles évolutions est apparu en premier sur CDG50 . ]]>",
         "source": "RSS"
       }
     ]
@@ -2688,13 +2704,13 @@
         "source": "HTML"
       },
       {
-        "title": "CNFPT : Préparation concours et examens 2027-2028 Publiée le 01 sept. 2026",
-        "link": "https://www.cdg53.fr/centre-de-gestion-mayenne/actualites/cnfpt-preparation-concours-et-examens-2027-2028",
+        "title": "Gestion du quotidien",
+        "link": "https://www.cdg53.fr/centre-de-gestion-mayenne/actualites",
         "source": "HTML"
       },
       {
-        "title": "Gestion du quotidien",
-        "link": "https://www.cdg53.fr/centre-de-gestion-mayenne/actualites",
+        "title": "CNFPT : Préparation concours et examens 2027-2028 Publiée le 01 sept. 2026",
+        "link": "https://www.cdg53.fr/centre-de-gestion-mayenne/actualites/cnfpt-preparation-concours-et-examens-2027-2028",
         "source": "HTML"
       },
       {
@@ -2709,6 +2725,12 @@
     "dept": "54",
     "officialUrl": "https://54.cdgplus.fr",
     "news": [
+      {
+        "title": "Actualités juridiques et statutaires",
+        "link": "https://54.cdgplus.fr/actualites-juridiques-et-statutaires-2/",
+        "pubDate": "Fri, 16 Oct 2026 09:25:47 GMT",
+        "source": "RSS"
+      },
       {
         "title": "Elections professionnelles 2026",
         "link": "https://54.cdgplus.fr/elections-professionnelles-2026/",
@@ -2731,12 +2753,6 @@
         "title": "Evolution des règles de consultation du Conseil Médical",
         "link": "https://54.cdgplus.fr/evolution-des-regles-de-consultation-du-conseil-medical/",
         "pubDate": "Tue, 25 Aug 2026 09:34:12 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Actualités juridiques et statutaires",
-        "link": "https://54.cdgplus.fr/actualites-juridiques-et-statutaires-2/",
-        "pubDate": "Mon, 24 Aug 2026 08:07:32 GMT",
         "source": "RSS"
       },
       {
@@ -2884,58 +2900,58 @@
     "news": [
       {
         "title": "À retenir pour le 3ème trimestre 2026",
-        "link": "https://www.cdg57.fr/a-retenir-pour-le-3eme-trimestre-2026/?utm_source=rss&utm_medium=rss&utm_campaign=a-retenir-pour-le-3eme-trimestre-2026",
+        "link": "https://www.cdg57.fr/a-retenir-pour-le-3eme-trimestre-2026/",
         "pubDate": "Thu, 08 Oct 2026 06:02:38 GMT",
         "description": "Arrêté du 3 juillet 2026 relatif à la répartition par niveaux des emplois relevant du décret n° 2026-484 du 10 juin 2026 portant dispositions statutaires applicables aux emplois fonctionnels administratifs de direction des collectivités territoriales et des établissements publics locaux assimilés. C",
         "source": "RSS"
       },
       {
         "title": "Elections professionnelles 2026 : dernière ligne droite avant le scrutin !",
-        "link": "https://www.cdg57.fr/elections-professionnelles-2026-derniere-ligne-droite-avant-le-scrutin/?utm_source=rss&utm_medium=rss&utm_campaign=elections-professionnelles-2026-derniere-ligne-droite-avant-le-scrutin",
+        "link": "https://www.cdg57.fr/elections-professionnelles-2026-derniere-ligne-droite-avant-le-scrutin/",
         "pubDate": "Fri, 02 Oct 2026 09:58:53 GMT",
         "description": "L’élection des représentants du personnel aux instances consultatives placées auprès du CDG 57 : Commissions administratives paritaires (CAP), Comités sociaux territoriaux (CST) et Commission consultative paritaire (CCP) aura lieu le jeudi 10 décembre 2026. Il revient au Centre de Gestion d’organise",
         "source": "RSS"
       },
       {
         "title": "10ème Colloque annuel de la Prévention",
-        "link": "https://www.cdg57.fr/10eme-colloque-annuel-de-la-prevention/?utm_source=rss&utm_medium=rss&utm_campaign=10eme-colloque-annuel-de-la-prevention",
+        "link": "https://www.cdg57.fr/10eme-colloque-annuel-de-la-prevention/",
         "pubDate": "Fri, 02 Oct 2026 09:41:47 GMT",
         "description": "Depuis 2016, le CDG57 organise chaque année un colloque consacré à une thématique de prévention des risques professionnels. Cet événement offre aux élus et aux personnels des collectivités un temps d’échange privilégié autour des sujets d’actualité du secteur. Cette année, le colloque se tiendra le ",
         "source": "RSS"
       },
       {
         "title": "Dématérialisation des saisines du Conseil Médical",
-        "link": "https://www.cdg57.fr/dematerialisation-des-saisines-du-conseil-medical/?utm_source=rss&utm_medium=rss&utm_campaign=dematerialisation-des-saisines-du-conseil-medical",
+        "link": "https://www.cdg57.fr/dematerialisation-des-saisines-du-conseil-medical/",
         "pubDate": "Fri, 02 Oct 2026 08:14:30 GMT",
         "description": "Le CDG57 poursuit sa démarche d’amélioration de la qualité de service avec la dématérialisation des saisines du Conseil Médical, via le logiciel AGIRHE. Les collectivités pourront désormais déposer leurs saisines en ligne, en remplacement de l’envoi postal des formulaires et pièces non médicales ; l",
         "source": "RSS"
       },
       {
         "title": "Nouveau : un simulateur de retraite progressive disponible sur PEP’S",
-        "link": "https://www.cdg57.fr/nouveau-un-simulateur-de-retraite-progressive-disponible-sur-peps/?utm_source=rss&utm_medium=rss&utm_campaign=nouveau-un-simulateur-de-retraite-progressive-disponible-sur-peps",
+        "link": "https://www.cdg57.fr/nouveau-un-simulateur-de-retraite-progressive-disponible-sur-peps/",
         "pubDate": "Fri, 02 Oct 2026 07:39:09 GMT",
         "description": "Depuis le 06 juillet dernier, le service Simulation de retraite CNRACL permet de simuler les droits à retraite d’un agent dans le cadre d’une retraite progressive. Cette nouvelle fonctionnalité vient compléter les possibilités de simulation déjà disponibles. Comment réaliser une simulation de retrai",
         "source": "RSS"
       },
       {
         "title": "Élections professionnelles 2026 : IMPRIMEZ ET AFFICHEZ VOS LISTES ELECTORALES",
-        "link": "https://www.cdg57.fr/elections-professionnelles-2026-affichez/?utm_source=rss&utm_medium=rss&utm_campaign=elections-professionnelles-2026-affichez",
+        "link": "https://www.cdg57.fr/elections-professionnelles-2026-affichez/",
         "pubDate": "Thu, 01 Oct 2026 15:10:29 GMT",
         "description": "Les élections des représentants du personnel aux Commissions Administratives Paritaires, au Comité Social Territorial et à la Commission Consultative Paritaire auront lieu par voie électronique, du jeudi 03 au jeudi 10 décembre 2026. Vous devez désormais éditer les listes nominatives des agents pour",
         "source": "RSS"
       },
       {
         "title": "Retraite CNRACL : de nouveaux droits liés aux enfants à compter du 1er septembre 2026",
-        "link": "https://www.cdg57.fr/retraite-cnracl-de-nouveaux-droits-lies-aux-enfants-a-compter-du-1er-septembre-2026/?utm_source=rss&utm_medium=rss&utm_campaign=retraite-cnracl-de-nouveaux-droits-lies-aux-enfants-a-compter-du-1er-septembre-2026",
+        "link": "https://www.cdg57.fr/retraite-cnracl-de-nouveaux-droits-lies-aux-enfants-a-compter-du-1er-septembre-2026/",
         "pubDate": "Fri, 25 Sep 2026 09:41:31 GMT",
         "description": "La loi de financement de la Sécurité sociale (LFSS) pour 2026 fait évoluer plusieurs règles relatives aux droits familiaux en matière de retraite. Ces nouvelles dispositions concernent les pensions CNRACL prenant effet à compter du 1er septembre 2026. Elles sont notamment susceptibles d’avoir une in",
         "source": "RSS"
       },
       {
-        "title": "ELECTIONS PROFESSIONNELLES : PENSEZ A VERIFIER VOS LISTES ELECTORALES !",
-        "link": "https://www.cdg57.fr/elections-professionnelles-pensez-a-verifier-vos-listes-electorales/?utm_source=rss&utm_medium=rss&utm_campaign=elections-professionnelles-pensez-a-verifier-vos-listes-electorales",
-        "pubDate": "Thu, 03 Sep 2026 10:00:29 GMT",
-        "description": "Dans le cadre des élections professionnelles, le Centre de Gestion vous demande de contribuer au bon déroulement des opérations électorales en procédant, avant le 25 septembre aux démarches ci-dessous : 1. VERIFIER ET MODIFIER LES LISTES ELECTORALES PROVISOIRES SUR AGHIRE Le CDG57 a établi, via le l",
+        "title": "Installation du nouveau Conseil d’administration du Centre de Gestion de la Moselle",
+        "link": "https://www.cdg57.fr/installation-du-nouveau-conseil-dadministration-du-centre-de-gestion-de-la-moselle/",
+        "pubDate": "Wed, 22 Jul 2026 07:44:05 GMT",
+        "description": "Le vendredi 10 juillet 2026, le Centre de Gestion de la Moselle a procédé à l’installation de son nouveau Conseil d’administration, à l’issue du renouvellement des représentants des collectivités affiliées. Cette séance d’installation a notamment permis l’élection du Président et des Vice-Présidents",
         "source": "RSS"
       }
     ]
@@ -2983,32 +2999,31 @@
         "source": "HTML"
       },
       {
+        "title": "RDV CDG Info : table ronde - l'absentéisme, de quoi parle-t-on vraiment ?",
+        "link": "https://www.cdg59.fr/actualites/page-detaillee/rdv-cdg-info-labsenteisme-de-quoi-parle-t-on",
+        "source": "HTML"
+      },
+      {
         "title": "Voir toutes les actualités",
         "link": "https://www.cdg59.fr/actualites",
         "source": "HTML"
       },
       {
-        "title": "RDV CDG Info : l'absentéisme, de quoi parle-t-on ?",
-        "link": "https://www.cdg59.fr/actualites/page-detaillee/rdv-cdg-info-labsenteisme-de-quoi-parle-t-on",
-        "pubDate": "Thu, 01 Oct 2026 00:00:00 GMT",
+        "title": "Semaine de la Médiation",
+        "link": "https://www.cdg59.fr/actualites/page-detaillee/semaine-de-la-mediation",
+        "pubDate": "Fri, 16 Oct 2026 00:00:00 GMT",
+        "source": "HTML"
+      },
+      {
+        "title": "Mois de l'innovation publique : découvrez le programme !",
+        "link": "https://www.cdg59.fr/actualites/page-detaillee/mois-de-linnovation-publique-decouvrez-le-programme",
+        "pubDate": "Mon, 12 Oct 2026 00:00:00 GMT",
         "source": "HTML"
       },
       {
         "title": "Cancer et Travail : des expériences inspirantes pour accompagner le maintien à l’emploi",
         "link": "https://www.cdg59.fr/actualites/page-detaillee/cancer-et-travail-actu-des-experiences-inspirantes-pour-accompagner-le-maintien-a-lemploi",
         "pubDate": "Tue, 15 Sep 2026 00:00:00 GMT",
-        "source": "HTML"
-      },
-      {
-        "title": "Mise à jour de la documentation statutaire suite à la parution de plusieurs décrets",
-        "link": "https://www.cdg59.fr/actualites/page-detaillee/mise-a-jour-de-la-documentation-statutaire-suite-a-la-parution-de-plusieurs-decrets-copie-1",
-        "pubDate": "Tue, 15 Sep 2026 00:00:00 GMT",
-        "source": "HTML"
-      },
-      {
-        "title": "Demande de Retraite CNRACL & RAFP",
-        "link": "https://www.cdg59.fr/actualites/page-detaillee/demande-de-retraite-cnracl-rafp",
-        "pubDate": "Fri, 04 Sep 2026 00:00:00 GMT",
         "source": "HTML"
       }
     ]
@@ -3018,6 +3033,12 @@
     "dept": "60",
     "officialUrl": "http://www.cdg60.com",
     "news": [
+      {
+        "title": "SERVIR NE VEUT PAS DIRE SUBIR : LE CDG60 SE MOBILISE CONTRE LES AGRESSIONS ENVERS LES AGENTS PUBLICS",
+        "link": "https://www.cdg60.com/servir-ne-veut-pas-dire-subir-le-cdg60-se-mobilise-contre-les-agressions-envers-les-agents-publics/",
+        "pubDate": "Tue, 13 Oct 2026 09:04:22 GMT",
+        "source": "RSS"
+      },
       {
         "title": "CONNEXIONS, LA LETTRE D’ACTUALITES D’OCTOBRE DU CDG60, EST DISPONIBLE !",
         "link": "https://www.cdg60.com/connexions-la-lettre-dactualites-doctobre-du-cdg60-est-disponible/",
@@ -3059,12 +3080,6 @@
         "link": "https://www.cdg60.com/connexions-la-lettre-dactualites-du-cdg60-est-disponible-3/",
         "pubDate": "Wed, 09 Sep 2026 07:18:08 GMT",
         "source": "RSS"
-      },
-      {
-        "title": "LETTRE D’ACTUALITÉ JURIDIQUE – SEPTEMBRE 2026",
-        "link": "https://www.cdg60.com/lettre-dactualite-juridique-septembre-2026/",
-        "pubDate": "Wed, 26 Aug 2026 13:12:58 GMT",
-        "source": "RSS"
       }
     ]
   },
@@ -3084,33 +3099,33 @@
         "source": "HTML"
       },
       {
-        "title": "Réunion du Réseau des Assistants de Prévention - 19-10-2026",
-        "link": "https://www.cdg61.fr/centre_de_gestion_evenements-reunions_reunion-du-reseau-des-assistants-de-prevention-19-10-2026.phtml",
-        "source": "HTML"
-      },
-      {
         "title": "Ateliers Techniques du Conseil Médical et de l'assurance statutaire du CDG 61",
         "link": "https://www.cdg61.fr/centre_de_gestion_evenements-reunions_ateliers-techniques-du-conseil-medical-et-de-l-assurance-statutaire-du-cdg-61.phtml",
         "source": "HTML"
       },
       {
-        "title": "Le 07/10/2026 Elections professionnelles 2026 : COMMUNIQUE N°3, Réclamations pour modifier les listes électorales jusqu'au 12 octobre",
-        "link": "https://www.cdg61.fr/centre_de_gestion_actualites_elections-professionnelles-2026-communique-n3-reclamations-pour-modifier-les-listes-electorales-jusqu-au-12-octobre.phtml",
+        "title": "Le 16/10/2026 Retour en images sur l'Assemblée Générale de l'AMO à St Gorges des Groseillers",
+        "link": "https://www.cdg61.fr/centre_de_gestion_actualites_retour-en-images-sur-l-assemblee-generale-de-l-amo-a-st-gorges-des-groseillers.phtml",
         "source": "HTML"
       },
       {
-        "title": "Le 07/10/2026 ON RECRUTE AU CDG 61 !",
-        "link": "https://www.cdg61.fr/centre_de_gestion_actualites_on-recrute-au-cdg-61.phtml",
+        "title": "Le 15/10/2026 Visio d'information \"Concours d'Administrateur territorial A \" le 27 octobre 2026",
+        "link": "https://www.cdg61.fr/centre_de_gestion_actualites_visio-d-information-concours-d-administrateur-territorial-a-le-27-octobre-2026.phtml",
         "source": "HTML"
       },
       {
-        "title": "Le 07/10/2026 NOUVELLE RENCONTRE DU RÉSEAU DES ASSISTANTS ET CONSEILLERS EN PRÉVENTION DES RISQUES PROFESSIONNELS DE L'ORNE",
-        "link": "https://www.cdg61.fr/centre_de_gestion_actualites_nouvelle-rencontre-du-reseau-des-assistants-et-conseillers-en-prevention-des-risques-professionnels-de-l-orne.phtml",
+        "title": "Le 13/10/2026 Liste électorale : deuxième période de réclamation",
+        "link": "https://www.cdg61.fr/centre_de_gestion_actualites_liste-electorale-deuxieme-periode-de-reclamation.phtml",
         "source": "HTML"
       },
       {
-        "title": "Le 06/10/2026 Les rendez-vous RETRAITE pour l'année 2026 - A vos agendas IL RESTE ENCORE DES PLACES",
-        "link": "https://www.cdg61.fr/centre_de_gestion_actualites_les-rendez-vous-retraite-pour-l-annee-2026-a-vos-agendas-il-reste-encore-des-places.phtml",
+        "title": "Le 12/10/2026 Comment éviter le rejet d'une demande d'aide par le FIPHFP",
+        "link": "https://www.cdg61.fr/centre_de_gestion_actualites_comment-eviter-le-rejet-d-une-demande-d-aide-par-le-fiphfp.phtml",
+        "source": "HTML"
+      },
+      {
+        "title": "Actualités archivées",
+        "link": "https://www.cdg61.fr/cdg61_actualites_archives.php",
         "source": "HTML"
       }
     ]
@@ -3205,6 +3220,27 @@
     "officialUrl": "http://www.cdg-64.fr",
     "news": [
       {
+        "title": "ASSURANCE STATUTAIRE - RELYENS : ne manquez pas les deux rendez-vous en visioconférence",
+        "link": "http://www.cdg-64.fr/accueil/actualites/news/detail/News/assurance-statutaire-relyens-ne-manquez-pas-les-deux-rendez-vous-en-visioconference-1/",
+        "pubDate": "Wed, 14 Oct 2026 11:34:51 GMT",
+        "description": "Dans le cadre du contrat-groupe d’assurance statutaire souscrit auprès de Relyens / CNP Assurances, le CDG 64 vous propose prochainement deux rendez-vous en visioconférence",
+        "source": "RSS"
+      },
+      {
+        "title": "Octobre rose : Chaque message compte !",
+        "link": "http://www.cdg-64.fr/accueil/actualites/news/detail/News/octobre-rose-chaque-message-compte/",
+        "pubDate": "Wed, 14 Oct 2026 07:35:00 GMT",
+        "description": "En 2024-2025, dans les Pyrénées-Atlantiques, seulement 1 femme sur 2 à participé au dépistage organisé du cancer du sein.",
+        "source": "RSS"
+      },
+      {
+        "title": "IRCANTEC : Évolution progressive des taux de cotisations pour la période 2028-2029",
+        "link": "http://www.cdg-64.fr/accueil/actualites/news/detail/News/ircantec-evolution-progressive-des-taux-de-cotisations-pour-la-periode-2028-2029-1/",
+        "pubDate": "Mon, 12 Oct 2026 14:10:32 GMT",
+        "description": "Le décret n° 2026-926 du 5 octobre 2026 prévoit une évolution progressive des taux théoriques de cotisations à l’IRCANTEC (salariales et patronales) à compter du 1er janvier 2028.",
+        "source": "RSS"
+      },
+      {
         "title": "Semaines d'information sur la santé mentale",
         "link": "http://www.cdg-64.fr/accueil/actualites/news/detail/News/semaines-dinformation-sur-la-sante-mentale/",
         "pubDate": "Fri, 09 Oct 2026 08:35:00 GMT",
@@ -3233,31 +3269,10 @@
         "source": "RSS"
       },
       {
-        "title": "Test Motiva 2026 : une session dédiée aux agents proches de la retraite ou en reprise d’activité!",
-        "link": "http://www.cdg-64.fr/accueil/actualites/news/detail/News/test-motiva-2026-une-session-dediee-aux-agents-proches-de-la-retraite-ou-en-reprise-dactivite-1/",
-        "pubDate": "Mon, 05 Oct 2026 07:01:00 GMT",
-        "description": "Test Motiva 2026 : une accompagnement flash dédiée aux agents proches de la retraite ou en reprise d’activité !",
-        "source": "RSS"
-      },
-      {
         "title": "Indemnités journalières AT-MP : baisse du plafond de rémunération servant de base au calcul",
         "link": "http://www.cdg-64.fr/accueil/actualites/news/detail/News/indemnites-journalieres-at-mp-baisse-du-plafond-de-remuneration-servant-de-base-au-calcul/",
         "pubDate": "Fri, 02 Oct 2026 06:39:20 GMT",
         "description": "Le décret n°2026-909 du 30 septembre 2026 baisse le plafond de rémunération servant de base au calcul des indemnités journalières en cas d'accident du travail ou de maladie professionnelle.",
-        "source": "RSS"
-      },
-      {
-        "title": "Conseil médical - Mise à jour de la note d’information",
-        "link": "http://www.cdg-64.fr/accueil/actualites/news/detail/News/conseil-medical-mise-a-jour-de-la-note-dinformation/",
-        "pubDate": "Thu, 01 Oct 2026 08:00:59 GMT",
-        "description": "La note d’information sur le conseil médical et les conséquences sur la gestion des inaptitudes a été mise à jour.",
-        "source": "RSS"
-      },
-      {
-        "title": "Nouvelle date",
-        "link": "http://www.cdg-64.fr/accueil/actualites/news/detail/News/nouvelle-date/",
-        "pubDate": "Mon, 28 Sep 2026 09:35:00 GMT",
-        "description": "Un nouvel Atelier Prévention est programmé le 10 novembre prochain.",
         "source": "RSS"
       }
     ]
@@ -3315,6 +3330,12 @@
     "officialUrl": "http://www.cdg66.fr",
     "news": [
       {
+        "title": "Le CDG 66 lance le réseau départemental des assistants et des conseillers de prévention",
+        "link": "https://cdg66.fr/le-cdg-66-lance-le-reseau-departemental-des-assistants-et-des-conseillers-de-prevention/",
+        "pubDate": "Tue, 13 Oct 2026 09:39:36 GMT",
+        "source": "RSS"
+      },
+      {
         "title": "Signature d’une convention de partenariat entre le CDG 66, la CPAM 66 et la CARSAT Languedoc-Roussillon",
         "link": "https://cdg66.fr/signature-dune-convention-de-partenariat-entre-le-cdg-66-la-cpam-66-et-la-carsat-languedoc-roussillon/",
         "pubDate": "Mon, 05 Oct 2026 07:55:05 GMT",
@@ -3354,12 +3375,6 @@
         "title": "Salon Emploi Mobilité Publics (En ligne)",
         "link": "https://cdg66.fr/salon-emploi-mobilite-publics-en-ligne/",
         "pubDate": "Tue, 01 Sep 2026 06:10:45 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "RSU 2025 – Pensez à le finaliser !",
-        "link": "https://cdg66.fr/rsu-2025-pensez-a-le-finaliser/",
-        "pubDate": "Mon, 31 Aug 2026 09:59:16 GMT",
         "source": "RSS"
       }
     ]
@@ -3543,6 +3558,12 @@
     "officialUrl": "https://70.cdgplus.fr",
     "news": [
       {
+        "title": "Deux conventions du CDG 70 se renouvellent pour la période 2027-2029",
+        "link": "https://70.cdgplus.fr/deux-conventions-du-cdg-70-se-renouvellent-pour-la-periode-2027-2029/",
+        "pubDate": "Wed, 14 Oct 2026 08:26:50 GMT",
+        "source": "RSS"
+      },
+      {
         "title": "Elections professionnelles 2026 : Extraits des listes électorales",
         "link": "https://70.cdgplus.fr/elections-professionnelles-2026-extraits-des-listes-electorales/",
         "pubDate": "Fri, 09 Oct 2026 15:48:53 GMT",
@@ -3582,12 +3603,6 @@
         "title": "📢 Fermeture du CDG70",
         "link": "https://70.cdgplus.fr/%f0%9f%93%a2-fermeture-du-cdg70/",
         "pubDate": "Mon, 22 Dec 2025 13:30:34 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Promotion interne de droit commun et promotion interne dérogatoire au grade de rédacteur réservée aux secrétaires généraux de mairie 2026",
-        "link": "https://70.cdgplus.fr/promotion-interne-de-droit-commun-et-promotion-interne-derogatoire-au-grade-de-redacteur-reservee-aux-secretaires-generaux-de-mairie-2026/",
-        "pubDate": "Fri, 19 Dec 2025 11:04:22 GMT",
         "source": "RSS"
       }
     ]
@@ -3655,8 +3670,8 @@
         "source": "HTML"
       },
       {
-        "title": "Promotion interne 2026",
-        "link": "https://www.cdg72.fr/centre_de_gestion_actualites_promotion-interne-2026.phtml",
+        "title": "Baromètre du bien-être au travail dans les collectivités locales 2026",
+        "link": "https://www.cdg72.fr/centre_de_gestion_actualites_barometre-du-bien-etre-au-travail-dans-les-collectivites-locales-2026.phtml",
         "source": "HTML"
       },
       {
@@ -3665,8 +3680,13 @@
         "source": "HTML"
       },
       {
-        "title": "Baromètre du bien-être au travail dans les collectivités locales 2026",
-        "link": "https://www.cdg72.fr/centre_de_gestion_actualites_barometre-du-bien-etre-au-travail-dans-les-collectivites-locales-2026.phtml",
+        "title": "Promotion interne 2026",
+        "link": "https://www.cdg72.fr/centre_de_gestion_actualites_promotion-interne-2026.phtml",
+        "source": "HTML"
+      },
+      {
+        "title": "Webinaire Administrateur",
+        "link": "https://www.cdg72.fr/centre_de_gestion_actualites_webinaire-administrateur.phtml",
         "source": "HTML"
       },
       {
@@ -3677,11 +3697,6 @@
       {
         "title": "Annulation des nouvelles dispositions en matière de report d'indemnisation des congés annuels",
         "link": "https://www.cdg72.fr/centre_de_gestion_actualites_annulation-des-nouvelles-dispositions-en-matiere-de-report-d-indemnisation-des-conges-annuels.phtml",
-        "source": "HTML"
-      },
-      {
-        "title": "Parution des décrets relatifs à la rupture conventionnelle",
-        "link": "https://www.cdg72.fr/centre_de_gestion_actualites_parution-des-decrets-relatifs-a-la-rupture-conventionnelle.phtml",
         "source": "HTML"
       }
     ]
@@ -3705,6 +3720,26 @@
     "officialUrl": "http://www.cdg74.fr",
     "news": [
       {
+        "title": "Instances consultatives 2027 : le calendrier prévisionnel est en ligne !",
+        "link": "https://www.cdg74.fr/instances-consultatives-2026-le-calendrier-previsionnel-est-en-ligne/",
+        "source": "RSS"
+      },
+      {
+        "title": "Nouveautés concernant les ASA !",
+        "link": "https://www.cdg74.fr/nouveautes-concernant-les-asa/",
+        "source": "RSS"
+      },
+      {
+        "title": "Inscriptions aux Ateliers de la Mobilité ouvertes !",
+        "link": "https://www.cdg74.fr/inscriptions-aux-ateliers-mobilite-2026/",
+        "source": "RSS"
+      },
+      {
+        "title": "Visioconférence d’information sur le concours interne d’administrateur territorial",
+        "link": "https://www.cdg74.fr/visioconference-dinformation-sur-le-concours-interne-dadministrateur-territorial/",
+        "source": "RSS"
+      },
+      {
         "title": "Retraite IRCANTEC : modification des taux de cotisation",
         "link": "https://www.cdg74.fr/retraite-ircantec-modification-des-taux-de-cotisation/",
         "source": "RSS"
@@ -3722,26 +3757,6 @@
       {
         "title": "Participez à la deuxième édition des « Vidéos métiers » du CDG74 !",
         "link": "https://www.cdg74.fr/participez-a-la-deuxieme-edition-des-videos-metiers-du-cdg74/",
-        "source": "RSS"
-      },
-      {
-        "title": "Supports de présentation partagés lors de la Journée Portes Ouvertes du CDG disponibles",
-        "link": "https://www.cdg74.fr/supports-de-presentation-partages-lors-des-journees-portes-ouvertes-du-cdg-disponibles/",
-        "source": "RSS"
-      },
-      {
-        "title": "Report – Comité Social Territorial et FS",
-        "link": "https://www.cdg74.fr/report-comite-social-territorial-et-fs/",
-        "source": "RSS"
-      },
-      {
-        "title": "Élections professionnelles – Scrutin du 3 au 10 décembre",
-        "link": "https://www.cdg74.fr/elections-professionnelles-scrutin-du-3-au-10-decembre/",
-        "source": "RSS"
-      },
-      {
-        "title": "Revue de presse n°34 – septembre 2026",
-        "link": "https://www.cdg74.fr/revue-de-presse-n34-septembre-2026/",
         "source": "RSS"
       }
     ]
@@ -3767,16 +3782,6 @@
         "source": "HTML"
       },
       {
-        "title": "Webinaire « Santé des femmes au travail : mieux comprendre pour agir »",
-        "link": "https://www.cdg76.fr/actualites/webinaire-sante-des-femmes-au-travail-mieux-comprendre-pour-agir/",
-        "source": "HTML"
-      },
-      {
-        "title": "Webinaire « Les cas de recours aux agents contractuels de droit public »",
-        "link": "https://www.cdg76.fr/actualites/webinaire-les-cas-de-recours-aux-agents-contractuels-de-droit-public/",
-        "source": "HTML"
-      },
-      {
         "title": "Atelier Maire et Secrétaire(e) général(e) de mairie : les clés d’un duo gagnant !",
         "link": "https://www.cdg76.fr/actualites/atelier-maire-et-secretairee-generale-de-mairie-les-cles-dun-duo-gagnant/",
         "source": "HTML"
@@ -3790,6 +3795,16 @@
         "title": "Infos statutaires : retrouvez le dernier numéro (octobre 2026)",
         "link": "https://www.cdg76.fr/actualites/infos-statutaires-retrouvez-le-dernier-numero-octobre-2026/",
         "source": "HTML"
+      },
+      {
+        "title": "Atelier prévention destiné aux agents techniques",
+        "link": "https://www.cdg76.fr/actualites/atelier-prevention-destine-aux-agents-techniques/",
+        "source": "HTML"
+      },
+      {
+        "title": "Assurances statutaires : renouvellement du contrat groupe",
+        "link": "https://www.cdg76.fr/actualites/assurances-statutaires-renouvellement-du-contrat-groupe/",
+        "source": "HTML"
       }
     ]
   },
@@ -3799,59 +3814,59 @@
     "officialUrl": "http://www.cdg77.fr",
     "news": [
       {
-        "title": "Matinée de prévention : les équipements de protection individuelle (EPI)",
-        "link": "https://www.cdg77.fr/evenement/matinee-de-prevention-les-equipements-de-protection-individuelle-epi/",
-        "pubDate": "Wed, 07 Oct 2026 09:56:40 GMT",
-        "description": "La Direction Santé et Conditions de Travail du Centre départemental de gestion organise une matinée de prévention dédiée aux équipements de protection individuelle (EPI) et à leur intégration dans les démarches de prévention des risques professionnels. « Les EPI : bien choisir, bien utiliser pour mi",
+        "title": "La fabrique des futurs territoriaux",
+        "link": "https://www.cdg77.fr/evenement/la-fabrique-des-futurs-territoriaux/",
+        "pubDate": "Wed, 14 Oct 2026 15:14:17 GMT",
+        "description": "Et si vous formiez vous-même vos futurs talents par l’apprentissage ? Renouvellement des effectifs, métiers en tension, transmission des compétences… Les collectivités doivent aujourd’hui imaginer de nouvelles façons d’attirer et de préparer leurs futurs collaborateurs. L’apprentissage est un levier",
         "source": "RSS"
       },
       {
-        "title": "Atelier matinées zoom : aide à la saisie des dossiers retraite",
-        "link": "https://www.cdg77.fr/evenement/atelier-matinees-zoom-aide-a-la-saisie-des-dossiers-retraite/",
-        "pubDate": "Wed, 07 Oct 2026 09:31:41 GMT",
-        "description": "Le CDG vous propose « une matinée zoom » le 19 novembre 2026 prochain de 9h00 à 12h30 en présentiel, sur le thème de l’Aide à la Saisie des Dossiers de Retraite CNRACL sur PEP’S. Lors de cet atelier sera abordée la procédure détaillée de création d’un dossier de demande de liquidation de pension dan",
+        "title": "Rencontre du réseau des référents PPR – Secteur Sud Seine-et-Marne",
+        "link": "https://www.cdg77.fr/evenement/rencontre-du-reseau-des-referents-ppr-secteur-sud-seine-et-marne/",
+        "pubDate": "Wed, 14 Oct 2026 10:05:12 GMT",
+        "description": "Les différents leviers d’action pour faire du reclassement une réussite. Le CDG 77 propose aux acteurs RH, DGS et SGM intervenant sur la mise en place des périodes de préparation au reclassement (PPR) de se réunir, en visioconférence afin d’aborder les différents leviers d’action pour accompagner au",
         "source": "RSS"
       },
       {
-        "title": "Promotion interne 2027 : état des recrutements",
-        "link": "https://www.cdg77.fr/actualite/lancement-de-la-campagne-de-la-promotion-interne-2027/",
-        "pubDate": "Wed, 07 Oct 2026 08:30:06 GMT",
-        "description": "La campagne de promotion interne au titre de l’année 2027 sera prochainement lancée. Afin de déterminer le nombre de postes pouvant être ouverts, les collectivités et établissements publics affiliés sont invités à transmettre leur état des recrutements effectués en 2026, accompagné des arrêtés corre",
+        "title": "Rencontre du réseau des référents PPR – Secteur Centre Seine-et-Marne",
+        "link": "https://www.cdg77.fr/evenement/rencontre-du-reseau-des-referents-ppr-secteur-centre-seine-et-marne/",
+        "pubDate": "Wed, 14 Oct 2026 10:00:23 GMT",
+        "description": "Les différents leviers d’action pour faire du reclassement une réussite. Le CDG 77 propose aux acteurs RH, DGS et SGM intervenant sur la mise en place des périodes de préparation au reclassement (PPR) de se réunir, en visioconférence afin d’aborder les différents leviers d’action pour accompagner au",
         "source": "RSS"
       },
       {
-        "title": "Élections professionnelles 2026 – Publications des listes électorales",
-        "link": "https://www.cdg77.fr/actualite/elections-professionnelles-2026-publications-des-listes-electorales/",
-        "pubDate": "Fri, 02 Oct 2026 16:26:32 GMT",
-        "description": "Les listes des agents remplissant les conditions d'électeur pour chacune de ces instances sont publiées ci-dessous. Elles sont également consultables à l'accueil du Centre départemental de gestion, de 8 h 15 à 12 h et de 13 h 45 à 17 h. Consultation des listes électorales Les listes des agents rempl",
+        "title": "Rencontre du réseau des référents PPR – Secteur Nord Seine-et-Marne",
+        "link": "https://www.cdg77.fr/evenement/rencontre-du-reseau-des-referents-ppr-secteur-nord-seine-et-marne/",
+        "pubDate": "Wed, 14 Oct 2026 09:21:18 GMT",
+        "description": "Les différents leviers d’action pour faire du reclassement une réussite. Le CDG 77 propose aux acteurs RH, DGS et SGM intervenant sur la mise en place des périodes de préparation au reclassement (PPR) de se réunir, en visioconférence afin d’aborder les différents leviers d’action pour accompagner au",
         "source": "RSS"
       },
       {
-        "title": "Club RH – Tout sur la promotion interne 2027 !",
-        "link": "https://www.cdg77.fr/actualite/club-rh-tout-sur-la-promotion-interne-2027/",
-        "pubDate": "Wed, 30 Sep 2026 16:07:05 GMT",
-        "description": "Le Centre départemental de gestion organise son Club RH de la rentrée le 15 octobre à partir de 9h30 autour de la future session de promotion interne, notamment la constitution des dossiers. Obligations réglementaires, barème et critères d'attribution, principes de cotation, constitution des dossier",
+        "title": "Journée DuoDay 2026",
+        "link": "https://www.cdg77.fr/evenement/journee-duoday-2026/",
+        "pubDate": "Wed, 14 Oct 2026 09:06:24 GMT",
+        "description": "Cette journée DuoDay s’inscrit dans la Semaine Européenne pour l’Emploi des Personnes Handicapées 2026, partout en France, y compris en Outre-mer. C’est l’occasion de contribuer à l’insertion des personnes en situation de handicap en proposant un duo le temps d’une journée (non rémunérée) avec un ag",
         "source": "RSS"
       },
       {
-        "title": "Retraite : un contact unique pour simplifier vos démarches à compter du 1er octobre 2026",
-        "link": "https://www.cdg77.fr/actualite/retraite-un-contact-unique-pour-simplifier-vos-demarches/",
-        "pubDate": "Mon, 28 Sep 2026 12:01:31 GMT",
-        "description": "Afin de faciliter vos échanges et de vous orienter plus efficacement dans vos démarches liées à la retraite, le CDG 77 met en place un point de contact unique pour joindre ses conseillères retraites. Désormais, pour toute question ou demande d’accompagnement, vous pouvez contacter le service retrait",
+        "title": "Webinaire SEEPH 2026 « L’emploi pour tous : accompagner une personne en situation de handicap dans le travail”",
+        "link": "https://www.cdg77.fr/evenement/webinaire-seeph-2026-lemploi-pour-toutes-et-tous-accompagner-une-personne-en-situation-de-handicap-dans-le-travail/",
+        "pubDate": "Wed, 14 Oct 2026 08:50:08 GMT",
+        "description": "En lien avec la thématique de la Semaine Européenne pour l’Emploi des Personnes Handicapées 2026, ce webinaire animé par la correspondante handicap et maintien dans l’emploi et la directrice du pôle santé et conditions de travail, médecin du travail au CDG 77, s’adresse aux élus, DGS, DRH, responsab",
         "source": "RSS"
       },
       {
-        "title": "Atelier matinées zoom : correction du CIR et DSN",
-        "link": "https://www.cdg77.fr/evenement/atelier-matinees-zoom-correction-du-cir-et-dsn-2/",
-        "pubDate": "Mon, 07 Sep 2026 11:46:55 GMT",
-        "description": "Le CDG 77 vous propose « une matinée zoom » le 08 octobre 2026 prochain de 9h00 à 12h30 en présentiel, sur le thème de la correction des Comptes Individuels Retraite (CIR) pour la fiabilisation des Données Sociales Nominatives (DSN). Lors de cet atelier seront abordées les corrections des différents",
+        "title": "Webinaire SEEPH 2026 « Comprendre la Reconnaissance de la Qualité de Travailleur Handicapé (RQTH) »",
+        "link": "https://www.cdg77.fr/evenement/webinaire-seeph-2026-comprendre-la-reconnaissance-de-la-qualite-de-travailleur-handicape-rqth/",
+        "pubDate": "Wed, 14 Oct 2026 08:42:25 GMT",
+        "description": "À destination de tous les agents territoriaux du département, ce webinaire de sensibilisation dédié à la RQTH, en partenariat avec la MDPH 77 vous permettra de mieux comprendre la RQTH, les intérêts à se déclarer auprès de son employeur, les démarches à entreprendre et les dispositifs mobilisables p",
         "source": "RSS"
       },
       {
-        "title": "Atelier développement et prospective RH : l’élaboration, le pilotage et la mise en œuvre d’un plan de formation",
-        "link": "https://www.cdg77.fr/evenement/atelier-developpement-et-prospective-rh-lelaboration-le-pilotage-et-la-mise-en-oeuvre-dun-plan-de-formation-2/",
-        "pubDate": "Mon, 31 Aug 2026 14:27:15 GMT",
-        "description": "En collaboration avec le CNFPT, nous vous proposons de participer à notre atelier sur l’élaboration du plan de formation, un levier incontournable pour la gestion et le développement des compétences de vos équipes. Les 13 octobre, le 17 novembre et le 15 décembre (Session Sud77 d’une durée de 3 jour",
+        "title": "Webinaire « Comment recruter une personne en situation de handicap »",
+        "link": "https://www.cdg77.fr/evenement/webinaire-comment-recruter-une-personne-en-situation-de-handicap/",
+        "pubDate": "Wed, 14 Oct 2026 08:23:02 GMT",
+        "description": "À destination des élus, des DRH, des responsables RH, des SGM, ce webinaire d’information en partenariat avec CAP Emploi 77 vous permettra d’identifier les différents leviers pour intégrer la dimension « handicap » dans votre processus de recrutement. L’article Webinaire « Comment recruter une perso",
         "source": "RSS"
       }
     ]
@@ -3968,6 +3983,12 @@
     "officialUrl": "http://www.cdg80.fr",
     "news": [
       {
+        "title": "Clubs SGM et DGS à l’APRADIS Amiens : retrouvez les documents.",
+        "link": "https://cdg80.fr/clubs-sgm-et-dgs-a-lapradis-amiens-retrouvez-les-documents/",
+        "pubDate": "Tue, 13 Oct 2026 09:48:07 GMT",
+        "source": "RSS"
+      },
+      {
         "title": "Élections professionnelles 2026 – Affichage des listes électorales",
         "link": "https://cdg80.fr/elections-professionnelles-2026-publication-des-listes-electorales/",
         "pubDate": "Fri, 02 Oct 2026 15:12:05 GMT",
@@ -4008,12 +4029,6 @@
         "link": "https://cdg80.fr/mise-a-jour-des-pre-listes-et-saisies-des-agents-contractuels/",
         "pubDate": "Mon, 31 Aug 2026 14:26:28 GMT",
         "source": "RSS"
-      },
-      {
-        "title": "Dispositif de signalement des Actes de Violence, de Discrimination, de Harcèlement et d’Agissements Sexistes (AVDHAS)",
-        "link": "https://cdg80.fr/dispositif-de-signalement-des-actes-de-violence-de-discrimination-de-harcelement-et-dagissements-sexistes-avdhas/",
-        "pubDate": "Thu, 27 Aug 2026 07:00:31 GMT",
-        "source": "RSS"
       }
     ]
   },
@@ -4022,6 +4037,34 @@
     "dept": "81",
     "officialUrl": "http://www.cdg81.fr",
     "news": [
+      {
+        "title": "Répondez à l’enquête de recueil des besoins des collectivités !",
+        "link": "https://cdg81.fr/repondez-au-questionnaire-de-recueil-des-besoins-des-collectivites/",
+        "pubDate": "Thu, 15 Oct 2026 09:11:44 GMT",
+        "description": "Votre avis compte pour définir les orientations stratégiques du CDG81 ! Dans le cadre de la préparation de ses orientations stratégiques de mandat 2026-2032, le Centre de gestion du Tarn souhaite recueillir les besoins et attentes des collectivités et établissements publics tarnais sur les services ",
+        "source": "RSS"
+      },
+      {
+        "title": "RDV Statut : 29/10 retraite et avantages familiaux + les aides du Fonds pour l’insertion des personnes handicapées",
+        "link": "https://cdg81.fr/rdv-statut-297-10-retraite-et-avantages-familiaux-les-aides-du-fonds-pour-linsertion-des-personnes-handicapees/",
+        "pubDate": "Thu, 15 Oct 2026 09:10:15 GMT",
+        "description": "Participez au prochain Rendez-vous Statut pour tout savoir en peu de temps des sujets RH de la FPT ! 📅 Jeudi 29 octobre 🕣 9h - 10h30 📌 en visio ➡️ la retraite et les avantages familiaux ➡️ les aides du Fonds pour l'Insertion des personnes handicapées dans la Fonction Publique Territoriale 🔸 [...",
+        "source": "RSS"
+      },
+      {
+        "title": "Élections professionnelles 2026 : un kit de communication prêt à l’emploi",
+        "link": "https://cdg81.fr/elections-professionnelles-2026-un-kit-de-communication-pret-a-lemploi/",
+        "pubDate": "Wed, 14 Oct 2026 13:53:12 GMT",
+        "description": "Informer, mobiliser, participer La Direction générale de l'administration et de la Fonction Publique met à disposition des employeurs publics des documents afin de communiquer autour des élections professionnelles. Du 3 au 10 décembre 2026, les agents publics éliront leurs représentants au sein des ",
+        "source": "RSS"
+      },
+      {
+        "title": "Atelier classement numérique le 16 novembre",
+        "link": "https://cdg81.fr/atelier-classement-numerique-le-2-juin/",
+        "pubDate": "Mon, 12 Oct 2026 09:30:57 GMT",
+        "description": "Le Centre de gestion vous accompagne dans le classement et l’archivage de vos documents numériques. Le classement, c’est pouvoir avoir accès rapidement à l’information dont vous avez besoin, vous et vos collaborateurs. Il faut donc s’accorder et respecter des règles communes pour que chaque utilisat",
+        "source": "RSS"
+      },
       {
         "title": "PROMOTION INTERNE : Agent de maîtrise et Rédacteur fonction SGM !",
         "link": "https://cdg81.fr/promotion-interne-agent-de-maitrise-et-redacteur-fonction-sgm/",
@@ -4044,38 +4087,10 @@
         "source": "RSS"
       },
       {
-        "title": "Répondez à l’enquête de recueil des besoins des collectivités !",
-        "link": "https://cdg81.fr/repondez-au-questionnaire-de-recueil-des-besoins-des-collectivites/",
-        "pubDate": "Tue, 06 Oct 2026 08:51:44 GMT",
-        "description": "Votre avis compte pour définir les orientations stratégiques du CDG81 ! Dans le cadre de la préparation de ses orientations stratégiques de mandat 2026-2032, le Centre de gestion du Tarn souhaite recueillir les besoins et attentes des collectivités et établissements publics tarnais sur les services ",
-        "source": "RSS"
-      },
-      {
         "title": "Université du CDG : téléchargez le carnet de bord des élus",
         "link": "https://cdg81.fr/universite-du-cdg-telechargez-le-carnet-de-bord-des-elus/",
         "pubDate": "Tue, 06 Oct 2026 06:43:56 GMT",
         "description": "Université du CDG le 29 septembre Au coeur du Salon des Maires 2026, notre Université a déployé cette année un atelier d’intelligence collective sur le thème « Piloter son mandat : méthodes et outils pour garder le cap pendant 6 ans en mobilisant élu·es et agents ». Nous y avons partagé une convicti",
-        "source": "RSS"
-      },
-      {
-        "title": "Candidatez au Diplôme des métiers de l’administration territoriale !",
-        "link": "https://cdg81.fr/candidatez-au-diplome-des-metiers-de-ladministration-territoriale/",
-        "pubDate": "Wed, 30 Sep 2026 07:50:14 GMT",
-        "description": "Ouverture des candidatures du 28 septembre au 27 novembre ! Vous avez le sens du service ? Vous cherchez à vous former à un métier porteur de sens au service de votre territoire ? Candidatez au DEMAT #2027 ! Ce diplôme d'établissement des métiers de l'administration territoriale a pour objectif de [",
-        "source": "RSS"
-      },
-      {
-        "title": "Élections professionnelles 2026 – Publication des listes électorales",
-        "link": "https://cdg81.fr/elections-professionnelles-2026-publication-des-listes-electorales/",
-        "pubDate": "Fri, 25 Sep 2026 07:40:05 GMT",
-        "description": "À l’approche des élections professionnelles du 10 décembre 2026, les listes électorales définitives des CAP, CCP et CST placés auprès du Centre de gestion sont établies par le CDG81. 📅 À partir du 4 octobre 2026 Les listes électorales sont publiées au plus tard le 4 octobre 2026, soit 60 jours avan",
-        "source": "RSS"
-      },
-      {
-        "title": "Réforme sur la disponibilité – la DGAFP nous accompagne",
-        "link": "https://cdg81.fr/reforme-sur-la-disponibilite-la-dgafp-nous-accompagne/",
-        "pubDate": "Thu, 24 Sep 2026 15:44:01 GMT",
-        "description": "Renouvellement, maintien des droits à l'avancement, pièces justificatives à fournir... La position de disponibilité soulève souvent des questions concrètes ! Le décret du 5 décembre 2025 a assoupli deux points clés : ✅ Suppression de l'obligation de réintégrer 18 mois avant de pouvoir renouveler une",
         "source": "RSS"
       }
     ]
@@ -4143,6 +4158,11 @@
         "source": "HTML"
       },
       {
+        "title": "Création d'une filière universitaire dédiée à la formation aux métiers de secrétaire de mairie et de… Emploi, organisation, formation , Juridique Afin d'accompagner la reconnaissance et la valorisation de ces fonctions, la loi n° 2023-1380 du 30… En savoir plus",
+        "link": "https://cdg83.fr/le-cdg/actualites/detail/creation-dune-filiere-universitaire-dediee-a-la-formation-aux-metiers-de-secretaire-de-mairie-et-de-secretaire-general-de-mairie",
+        "source": "HTML"
+      },
+      {
         "title": "Rentrée scolaire et facilités horaires ne constituent pas une autorisation d’absence Emploi, organisation, formation , Juridique A l’occasion de la rentrée scolaire, des facilités d’horaires peuvent être accordées aux parents ou… En savoir plus",
         "link": "https://cdg83.fr/le-cdg/actualites/detail/rentree-scolaire-et-facilites-horaires-ne-constituent-pas-une-autorisation-dabsence",
         "source": "HTML"
@@ -4166,11 +4186,6 @@
         "title": "1res Rencontres Territoriales Sud-Est: les métiers techniques à l’honneur Prévention des risques, santé L’Association des Techniciens Territoriaux de France (ATTF) organise ses 1res Rencontres… En savoir plus",
         "link": "https://cdg83.fr/le-cdg/actualites/detail/1res-rencontres-territoriales-sud-est-les-metiers-techniques-a-lhonneur",
         "source": "HTML"
-      },
-      {
-        "title": "Liberté de culte et obligation de neutralité des agents publics Déontologie, laïcité , Juridique La marque visible présente sur le front d’un policier constitue une conséquence de sa pratique, dans… En savoir plus",
-        "link": "https://cdg83.fr/le-cdg/actualites/detail/liberte-de-culte-et-obligation-de-neutralite-des-agents-publics",
-        "source": "HTML"
       }
     ]
   },
@@ -4185,6 +4200,16 @@
         "source": "HTML"
       },
       {
+        "title": "Clément Stolbowsky nouveau Directeur du CDG84",
+        "link": "https://www.cdg84.fr/actualites/clement-stolbowsky-nouveau-directeur-du-cdg84/",
+        "source": "HTML"
+      },
+      {
+        "title": "Retrouvez le replay du Webinaire sur les élections professionnelles",
+        "link": "https://www.cdg84.fr/actualites/retrouvez-le-replay-du-webinaire-sur-les-elections-professionnelles/",
+        "source": "HTML"
+      },
+      {
         "title": "Réunions de prévention : Le risque alcool",
         "link": "https://www.cdg84.fr/actualites/demarrage-des-reunions-de-prevention-risque-alcool/",
         "source": "HTML"
@@ -4195,28 +4220,18 @@
         "source": "HTML"
       },
       {
-        "title": "OCTOBRE ROSE : Ensemble pour la prévention du cancer du sein",
-        "link": "https://www.cdg84.fr/actualites/octobre-rose-ensemble-pour-la-prevention-du-cancer-du-sein/",
-        "source": "HTML"
-      },
-      {
         "title": "Semaine européenne pour l’emploi des personnes handicapées",
         "link": "https://www.cdg84.fr/actualites/semaine-europeenne-pour-lemploi-des-personnes-handicapees/",
         "source": "HTML"
       },
       {
+        "title": "OCTOBRE ROSE : Ensemble pour la prévention du cancer du sein",
+        "link": "https://www.cdg84.fr/actualites/octobre-rose-ensemble-pour-la-prevention-du-cancer-du-sein/",
+        "source": "HTML"
+      },
+      {
         "title": "Élections professionnelles : affichage des listes électorales dans vos locaux administratifs",
         "link": "https://www.cdg84.fr/actualites/elections-professionnelles-affichage-des-listes-electorales-dans-vos-locaux-administratifs/",
-        "source": "HTML"
-      },
-      {
-        "title": "Élections professionnelles 2026 : votre kit de communication est disponible !",
-        "link": "https://www.cdg84.fr/actualites/elections-professionnelles-2026-votre-kit-de-communication-est-disponible/",
-        "source": "HTML"
-      },
-      {
-        "title": "Remerciements et passation de fonctions au sein de la direction",
-        "link": "https://www.cdg84.fr/actualites/remerciements-et-passation-de-fonctions-au-sein-de-la-direction/",
         "source": "HTML"
       }
     ]
@@ -4227,23 +4242,37 @@
     "officialUrl": "http://www.maisondescommunes85.fr",
     "news": [
       {
-        "title": "Accompagner les parcours professionnels de vos agents",
-        "link": "https://www.maisondescommunes85.fr/actualites/accompagner-parcours-professionnels-vos-agents",
-        "pubDate": "Wed, 07 Oct 2026 09:56:08 GMT",
+        "title": "Votre avis nous intéresse : participez à notre enquête sur notre site web !",
+        "link": "https://www.maisondescommunes85.fr/actualites/votre-avis-nous-interesse-participez-a-notre-enquete-sur-notre-site-web",
+        "pubDate": "Sat, 17 Oct 2026 08:02:32 GMT",
         "description": "<div class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\" class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\"> <div class=\"field field-name-field-contenu field-type-paragraphs f",
         "source": "RSS"
       },
       {
-        "title": "Webinaire sur le CITIS le 5 novembre 2026",
-        "link": "https://www.maisondescommunes85.fr/actualites/webinaire-sur-citis-5-novembre-2026",
-        "pubDate": "Mon, 05 Oct 2026 14:22:10 GMT",
+        "title": "Webinaire sur la mobilité des agents territoriaux le 17 novembre 2026",
+        "link": "https://www.maisondescommunes85.fr/actualites/webinaire-sur-mobilite-agents-territoriaux-17-novembre-2026",
+        "pubDate": "Wed, 14 Oct 2026 07:14:12 GMT",
         "description": "<div class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\" class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\"> <div class=\"field field-name-field-contenu field-type-paragraphs f",
         "source": "RSS"
       },
       {
         "title": "Codéveloppement dédié aux directeurs et responsables RH : plus que 2 places !",
         "link": "https://www.maisondescommunes85.fr/actualites/codeveloppement-dedie-aux-directeurs-et-responsables-rh-plus-que-2-places",
-        "pubDate": "Sun, 04 Oct 2026 09:23:09 GMT",
+        "pubDate": "Sun, 11 Oct 2026 09:23:09 GMT",
+        "description": "<div class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\" class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\"> <div class=\"field field-name-field-contenu field-type-paragraphs f",
+        "source": "RSS"
+      },
+      {
+        "title": "Webinaire sur le CITIS le 5 novembre 2026",
+        "link": "https://www.maisondescommunes85.fr/actualites/webinaire-sur-citis-5-novembre-2026",
+        "pubDate": "Sat, 10 Oct 2026 14:22:10 GMT",
+        "description": "<div class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\" class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\"> <div class=\"field field-name-field-contenu field-type-paragraphs f",
+        "source": "RSS"
+      },
+      {
+        "title": "Accompagner les parcours professionnels de vos agents",
+        "link": "https://www.maisondescommunes85.fr/actualites/accompagner-parcours-professionnels-vos-agents",
+        "pubDate": "Fri, 09 Oct 2026 09:56:08 GMT",
         "description": "<div class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\" class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\"> <div class=\"field field-name-field-contenu field-type-paragraphs f",
         "source": "RSS"
       },
@@ -4267,20 +4296,6 @@
         "pubDate": "Tue, 11 Aug 2026 13:00:18 GMT",
         "description": "<div class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\" class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\"> <div class=\"field field-name-field-contenu field-type-paragraphs f",
         "source": "RSS"
-      },
-      {
-        "title": "La formation Secrétaire Général de Mairie arrive en Vendée !",
-        "link": "https://www.maisondescommunes85.fr/actualites/formation-secretaire-general-mairie-arrive-vendee",
-        "pubDate": "Sun, 26 Jul 2026 06:50:29 GMT",
-        "description": "<div class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\" class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\"> <div class=\"field field-name-field-contenu field-type-paragraphs f",
-        "source": "RSS"
-      },
-      {
-        "title": "Félicitations à Éric HERVOUET, réélu Président du Centre de Gestion",
-        "link": "https://www.maisondescommunes85.fr/actualites/felicitations-a-eric-hervouet-reelu-president-centre-gestion",
-        "pubDate": "Fri, 10 Jul 2026 15:15:14 GMT",
-        "description": "<div class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\" class=\"paragraphs-items paragraphs-items-field-contenu paragraphs-items-field-contenu-full paragraphs-items-full\"> <div class=\"field field-name-field-contenu field-type-paragraphs f",
-        "source": "RSS"
       }
     ]
   },
@@ -4300,13 +4315,13 @@
         "source": "HTML"
       },
       {
-        "title": "Évolution des taux de cotisation théoriques Ircantec Pour plus d'informations : Décret n° 2026-926 du 5 octobre 2026 modifiant le décret n° 70-1277 du...",
-        "link": "https://www.cdg86.fr/actualites/generales/evolution-des-taux-de-cotisation-theoriques-ircantec",
+        "title": "Les entretiens à réaliser en fin d'année Les entretiens à réaliser en cette fin d'année 2026 En cette fin d'année 2026, deux entretiens...",
+        "link": "https://www.cdg86.fr/actualites/generales/les-entretiens-a-realiser-en-fin-dannee",
         "source": "HTML"
       },
       {
-        "title": "Le CDG86 sera exceptionnellement fermé le vendredi 9 octobre 2026",
-        "link": "https://www.cdg86.fr/actualites/generales/le-cdg86-sera-exceptionnellement-ferme-le-vendredi-9-octobre-2026",
+        "title": "Évolution des taux de cotisation théoriques Ircantec Pour plus d'informations : Décret n° 2026-926 du 5 octobre 2026 modifiant le décret n° 70-1277 du...",
+        "link": "https://www.cdg86.fr/actualites/generales/evolution-des-taux-de-cotisation-theoriques-ircantec",
         "source": "HTML"
       },
       {
@@ -4384,6 +4399,30 @@
     "officialUrl": "https://88.cdgplus.fr/",
     "news": [
       {
+        "title": "Autorisations spéciales d’absence (ASA) : ce qui change au 1er janvier 2027",
+        "link": "https://88.cdgplus.fr/autorisations-speciales-dabsence-asa-ce-qui-change-au-1er-janvier-2027/",
+        "pubDate": "Fri, 16 Oct 2026 08:52:33 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Supports et replay 1h pour tout savoir spéciale PSC",
+        "link": "https://88.cdgplus.fr/supports-et-replay-1h-pour-tout-savoir-speciale-psc/",
+        "pubDate": "Wed, 14 Oct 2026 08:25:20 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Le CDG88 vous donne rendez-vous à la Journée des Elus Vosgiens et des Agents des Collectivités (JEVAC) !",
+        "link": "https://88.cdgplus.fr/le-cdg88-vous-donne-rendez-vous-a-la-jevac/",
+        "pubDate": "Tue, 13 Oct 2026 09:50:16 GMT",
+        "source": "RSS"
+      },
+      {
+        "title": "Un temps d’échange au service des collectivités vosgiennes",
+        "link": "https://88.cdgplus.fr/un-temps-dechange-au-service-des-collectivites-vosgiennes/",
+        "pubDate": "Tue, 13 Oct 2026 06:48:59 GMT",
+        "source": "RSS"
+      },
+      {
         "title": "RSU 2025 – Dernière ligne droite",
         "link": "https://88.cdgplus.fr/rsu-2025-derniere-ligne-droite/",
         "pubDate": "Tue, 06 Oct 2026 09:04:22 GMT",
@@ -4406,30 +4445,6 @@
         "link": "https://88.cdgplus.fr/urgent-elections-professionnelles/",
         "pubDate": "Tue, 29 Sep 2026 12:28:00 GMT",
         "source": "RSS"
-      },
-      {
-        "title": "Visio replay Action Sociale !",
-        "link": "https://88.cdgplus.fr/visio-replay-action-sociale-action-sociale/",
-        "pubDate": "Mon, 28 Sep 2026 13:21:57 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Secrétaires de mairie : découvrez les profils de notre dernière promotion",
-        "link": "https://88.cdgplus.fr/secretaires-de-mairie-decouvrez-les-profils-de-notre-derniere-promotion/",
-        "pubDate": "Mon, 28 Sep 2026 09:43:27 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Un accord collectif inédit pour la prévoyance des agents vosgiens !",
-        "link": "https://88.cdgplus.fr/un-accord-collectif-inedit-pour-la-prevoyance-des-agents-vosgiens/",
-        "pubDate": "Tue, 22 Sep 2026 08:53:34 GMT",
-        "source": "RSS"
-      },
-      {
-        "title": "Grève à venir : rappel des règles applicables dans la FPT",
-        "link": "https://88.cdgplus.fr/greve-a-venir-rappel-des-regles-applicables-dans-la-fpt/",
-        "pubDate": "Mon, 21 Sep 2026 08:50:44 GMT",
-        "source": "RSS"
       }
     ]
   },
@@ -4449,16 +4464,6 @@
         "source": "HTML"
       },
       {
-        "title": "13 oct. Conseil médical formation plénière Date limite de réception des dossiers : 22/09/2026",
-        "link": "https://www.cdg89.fr/evenements/conseil-medical-formation-pleniere-6",
-        "source": "HTML"
-      },
-      {
-        "title": "15 oct. Cité 89 De 9h à 18h",
-        "link": "https://www.cdg89.fr/evenements/cite-89-1",
-        "source": "HTML"
-      },
-      {
         "title": "12 nov. CST/F3SCT DU 12/11/2026 Date limite de réception des dossiers 22/10/2026",
         "link": "https://www.cdg89.fr/evenements/cst-f3sct-du-12-11-2026",
         "source": "HTML"
@@ -4469,13 +4474,23 @@
         "source": "HTML"
       },
       {
+        "title": "03 déc. CST/F3SCT DU 03/12/2026 Date limite de réception des dossiers 09/11/2026",
+        "link": "https://www.cdg89.fr/evenements/cst-f3sct-du-03-12-2026",
+        "source": "HTML"
+      },
+      {
+        "title": "04 déc. Conseil médical formation restreinte et plénière Date limite de réception des dossiers : 13/11/2026",
+        "link": "https://www.cdg89.fr/evenements/conseil-medical-formation-restreinte-8",
+        "source": "HTML"
+      },
+      {
         "title": "Voir tout l'agenda",
         "link": "https://www.cdg89.fr/evenements/",
         "source": "HTML"
       },
       {
-        "title": "COLLOQUE PREVENTION 2026",
-        "link": "https://www.cdg89.fr/evenements/colloque-prevention-2026",
+        "title": "13 oct. Conseil médical formation plénière Date limite de réception des dossiers : 22/09/2026",
+        "link": "https://www.cdg89.fr/evenements/conseil-medical-formation-pleniere-6",
         "source": "HTML"
       }
     ]

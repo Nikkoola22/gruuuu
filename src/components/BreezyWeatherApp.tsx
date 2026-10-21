@@ -50,6 +50,7 @@ import {
   getWeatherSettings,
   saveWeatherSettings
 } from '../utils/Weather/storage';
+import { RealRadarMap } from './Weather/RealRadarMap';
 
 interface BreezyWeatherAppProps {
   onClose?: () => void;
@@ -93,12 +94,18 @@ export default function BreezyWeatherApp({ onClose, theme: appTheme = 'light' }:
     setError(null);
 
     try {
-      const [wRes, aqRes] = await Promise.all([
+      const [wResResult, aqResResult] = await Promise.allSettled([
         fetchWeatherData(loc.latitude, loc.longitude, model),
         fetchAirQuality(loc.latitude, loc.longitude)
       ]);
-      setWeatherData(wRes);
-      setAirQuality(aqRes);
+      if (wResResult.status === 'fulfilled') {
+        setWeatherData(wResResult.value);
+      } else {
+        console.warn('Erreur chargement météo:', wResResult.reason);
+      }
+      if (aqResResult.status === 'fulfilled' && aqResResult.value) {
+        setAirQuality(aqResResult.value);
+      }
     } catch (err: any) {
       console.warn('Utilisation des données locales:', err);
       // Fallback data keeps the UI loaded seamlessly
@@ -1041,66 +1048,24 @@ export default function BreezyWeatherApp({ onClose, theme: appTheme = 'light' }:
               <div className="flex items-center justify-between mb-2">
                 <h2 className={`text-base font-bold flex items-center gap-2 ${isLight ? 'text-slate-900' : 'text-white'}`}>
                   <Waves className="w-4 h-4 text-sky-500" />
-                  <span>Radar Précipitations</span>
+                  <span>Radar Précipitations & Pluie en direct</span>
                 </h2>
-                <div className={`flex p-0.5 rounded-xl border text-xs ${
-                  isLight ? 'bg-slate-100 border-slate-200' : 'bg-white/5 border-white/10'
-                }`}>
-                  <button
-                    onClick={() => setActiveRadarLayer('radar')}
-                    className={`px-2.5 py-1 rounded-lg transition-all ${
-                      activeRadarLayer === 'radar'
-                        ? 'bg-sky-600 text-white font-bold'
-                        : 'text-slate-500'
-                    }`}
-                  >
-                    Pluie
-                  </button>
-                  <button
-                    onClick={() => setActiveRadarLayer('clouds')}
-                    className={`px-2.5 py-1 rounded-lg transition-all ${
-                      activeRadarLayer === 'clouds'
-                        ? 'bg-sky-600 text-white font-bold'
-                        : 'text-slate-500'
-                    }`}
-                  >
-                    Nuages
-                  </button>
+                <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>RainViewer HD</span>
                 </div>
               </div>
-              <p className="text-xs text-slate-500">
-                Surveillance radar en direct centrée sur {currentLocation.name}
+              <p className="text-xs text-slate-500 mb-3">
+                Échos radar météorologiques temps réel centrés sur {currentLocation.name} avec historique des scans.
               </p>
             </div>
 
-            {/* Radar Mockup Frame */}
-            <div className={`relative h-64 rounded-2xl overflow-hidden border flex items-center justify-center ${
-              isLight ? 'bg-slate-900 border-slate-300' : 'bg-slate-950 border-white/10'
-            }`}>
-              <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]" />
-              <div className="absolute w-48 h-48 rounded-full border border-sky-400/20" />
-              <div className="absolute w-32 h-32 rounded-full border border-sky-400/25" />
-              <div className="absolute w-16 h-16 rounded-full border border-sky-400/30" />
-              <div className="absolute w-48 h-48 rounded-full bg-gradient-to-tr from-sky-500/30 via-transparent to-transparent animate-spin [animation-duration:4s]" />
-
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-3.5 h-3.5 rounded-full bg-sky-400 ring-4 ring-sky-400/30 shadow-lg shadow-sky-400" />
-                <span className="text-[11px] font-bold text-white mt-1 bg-slate-900/90 px-2 py-0.5 rounded-full border border-white/20">
-                  {currentLocation.name}
-                </span>
-              </div>
-
-              <div className="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded-xl border border-white/20 text-[10px] text-slate-200 flex items-center gap-1.5 font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>Radar opérationnel • {weatherData.current.precipitation > 0 ? `${weatherData.current.precipitation} mm/h détectés` : 'Ciel calme'}</span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-[11px] text-slate-500 px-2 font-medium">
-              <span>Faible</span>
-              <div className="h-1.5 flex-1 mx-3 rounded-full bg-gradient-to-r from-sky-400 via-amber-400 to-rose-600" />
-              <span>Fort</span>
-            </div>
+            {/* Carte Radar Réelle Interactive */}
+            <RealRadarMap
+              location={currentLocation}
+              isLight={isLight}
+              precipitationRate={weatherData.current.precipitation}
+            />
           </div>
         </div>
 

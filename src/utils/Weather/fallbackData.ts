@@ -32,20 +32,26 @@ export function getFallbackWeatherData(cityName = 'Gennevilliers'): WeatherDataR
   }
 
   const daily = [];
-  const dayNames = ['Aujourd\'hui', 'Demain', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
   for (let i = 0; i < 7; i++) {
-    const d = new Date(now.getTime() + i * 86400000);
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i, 12, 0, 0);
+    const rawDayName = i === 0 ? "Aujourd'hui" : i === 1 ? 'Demain' : d.toLocaleDateString('fr-FR', { weekday: 'long' });
+    const dayName = rawDayName.charAt(0).toUpperCase() + rawDayName.slice(1);
+    const sunriseDate = new Date(d);
+    sunriseDate.setHours(7, 58, 0, 0);
+    const sunsetDate = new Date(d);
+    sunsetDate.setHours(19, 8, 0, 0);
+
     daily.push({
       date: d.toISOString().split('T')[0],
-      dayName: dayNames[i] || d.toLocaleDateString('fr-FR', { weekday: 'long' }),
+      dayName,
       formattedDate: d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }),
       weatherCode: i === 0 ? 2 : i === 1 ? 61 : i === 2 ? 1 : 2,
       tempMax: 18 + (i % 3),
       tempMin: 9 + (i % 2),
       apparentMax: 17 + (i % 3),
       apparentMin: 8 + (i % 2),
-      sunrise: new Date(d.setHours(7, 58)).toISOString(),
-      sunset: new Date(d.setHours(19, 8)).toISOString(),
+      sunrise: sunriseDate.toISOString(),
+      sunset: sunsetDate.toISOString(),
       uvIndexMax: 4,
       precipitationSum: i === 1 ? 3.4 : 0.2,
       precipitationProbabilityMax: i === 1 ? 75 : 20,

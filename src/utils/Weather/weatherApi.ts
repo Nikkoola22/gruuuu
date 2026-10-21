@@ -337,13 +337,15 @@ export async function fetchWeatherData(
   const daysCount = dl.time.length;
 
   for (let i = 0; i < daysCount; i++) {
-    const d = new Date(dl.time[i]);
-    const dayName = i === 0 ? "Aujourd'hui" : i === 1 ? 'Demain' : d.toLocaleDateString('fr-FR', { weekday: 'long' });
+    const timeStr = dl.time[i];
+    const d = new Date(timeStr.includes('T') ? timeStr : `${timeStr}T12:00:00`);
+    const rawDayName = i === 0 ? "Aujourd'hui" : i === 1 ? 'Demain' : d.toLocaleDateString('fr-FR', { weekday: 'long' });
+    const dayName = rawDayName.charAt(0).toUpperCase() + rawDayName.slice(1);
     const formattedDate = d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
 
     daily.push({
       date: dl.time[i],
-      dayName: dayName.charAt(0).toUpperCase() + dayName.slice(1),
+      dayName,
       formattedDate,
       weatherCode: dl.weather_code[i],
       tempMax: Math.round(dl.temperature_2m_max[i] * 10) / 10,

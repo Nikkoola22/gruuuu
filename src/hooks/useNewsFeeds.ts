@@ -44,52 +44,54 @@ export const getFallbackIntercoImage = (title = '', category = '', baseUrl = '')
   const t = (title + ' ' + category).toLowerCase();
   const cleanBase = baseUrl.endsWith('/') ? baseUrl : (baseUrl ? baseUrl + '/' : '');
 
-  // 1. CFDT Police (Vraie illustration officielle d'origine)
+  // 1. CFDT Police
   if (t.includes('police')) {
-    return `${cleanBase}interco/actu-cfdt-police.png`;
+    return `${cleanBase}interco/card-1-police.png`;
   }
-  // 2. Mobilisation du 5 novembre (Vraie photo officielle d'origine de manif)
+  // 2. Mobilisation du 5 novembre
   if (t.includes('5 novembre') || t.includes('grève') || t.includes('greve') || t.includes('préavis') || t.includes('preavis')) {
-    return `${cleanBase}interco/actu-greve-5nov.png`;
+    return `${cleanBase}interco/card-2-greve5nov.png`;
   }
-  // 3. Émeutes et dégradations du 17 octobre (Vrai visuel Communiqué de presse d'origine)
+  // 3. Émeutes et dégradations du 17 octobre
   if (t.includes('émeute') || t.includes('emeute') || t.includes('17 octobre') || t.includes('dégradation') || t.includes('degradation') || t.includes('saccage')) {
-    return `${cleanBase}interco/actu-emeutes-17oct.png`;
+    return `${cleanBase}interco/card-3-emeutes17oct.png`;
   }
-  // 4. CSA PJJ & Justice des mineurs
-  if (t.includes('pjj') || t.includes('protection judiciaire') || t.includes('mineur')) {
-    return `${cleanBase}interco/actu-csa-pjj-octobre.svg`;
+  // 4. Réformes, référés et dématérialisation
+  if (t.includes('réforme') || t.includes('reforme') || t.includes('référé') || t.includes('refere') || t.includes('dématérialisation') || t.includes('dematerialisation')) {
+    return `${cleanBase}interco/card-4-reformes-dsj.png`;
   }
-  // 5. Jeunesse & Lycéens
-  if (t.includes('lycéen') || t.includes('lyceen') || t.includes('jeune') || t.includes('jeunesse') || t.includes('étude') || t.includes('etude')) {
-    return `${cleanBase}interco/actu-jeunesse-lyceens.svg`;
+  // 5. Les promesses n'engagent que ceux qui y croient
+  if (t.includes('promesse') || t.includes('dsj') || t.includes('vieil adage')) {
+    return `${cleanBase}interco/card-5-promesses-dsj.png`;
   }
-  // 6. Préfectures & Protection Sociale Complémentaire
-  if (t.includes('préfecture') || t.includes('prefecture') || t.includes('psc') || t.includes('complémentaire')) {
-    return `${cleanBase}interco/actu-prefectures-psc.svg`;
+  // 6. Mobilisations lycéennes : Jeunesse engagée / plutôt que réprimer
+  if (t.includes('jeunesse') || t.includes('engagée') || t.includes('engagee') || t.includes('réprimer') || t.includes('reprimer') || t.includes('plutôt que')) {
+    return `${cleanBase}interco/card-6-jeunesse-engagee.png`;
   }
-  // 7. Égalité & Santé au travail
-  if (t.includes('égalité') || t.includes('egalite') || t.includes('femme') || t.includes('transparence salariale') || t.includes('santé') || t.includes('sante')) {
-    return `${cleanBase}interco/actu-egalite-sante.svg`;
+  // 7. À la PJJ, des équipes sous forte tension
+  if (t.includes('pjj') || t.includes('forte tension') || t.includes('milieu ouvert') || t.includes('tension')) {
+    return `${cleanBase}interco/card-7-pjj-tension.png`;
   }
-  // 8. CNFPT & Formation professionnelle territoriale
-  if (t.includes('cnfpt') || t.includes('formation') || t.includes('apprentissage')) {
-    return `${cleanBase}interco/actu-cnfpt-formation.svg`;
+  // 8. Manifestations lycéennes : soutien mouvements pacifiques (6 octobre)
+  if (t.includes('pacifique') || t.includes('lycéen') || t.includes('lyceen') || t.includes('6 octobre')) {
+    return `${cleanBase}interco/card-8-manif-lyceens-6oct.png`;
   }
-  // 9. Services judiciaires, Greffes & Magistrats
-  if (t.includes('judiciaire') || t.includes('magistrat') || t.includes('greff') || t.includes('tribunal') || t.includes('juger') || t.includes('justice')) {
-    return `${cleanBase}interco/actu-justice-magistrats.svg`;
+  // 9. Mobilisation du 29 septembre 2026
+  if (t.includes('29 septembre')) {
+    return `${cleanBase}interco/card-9-greve-29sept.png`;
   }
 
-  // Fallback alternatif
+  // Fallback déterministe sur les 9 vraies cartes
   const fallbackList = [
-    'interco/actu-cfdt-police.png',
-    'interco/actu-greve-5nov.png',
-    'interco/actu-emeutes-17oct.png',
-    'interco/actu-csa-pjj-octobre.svg',
-    'interco/actu-jeunesse-lyceens.svg',
-    'interco/actu-prefectures-psc.svg',
-    'interco/actu-egalite-sante.svg'
+    'interco/card-1-police.png',
+    'interco/card-2-greve5nov.png',
+    'interco/card-3-emeutes17oct.png',
+    'interco/card-4-reformes-dsj.png',
+    'interco/card-5-promesses-dsj.png',
+    'interco/card-6-jeunesse-engagee.png',
+    'interco/card-7-pjj-tension.png',
+    'interco/card-8-manif-lyceens-6oct.png',
+    'interco/card-9-greve-29sept.png'
   ];
   const idx = Math.abs((title || '').length) % fallbackList.length;
   return `${cleanBase}${fallbackList[idx]}`;
@@ -101,8 +103,8 @@ export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
     link: "https://interco.cfdt.fr/creation-du-syndicat-cfdt-police/",
     pubDate: "2026-10-20T10:30:00.000Z",
     category: "Actu générale",
-    description: "La CFDT se relance dans la police nationale avec la création du syndicat CFDT Police au sein de la fédération CFDT Interco.",
-    imageUrl: "interco/actu-cfdt-police.png"
+    description: "La CFDT se relance dans la police nationale avec la création du syndicat CFDT Police au sein de la fédération CFDT Interco",
+    imageUrl: "interco/card-1-police.png"
   },
   {
     title: "Mobilisation du 5 novembre 2026 : préavis de grève",
@@ -110,63 +112,63 @@ export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
     pubDate: "2026-10-24T08:00:00.000Z",
     category: "Actu générale",
     description: "La CFDT Fonctions publiques a écrit au ministre de la Fonction publique pour déposer un préavis de grève, qui couvre les agents des trois versants de la Fonction publique.",
-    imageUrl: "interco/actu-greve-5nov.png"
+    imageUrl: "interco/card-2-greve5nov.png"
   },
   {
     title: "Après les émeutes et dégradations du 17 octobre 2026",
     link: "https://interco.cfdt.fr/soutien-agents-collectivites-violences-urbaines/",
     pubDate: "2026-10-19T14:15:00.000Z",
     category: "Actu générale",
-    description: "La fédération CFDT Interco condamne fermement les saccages, apporte sa solidarité aux agents touchés et s’interroge sur le sous-dimensionnement des dispositifs de maintien de l'ordre.",
-    imageUrl: "interco/actu-emeutes-17oct.png"
+    description: "La fédération CFDT Interco condamne fermement les saccages, apporte sa solidarité aux agents touchés et s'interroge sur le sous-dimensionnement des dispositifs de maintien de l'ordre",
+    imageUrl: "interco/card-3-emeutes17oct.png"
   },
   {
-    title: "Déclaration au CSA PJJ : alerte sur la forte tension et le manque de moyens des équipes",
+    title: "Réformes, référés et dématérialisation : où sont les moyens ?",
+    link: "https://interco.cfdt.fr/reformes-referes-dematerialisation-ou-sont-les-moyens/",
+    pubDate: "2026-10-15T09:00:00.000Z",
+    category: "Protection judiciaire de la jeunesse",
+    description: "Déclaration liminaire de la CFDT au CSA Services Judiciaires du 15 octobre 2026",
+    imageUrl: "interco/card-4-reformes-dsj.png"
+  },
+  {
+    title: "Les promesses n'engagent que ceux qui y croient, vieil adage remis au goût du jour à la DSJ",
+    link: "https://interco.cfdt.fr/les-promesses-nengagent-que-ceux-qui-y-croient/",
+    pubDate: "2026-09-17T09:00:00.000Z",
+    category: "Protection judiciaire de la jeunesse",
+    description: "Déclaration liminaire de la CFDT au CSA Services Judiciaires du 17 septembre 2026",
+    imageUrl: "interco/card-5-promesses-dsj.png"
+  },
+  {
+    title: "Mobilisations lycéennes : Écouter, dialoguer, construire des réponses PLUTÔT QUE RÉPRIMER !",
+    link: "https://interco.cfdt.fr/mobilisations-lyceennes-ecouter-dialoguer/",
+    pubDate: "2026-10-10T09:00:00.000Z",
+    category: "Protection judiciaire de la jeunesse",
+    description: "Pour garantir les droits et l'avenir de la jeunesse",
+    imageUrl: "interco/card-6-jeunesse-engagee.png"
+  },
+  {
+    title: "À la PJJ, des équipes sous forte tension",
     link: "https://interco.cfdt.fr/declaration-csa-pjj-octobre-2026/",
-    pubDate: "2026-10-06T11:00:00.000Z",
-    category: "Protection judiciaire",
-    description: "La CFDT alerte solennellement sur l'épuisement des personnels et exige des recrutements pérennes en milieu ouvert.",
-    imageUrl: "interco/actu-csa-pjj-octobre.svg"
+    pubDate: "2026-10-08T11:00:00.000Z",
+    category: "Protection judiciaire de la jeunesse",
+    description: "Déclaration préliminaire de la CFDT au CSA PJJ du 08 octobre 2026",
+    imageUrl: "interco/card-7-pjj-tension.png"
   },
   {
-    title: "Soutien aux revendications pour l'éducation et les conditions d'études des jeunes",
-    link: "https://interco.cfdt.fr/soutien-revendications-lyceennes/",
-    pubDate: "2026-10-12T09:00:00.000Z",
-    category: "Jeunesse & Avenir",
-    description: "Prise de position de la CFDT Interco soutenant l'expression pacifique des jeunes et leurs légitimes attentes d'avenir.",
-    imageUrl: "interco/actu-jeunesse-lyceens.svg"
+    title: "Manifestations lycéennes : La fédération CFDT Interco soutient les mouvements pacifiques et dénonce les violences",
+    link: "https://interco.cfdt.fr/manifestations-lyceennes-soutien-mouvements-pacifiques/",
+    pubDate: "2026-10-06T10:00:00.000Z",
+    category: "Actu générale",
+    description: "La fédération CFDT Interco appelle aussi les pouvoirs publics à entendre les revendications des lycéens et à apporter une réponse prompte et significative",
+    imageUrl: "interco/card-8-manif-lyceens-6oct.png"
   },
   {
-    title: "Conditions de travail et PSC en préfectures : la CFDT exige des garanties concrètes",
-    link: "https://interco.cfdt.fr/conditions-travail-psc-prefectures/",
-    pubDate: "2026-09-28T16:00:00.000Z",
-    category: "Préfectures & FPE",
-    description: "Négociations statutaires : la CFDT porte la voix des agents de préfecture sur la complémentaire santé et la charge de travail.",
-    imageUrl: "interco/actu-prefectures-psc.svg"
-  },
-  {
-    title: "Égalité professionnelle : transparence salariale et santé au travail",
-    link: "https://interco.cfdt.fr/egalite-professionnelle-transparence-salariale/",
-    pubDate: "2026-09-18T08:30:00.000Z",
-    category: "Égalité & Santé",
-    description: "Plan d'action syndical pour supprimer les écarts de rémunération et intégrer les enjeux de santé spécifiques aux agentes.",
-    imageUrl: "interco/actu-egalite-sante.svg"
-  },
-  {
-    title: "Défendre l'autonomie et les moyens du CNFPT pour les territoriaux",
-    link: "https://interco.cfdt.fr/defendre-lautonomie-et-les-moyens-du-cnfpt/",
-    pubDate: "2026-09-10T09:00:00.000Z",
-    category: "Territoriale",
-    description: "Défense indispensable des budgets de formation des agents territoriaux et de l'apprentissage dans les collectivités.",
-    imageUrl: "interco/actu-cnfpt-formation.svg"
-  },
-  {
-    title: "Services judiciaires : valoriser l'implication des greffiers et magistrats",
-    link: "https://interco.cfdt.fr/comment-valoriser-limplication-des-agents-et-des-magistrats-et-leur-determination-a-rendre-la-meilleure-justice/",
-    pubDate: "2026-09-02T10:00:00.000Z",
-    category: "Services judiciaires",
-    description: "Intervention CFDT pour une reconnaissance concrète des métiers de greffe et l'amélioration des conditions dans les tribunaux.",
-    imageUrl: "interco/actu-justice-magistrats.svg"
+    title: "Mobilisation du 29 septembre 2026 : la CFDT Interco dénonce dans la fonction publique des conditions de travail et d'emploi qui se dégradent",
+    link: "https://interco.cfdt.fr/mobilisation-29-septembre-2026/",
+    pubDate: "2026-09-29T08:00:00.000Z",
+    category: "Actu générale",
+    description: "À l'occasion de la mobilisation de ce jour, la CFDT Interco alerte sur la situation des agents de la fonction publique, confrontés à une dégradation continue de leurs conditions de travail et d'emploi.",
+    imageUrl: "interco/card-9-greve-29sept.png"
   }
 ];
 

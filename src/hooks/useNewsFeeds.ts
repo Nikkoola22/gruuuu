@@ -26,36 +26,51 @@ export const getFallbackIntercoImage = (title = '', category = '', baseUrl = '')
   const t = (title + ' ' + category).toLowerCase();
   const cleanBase = baseUrl.endsWith('/') ? baseUrl : (baseUrl ? baseUrl + '/' : '');
 
-  if (t.includes('femme') || t.includes('8 mars') || t.includes('égalité') || t.includes('egalite')) {
-    return `${cleanBase}interco/actu-droits-femmes.svg`;
+  // 1. Mobilisation / Grève 5 novembre / Salaires
+  if (t.includes('5 novembre') || t.includes('grève') || t.includes('greve') || t.includes('mobilisation') || t.includes('préavis') || t.includes('preavis')) {
+    return `${cleanBase}interco/actu-greve-5nov.svg`;
   }
-  if (t.includes('pjj') && (t.includes('150') || t.includes('placement') || t.includes('jeunesse') || t.includes('mineur'))) {
-    return `${cleanBase}interco/actu-pjj-jeunesse.svg`;
+  // 2. CFDT Police / Sécurité intérieure
+  if (t.includes('police') || t.includes('sécurité') || t.includes('securite') || t.includes('gardien')) {
+    return `${cleanBase}interco/actu-cfdt-police.svg`;
   }
-  if (t.includes('cnfpt') || t.includes('formation') || t.includes('compétence') || t.includes('competence')) {
+  // 3. Soutien mairies / collectivités territoriales / violences
+  if (t.includes('dégradation') || t.includes('degradation') || t.includes('violence') || t.includes('soutien') || t.includes('collectivité') || t.includes('mairie') || t.includes('hôtel de ville')) {
+    return `${cleanBase}interco/actu-soutien-collectivites.svg`;
+  }
+  // 4. Jeunesse / Lycéens / Éducation
+  if (t.includes('lycéen') || t.includes('lyceen') || t.includes('jeune') || t.includes('jeunesse') || t.includes('étude') || t.includes('etude') || t.includes('école')) {
+    return `${cleanBase}interco/actu-jeunesse-lyceens.svg`;
+  }
+  // 5. PJJ / Protection judiciaire / Milieu ouvert
+  if (t.includes('pjj') || t.includes('protection judiciaire') || t.includes('mineur') || t.includes('placement')) {
+    return `${cleanBase}interco/actu-csa-pjj-octobre.svg`;
+  }
+  // 6. Préfectures / PSC / Protection sociale complémentaire / FPE
+  if (t.includes('préfecture') || t.includes('prefecture') || t.includes('psc') || t.includes('complémentaire') || t.includes('intérieur')) {
+    return `${cleanBase}interco/actu-prefectures-psc.svg`;
+  }
+  // 7. Égalité / Santé au travail / Femmes
+  if (t.includes('égalité') || t.includes('egalite') || t.includes('femme') || t.includes('8 mars') || t.includes('santé') || t.includes('sante') || t.includes('transparence salariale')) {
+    return `${cleanBase}interco/actu-egalite-sante.svg`;
+  }
+  // 8. CNFPT / Formation
+  if (t.includes('cnfpt') || t.includes('formation')) {
     return `${cleanBase}interco/actu-cnfpt-formation.svg`;
   }
-  if (t.includes('magistrat') || t.includes('meilleure justice')) {
+  // 9. Justice / Magistrats / Greffes
+  if (t.includes('magistrat') || t.includes('justice') || t.includes('tribunal') || t.includes('juger')) {
     return `${cleanBase}interco/actu-justice-magistrats.svg`;
-  }
-  if (t.includes('csa') || t.includes('ambition') || t.includes('dialogue') || t.includes('accord')) {
-    return `${cleanBase}interco/actu-csa-dialogue-social.svg`;
-  }
-  if (t.includes('santé') || t.includes('sante') || t.includes('social') || t.includes('changement de cap') || t.includes('hôpital') || t.includes('hopital')) {
-    return `${cleanBase}interco/actu-sante-social.svg`;
-  }
-  if (t.includes('juger') || t.includes('décision') || t.includes('decision') || t.includes('tribunal') || t.includes('judiciaire')) {
-    return `${cleanBase}interco/actu-tribunal-missions.svg`;
   }
 
   const list = [
-    'interco/actu-droits-femmes.svg',
-    'interco/actu-pjj-jeunesse.svg',
-    'interco/actu-cnfpt-formation.svg',
-    'interco/actu-justice-magistrats.svg',
-    'interco/actu-csa-dialogue-social.svg',
-    'interco/actu-sante-social.svg',
-    'interco/actu-tribunal-missions.svg'
+    'interco/actu-greve-5nov.svg',
+    'interco/actu-cfdt-police.svg',
+    'interco/actu-soutien-collectivites.svg',
+    'interco/actu-jeunesse-lyceens.svg',
+    'interco/actu-csa-pjj-octobre.svg',
+    'interco/actu-prefectures-psc.svg',
+    'interco/actu-egalite-sante.svg'
   ];
   const idx = Math.abs((title || '').length) % list.length;
   return `${cleanBase}${list[idx]}`;
@@ -63,61 +78,61 @@ export const getFallbackIntercoImage = (title = '', category = '', baseUrl = '')
 
 export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
   {
-    title: "8 mars, Journée internationale des droits des femmes : la France doit s'engager pour l'égalité !",
-    link: "https://interco.cfdt.fr/8-mars-journee-internationale-des-droits-des-femmes-la-france-doit-sengager-pour-legalite/",
-    pubDate: "Sat, 08 Mar 2026 00:00:00 +0000",
-    category: "Actu générale",
-    description: "Communiqué intersyndical pour la Journée internationale des droits des femmes.",
-    imageUrl: `${BASE_URL}interco/actu-droits-femmes.svg`
+    title: "Appel à la grève et mobilisation du 5 novembre 2026 : salaires et moyens pour les services publics",
+    link: "https://interco.cfdt.fr/appel-a-la-greve-et-mobilisation-du-5-novembre-2026/",
+    pubDate: "2026-10-24T08:00:00.000Z",
+    category: "Fonction Publique",
+    description: "Préavis UFFA-CFDT couvrant les 3 versants de la fonction publique pour exiger des mesures salariales générales et du pouvoir d'achat.",
+    imageUrl: `${BASE_URL}interco/actu-greve-5nov.svg`
   },
   {
-    title: "La CFDT réagit à l'annonce de la création de 150 postes en milieu ouvert à la PJJ",
-    link: "https://interco.cfdt.fr/quand-la-protection-judiciaire-de-la-jeunesse-entend-reinventer-le-placement/",
-    pubDate: "Fri, 20 Feb 2026 00:00:00 +0000",
-    category: "Protection judiciaire",
-    description: "Quand la protection judiciaire de la jeunesse entend réinventer le placement.",
-    imageUrl: `${BASE_URL}interco/actu-pjj-jeunesse.svg`
+    title: "Création du syndicat CFDT Police au sein de la fédération CFDT Interco",
+    link: "https://interco.cfdt.fr/creation-du-syndicat-cfdt-police/",
+    pubDate: "2026-10-20T10:30:00.000Z",
+    category: "Police & Intérieur",
+    description: "La fédération officialise le retour et l'ancrage de la CFDT dans la police nationale pour défendre les agents de terrain.",
+    imageUrl: `${BASE_URL}interco/actu-cfdt-police.svg`
   },
   {
-    title: "Défendre l'autonomie et les moyens du CNFPT",
-    link: "https://interco.cfdt.fr/defendre-lautonomie-et-les-moyens-du-cnfpt/",
-    pubDate: "Thu, 12 Feb 2026 00:00:00 +0000",
-    category: "Territoriale",
-    description: "Déclaration CFDT pour défendre l'autonomie et les moyens du CNFPT.",
-    imageUrl: `${BASE_URL}interco/actu-cnfpt-formation.svg`
+    title: "Dégradations et violences urbaines : soutien total aux agents des collectivités et services publics",
+    link: "https://interco.cfdt.fr/soutien-agents-collectivites-violences-urbaines/",
+    pubDate: "2026-10-16T14:15:00.000Z",
+    category: "Territoriale & Mairies",
+    description: "Condamnation ferme des saccages dans les mairies et solidarité pleine avec les collègues territoriaux en première ligne.",
+    imageUrl: `${BASE_URL}interco/actu-soutien-collectivites.svg`
   },
   {
-    title: "Comment valoriser l'implication des agents et des magistrats ?",
-    link: "https://interco.cfdt.fr/comment-valoriser-limplication-des-agents-et-des-magistrats-et-leur-determination-a-rendre-la-meilleure-justice/",
-    pubDate: "Tue, 10 Feb 2026 00:00:00 +0000",
-    category: "Services judiciaires",
-    description: "Déclaration liminaire Formation spécialisée CSA des services judiciaires.",
-    imageUrl: `${BASE_URL}interco/actu-justice-magistrats.svg`
+    title: "Soutien aux revendications pour l'éducation et les conditions d'études des jeunes",
+    link: "https://interco.cfdt.fr/soutien-revendications-lyceennes/",
+    pubDate: "2026-10-12T09:00:00.000Z",
+    category: "Jeunesse & Avenir",
+    description: "Prise de position de la CFDT Interco soutenant l'expression pacifique des jeunes et leurs légitimes attentes d'avenir.",
+    imageUrl: `${BASE_URL}interco/actu-jeunesse-lyceens.svg`
   },
   {
-    title: "Se donner l'ambition et les moyens — CSA PJJ du 5 février 2026",
-    link: "https://interco.cfdt.fr/se-donner-lambition-et-les-moyens/",
-    pubDate: "Thu, 05 Feb 2026 00:00:00 +0000",
-    category: "Actu générale",
-    description: "Déclaration préliminaire de la CFDT au CSA PJJ du 5 février 2026.",
-    imageUrl: `${BASE_URL}interco/actu-csa-dialogue-social.svg`
+    title: "Déclaration au CSA PJJ : alerte sur la forte tension et le manque de moyens des équipes",
+    link: "https://interco.cfdt.fr/declaration-csa-pjj-octobre-2026/",
+    pubDate: "2026-10-06T11:00:00.000Z",
+    category: "Protection Judiciaire",
+    description: "La CFDT alerte solennellement sur l'épuisement des personnels et exige des recrutements pérennes en milieu ouvert.",
+    imageUrl: `${BASE_URL}interco/actu-csa-pjj-octobre.svg`
   },
   {
-    title: "Un changement de cap clair et concret est demandé !",
-    link: "https://interco.cfdt.fr/un-changement-de-cap-clair-et-concret-est-demande/",
-    pubDate: "Sun, 26 Jan 2026 00:00:00 +0000",
-    category: "Affaires sociales",
-    description: "Déclaration liminaire de la CFDT lors de la rencontre avec la ministre de la Santé.",
-    imageUrl: `${BASE_URL}interco/actu-sante-social.svg`
+    title: "Conditions de travail et PSC en préfectures : la CFDT exige des garanties concrètes",
+    link: "https://interco.cfdt.fr/conditions-travail-psc-prefectures/",
+    pubDate: "2026-09-28T16:00:00.000Z",
+    category: "Préfectures & FPE",
+    description: "Négociations statutaires : la CFDT porte la voix des agents de préfecture sur la complémentaire santé et la charge de travail.",
+    imageUrl: `${BASE_URL}interco/actu-prefectures-psc.svg`
   },
   {
-    title: "Déclaration liminaire CFDT au CSA services judiciaires du 19 février",
-    link: "https://interco.cfdt.fr/lacte-de-juger-ne-se-reduit-pas-au-rendu-dune-decision/",
-    pubDate: "Wed, 19 Feb 2026 00:00:00 +0000",
-    category: "Services judiciaires",
-    description: "L'absence de réflexion transverse sur le sens des missions de chacun.",
-    imageUrl: `${BASE_URL}interco/actu-tribunal-missions.svg`
-  },
+    title: "Égalité professionnelle : transparence salariale et santé au travail",
+    link: "https://interco.cfdt.fr/egalite-professionnelle-transparence-salariale/",
+    pubDate: "2026-09-18T08:30:00.000Z",
+    category: "Égalité & Santé",
+    description: "Plan d'action syndical pour supprimer les écarts de rémunération et intégrer les enjeux de santé spécifiques aux agentes.",
+    imageUrl: `${BASE_URL}interco/actu-egalite-sante.svg`
+  }
 ];
 
 export const FALLBACK_FP_NEWS: IntercoNewsItem[] = [
@@ -298,20 +313,78 @@ export function useNewsFeeds() {
   // 2. CFDT Interco News
   useEffect(() => {
     let isMounted = true;
-    const fetchIntercoNews = async () => {
+        const fetchIntercoNews = async () => {
       try {
         setIntercoLoading(true);
-        const apiUrl = getApiEndpoint('interco-rss');
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`Erreur serveur: ${response.status}`);
-        const data = await response.json();
-        const items = (data.items || []).map((item: IntercoNewsItem) => ({
-          ...item,
-          title: item.title.replace(/^•\s*/, '').trim(),
-        }));
+        let items: IntercoNewsItem[] = [];
 
+        // 1. Tentative API serveur locale (si Express est actif)
+        try {
+          const apiUrl = getApiEndpoint('interco-rss');
+          const response = await fetch(apiUrl, { signal: AbortSignal.timeout(3000) });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.items && data.items.length > 0) {
+              items = data.items;
+            }
+          }
+        } catch {
+          // Ignorer et passer aux sources directes du navigateur
+        }
+
+        // 2. Si non disponible, tentative directe via passerelle RSS/JSON sécurisée
+        if (items.length === 0) {
+          try {
+            const rssGateways = [
+              'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Finterco.cfdt.fr%2Factualites%2Ffeed%2F',
+              'https://api.allorigins.win/get?url=' + encodeURIComponent('https://interco.cfdt.fr/actualites/feed/')
+            ];
+
+            for (const gw of rssGateways) {
+              try {
+                const res = await fetch(gw, { signal: AbortSignal.timeout(4000) });
+                if (res.ok) {
+                  const json = await res.json();
+                  if (json.items && json.items.length > 0) {
+                    items = json.items.map((it: { title?: string; link?: string; pubDate?: string; categories?: string[]; description?: string; thumbnail?: string; enclosure?: { link?: string } }) => {
+                      const cleanTitle = (it.title || '').replace(/^•\s*/, '').trim();
+                      const category = (it.categories && it.categories[0]) || 'Actu Interco';
+                      const img = it.thumbnail || it.enclosure?.link || getFallbackIntercoImage(cleanTitle, category, BASE_URL);
+                      return {
+                        title: cleanTitle,
+                        link: it.link || 'https://interco.cfdt.fr/actualites/',
+                        pubDate: it.pubDate || new Date().toISOString(),
+                        category,
+                        description: (it.description || '').replace(/<[^>]*>/g, '').trim().substring(0, 160),
+                        imageUrl: img
+                      };
+                    });
+                    break;
+                  }
+                }
+              } catch {
+                // Continuer vers le fallback
+              }
+            }
+          } catch {
+            // Passer au fallback
+          }
+        }
+
+        // 3. Application des articles trouvés ou du fallback à jour
         if (isMounted) {
-          setIntercoNews(items.length > 0 ? items : fallbackInterco);
+          if (items.length > 0) {
+            const enriched = items.map(item => ({
+              ...item,
+              title: item.title.replace(/^•\s*/, '').trim(),
+              imageUrl: item.imageUrl && !item.imageUrl.includes('logo-cfdt') 
+                ? item.imageUrl 
+                : getFallbackIntercoImage(item.title, item.category, BASE_URL)
+            }));
+            setIntercoNews(enriched);
+          } else {
+            setIntercoNews(fallbackInterco);
+          }
         }
       } catch {
         if (isMounted) setIntercoNews(fallbackInterco);

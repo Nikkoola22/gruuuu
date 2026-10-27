@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#134e4a" />
+      <stop offset="50%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <radialGradient id="lightGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.75" />
+    </radialGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#bgGrad)" />
+  <rect width="640" height="360" fill="url(#lightGlow)" />
+
+  <g stroke="rgba(255,255,255,0.06)" stroke-width="1.5">
+    <line x1="0" y1="40" x2="640" y2="40" />
+    <line x1="0" y1="120" x2="640" y2="120" />
+    <line x1="0" y1="200" x2="640" y2="200" />
+    <line x1="0" y1="280" x2="640" y2="280" />
+    <line x1="160" y1="0" x2="160" y2="360" />
+    <line x1="320" y1="0" x2="320" y2="360" />
+    <line x1="480" y1="0" x2="480" y2="360" />
+  </g>
+
+  <g filter="url(#dropShadow)">
+    
+      <!-- Health Cross + Shield -->
+      <path d="M320 85 L390 120 V185 C390 230 320 265 320 265 C320 265 250 230 250 185 V120 Z" fill="rgba(45, 212, 191, 0.2)" stroke="#ffffff" stroke-width="9" stroke-linejoin="round"/>
+      <path d="M305 135 H335 V155 H355 V185 H335 V205 H305 V185 H285 V155 H305 Z" fill="#2dd4bf" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
+    
+  </g>
+
+  <!-- Top Pill -->
+  <g transform="translate(32, 28)">
+    <rect width="180" height="28" rx="14" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1"/>
+    <circle cx="16" cy="14" r="5" fill="#2dd4bf"/>
+    <text x="30" y="18" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5">CFDT INTERCO</text>
+  </g>
+
+  <!-- Right Badge -->
+  <g transform="translate(400, 28)">
+    <rect width="208" height="28" rx="14" fill="rgba(255, 255, 255, 0.18)" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1"/>
+    <text x="104" y="18" text-anchor="middle" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700">Ministère de l’Intérieur</text>
+  </g>
+
+  <!-- Bottom Bar -->
+  <g transform="translate(24, 275)" filter="url(#dropShadow)">
+    <rect width="592" height="64" rx="12" fill="rgba(15, 23, 42, 0.88)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1"/>
+    <text x="20" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="900" letter-spacing="0.3">PRÉFECTURES & PROTECTION SOCIALE</text>
+    <text x="20" y="48" fill="#2dd4bf" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="600">Négociations PSC & reconnaissance des agents FPE</text>
+    <circle cx="560" cy="32" r="16" fill="#2dd4bf" />
+    <path d="M556 26 L563 32 L556 38" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

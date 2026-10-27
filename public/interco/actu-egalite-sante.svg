@@ -29,7 +29,7 @@
 
   <g filter="url(#dropShadow)">
     
-      <!-- Gender Equality Symbol & Heartbeat -->
+      <!-- Gender Equality Symbol &amp; Heartbeat -->
       <circle cx="320" cy="135" r="45" fill="none" stroke="#ffffff" stroke-width="11"/>
       <line x1="320" y1="180" x2="320" y2="245" stroke="#ffffff" stroke-width="11" stroke-linecap="round"/>
       <line x1="290" y1="215" x2="350" y2="215" stroke="#ffffff" stroke-width="11" stroke-linecap="round"/>
@@ -53,7 +53,7 @@
   <!-- Bottom Bar -->
   <g transform="translate(24, 275)" filter="url(#dropShadow)">
     <rect width="592" height="64" rx="12" fill="rgba(15, 23, 42, 0.88)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1"/>
-    <text x="20" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="900" letter-spacing="0.3">ÉGALITÉ & SANTÉ AU TRAVAIL</text>
+    <text x="20" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="900" letter-spacing="0.3">ÉGALITÉ &amp; SANTÉ AU TRAVAIL</text>
     <text x="20" y="48" fill="#f5d0fe" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="600">Transparence salariale et santé des agentes</text>
     <circle cx="560" cy="32" r="16" fill="#f5d0fe" />
     <path d="M556 26 L563 32 L556 38" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>

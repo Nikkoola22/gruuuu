@@ -29,7 +29,7 @@
 
   <g filter="url(#dropShadow)">
     
-      <!-- Youth Silhouette with Book & Sun -->
+      <!-- Youth Silhouette with Book &amp; Sun -->
       <circle cx="320" cy="115" r="22" fill="#ffffff"/>
       <path d="M275 195 C275 155 365 155 365 195" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
       <!-- Open Book -->
@@ -57,7 +57,7 @@
   <!-- Bottom Bar -->
   <g transform="translate(24, 275)" filter="url(#dropShadow)">
     <rect width="592" height="64" rx="12" fill="rgba(15, 23, 42, 0.88)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1"/>
-    <text x="20" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="900" letter-spacing="0.3">CONDITIONS D’ÉTUDES & JEUNESSE</text>
+    <text x="20" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="900" letter-spacing="0.3">CONDITIONS D’ÉTUDES &amp; JEUNESSE</text>
     <text x="20" y="48" fill="#6ee7b7" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="600">Soutien aux revendications pour l’éducation</text>
     <circle cx="560" cy="32" r="16" fill="#6ee7b7" />
     <path d="M556 26 L563 32 L556 38" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>

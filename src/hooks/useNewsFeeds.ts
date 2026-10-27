@@ -72,6 +72,14 @@ export const getFallbackIntercoImage = (title = '', category = '', baseUrl = '')
   if (t.includes('égalité') || t.includes('egalite') || t.includes('femme') || t.includes('transparence salariale') || t.includes('santé') || t.includes('sante')) {
     return `${cleanBase}interco/actu-egalite-sante.svg`;
   }
+  // 8. CNFPT & Formation professionnelle territoriale
+  if (t.includes('cnfpt') || t.includes('formation') || t.includes('apprentissage')) {
+    return `${cleanBase}interco/actu-cnfpt-formation.svg`;
+  }
+  // 9. Services judiciaires, Greffes & Magistrats
+  if (t.includes('judiciaire') || t.includes('magistrat') || t.includes('greff') || t.includes('tribunal') || t.includes('juger') || t.includes('justice')) {
+    return `${cleanBase}interco/actu-justice-magistrats.svg`;
+  }
 
   // Fallback alternatif
   const fallbackList = [

@@ -29,7 +29,7 @@
 
   <g filter="url(#dropShadow)">
     
-      <!-- City Hall Building & Shield -->
+      <!-- City Hall Building &amp; Shield -->
       <path d="M240 130 L320 85 L400 130 Z" fill="#a5b4fc"/>
       <rect x="250" y="130" width="140" height="90" fill="none" stroke="#ffffff" stroke-width="8"/>
       <!-- Columns -->

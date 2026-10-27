@@ -40,7 +40,7 @@
   <!-- Central Thematic Icon with Glow -->
   <g filter="url(#dropShadow)">
     
-      <!-- Supportive Hands & Shield -->
+      <!-- Supportive Hands &amp; Shield -->
       <path d="M320 85 L390 120 V185 C390 230 320 265 320 265 C320 265 250 230 250 185 V120 Z" fill="rgba(56, 189, 248, 0.15)" stroke="#ffffff" stroke-width="10" stroke-linejoin="round"/>
       <!-- Figures: Educator helping youth -->
       <circle cx="300" cy="155" r="16" fill="#ffffff"/>
@@ -62,7 +62,7 @@
   <!-- Right Pill Badge -->
   <g transform="translate(420, 28)">
     <rect width="188" height="28" rx="14" fill="rgba(255, 255, 255, 0.18)" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1"/>
-    <text x="94" y="18" text-anchor="middle" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700">Jeunesse & Éducation</text>
+    <text x="94" y="18" text-anchor="middle" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700">Jeunesse &amp; Éducation</text>
   </g>
 
   <!-- Bottom Frosted Info Bar -->

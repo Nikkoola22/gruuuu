@@ -29,7 +29,7 @@
 
   <g filter="url(#dropShadow)">
     
-      <!-- Balanced Scales & Protection -->
+      <!-- Balanced Scales &amp; Protection -->
       <line x1="320" y1="90" x2="320" y2="240" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
       <line x1="240" y1="125" x2="400" y2="125" stroke="#fbcfe8" stroke-width="8" stroke-linecap="round"/>
       <circle cx="320" cy="90" r="10" fill="#fbcfe8"/>

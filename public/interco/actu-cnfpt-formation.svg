@@ -40,7 +40,7 @@
   <!-- Central Thematic Icon with Glow -->
   <g filter="url(#dropShadow)">
     
-      <!-- Graduation Cap & Open Book -->
+      <!-- Graduation Cap &amp; Open Book -->
       <path d="M240 145 L320 105 L400 145 L320 185 Z" fill="#ffffff" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
       <path d="M400 145 V185" stroke="#34d399" stroke-width="7" stroke-linecap="round"/>
       <circle cx="400" cy="190" r="6" fill="#34d399"/>
@@ -71,7 +71,7 @@
     <text x="20" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="900" letter-spacing="0.3">AUTONOMIE DU CNFPT</text>
     
     <!-- Subtitle -->
-    <text x="20" y="48" fill="#34d399" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Moyens de formation & compétences territoriales</text>
+    <text x="20" y="48" fill="#34d399" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Moyens de formation &amp; compétences territoriales</text>
     
     <!-- Arrow Action -->
     <circle cx="560" cy="32" r="16" fill="#34d399" />

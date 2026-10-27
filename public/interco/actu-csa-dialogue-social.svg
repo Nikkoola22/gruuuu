@@ -40,7 +40,7 @@
   <!-- Central Thematic Icon with Glow -->
   <g filter="url(#dropShadow)">
     
-      <!-- Negotiation Table & Collaborative Hands -->
+      <!-- Negotiation Table &amp; Collaborative Hands -->
       <ellipse cx="320" cy="180" rx="95" ry="40" fill="none" stroke="#ffffff" stroke-width="8"/>
       <!-- Attendees around -->
       <circle cx="250" cy="140" r="16" fill="#fed7aa"/>
@@ -72,10 +72,10 @@
     <rect width="592" height="64" rx="12" fill="rgba(15, 23, 42, 0.88)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1"/>
     
     <!-- Title -->
-    <text x="20" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="900" letter-spacing="0.3">CSA & DIALOGUE SOCIAL</text>
+    <text x="20" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="900" letter-spacing="0.3">CSA &amp; DIALOGUE SOCIAL</text>
     
     <!-- Subtitle -->
-    <text x="20" y="48" fill="#fed7aa" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Négociation, Instances & Défense des agents</text>
+    <text x="20" y="48" fill="#fed7aa" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600">Négociation, Instances &amp; Défense des agents</text>
     
     <!-- Arrow Action -->
     <circle cx="560" cy="32" r="16" fill="#fed7aa" />

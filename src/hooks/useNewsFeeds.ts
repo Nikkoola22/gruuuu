@@ -22,14 +22,102 @@ const getApiEndpoint = (endpoint: string) => {
   return `/api/${endpoint}`;
 };
 
+export const getFallbackIntercoImage = (title = '', category = '', baseUrl = ''): string => {
+  const t = (title + ' ' + category).toLowerCase();
+  const cleanBase = baseUrl.endsWith('/') ? baseUrl : (baseUrl ? baseUrl + '/' : '');
+
+  if (t.includes('femme') || t.includes('8 mars') || t.includes('égalité') || t.includes('egalite')) {
+    return `${cleanBase}interco/actu-droits-femmes.svg`;
+  }
+  if (t.includes('pjj') && (t.includes('150') || t.includes('placement') || t.includes('jeunesse') || t.includes('mineur'))) {
+    return `${cleanBase}interco/actu-pjj-jeunesse.svg`;
+  }
+  if (t.includes('cnfpt') || t.includes('formation') || t.includes('compétence') || t.includes('competence')) {
+    return `${cleanBase}interco/actu-cnfpt-formation.svg`;
+  }
+  if (t.includes('magistrat') || t.includes('meilleure justice')) {
+    return `${cleanBase}interco/actu-justice-magistrats.svg`;
+  }
+  if (t.includes('csa') || t.includes('ambition') || t.includes('dialogue') || t.includes('accord')) {
+    return `${cleanBase}interco/actu-csa-dialogue-social.svg`;
+  }
+  if (t.includes('santé') || t.includes('sante') || t.includes('social') || t.includes('changement de cap') || t.includes('hôpital') || t.includes('hopital')) {
+    return `${cleanBase}interco/actu-sante-social.svg`;
+  }
+  if (t.includes('juger') || t.includes('décision') || t.includes('decision') || t.includes('tribunal') || t.includes('judiciaire')) {
+    return `${cleanBase}interco/actu-tribunal-missions.svg`;
+  }
+
+  const list = [
+    'interco/actu-droits-femmes.svg',
+    'interco/actu-pjj-jeunesse.svg',
+    'interco/actu-cnfpt-formation.svg',
+    'interco/actu-justice-magistrats.svg',
+    'interco/actu-csa-dialogue-social.svg',
+    'interco/actu-sante-social.svg',
+    'interco/actu-tribunal-missions.svg'
+  ];
+  const idx = Math.abs((title || '').length) % list.length;
+  return `${cleanBase}${list[idx]}`;
+};
+
 export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
-  { title: "8 mars, Journée internationale des droits des femmes : la France doit s'engager pour l'égalité !", link: "https://interco.cfdt.fr/8-mars-journee-internationale-des-droits-des-femmes-la-france-doit-sengager-pour-legalite/", pubDate: "Sat, 08 Mar 2026 00:00:00 +0000", category: "Actu générale", description: "Communiqué intersyndical pour la Journée internationale des droits des femmes." },
-  { title: "La CFDT réagit à l'annonce de la création de 150 postes en milieu ouvert à la PJJ", link: "https://interco.cfdt.fr/quand-la-protection-judiciaire-de-la-jeunesse-entend-reinventer-le-placement/", pubDate: "Fri, 20 Feb 2026 00:00:00 +0000", category: "Protection judiciaire", description: "Quand la protection judiciaire de la jeunesse entend réinventer le placement." },
-  { title: "Défendre l'autonomie et les moyens du CNFPT", link: "https://interco.cfdt.fr/defendre-lautonomie-et-les-moyens-du-cnfpt/", pubDate: "Thu, 12 Feb 2026 00:00:00 +0000", category: "Territoriale", description: "Déclaration CFDT pour défendre l'autonomie et les moyens du CNFPT." },
-  { title: "Comment valoriser l'implication des agents et des magistrats ?", link: "https://interco.cfdt.fr/comment-valoriser-limplication-des-agents-et-des-magistrats-et-leur-determination-a-rendre-la-meilleure-justice/", pubDate: "Tue, 10 Feb 2026 00:00:00 +0000", category: "Services judiciaires", description: "Déclaration liminaire Formation spécialisée CSA des services judiciaires." },
-  { title: "Se donner l'ambition et les moyens — CSA PJJ du 5 février 2026", link: "https://interco.cfdt.fr/se-donner-lambition-et-les-moyens/", pubDate: "Thu, 05 Feb 2026 00:00:00 +0000", category: "Actu générale", description: "Déclaration préliminaire de la CFDT au CSA PJJ du 5 février 2026." },
-  { title: "Un changement de cap clair et concret est demandé !", link: "https://interco.cfdt.fr/un-changement-de-cap-clair-et-concret-est-demande/", pubDate: "Sun, 26 Jan 2026 00:00:00 +0000", category: "Affaires sociales", description: "Déclaration liminaire de la CFDT lors de la rencontre avec la ministre de la Santé." },
-  { title: "Déclaration liminaire CFDT au CSA services judiciaires du 19 février", link: "https://interco.cfdt.fr/lacte-de-juger-ne-se-reduit-pas-au-rendu-dune-decision/", pubDate: "Wed, 19 Feb 2026 00:00:00 +0000", category: "Services judiciaires", description: "L'absence de réflexion transverse sur le sens des missions de chacun." },
+  {
+    title: "8 mars, Journée internationale des droits des femmes : la France doit s'engager pour l'égalité !",
+    link: "https://interco.cfdt.fr/8-mars-journee-internationale-des-droits-des-femmes-la-france-doit-sengager-pour-legalite/",
+    pubDate: "Sat, 08 Mar 2026 00:00:00 +0000",
+    category: "Actu générale",
+    description: "Communiqué intersyndical pour la Journée internationale des droits des femmes.",
+    imageUrl: `${BASE_URL}interco/actu-droits-femmes.svg`
+  },
+  {
+    title: "La CFDT réagit à l'annonce de la création de 150 postes en milieu ouvert à la PJJ",
+    link: "https://interco.cfdt.fr/quand-la-protection-judiciaire-de-la-jeunesse-entend-reinventer-le-placement/",
+    pubDate: "Fri, 20 Feb 2026 00:00:00 +0000",
+    category: "Protection judiciaire",
+    description: "Quand la protection judiciaire de la jeunesse entend réinventer le placement.",
+    imageUrl: `${BASE_URL}interco/actu-pjj-jeunesse.svg`
+  },
+  {
+    title: "Défendre l'autonomie et les moyens du CNFPT",
+    link: "https://interco.cfdt.fr/defendre-lautonomie-et-les-moyens-du-cnfpt/",
+    pubDate: "Thu, 12 Feb 2026 00:00:00 +0000",
+    category: "Territoriale",
+    description: "Déclaration CFDT pour défendre l'autonomie et les moyens du CNFPT.",
+    imageUrl: `${BASE_URL}interco/actu-cnfpt-formation.svg`
+  },
+  {
+    title: "Comment valoriser l'implication des agents et des magistrats ?",
+    link: "https://interco.cfdt.fr/comment-valoriser-limplication-des-agents-et-des-magistrats-et-leur-determination-a-rendre-la-meilleure-justice/",
+    pubDate: "Tue, 10 Feb 2026 00:00:00 +0000",
+    category: "Services judiciaires",
+    description: "Déclaration liminaire Formation spécialisée CSA des services judiciaires.",
+    imageUrl: `${BASE_URL}interco/actu-justice-magistrats.svg`
+  },
+  {
+    title: "Se donner l'ambition et les moyens — CSA PJJ du 5 février 2026",
+    link: "https://interco.cfdt.fr/se-donner-lambition-et-les-moyens/",
+    pubDate: "Thu, 05 Feb 2026 00:00:00 +0000",
+    category: "Actu générale",
+    description: "Déclaration préliminaire de la CFDT au CSA PJJ du 5 février 2026.",
+    imageUrl: `${BASE_URL}interco/actu-csa-dialogue-social.svg`
+  },
+  {
+    title: "Un changement de cap clair et concret est demandé !",
+    link: "https://interco.cfdt.fr/un-changement-de-cap-clair-et-concret-est-demande/",
+    pubDate: "Sun, 26 Jan 2026 00:00:00 +0000",
+    category: "Affaires sociales",
+    description: "Déclaration liminaire de la CFDT lors de la rencontre avec la ministre de la Santé.",
+    imageUrl: `${BASE_URL}interco/actu-sante-social.svg`
+  },
+  {
+    title: "Déclaration liminaire CFDT au CSA services judiciaires du 19 février",
+    link: "https://interco.cfdt.fr/lacte-de-juger-ne-se-reduit-pas-au-rendu-dune-decision/",
+    pubDate: "Wed, 19 Feb 2026 00:00:00 +0000",
+    category: "Services judiciaires",
+    description: "L'absence de réflexion transverse sur le sens des missions de chacun.",
+    imageUrl: `${BASE_URL}interco/actu-tribunal-missions.svg`
+  },
 ];
 
 export const FALLBACK_FP_NEWS: IntercoNewsItem[] = [

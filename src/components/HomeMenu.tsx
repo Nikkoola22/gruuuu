@@ -5,7 +5,7 @@ import { BorderBeam } from "./ui/BorderBeam.tsx"
 import { ForeverMagneticButton } from "./ui/ForeverMagneticButton.tsx"
 import { ForeverTiltCard } from "./ui/ForeverTiltCard.tsx"
 import type { ChatbotState } from "../App.tsx"
-import type { IntercoNewsItem } from "../hooks/useNewsFeeds.ts"
+import { type IntercoNewsItem, getFallbackIntercoImage } from "../hooks/useNewsFeeds.ts"
 import { CFDT_JOURNAUX, type CFDTJournal, CFDT_JOURNAUX_BASE_URL } from "../data/cfdtJournaux.ts"
 import { KiosqueJournauxModal } from "./KiosqueJournauxModal.tsx"
 
@@ -1400,13 +1400,13 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                         >
                           <div className="relative w-full h-24 overflow-hidden bg-slate-50 dark:bg-slate-900 flex-shrink-0 border-b border-slate-100 dark:border-slate-800">
                             <img
-                              src={article.imageUrl || `${BASE_URL}logo-cfdt.jpg`}
+                              src={article.imageUrl || getFallbackIntercoImage(article.title, article.category, BASE_URL)}
                               alt={article.title}
                               className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
                                 target.onerror = null;
-                                target.src = `${BASE_URL}logo-cfdt.jpg`;
+                                target.src = getFallbackIntercoImage(article.title, article.category, BASE_URL);
                               }}
                             />
                             {article.category && (

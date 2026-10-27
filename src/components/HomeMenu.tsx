@@ -854,16 +854,16 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                     </div>
                     <div>
                       <span className="text-[10px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 block leading-tight">
-                        Publications & Alertes
+                        Publications & Guides
                       </span>
                       <h4 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-center gap-1">
-                        <span>Nos com</span>
+                        <span>Nos Com & Guides</span>
                         <span className="text-sm">📢</span>
                       </h4>
                     </div>
                   </div>
                   <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-300/70 dark:border-amber-800/70 shrink-0">
-                    5 Tracts récents
+                    Guides & Tracts
                   </span>
                 </div>
 
@@ -871,8 +871,8 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 <div className="flex gap-3 items-center my-auto py-1">
                   <div className="relative shrink-0 w-16 sm:w-20 h-22 sm:h-24 rounded-lg overflow-hidden bg-slate-900 border border-amber-300/80 dark:border-amber-600/40 shadow-sm block">
                     <img
-                      src={`${BASE_URL}tracts/tract-1.jpg`}
-                      alt="Tracts CFDT"
+                      src={`${BASE_URL}tracts/guide-agent-public-cover.png`}
+                      alt="Guide de l'agent public CFDT"
                       className="w-full h-full object-cover object-top"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -881,17 +881,17 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-1">
-                      <span className="text-[8px] font-black text-white bg-amber-600/90 px-1 py-0.2 rounded">Tracts</span>
+                      <span className="text-[8px] font-black text-white bg-amber-600/90 px-1 py-0.2 rounded">Guides</span>
                     </div>
                   </div>
 
                   <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <div>
                       <h5 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white leading-tight">
-                        Tracts & Dossiers CFDT
+                        Tracts & Guides CFDT
                       </h5>
                       <p className="text-[11px] text-amber-700 dark:text-amber-300 font-medium mt-0.5 line-clamp-1 leading-tight">
-                        Élections, SGES, SFT, EPI, SERA...
+                        Guide statutaire, Guide contractuel, Élections, SFT...
                       </p>
                     </div>
 
@@ -907,7 +907,7 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 hover:from-amber-700 hover:to-orange-700 text-white font-extrabold text-[11px] shadow-sm hover:shadow-md transition-all cursor-pointer"
                       >
                         <Megaphone className="w-3 h-3 shrink-0" />
-                        <span>Consulter nos tracts</span>
+                        <span>Consulter tracts & guides</span>
                         <ArrowRight className="w-2.5 h-2.5 ml-0.5 shrink-0" />
                       </button>
                     </div>
@@ -917,8 +917,8 @@ const HomeMenu: React.FC<HomeMenuProps> = ({
                 {/* Rubriques clés tracts (alignement de hauteur parfait) */}
                 <div className="grid grid-cols-3 gap-1 p-1 bg-amber-100/50 dark:bg-slate-800/60 rounded-lg border border-amber-200/60 dark:border-slate-700/60 mt-1 text-center">
                   <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-amber-800 dark:text-amber-200 truncate">Élections 2026</span>
-                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-amber-800 dark:text-amber-200 truncate">Victoires EPI</span>
-                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-amber-800 dark:text-amber-200 truncate">SGES & Salaires</span>
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-amber-800 dark:text-amber-200 truncate">Guide Contractuel</span>
+                  <span className="text-[9.5px] font-bold py-0.5 px-1 rounded bg-white/80 dark:bg-slate-700/70 text-amber-800 dark:text-amber-200 truncate">Tracts Locaux</span>
                 </div>
               </div>
             </div>

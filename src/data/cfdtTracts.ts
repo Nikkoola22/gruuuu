@@ -5,15 +5,95 @@ export interface CFDTract {
   badge: string;
   date: string;
   theme: string;
-  themeColor: "orange" | "blue" | "amber" | "emerald" | "rose" | "purple";
+  themeColor: "orange" | "blue" | "amber" | "emerald" | "rose" | "purple" | "teal" | "cyan";
   coverImage: string;
   pdfUrl: string;
   description: string;
   keyPoints: string[];
   serviceConcerne: string;
+  isGuide?: boolean;
+  pagesCount?: number;
+  tableOfContents?: string[];
 }
 
 export const CFDT_TRACTS: CFDTract[] = [
+  {
+    id: "guide-agent-public-2026",
+    title: "Guide de l'agent public 2026",
+    subtitle: "Édition fédérale CFDT Interco — Le statut général de référence (68 pages)",
+    badge: "Guide Fédéral 2026",
+    date: "Juin 2026",
+    theme: "Statut & Droits Généraux",
+    themeColor: "purple",
+    coverImage: "tracts/guide-agent-public-cover.png",
+    pdfUrl: "tracts/guide-agent-public-2026.pdf",
+    isGuide: true,
+    pagesCount: 68,
+    description: "L'ouvrage de référence statutaire indispensable publié par la Fédération CFDT Interco pour tous les agents de la fonction publique (FPE, FPT, FPH). À jour des réformes législatives et du Code Général de la Fonction Publique (CGFP) : rémunération, droits et devoirs, carrière, temps de travail, congés, discipline, instances paritaires (CST, CAP, F3SCT) et protection sociale.",
+    keyPoints: [
+      "Code Général de la Fonction Publique (CGFP) et grands principes des 3 versants",
+      "Rémunération : point d'indice, RIFSEEP, SFT, NBI, CTI et nouvelle PSC santé/prévoyance",
+      "Carrière & formation : avancement d'échelon/grade, promotion interne (LDG), VAE, CPA/CPF",
+      "Positions statutaires : détachement, disponibilité sans délai de 18 mois (décret déc. 2025)",
+      "Temps de travail, congés pour raison de santé (maintien 90%), autorisations d'absence et instances (CST, CAP, F3SCT)"
+    ],
+    tableOfContents: [
+      "Les grands principes de la fonction publique & organisation du CGFP (p. 5)",
+      "L'organisation des emplois : catégories A, B, C, cadres d'emplois et grades (p. 6)",
+      "Le personnel : stagiaires, titulaires, contractuels et travailleurs handicapés (p. 7)",
+      "La rémunération : traitement indiciaire brut, IR, SFT, RIFSEEP, NBI, CTI, PSC (p. 9)",
+      "Les droits des agents : opinion, grève, non-discrimination, protection fonctionnelle (p. 11)",
+      "Les obligations des agents : obéissance, probité, cumul d'activités, réserve, laïcité (p. 18)",
+      "La carrière : dossier individuel, entretien annuel (CREP), avancement, promotion interne, LDG (p. 21)",
+      "La formation : CEP, certification CléA, bilan de compétences, VAE, CPF et CEC (p. 24)",
+      "Les positions administratives : activité, mise à disposition, mutation, détachement, disponibilité (p. 30)",
+      "La cessation de fonctions : démission, licenciement, inaptitude, rupture conventionnelle, retraite (p. 35)",
+      "Le temps de travail : base 1 607 h, ARTT, astreintes, temps non complet, temps partiel, télétravail (p. 40)",
+      "Les congés et autorisations d'absence : congés annuels, bonifiés, CET, maternité, paternité, maladie ordinaire, CLM, CLD, CITIS (p. 46)",
+      "La discipline : 4 groupes de sanctions, procédure et conseil de discipline (p. 58)",
+      "Les instances représentatives du personnel : CCFP, CSFPE, CSFPT, CAP, CCP, CS/CST, F3SCT (p. 60)",
+      "La CFDT et vous : rôle du syndicat, accompagnement et avantages adhérents (p. 64)"
+    ],
+    serviceConcerne: "Tous les agents de la fonction publique (FPE, FPT, FPH)"
+  },
+  {
+    id: "guide-agent-contractuel-2026",
+    title: "Guide de l'agent contractuel 2026",
+    subtitle: "Édition fédérale CFDT Interco — Connaître vos droits et opportunités (40 pages)",
+    badge: "Guide Contractuels 2026",
+    date: "Juin 2026",
+    theme: "Agents Contractuels de Droit Public",
+    themeColor: "emerald",
+    coverImage: "tracts/guide-agent-contractuel-cover.png",
+    pdfUrl: "tracts/guide-agent-contractuel-2026.pdf",
+    isGuide: true,
+    pagesCount: 40,
+    description: "Le guide complet conçu par la CFDT Interco pour défendre et accompagner les agents contractuels de droit public dans la fonction publique territoriale et d'État : règles de recrutement (CDD, projet, remplacement), droits au CDI après 6 ans, période d'essai, réévaluation salariale obligatoire, congés pour maladie ou maternité, indemnité de fin de contrat (prime de précarité 10%) et rôle de la Commission Consultative Paritaire (CCP).",
+    keyPoints: [
+      "Tous les cas de recrutement : remplacement, accroissement, contrat de projet, vacance",
+      "Conditions d'accès au CDI (6 ans de services) et portabilité entre employeurs",
+      "Rémunération et réévaluation obligatoire au moins tous les 3 ans",
+      "Droits à congés (maladie ordinaire, grave maladie, accident du travail) et préavis",
+      "Indemnité de fin de contrat (prime de précarité de 10%) et saisine de la CCP"
+    ],
+    tableOfContents: [
+      "Introduction & champ d'application FPE / FPT (p. 4)",
+      "Les cas de recrutement : CDD de droit public, contrat de projet, vacance, PACTE, handicap (p. 4)",
+      "Les contrats et leur durée : CDD temporaires, emplois permanents, mentions obligatoires (p. 9)",
+      "Le CDI et la titularisation : passage en CDI après 6 ans, portabilité et congé mobilité (p. 13)",
+      "La période d'essai : barèmes de durée et modalités de renouvellement (p. 16)",
+      "Le temps de travail : 35h, 1 607 h, annualisation, temps partiel et temps partiel thérapeutique (p. 17)",
+      "La formation professionnelle : formations statutaires, compte CPA/CPF et congés formation (p. 20)",
+      "La rémunération : fixation, SMIC, réévaluation obligatoire tous les 3 ans, RIFSEEP (p. 21)",
+      "L'entretien professionnel : compte-rendu annuel (CREP) et voies de recours (p. 22)",
+      "Les congés : congés annuels, report de 15 mois, CET, maladie ordinaire, congé de grave maladie (p. 24)",
+      "Les autorisations d'absence : motifs familiaux, garde d'enfant, grossesse, mandats syndicaux (p. 28)",
+      "Droits, obligations & discipline : devoirs de l'agent, échelle des sanctions contractuels (p. 29)",
+      "La fin de contrat : non-renouvellement, prime de précarité (10%), démission, licenciement, rupture conventionnelle (p. 31)",
+      "Les instances représentatives : rôle déterminant de la Commission Consultative Paritaire (CCP) et du CST (p. 36)"
+    ],
+    serviceConcerne: "Agents contractuels de droit public (CDD, CDI, contrat de projet, PACTE)"
+  },
   {
     id: "elections-2026-medecins",
     title: "Élections professionnelles le 10 décembre 2026",

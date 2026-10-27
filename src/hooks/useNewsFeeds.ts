@@ -1,3 +1,4 @@
+import { scrapeInterco9Cards } from '../services/intercoScraper.ts';
 import { useState, useEffect, useMemo } from 'react';
 import { franceInfoRss } from '../data/rss-data.ts';
 
@@ -142,6 +143,22 @@ export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
     category: "Égalité & Santé",
     description: "Plan d'action syndical pour supprimer les écarts de rémunération et intégrer les enjeux de santé spécifiques aux agentes.",
     imageUrl: "interco/actu-egalite-sante.svg"
+  },
+  {
+    title: "Défendre l'autonomie et les moyens du CNFPT pour les territoriaux",
+    link: "https://interco.cfdt.fr/defendre-lautonomie-et-les-moyens-du-cnfpt/",
+    pubDate: "2026-09-10T09:00:00.000Z",
+    category: "Territoriale",
+    description: "Défense indispensable des budgets de formation des agents territoriaux et de l'apprentissage dans les collectivités.",
+    imageUrl: "interco/actu-cnfpt-formation.svg"
+  },
+  {
+    title: "Services judiciaires : valoriser l'implication des greffiers et magistrats",
+    link: "https://interco.cfdt.fr/comment-valoriser-limplication-des-agents-et-des-magistrats-et-leur-determination-a-rendre-la-meilleure-justice/",
+    pubDate: "2026-09-02T10:00:00.000Z",
+    category: "Services judiciaires",
+    description: "Intervention CFDT pour une reconnaissance concrète des métiers de greffe et l'amélioration des conditions dans les tribunaux.",
+    imageUrl: "interco/actu-justice-magistrats.svg"
   }
 ];
 
@@ -320,91 +337,41 @@ export function useNewsFeeds() {
     };
   }, []);
 
-  // 2. CFDT Interco News
+  // 2. CFDT Interco News : Scraping en direct des 9 cartes dès le démarrage de l'app ATLAS
   useEffect(() => {
     let isMounted = true;
-        const fetchIntercoNews = async () => {
+
+    const startIntercoLiveScraping = async () => {
       try {
         setIntercoLoading(true);
-        let items: IntercoNewsItem[] = [];
 
-        // 1. Tentative API serveur locale (si Express est actif)
-        try {
-          const apiUrl = getApiEndpoint('interco-rss');
-          const response = await fetch(apiUrl, { signal: AbortSignal.timeout(3000) });
-          if (response.ok) {
-            const data = await response.json();
-            if (data.items && data.items.length > 0) {
-              items = data.items;
-            }
-          }
-        } catch {
-          // Ignorer et passer aux sources directes du navigateur
-        }
-
-        // 2. Si non disponible, tentative directe via passerelle RSS/JSON sécurisée
-        if (items.length === 0) {
-          try {
-            const rssGateways = [
-              'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Finterco.cfdt.fr%2Factualites%2Ffeed%2F',
-              'https://api.allorigins.win/get?url=' + encodeURIComponent('https://interco.cfdt.fr/actualites/feed/')
-            ];
-
-            for (const gw of rssGateways) {
-              try {
-                const res = await fetch(gw, { signal: AbortSignal.timeout(4000) });
-                if (res.ok) {
-                  const json = await res.json();
-                  if (json.items && json.items.length > 0) {
-                    items = json.items.map((it: { title?: string; link?: string; pubDate?: string; categories?: string[]; description?: string; thumbnail?: string; enclosure?: { link?: string } }) => {
-                      const cleanTitle = (it.title || '').replace(/^•\s*/, '').trim();
-                      const category = (it.categories && it.categories[0]) || 'Actu Interco';
-                      const img = it.thumbnail || it.enclosure?.link || getFallbackIntercoImage(cleanTitle, category, BASE_URL);
-                      return {
-                        title: cleanTitle,
-                        link: it.link || 'https://interco.cfdt.fr/actualites/',
-                        pubDate: it.pubDate || new Date().toISOString(),
-                        category,
-                        description: (it.description || '').replace(/<[^>]*>/g, '').trim().substring(0, 160),
-                        imageUrl: img
-                      };
-                    });
-                    break;
-                  }
-                }
-              } catch {
-                // Continuer vers le fallback
-              }
-            }
-          } catch {
-            // Passer au fallback
-          }
-        }
-
-        // 3. Application des articles trouvés ou du fallback à jour
+        // Affichage immédiat des 9 cartes par défaut pour éviter tout temps d'attente
         if (isMounted) {
-          if (items.length > 0) {
-            const enriched = items.map(item => ({
-              ...item,
-              title: item.title.replace(/^•\s*/, '').trim(),
-              imageUrl: item.imageUrl && !item.imageUrl.includes('logo-cfdt') 
-                ? item.imageUrl 
-                : getFallbackIntercoImage(item.title, item.category, BASE_URL)
-            }));
-            setIntercoNews(enriched);
-          } else {
-            setIntercoNews(fallbackInterco);
-          }
+          setIntercoNews(fallbackInterco);
         }
-      } catch {
-        if (isMounted) setIntercoNews(fallbackInterco);
+
+        // Exécution du scraper au démarrage
+        const scraped = await scrapeInterco9Cards(BASE_URL);
+
+        if (isMounted && Array.isArray(scraped) && scraped.length > 0) {
+          console.log(`[ATLAS Startup] ⚡ Mise à jour du carrousel avec les ${scraped.length} cartes fraîches scrapées !`);
+          setIntercoNews(scraped.slice(0, 9));
+        }
+      } catch (err) {
+        console.warn('[ATLAS Startup] Utilisation des 9 cartes certifiées:', err);
+        if (isMounted) {
+          setIntercoNews(fallbackInterco);
+        }
       } finally {
-        if (isMounted) setIntercoLoading(false);
+        if (isMounted) {
+          setIntercoLoading(false);
+        }
       }
     };
 
-    fetchIntercoNews();
-    const interval = setInterval(fetchIntercoNews, 30 * 60 * 1000);
+    startIntercoLiveScraping();
+    // Rafraîchissement automatique toutes les 15 minutes
+    const interval = setInterval(startIntercoLiveScraping, 15 * 60 * 1000);
     return () => {
       isMounted = false;
       clearInterval(interval);

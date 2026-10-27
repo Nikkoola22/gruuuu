@@ -4,7 +4,7 @@ import { SpotlightCard } from "./ui/SpotlightCard.tsx";
 import { BorderGlow } from "./ui/BorderGlow.tsx";
 import { CFDT_JOURNAUX, type CFDTJournal } from "../data/cfdtJournaux.ts";
 import { KiosqueJournauxModal } from "./KiosqueJournauxModal.tsx";
-import { getFallbackIntercoImage } from "../hooks/useNewsFeeds.ts";
+import { getFallbackIntercoImage, resolveIntercoImageUrl } from "../hooks/useNewsFeeds.ts";
 
 interface IntercoNewsItem {
   title: string;
@@ -174,10 +174,10 @@ const Actualites: React.FC<ActualitesProps> = ({ news, onClose, baseUrl, onNavig
                           className="flex flex-col h-full p-5"
                         >
                           {/* Image de l'article */}
-                          <div className="relative w-full h-40 overflow-hidden rounded-xl bg-slate-50 mb-4 border border-slate-100">
+                          <div className="relative w-full h-44 overflow-hidden rounded-xl bg-slate-900 mb-4 border border-slate-100">
                             <img
-                              src={article.imageUrl || getFallbackIntercoImage(article.title, article.category, baseUrl)}
-                              alt={article.title}
+                              src={resolveIntercoImageUrl(article.imageUrl, article.title, article.category, baseUrl)}
+                              alt=""
                               className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;

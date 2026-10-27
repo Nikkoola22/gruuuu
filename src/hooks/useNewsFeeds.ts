@@ -22,84 +22,102 @@ const getApiEndpoint = (endpoint: string) => {
   return `/api/${endpoint}`;
 };
 
+export const resolveIntercoImageUrl = (imageUrl: string | undefined, title = '', category = '', baseUrl = ''): string => {
+  const cleanBase = baseUrl.endsWith('/') ? baseUrl : (baseUrl ? baseUrl + '/' : '');
+  
+  if (imageUrl && !imageUrl.includes('logo-cfdt')) {
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    }
+    if (cleanBase && imageUrl.startsWith(cleanBase)) {
+      return imageUrl;
+    }
+    const cleanPath = imageUrl.startsWith('/') ? imageUrl.slice(1) : imageUrl;
+    return `${cleanBase}${cleanPath}`;
+  }
+
+  return getFallbackIntercoImage(title, category, cleanBase);
+};
+
 export const getFallbackIntercoImage = (title = '', category = '', baseUrl = ''): string => {
   const t = (title + ' ' + category).toLowerCase();
   const cleanBase = baseUrl.endsWith('/') ? baseUrl : (baseUrl ? baseUrl + '/' : '');
 
-  // 1. Mobilisation / Grève 5 novembre / Salaires
-  if (t.includes('5 novembre') || t.includes('grève') || t.includes('greve') || t.includes('mobilisation') || t.includes('préavis') || t.includes('preavis')) {
-    return `${cleanBase}interco/actu-greve-5nov.svg`;
+  // 1. CFDT Police (Vraie illustration officielle d'origine)
+  if (t.includes('police')) {
+    return `${cleanBase}interco/actu-cfdt-police.png`;
   }
-  // 2. CFDT Police / Sécurité intérieure
-  if (t.includes('police') || t.includes('sécurité') || t.includes('securite') || t.includes('gardien')) {
-    return `${cleanBase}interco/actu-cfdt-police.svg`;
+  // 2. Mobilisation du 5 novembre (Vraie photo officielle d'origine de manif)
+  if (t.includes('5 novembre') || t.includes('grève') || t.includes('greve') || t.includes('préavis') || t.includes('preavis')) {
+    return `${cleanBase}interco/actu-greve-5nov.png`;
   }
-  // 3. Soutien mairies / collectivités territoriales / violences
-  if (t.includes('dégradation') || t.includes('degradation') || t.includes('violence') || t.includes('soutien') || t.includes('collectivité') || t.includes('mairie') || t.includes('hôtel de ville')) {
-    return `${cleanBase}interco/actu-soutien-collectivites.svg`;
+  // 3. Émeutes et dégradations du 17 octobre (Vrai visuel Communiqué de presse d'origine)
+  if (t.includes('émeute') || t.includes('emeute') || t.includes('17 octobre') || t.includes('dégradation') || t.includes('degradation') || t.includes('saccage')) {
+    return `${cleanBase}interco/actu-emeutes-17oct.png`;
   }
-  // 4. Jeunesse / Lycéens / Éducation
-  if (t.includes('lycéen') || t.includes('lyceen') || t.includes('jeune') || t.includes('jeunesse') || t.includes('étude') || t.includes('etude') || t.includes('école')) {
-    return `${cleanBase}interco/actu-jeunesse-lyceens.svg`;
-  }
-  // 5. PJJ / Protection judiciaire / Milieu ouvert
-  if (t.includes('pjj') || t.includes('protection judiciaire') || t.includes('mineur') || t.includes('placement')) {
+  // 4. CSA PJJ & Justice des mineurs
+  if (t.includes('pjj') || t.includes('protection judiciaire') || t.includes('mineur')) {
     return `${cleanBase}interco/actu-csa-pjj-octobre.svg`;
   }
-  // 6. Préfectures / PSC / Protection sociale complémentaire / FPE
-  if (t.includes('préfecture') || t.includes('prefecture') || t.includes('psc') || t.includes('complémentaire') || t.includes('intérieur')) {
+  // 5. Jeunesse & Lycéens
+  if (t.includes('lycéen') || t.includes('lyceen') || t.includes('jeune') || t.includes('jeunesse') || t.includes('étude') || t.includes('etude')) {
+    return `${cleanBase}interco/actu-jeunesse-lyceens.svg`;
+  }
+  // 6. Préfectures & Protection Sociale Complémentaire
+  if (t.includes('préfecture') || t.includes('prefecture') || t.includes('psc') || t.includes('complémentaire')) {
     return `${cleanBase}interco/actu-prefectures-psc.svg`;
   }
-  // 7. Égalité / Santé au travail / Femmes
-  if (t.includes('égalité') || t.includes('egalite') || t.includes('femme') || t.includes('8 mars') || t.includes('santé') || t.includes('sante') || t.includes('transparence salariale')) {
+  // 7. Égalité & Santé au travail
+  if (t.includes('égalité') || t.includes('egalite') || t.includes('femme') || t.includes('transparence salariale') || t.includes('santé') || t.includes('sante')) {
     return `${cleanBase}interco/actu-egalite-sante.svg`;
   }
-  // 8. CNFPT / Formation
-  if (t.includes('cnfpt') || t.includes('formation')) {
-    return `${cleanBase}interco/actu-cnfpt-formation.svg`;
-  }
-  // 9. Justice / Magistrats / Greffes
-  if (t.includes('magistrat') || t.includes('justice') || t.includes('tribunal') || t.includes('juger')) {
-    return `${cleanBase}interco/actu-justice-magistrats.svg`;
-  }
 
-  const list = [
-    'interco/actu-greve-5nov.svg',
-    'interco/actu-cfdt-police.svg',
-    'interco/actu-soutien-collectivites.svg',
-    'interco/actu-jeunesse-lyceens.svg',
+  // Fallback alternatif
+  const fallbackList = [
+    'interco/actu-cfdt-police.png',
+    'interco/actu-greve-5nov.png',
+    'interco/actu-emeutes-17oct.png',
     'interco/actu-csa-pjj-octobre.svg',
+    'interco/actu-jeunesse-lyceens.svg',
     'interco/actu-prefectures-psc.svg',
     'interco/actu-egalite-sante.svg'
   ];
-  const idx = Math.abs((title || '').length) % list.length;
-  return `${cleanBase}${list[idx]}`;
+  const idx = Math.abs((title || '').length) % fallbackList.length;
+  return `${cleanBase}${fallbackList[idx]}`;
 };
 
 export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
   {
-    title: "Appel à la grève et mobilisation du 5 novembre 2026 : salaires et moyens pour les services publics",
-    link: "https://interco.cfdt.fr/appel-a-la-greve-et-mobilisation-du-5-novembre-2026/",
-    pubDate: "2026-10-24T08:00:00.000Z",
-    category: "Fonction Publique",
-    description: "Préavis UFFA-CFDT couvrant les 3 versants de la fonction publique pour exiger des mesures salariales générales et du pouvoir d'achat.",
-    imageUrl: `${BASE_URL}interco/actu-greve-5nov.svg`
-  },
-  {
-    title: "Création du syndicat CFDT Police au sein de la fédération CFDT Interco",
+    title: "Création du syndicat CFDT Police",
     link: "https://interco.cfdt.fr/creation-du-syndicat-cfdt-police/",
     pubDate: "2026-10-20T10:30:00.000Z",
-    category: "Police & Intérieur",
-    description: "La fédération officialise le retour et l'ancrage de la CFDT dans la police nationale pour défendre les agents de terrain.",
-    imageUrl: `${BASE_URL}interco/actu-cfdt-police.svg`
+    category: "Actu générale",
+    description: "La CFDT se relance dans la police nationale avec la création du syndicat CFDT Police au sein de la fédération CFDT Interco.",
+    imageUrl: "interco/actu-cfdt-police.png"
   },
   {
-    title: "Dégradations et violences urbaines : soutien total aux agents des collectivités et services publics",
+    title: "Mobilisation du 5 novembre 2026 : préavis de grève",
+    link: "https://interco.cfdt.fr/appel-a-la-greve-et-mobilisation-du-5-novembre-2026/",
+    pubDate: "2026-10-24T08:00:00.000Z",
+    category: "Actu générale",
+    description: "La CFDT Fonctions publiques a écrit au ministre de la Fonction publique pour déposer un préavis de grève, qui couvre les agents des trois versants de la Fonction publique.",
+    imageUrl: "interco/actu-greve-5nov.png"
+  },
+  {
+    title: "Après les émeutes et dégradations du 17 octobre 2026",
     link: "https://interco.cfdt.fr/soutien-agents-collectivites-violences-urbaines/",
-    pubDate: "2026-10-16T14:15:00.000Z",
-    category: "Territoriale & Mairies",
-    description: "Condamnation ferme des saccages dans les mairies et solidarité pleine avec les collègues territoriaux en première ligne.",
-    imageUrl: `${BASE_URL}interco/actu-soutien-collectivites.svg`
+    pubDate: "2026-10-19T14:15:00.000Z",
+    category: "Actu générale",
+    description: "La fédération CFDT Interco condamne fermement les saccages, apporte sa solidarité aux agents touchés et s’interroge sur le sous-dimensionnement des dispositifs de maintien de l'ordre.",
+    imageUrl: "interco/actu-emeutes-17oct.png"
+  },
+  {
+    title: "Déclaration au CSA PJJ : alerte sur la forte tension et le manque de moyens des équipes",
+    link: "https://interco.cfdt.fr/declaration-csa-pjj-octobre-2026/",
+    pubDate: "2026-10-06T11:00:00.000Z",
+    category: "Protection judiciaire",
+    description: "La CFDT alerte solennellement sur l'épuisement des personnels et exige des recrutements pérennes en milieu ouvert.",
+    imageUrl: "interco/actu-csa-pjj-octobre.svg"
   },
   {
     title: "Soutien aux revendications pour l'éducation et les conditions d'études des jeunes",
@@ -107,15 +125,7 @@ export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
     pubDate: "2026-10-12T09:00:00.000Z",
     category: "Jeunesse & Avenir",
     description: "Prise de position de la CFDT Interco soutenant l'expression pacifique des jeunes et leurs légitimes attentes d'avenir.",
-    imageUrl: `${BASE_URL}interco/actu-jeunesse-lyceens.svg`
-  },
-  {
-    title: "Déclaration au CSA PJJ : alerte sur la forte tension et le manque de moyens des équipes",
-    link: "https://interco.cfdt.fr/declaration-csa-pjj-octobre-2026/",
-    pubDate: "2026-10-06T11:00:00.000Z",
-    category: "Protection Judiciaire",
-    description: "La CFDT alerte solennellement sur l'épuisement des personnels et exige des recrutements pérennes en milieu ouvert.",
-    imageUrl: `${BASE_URL}interco/actu-csa-pjj-octobre.svg`
+    imageUrl: "interco/actu-jeunesse-lyceens.svg"
   },
   {
     title: "Conditions de travail et PSC en préfectures : la CFDT exige des garanties concrètes",
@@ -123,7 +133,7 @@ export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
     pubDate: "2026-09-28T16:00:00.000Z",
     category: "Préfectures & FPE",
     description: "Négociations statutaires : la CFDT porte la voix des agents de préfecture sur la complémentaire santé et la charge de travail.",
-    imageUrl: `${BASE_URL}interco/actu-prefectures-psc.svg`
+    imageUrl: "interco/actu-prefectures-psc.svg"
   },
   {
     title: "Égalité professionnelle : transparence salariale et santé au travail",
@@ -131,7 +141,7 @@ export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
     pubDate: "2026-09-18T08:30:00.000Z",
     category: "Égalité & Santé",
     description: "Plan d'action syndical pour supprimer les écarts de rémunération et intégrer les enjeux de santé spécifiques aux agentes.",
-    imageUrl: `${BASE_URL}interco/actu-egalite-sante.svg`
+    imageUrl: "interco/actu-egalite-sante.svg"
   }
 ];
 

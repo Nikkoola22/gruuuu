@@ -193,8 +193,11 @@ router.get('/fp-rss', async (req, res) => {
 
           const imgMatch = part.match(/<img[^>]+src=["']([^"']+)["']/i);
           let imageUrl = imgMatch ? imgMatch[1] : null;
-          if (imageUrl && imageUrl.startsWith('/')) {
-            imageUrl = 'https://www.amf.asso.fr' + imageUrl;
+          if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+            imageUrl = 'https://www.amf.asso.fr/' + imageUrl.replace(/^\/+/, '');
+          }
+          if (!imageUrl || imageUrl.includes('632d07975d58b7f5e93d98577155bfa6')) {
+            imageUrl = 'https://medias.amf.asso.fr/thumbmails/A201800_a9cf9553a2c7b7854febe18c29f31cac.jpg';
           }
 
           const titleMatch = part.match(/<h3><a[^>]*>([\s\S]*?)<\/a><\/h3>/i);

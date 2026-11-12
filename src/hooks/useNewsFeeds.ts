@@ -97,6 +97,37 @@ export const getFallbackIntercoImage = (title = '', category = '', baseUrl = '')
   return `${cleanBase}${fallbackList[idx]}`;
 };
 
+const FP_FALLBACK_IMAGES = [
+  'https://medias.amf.asso.fr/thumbmails/A201800_51669cc5038acfa94a807572d0caecfa.png',
+  'https://medias.amf.asso.fr/thumbmails/A201800_a9cf9553a2c7b7854febe18c29f31cac.jpg',
+  'https://medias.amf.asso.fr/thumbmails/A201800_8682724a3eeffad2d6c0257f80cd0c79.jpeg',
+  'https://medias.amf.asso.fr/thumbmails/A201800_655f278d01c9fa1ee41be4b9ae003e03.jpg',
+  'https://medias.amf.asso.fr/thumbmails/A201800_ac1af4d2d15a96f22f55c4c901a5e458.jpg',
+  'https://medias.amf.asso.fr/thumbmails/A201800_aece564ffa162fa73837292979bb1363.jpeg',
+  'https://medias.amf.asso.fr/thumbmails/A201800_538b359a3c70272e64a3cc79c1cf2313.jpg',
+  'https://medias.amf.asso.fr/thumbmails/A201800_1bd1bf7205fd5a581141413c1c542443.jpg',
+  'https://medias.amf.asso.fr/thumbmails/A201800_3e64b82aa977c5d3eb0f4d32494894a5.jpg',
+  'https://medias.amf.asso.fr/thumbmails/A201800_5cae11b03e2eef2601c1f8d884c6434f.jpg',
+  'https://www.lettreducadre.fr/mediatheque/5/2/6/000032625_210x140_c.jpeg',
+  'https://www.lettreducadre.fr/mediatheque/0/2/6/000032620_210x140_c.jpeg',
+];
+
+export const getFallbackFpImage = (title = '', index = 0): string => {
+  const hash = (title || '').split('').reduce((acc, ch) => acc + ch.charCodeAt(0), index);
+  return FP_FALLBACK_IMAGES[Math.abs(hash) % FP_FALLBACK_IMAGES.length];
+};
+
+export const resolveFpImageUrl = (imageUrl: string | undefined, title = '', index = 0): string => {
+  if (
+    imageUrl &&
+    !imageUrl.includes('632d07975d58b7f5e93d98577155bfa6') &&
+    (imageUrl.startsWith('http://') || imageUrl.startsWith('https://') || imageUrl.startsWith('/'))
+  ) {
+    return imageUrl;
+  }
+  return getFallbackFpImage(title, index);
+};
+
 export const FALLBACK_INTERCO_NEWS: IntercoNewsItem[] = [
   {
     title: "Création du syndicat CFDT Police",
@@ -399,7 +430,12 @@ export function useNewsFeeds() {
         if (!response.ok) throw new Error(`Erreur serveur: ${response.status}`);
         const data = await response.json();
         if (isMounted) {
-          setFpNews(data.items && data.items.length > 0 ? data.items : fallbackFp);
+          const rawItems: IntercoNewsItem[] = data.items && data.items.length > 0 ? data.items : fallbackFp;
+          const sanitizedItems = rawItems.map((item, idx) => ({
+            ...item,
+            imageUrl: resolveFpImageUrl(item.imageUrl, item.title, idx),
+          }));
+          setFpNews(sanitizedItems);
         }
       } catch {
         if (isMounted) setFpNews(fallbackFp);

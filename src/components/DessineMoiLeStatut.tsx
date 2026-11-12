@@ -180,7 +180,7 @@ const DessineMoiLeStatut: React.FC<DessineMoiLeStatutProps> = ({ onClose }) => {
 
             <div className="relative shrink-0 flex items-center">
               <img
-                src="/images/cfdt_logo_texte.png"
+                src={`${import.meta.env.BASE_URL}images/cfdt_logo_texte.png`}
                 alt="Logo CFDT"
                 className="h-14 sm:h-20 w-auto object-contain hover:scale-105 transition-transform"
                 onError={(e) => {

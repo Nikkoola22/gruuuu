@@ -48,8 +48,11 @@ export const FaitAGennevilliersBadge: React.FC<FaitAGennevilliersBadgeProps> = (
             className="text-orange-500/45 dark:text-orange-400/40"
           />
 
-          {/* Texte circulaire rotatif "FAIT À GENNEVILLIERS" */}
-          <g className="origin-center motion-safe:animate-[spin_32s_linear_infinite]">
+          {/* Texte circulaire rotatif "FAIT À GENNEVILLIERS" (rotation sens inverse des aiguilles d'une montre) */}
+          <g
+            className="origin-center motion-safe:animate-[spin_32s_linear_infinite] [animation-direction:reverse]"
+            style={{ animationDirection: "reverse" }}
+          >
             <text
               fill="currentColor"
               className="text-slate-800 dark:text-orange-200 font-extrabold uppercase"

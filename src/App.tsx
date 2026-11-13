@@ -1449,14 +1449,14 @@ ${indicesFactuels}
             >
               <div className="relative shrink-0">
                 {logoLoadError ? (
-                  <div className="w-10 h-10 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-500 to-orange-650 border border-white/20 shadow-md flex items-center justify-center relative transition-all duration-300 group-hover:scale-105 group-hover:rotate-3">
+                  <div className="w-14 h-14 sm:w-20 sm:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-500 to-orange-650 border border-white/20 shadow-md flex items-center justify-center relative transition-all duration-300 group-hover:scale-105 group-hover:rotate-3">
                     <span className="text-white font-black tracking-wider text-xs sm:text-base lg:text-lg">CFDT</span>
                   </div>
                 ) : (
                   <img
                     src={`${BASE_URL}images/cfdt_logo_texte.png`}
                     alt="Logo CFDT S'engager pour chacun, Agir pour tous"
-                    className="h-11 sm:h-16 lg:h-20 xl:h-24 w-auto object-contain relative"
+                    className="h-14 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto object-contain relative transition-transform duration-200 group-hover:scale-105"
                     onError={() => setLogoLoadError(true)}
                   />
                 )}
@@ -1545,7 +1545,7 @@ ${indicesFactuels}
               <img
                 src={`${BASE_URL}images/footer_banner.png`}
                 alt="Votons CFDT ! S'engager pour chacun, agir pour tous - Élections professionnelles 10 décembre 2026 - Interco Gennevilliers"
-                className="h-14 lg:h-18 xl:h-22 w-auto max-w-full object-contain rounded-xl shadow-md border border-orange-500/30 hover:border-orange-500/60 transition-all duration-300 hover:scale-[1.02]"
+                className="h-14 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto max-w-full object-contain rounded-xl shadow-md border border-orange-500/30 hover:border-orange-500/60 transition-all duration-300 hover:scale-[1.03]"
               />
             </div>
 

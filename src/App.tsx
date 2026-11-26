@@ -1403,7 +1403,7 @@ ${indicesFactuels}
       <div className="fixed inset-0 bg-white/40 dark:bg-transparent z-0 pointer-events-none transition-colors duration-300"></div>
 
       {/* Orange geometric background shapes */}
-      <OrangeGeometricBackground />
+      {chatState.currentView !== 'jeux' && <OrangeGeometricBackground />}
 
       {/* Couches de fond supplémentaires — supprimées (GPU layers plein écran) */}
 

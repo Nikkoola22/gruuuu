@@ -97,16 +97,16 @@ const games: GameDef[] = [
   { id: "tycoon", title: "Gennevilliers City", description: "\"Ma Collectivité\" : Un jeu de gestion au tour par tour. Gérez le budget, calmez les syndicats, et survivez aux crises !", actionText: "Prendre ses fonctions", icon: Building2, iconTheme: "amber", bgImage: "tycoon.png", spanClass: "md:col-span-2 lg:col-span-2 lg:row-span-2", iconSizeClass: "w-8 h-8 sm:w-12 sm:h-12", titleSizeClass: "text-3xl sm:text-5xl" },
   { id: "directrh", title: "Défi du Responsable", description: "Incarnez un responsable de service : swipez pour trancher et maintenez vos 4 jauges en équilibre. Style Reigns !", actionText: "Prendre ses fonctions", icon: Crown, iconTheme: "amber", bgImage: "directrh.png", spanClass: "col-span-1" },
   // Row 2: Two small + one large
-  { id: "flappy", title: "Flappy Agent", description: "Envolez-vous au-dessus des obstacles administratifs et récoltez des primes bonus.", actionText: "Décoller", icon: Feather, iconTheme: "emerald", bgImage: "flappy.png", spanClass: "col-span-1" },
+  { id: "flappy", title: "Flappy CFDT 92", description: "Survolez Gennevilliers du matin à la nuit étoilée, de la Mairie aux Chanteraines, et décrochez les badges CFDT !", actionText: "Décoller", icon: Feather, iconTheme: "orange", bgImage: "flappy.png", spanClass: "col-span-1" },
   { id: "quiz", title: "Quiz FAQ", description: "10 questions sur les droits de la fonction publique.", actionText: "Lancer", icon: HelpCircle, iconTheme: "orange", bgImage: "quiz.png", spanClass: "col-span-1" },
   { id: "geoguessr", title: "Chasse au Trésor", description: "Point & Click / Exploration interactive : situez sur le plan de la commune les photos d'équipements de la ville.", actionText: "Explorer le plan", icon: MapPin, iconTheme: "sky", bgImage: "geoguessr.png", spanClass: "col-span-1" },
   // Row 3: Large + two small
   { id: "spaceinvaders", title: "Space Invaders RH", description: "Détruisez les vagues d'anomalies et d'erreurs statutaires à coup de tirs laser néon.", actionText: "Tirer", icon: Rocket, iconTheme: "purple", bgImage: "spaceinvaders.png", spanClass: "md:col-span-2 lg:col-span-2" },
   { id: "escapegame", title: "Escape Game RH", description: "S'échapper des mauvaises situations au travail en adoptant les bons réflexes statutaires et QVT.", actionText: "S'échapper", icon: Sparkles, iconTheme: "purple", bgImage: "escapegame.png", spanClass: "col-span-1" },
-  { id: "towerdefense", title: "Tower Defense", description: "Gérez les effectifs face aux demandes RH.", actionText: "Défendre", icon: Shield, iconTheme: "emerald", bgImage: "towerdefense.png", spanClass: "col-span-1" },
+  { id: "towerdefense", title: "Bastion CFDT 3D", description: "Tower Defense 3D isométrique : défendez la flamme sociale de Gennevilliers, de la Mairie aux Chanteraines, avec la CFDT !", actionText: "Défendre le 92230", icon: Shield, iconTheme: "orange", bgImage: "towerdefense.png", spanClass: "col-span-1" },
   // Row 4: Two small + one large
   { id: "cassebrique", title: "Casse-brique", description: "Un casse-brique rétro ! Libérez les acquis sociaux.", actionText: "Jouer", icon: Zap, iconTheme: "red", bgImage: "cassebrique.png", spanClass: "col-span-1" },
-  { id: "frogger", title: "Chasse au CDI", description: "Évitez les pièges et visez la titularisation.", actionText: "Jouer", icon: Activity, iconTheme: "green", bgImage: "frogger.png", spanClass: "col-span-1" },
+  { id: "frogger", title: "Chasse au CDI 3D", description: "Traversez Gennevilliers en 3D voxel depuis la Ferme des Chanteraines, récoltez vos primes et décrochez le CDI avec la CFDT !", actionText: "Foncer au CDI", icon: Activity, iconTheme: "orange", bgImage: "frogger.png", spanClass: "col-span-1" },
   { id: "pacman", title: "Labyrinthe Paie", description: "Incarnez un gestionnaire, fuyez les fantômes et sécurisez les dossiers de paie.", actionText: "Lancer le jeu", icon: Activity, iconTheme: "blue", bgImage: "pacman.png", spanClass: "md:col-span-2 lg:col-span-2" },
   // Row 5: Large + two small
   { id: "sortemall", title: "Sort'em All", description: "Triez les dossiers RH dans les bonnes instances sous pression.", actionText: "Trier", icon: Inbox, iconTheme: "sky", bgImage: "sortemall.png", spanClass: "md:col-span-2 lg:col-span-2" },
@@ -137,7 +137,7 @@ const EspaceJeux: React.FC<EspaceJeuxProps> = ({ onClose }) => {
   }, [activeGame]);
 
   const wrapGame = (component: React.ReactNode) => (
-    <div className="dark bg-black text-white min-h-screen EspaceJeux-root-container">
+    <div className="relative z-30 isolate dark bg-black text-white min-h-screen EspaceJeux-root-container">
       <EspaceJeuxStyles />
       <Suspense fallback={<ViewLoader />}>
         {component}
